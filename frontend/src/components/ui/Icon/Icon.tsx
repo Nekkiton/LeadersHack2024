@@ -6,10 +6,12 @@ import styles from './Icon.module.scss'
 const TimesIcon = dynamic(() => import('@/assets/icons/times.svg'))
 const CheckIcon = dynamic(() => import('@/assets/icons/check.svg'))
 const LoaderIcon = dynamic(() => import('@/assets/icons/loader.svg'))
+const EyeIcon = dynamic(() => import('@/assets/icons/eye.svg'))
+const EyeOffIcon = dynamic(() => import('@/assets/icons/eye-off.svg'))
 
 interface Props {
   className?: string
-  icon: 'times' | 'check' | 'loader'
+  icon: 'times' | 'check' | 'loader' | 'eye' | 'eye-off'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -21,6 +23,10 @@ export default function Icon({ icon, className }: Props) {
         return CheckIcon
       case 'loader':
         return LoaderIcon
+      case 'eye':
+        return EyeIcon
+      case 'eye-off':
+        return EyeOffIcon
       default:
         return null
     }

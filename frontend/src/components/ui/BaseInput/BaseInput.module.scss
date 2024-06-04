@@ -8,16 +8,12 @@
   gap: 8px;
   padding: 10px 12px;
   border: 1px solid $gray-4;
-  border-radius: $radius;
+  border-radius: 8px;
   cursor: text;
   transition: $transition;
 
   &.error {
     border-color: $red;
-  }
-
-  &:has(.input:focus-visible) {
-    outline: 2px solid $gray-2;
   }
 }
 
@@ -31,4 +27,8 @@
   flex-grow: 1;
   background: none;
   color: $gray-2;
+
+  &::placeholder {
+    color: $gray-4;
+  }
 }

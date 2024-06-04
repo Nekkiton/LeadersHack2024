@@ -1,4 +1,5 @@
 import {
+  useState,
   ChangeEventHandler,
   FocusEventHandler,
   MouseEventHandler,
@@ -12,6 +13,9 @@ import {
   KeyboardEventHandler,
 } from 'react'
 import classNames from 'classnames'
+import Icon from '@/components/ui/Icon'
+import Sandwich from '@/components/ui/Sandwich'
+import BaseButton from '@/components/ui/BaseButton'
 import styles from './BaseInput.module.scss'
 
 export type InputType =
@@ -48,7 +52,6 @@ export interface BaseInputProps<Type extends InputType> {
 TODO: can work wrong in case
       <Input<'number'> onChange={val => {// val here is not a string}} />
       do not specify type as a generic - use type prop!
-TODO: password
 TODO: allow clicks on interactive affixes
 TODO: outline when focus-visible
 TODO: improve event handlers, semantic accessibiliti, aria
@@ -82,6 +85,8 @@ const BaseInput = <Type extends InputType = 'text'>(
 
   useImperativeHandle(ref, () => inputRef.current!)
 
+  const [isPasswordShowed, setIsPasswordShowed] = useState(false)
+
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const val = e.target.value
     if (val === '') {
@@ -108,10 +113,15 @@ const BaseInput = <Type extends InputType = 'text'>(
     baseOnClick?.(e)
   }
 
-  const type = useMemo(
-    () => (baseType === 'number' ? 'text' : baseType),
-    [baseType]
-  )
+  const type = useMemo(() => {
+    if (baseType === 'number') {
+      return 'text'
+    } else if (baseType === 'password') {
+      return isPasswordShowed ? 'text' : 'password'
+    } else {
+      return baseType
+    }
+  }, [baseType, isPasswordShowed])
 
   const mode = useMemo(
     () => (baseType === 'number' ? 'numeric' : undefined),
@@ -159,6 +169,16 @@ const BaseInput = <Type extends InputType = 'text'>(
         disabled={isBlocked}
       />
       {postfix}
+      {baseType === 'password' && (
+        <BaseButton onClick={() => setIsPasswordShowed(!isPasswordShowed)}>
+          <Sandwich
+            items={[
+              { value: <Icon icon="eye" />, isActive: !isPasswordShowed },
+              { value: <Icon icon="eye-off" />, isActive: isPasswordShowed },
+            ]}
+          />
+        </BaseButton>
+      )}
     </div>
   )
 }
