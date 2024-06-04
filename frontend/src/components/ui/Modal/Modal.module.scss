@@ -1,0 +1,83 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  transition: $transition;
+
+  &:global(:is(.enter-done, .enter-active, .appear-active)) {
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  max-height: 90vh;
+  overflow: auto;
+  background: $white;
+  border-radius: $radius;
+  transform: scale(0);
+  transition: $transition;
+
+  .container:global(:is(.enter-done, .enter-active, .appear-active)) & {
+    transform: none;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.modalTitle {
+  @include heading-3;
+}
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@include not-tablet {
+  .mobile {
+    display: none;
+  }
+}
+
+@include tablet {
+  .desktop {
+    display: none;
+  }
+
+  .container {
+    align-items: flex-end;
+  }
+
+  .modal {
+    padding: 16px;
+    width: 100vw !important;
+    border-radius: 24px 24px 0px 0px;
+    transform: translateY(100%);
+  }
+
+  .modalFooter {
+    margin-top: auto;
+  }
+}

@@ -1,0 +1,33 @@
+@import '@/assets/css/config';
+
+.zone {
+  border: 1px solid red;
+  transition: $transition;
+
+  &.dragging {
+    background: red;
+  }
+
+  &:hover {
+    background: red;
+  }
+}
+
+.files {
+  display: flex;
+  gap: 8px;
+  --gap: 8px;
+}
+
+.file {
+  // transform: scale(0);
+  width: 0;
+  transition: $transition;
+  overflow: hidden;
+  background: red;
+
+  &:global:is(.enter-done, .enter-active, .appear-active) {
+    transform: none;
+    width: 100px;
+  }
+}

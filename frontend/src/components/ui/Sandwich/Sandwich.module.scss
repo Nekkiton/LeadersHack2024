@@ -1,0 +1,19 @@
+@import '@/assets/css/config';
+
+.container {
+  display: grid;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  transition: $transition;
+
+  &:not(.active) {
+    visibility: hidden;
+    transform: scale(0);
+  }
+}

@@ -1,0 +1,23 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  --gap: 4px;
+  width: 100%;
+}
+
+.label {
+  @include paragraph-3;
+}
+
+.postscript {
+  @include caption-1;
+
+  color: $gray-3;
+
+  &.error {
+    color: $red;
+  }
+}

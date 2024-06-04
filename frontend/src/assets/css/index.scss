@@ -1,0 +1,81 @@
+@import '@/assets/css/config';
+@import '@/assets/fonts/Jost/stylesheet';
+
+* {
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    height: calc(8px);
+    width: calc(8px);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-5;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+html {
+  scroll-behavior: smooth !important;
+}
+
+body {
+  @include paragraph-2;
+
+  background: $white;
+  color: $gray-2;
+}
+
+h1 {
+  @include heading-1;
+}
+
+h2 {
+  @include heading-2;
+}
+
+h3 {
+  @include heading-3;
+}
+
+h4 {
+  @include heading-4;
+}
+
+h5 {
+  @include heading-5;
+}
+
+h6 {
+  @include heading-6;
+}
+
+img,
+form {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+#app-container {
+  transition: $transition;
+
+  body:has(.modal:is(.enter-done, .enter-active, .appear-active)) & {
+    transform: scale(0.95);
+  }
+}

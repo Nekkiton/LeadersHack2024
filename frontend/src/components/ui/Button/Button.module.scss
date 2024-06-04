@@ -1,0 +1,121 @@
+@import '@/assets/css/config';
+
+.button,
+.link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  --gap: 10px;
+  padding: 12px 24px;
+  width: fit-content;
+  height: fit-content;
+  border: 1px solid $gray-2;
+  transition: $transition;
+
+  &.full {
+    width: 100%;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &.primary {
+    background: $gray-2;
+    color: $gray-6;
+
+    :global(.icon) {
+      stroke: $gray-6;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $white;
+      outline-offset: -5px;
+    }
+
+    &:not(:disabled):hover {
+      background: none;
+      color: $gray-2;
+
+      :global(.icon) {
+        stroke: $gray-2;
+      }
+
+      &:focus-visible {
+        outline-color: $gray-2;
+      }
+    }
+  }
+
+  &.secondary {
+    color: $gray-2;
+
+    :global(.icon) {
+      stroke: $gray-2;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $gray-2;
+      outline-offset: -5px;
+    }
+
+    &:not(:disabled):hover {
+      background: $gray-2;
+      color: $gray-6;
+
+      :global(.icon) {
+        stroke: $gray-6;
+      }
+
+      &:focus-visible {
+        outline-color: $white;
+      }
+    }
+  }
+
+  &.text {
+    position: relative;
+    padding: 0;
+    border: none;
+    color: $blue;
+
+    :global(.icon) {
+      stroke: $blue;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $blue;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      height: 1px;
+      left: 0;
+      right: 100%;
+      background: $blue;
+      transition: $transition;
+    }
+
+    &:not(:disabled):hover:after {
+      right: 0;
+    }
+
+    &.underline-dashed {
+      text-decoration: underline;
+      text-decoration-style: dashed;
+      text-underline-offset: 0.25lh;
+    }
+
+    &.underline-solid {
+      text-decoration: underline;
+      text-decoration-style: solid;
+      text-underline-offset: 0.25lh;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}

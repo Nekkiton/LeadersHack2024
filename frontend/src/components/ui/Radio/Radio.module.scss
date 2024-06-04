@@ -1,0 +1,48 @@
+@import '@/assets/css/config';
+
+.container {
+  @include paragraph-2;
+  width: auto;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.radio {
+  flex-shrink: 0;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 1px solid $gray-2;
+  border-radius: 50%;
+  transition: $transition;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    border-radius: 50%;
+    background: $gray-2;
+    opacity: 0;
+    transition: $transition;
+  }
+
+  .container.active &:after {
+    opacity: 1;
+  }
+
+  .container.error & {
+    border-color: $red;
+
+    &:after {
+      background: $red;
+    }
+  }
+}

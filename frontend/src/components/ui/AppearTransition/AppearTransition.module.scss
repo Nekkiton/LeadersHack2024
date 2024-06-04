@@ -1,0 +1,40 @@
+@import '@/assets/css/config';
+
+.container {
+  display: grid;
+  overflow: hidden;
+  opacity: 0;
+  transition: $transition;
+
+  &.gap {
+    &:not(.horizontal) {
+      grid-template-rows: 0fr;
+      margin-top: calc(var(--gap) / (-2));
+      margin-bottom: calc(var(--gap) / (-2));
+    }
+
+    &.horizontal {
+      margin-left: calc(var(--gap) / (-2));
+      margin-right: calc(var(--gap) / (-2));
+      grid-template-columns: 0fr;
+    }
+  }
+
+  &:global:is(.enter-done, .enter-active, .appear-active) {
+    opacity: 1;
+
+    &:local(.gap) {
+      &:not(:local(.horizontal)) {
+        margin-top: 0;
+        margin-bottom: 0;
+        grid-template-rows: 1fr;
+      }
+
+      &:local(.horizontal) {
+        margin-left: 0;
+        margin-right: 0;
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

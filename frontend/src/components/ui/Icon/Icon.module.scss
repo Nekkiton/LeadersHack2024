@@ -1,0 +1,19 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  stroke: $gray-2;
+  stroke-width: 2px;
+  transition: $transition;
+
+  svg {
+    path {
+      fill: inherit;
+      stroke: inherit;
+      stroke-width: inherit;
+    }
+  }
+}

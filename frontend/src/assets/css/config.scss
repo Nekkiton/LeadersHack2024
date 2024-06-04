@@ -1,0 +1,261 @@
+// colors
+
+$gray-1: #010a0b;
+$gray-2: #2f3536;
+$gray-3: #575c5c;
+$gray-4: #b7bcbc;
+$gray-5: #e3e4e4;
+$gray-6: #f3f5f5;
+$white: #ffffff;
+$blue: #00777f;
+$red: #990505;
+$orange: #cc9f00;
+$green: #2c9437;
+$purpure: #c598b8;
+$blue-light: #93a7c7;
+
+// styles
+
+$scale: 1.15;
+$shadow: 0px 0px 20px 0px rgba(71, 91, 172, 0.25);
+$transition-duration: 0.4s;
+$transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
+
+// media
+
+@mixin not-tablet {
+  @media (min-width: 769px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin not-mobile {
+  @media (min-width: 401px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 400px) {
+    @content;
+  }
+}
+
+// typography
+
+@mixin title {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 130%;
+
+  @include tablet {
+    font-size: 35px;
+    line-height: 130%;
+  }
+}
+
+@mixin heading-1 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 130%;
+
+  @include tablet {
+    font-size: 30px;
+    line-height: 130%;
+  }
+}
+
+@mixin heading-2 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 130%;
+
+  @include tablet {
+    font-size: 28px;
+    line-height: 130%;
+  }
+}
+
+@mixin heading-3 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 130%;
+
+  @include tablet {
+    font-size: 24px;
+    line-height: 130%;
+  }
+}
+
+@mixin heading-4 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 130%;
+
+  @include tablet {
+    font-size: 20px;
+    line-height: 130%;
+  }
+}
+
+@mixin heading-5 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 140%;
+
+  @include tablet {
+    font-size: 18px;
+    line-height: 140%;
+  }
+}
+
+@mixin heading-6 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 140%;
+
+  @include tablet {
+    font-size: 16px;
+    line-height: 140%;
+  }
+}
+
+@mixin heading-7 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+
+  @include tablet {
+    font-size: 14px;
+    line-height: 140%;
+  }
+}
+
+@mixin heading-8 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 160%;
+}
+
+@mixin paragraph-1 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 160%;
+
+  @include tablet {
+    font-size: 16px;
+    line-height: 160%;
+  }
+}
+
+@mixin paragraph-2 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+
+  @include tablet {
+    font-size: 14px;
+    line-height: 160%;
+  }
+}
+
+@mixin paragraph-3 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 160%;
+}
+
+@mixin caption-1 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+
+  @include tablet {
+    font-size: 12px;
+    line-height: 140%;
+  }
+}
+
+@mixin caption-2 {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 140%;
+
+  @include tablet {
+    font-size: 10px;
+    line-height: 140%;
+  }
+}
+
+@mixin button {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+
+  @include tablet {
+    font-size: 14px;
+    line-height: 140%;
+  }
+}
+
+// layout
+
+@mixin content {
+  margin: 0 auto;
+  width: 100%;
+  max-width: calc(1300px + 32px * 2);
+  padding: 0 32px;
+
+  @include tablet {
+    padding: 0 16px;
+  }
+}
+
+// @mixin page {
+//   @include content;
+
+//   margin-top: 48px;
+//   margin-bottom: 48px;
+// }
+
+@mixin no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

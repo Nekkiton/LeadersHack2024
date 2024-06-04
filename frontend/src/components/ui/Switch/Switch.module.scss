@@ -1,0 +1,63 @@
+@import '@/assets/css/config';
+
+.container {
+  width: auto;
+}
+
+.main {
+  @include paragraph-2;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.switch {
+  flex-shrink: 0;
+  position: relative;
+  height: 17px;
+  width: 34px;
+  border: 1px solid $gray-2;
+  border-radius: 100px;
+  background: $white;
+  transition: $transition;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: $gray-2;
+    transform: translateY(-50%);
+    transition: $transition;
+  }
+
+  .container.active & {
+    background: $gray-2;
+
+    &:after {
+      left: calc(100% - 3px - 11px);
+      background: $white;
+    }
+  }
+
+  .container.error & {
+    border-color: $red;
+
+    &:after {
+      background: $red;
+    }
+  }
+
+  .container.error.active & {
+    background: $red;
+
+    &:after {
+      background: $white;
+    }
+  }
+}

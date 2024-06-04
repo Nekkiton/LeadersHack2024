@@ -1,0 +1,92 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 32px;
+  --gap: 32px;
+  position: fixed;
+  top: 32px;
+  right: 32px;
+}
+
+.toastContainer {
+  overflow: visible !important;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 16px;
+  max-height: 500px;
+  max-width: 400px;
+  // border-radius: $radius;
+  background: $white;
+  box-shadow: $shadow;
+  transform: translateX(calc(100% + 32px));
+  transition: $transition;
+
+  &.error {
+    background: $red;
+    color: $white;
+  }
+
+  &.success {
+    background: $green;
+    color: $white;
+  }
+
+  .toastContainer:global(:is(.enter-done, .enter-active, .appear-active)) & {
+    transform: none;
+  }
+}
+
+.toastMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.toastTitle {
+  @include heading-7;
+}
+
+.toastCloseIcon {
+  .toast.error &,
+  .toast.success & {
+    stroke: $white;
+  }
+}
+
+.toastContent {
+  @include paragraph-3;
+}
+
+@include tablet {
+  .container {
+    flex-direction: column-reverse;
+    gap: 16px;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    top: auto;
+  }
+
+  .toast {
+    max-width: none;
+    width: 100%;
+
+    &[data-status='enter'],
+    &[data-status='leave'] {
+      transform: translateX(calc(100% + 16px));
+      max-height: 0;
+      margin-top: calc(-32px - 16px);
+      margin-bottom: 0;
+    }
+  }
+}
