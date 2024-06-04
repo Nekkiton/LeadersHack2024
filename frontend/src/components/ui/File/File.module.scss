@@ -1,0 +1,34 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 25px;
+  background: $gray-6;
+
+  &.hoverable {
+    transition: $transition;
+
+    &:hover {
+      background: $gray-5;
+    }
+  }
+}
+
+.fileNameContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fileIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.fileSize {
+  @include paragraph-3;
+  color: $gray-3;
+}
