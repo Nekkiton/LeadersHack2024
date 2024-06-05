@@ -9,14 +9,13 @@
   box-sizing: border-box;
 
   &::-webkit-scrollbar {
-    height: calc(8px);
-    width: calc(8px);
+    height: calc(6px);
+    width: calc(6px);
   }
 
   &::-webkit-scrollbar-thumb {
     background: $gray-5;
     border-radius: 10px;
-    border: 1px solid transparent;
     background-clip: padding-box;
   }
 }
