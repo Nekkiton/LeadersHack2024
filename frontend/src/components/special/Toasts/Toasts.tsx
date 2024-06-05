@@ -25,7 +25,11 @@ export default function Toasts() {
                 )}
                 <div className={styles.toastContent}>{toast.value.content}</div>
               </div>
-              <BaseButton onClick={() => remove(toast.id)} hoverable>
+              <BaseButton
+                className={styles.toastCloseBtn}
+                onClick={() => remove(toast.id)}
+                hoverable
+              >
                 <Icon className={styles.toastCloseIcon} icon="times" />
               </BaseButton>
             </div>

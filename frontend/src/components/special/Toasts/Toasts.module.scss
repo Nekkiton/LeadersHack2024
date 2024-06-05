@@ -23,7 +23,7 @@
   padding: 16px;
   max-height: 500px;
   max-width: 400px;
-  // border-radius: $radius;
+  border-radius: 8px;
   background: $white;
   box-shadow: $shadow;
   transform: translateX(calc(100% + 32px));
@@ -56,6 +56,10 @@
   @include heading-7;
 }
 
+.toastCloseBtn {
+  flex-shrink: 0;
+}
+
 .toastCloseIcon {
   .toast.error &,
   .toast.success & {
@@ -69,8 +73,8 @@
 
 @include tablet {
   .container {
-    flex-direction: column-reverse;
     gap: 16px;
+    --gap: 16px;
     bottom: 16px;
     left: 16px;
     right: 16px;
