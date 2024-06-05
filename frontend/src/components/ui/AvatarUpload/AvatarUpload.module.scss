@@ -1,0 +1,39 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  width: 164px;
+  height: 164px;
+  border-radius: 50%;
+  transition: $transition;
+  border: 0px solid transparent;
+
+  .container.error & {
+    border: 1px solid $red;
+  }
+}
+
+.control {
+  padding: 8px;
+  margin-top: -20px;
+  border-radius: 50%;
+  background: $white;
+  box-shadow: $shadow;
+}
+
+.errorMsg {
+  @include caption-1;
+
+  color: $red;
+}

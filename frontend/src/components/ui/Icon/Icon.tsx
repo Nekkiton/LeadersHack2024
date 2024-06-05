@@ -18,6 +18,7 @@ const BellIcon = dynamic(() => import('@/assets/icons/bell.svg'))
 const UserIcon = dynamic(() => import('@/assets/icons/user.svg'))
 const MessageSentIcon = dynamic(() => import('@/assets/icons/message-sent.svg'))
 const HouseIcon = dynamic(() => import('@/assets/icons/house.svg'))
+const PenIcon = dynamic(() => import('@/assets/icons/pen.svg'))
 
 interface Props {
   className?: string
@@ -37,6 +38,7 @@ interface Props {
     | 'user'
     | 'messageSent'
     | 'house'
+    | 'pen'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -72,6 +74,8 @@ export default function Icon({ icon, className }: Props) {
         return MessageSentIcon
       case 'house':
         return HouseIcon
+      case 'pen':
+        return PenIcon
     }
   }, [icon])
 

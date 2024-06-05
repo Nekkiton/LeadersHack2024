@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+// TODO: move to types
 export type FormError =
   | string
   | {
