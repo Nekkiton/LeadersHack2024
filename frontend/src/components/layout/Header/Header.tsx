@@ -20,14 +20,14 @@ export default function Header() {
         </Link>
         {user.status === 'success' && user.value ? (
           <div className={styles.menu}>
-            <BaseButton hoverable>
+            <BaseButton className={styles.desktop} hoverable>
               <Icon icon="bell" />
             </BaseButton>
             <UserMenu user={user.value} />
           </div>
         ) : (
           <Button type="primary" href={Routes.login}>
-            <span>Войти</span>
+            <span className={styles.desktop}>Войти</span>
             <Icon icon="login" />
           </Button>
         )}

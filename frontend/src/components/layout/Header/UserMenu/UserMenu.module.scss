@@ -55,3 +55,14 @@
 .menuLogoutBtnIcon {
   stroke: $red !important;
 }
+
+@include tablet {
+  .userAvatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .userNameContainer {
+    display: none;
+  }
+}

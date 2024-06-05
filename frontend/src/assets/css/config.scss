@@ -247,13 +247,6 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   }
 }
 
-// @mixin page {
-//   @include content;
-
-//   margin-top: 48px;
-//   margin-bottom: 48px;
-// }
-
 @mixin no-scrollbar {
   &::-webkit-scrollbar {
     display: none;

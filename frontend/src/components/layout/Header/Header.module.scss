@@ -22,3 +22,17 @@
   align-items: center;
   gap: 32px;
 }
+
+@include tablet {
+  .desktop {
+    display: none;
+  }
+
+  .container {
+    padding: 8px 0;
+  }
+
+  .logo {
+    height: 31px;
+  }
+}
