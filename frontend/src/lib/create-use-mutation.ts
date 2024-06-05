@@ -4,6 +4,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
+import { useToasts } from '@/lib/use-toasts'
 import { AxiosError } from 'axios'
 
 export const createUseMutation = <Args, Data>(
@@ -14,6 +15,7 @@ export const createUseMutation = <Args, Data>(
 ) => {
   return () => {
     const queryClient = useQueryClient()
+    const toasts = useToasts()
 
     const { mutate, status } = useMutation<Data, AxiosError, Args>({
       mutationFn: func,
@@ -27,9 +29,11 @@ export const createUseMutation = <Args, Data>(
         options?.onSuccess?.(data, variables, context)
       },
       onError: (...args_) => {
-        // TODO: toast or something
-        // alert('Something went wrong')
-        options?.onError?.(...args_)
+        if (!options?.onError?.(...args_)) {
+          toasts.error({
+            content: 'Что-то пошло не так',
+          })
+        }
       },
     })
 

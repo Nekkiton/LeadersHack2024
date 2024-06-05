@@ -1,4 +1,10 @@
 import { Axios } from '@/config/axios'
+import {
+  ForgotPasswordData,
+  LoginData,
+  RegisterData,
+  ResetPasswordData,
+} from '@/types/entities/auth'
 import { User } from '@/types/entities/user'
 
 export const Api = {
@@ -17,7 +23,11 @@ export const Api = {
   },
 
   auth: {
-    login: (data: { initData: string }) =>
-      Axios.post<string>('/auth/login/', data).then((res) => res.data),
+    login: (data: LoginData) => Axios.post('/auth/login/', data),
+    register: (data: RegisterData) => Axios.post('/auth/register/', data),
+    forgotPassword: (data: ForgotPasswordData) =>
+      Axios.post('/auth/forgot/', data),
+    resetPassword: (data: ResetPasswordData) =>
+      Axios.post('/auth/reset-password/', data),
   },
 }
