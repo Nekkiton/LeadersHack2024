@@ -1,0 +1,47 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.centerElement {
+  align-self: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headerMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.headerHint {
+  @include paragraph-3;
+  color: $gray-3;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldsResetPasswordBtn {
+  align-self: flex-end;
+  margin-top: -8px;
+}
+
+.rules {
+  @include caption-1;
+
+  a {
+    color: $blue;
+  }
+}
