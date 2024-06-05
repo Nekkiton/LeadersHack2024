@@ -28,7 +28,7 @@ html {
 body {
   @include paragraph-2;
 
-  background: $white;
+  background: $gray-6;
   color: $gray-2;
 }
 
@@ -69,6 +69,7 @@ a {
 #app-container {
   display: flex;
   flex-direction: column;
+  gap: 24px;
   min-height: 100dvh;
 }
 

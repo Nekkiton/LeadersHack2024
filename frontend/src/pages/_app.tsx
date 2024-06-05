@@ -12,13 +12,19 @@ import '@/assets/css/index.scss'
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())
 
+  const Layout = (Component as Page).layout
+
   return (
     <QueryClientProvider client={queryClient}>
       <div id="app-container">
         <ToastsProvider>
           <Header />
           <PermissionManager permission={(Component as Page).permission}>
-            <Component {...pageProps} />
+            {Layout ? (
+              <Layout>{<Component {...pageProps} />}</Layout>
+            ) : (
+              <Component {...pageProps} />
+            )}
           </PermissionManager>
           <Footer />
           <Toasts />
