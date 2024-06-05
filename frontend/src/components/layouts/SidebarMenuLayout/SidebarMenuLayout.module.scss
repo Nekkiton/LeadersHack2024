@@ -1,0 +1,59 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  align-items: stretch;
+  gap: 30px;
+  flex-grow: 1;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 16px;
+  padding: 16px;
+  width: 25%;
+  border-radius: 8px;
+  background: $white;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+}
+
+.sidebarLinkName {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 100%;
+    height: 2px;
+    border-radius: 10px;
+    background: $gray-2;
+    transition: $transition;
+
+    .sidebarLink.active & {
+      right: 0;
+    }
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+}
+
+.mainFooter {
+  margin-top: auto;
+}

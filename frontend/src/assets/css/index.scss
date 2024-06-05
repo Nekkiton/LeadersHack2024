@@ -71,9 +71,7 @@ a {
   flex-direction: column;
   gap: 24px;
   min-height: 100dvh;
-}
-
-#app-container {
+  padding-bottom: 24px;
   transition: $transition;
 
   body:has(.modal:is(.enter-done, .enter-active, .appear-active)) & {

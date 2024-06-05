@@ -1,5 +1,6 @@
 import { useCurUser } from '@/api/users'
 import { Routes } from '@/config/routes'
+import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
 import Image from '@/components/ui/Image'
 import BaseButton from '@/components/ui/BaseButton'
@@ -14,7 +15,9 @@ export default function Header() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Image className={styles.logo} src={logoImg} />
+        <Link href={Routes.home}>
+          <Image className={styles.logo} src={logoImg} />
+        </Link>
         {user.status === 'success' && user.value ? (
           <div className={styles.menu}>
             <BaseButton hoverable>
