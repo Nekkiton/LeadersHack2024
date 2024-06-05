@@ -1,0 +1,101 @@
+@import '@/assets/css/config';
+
+.inputContainer {
+  .withPopover:not(.inputtable) & {
+    cursor: pointer;
+  }
+
+  .withPopover.active & {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.input {
+  .withPopover:not(.inputtable) & {
+    pointer-events: none;
+    color: $gray-2;
+  }
+}
+
+.popover {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: 100%;
+  top: 100% !important;
+  box-shadow: none !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top: none;
+  transform: none;
+
+  &:global(:is(.enter-done, .enter-active, .appear-active)) {
+    grid-template-rows: 1fr;
+  }
+
+  .withPopover.error & {
+    border-color: $red;
+  }
+}
+
+.itemsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+  background: $white;
+}
+
+.items {
+  max-height: 210px;
+  overflow: auto;
+  background: $white;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
+  outline: none;
+  transition: $transition;
+
+  &:hover,
+  &.active {
+    background: $gray-6;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $gray-2;
+    outline-offset: -2px;
+  }
+}
+
+.itemIcon {
+  transition: $transition;
+
+  .item:not(.active) & {
+    opacity: 0;
+  }
+}
+
+.itemsNothing {
+  padding: 12px 14px;
+}
+
+.itemsControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.chevronIcon {
+  transition: $transition;
+
+  &.active {
+    transform: rotate(180deg);
+  }
+}

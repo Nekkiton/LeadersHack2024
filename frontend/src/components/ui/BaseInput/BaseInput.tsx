@@ -174,7 +174,7 @@ const BaseInput = <Type extends InputType = 'text'>(
           <Sandwich
             items={[
               { value: <Icon icon="eye" />, isActive: !isPasswordShowed },
-              { value: <Icon icon="eye-off" />, isActive: isPasswordShowed },
+              { value: <Icon icon="eyeOff" />, isActive: isPasswordShowed },
             ]}
           />
         </BaseButton>

@@ -1,0 +1,42 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.reference {
+  width: 100%;
+
+  .container:not(.notInteractive) & {
+    cursor: pointer;
+    border-radius: 8px;
+    transition: $transition;
+
+    &:focus-visible {
+      outline: 2px solid $gray-2;
+    }
+  }
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  z-index: 2;
+  opacity: 0;
+  border: 1px solid $gray-4;
+  border-radius: 8px;
+  box-shadow: $shadow;
+  overflow: hidden;
+  transform: scale(0);
+  transform-origin: top;
+  transition: $transition;
+
+  // TODO: move to config
+  &:global(:is(.enter-done, .enter-active, .appear-active)) {
+    opacity: 1;
+    transform: none;
+  }
+}

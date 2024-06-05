@@ -10,10 +10,19 @@ const EyeIcon = dynamic(() => import('@/assets/icons/eye.svg'))
 const EyeOffIcon = dynamic(() => import('@/assets/icons/eye-off.svg'))
 const BoxIcon = dynamic(() => import('@/assets/icons/box.svg'))
 const FileIcon = dynamic(() => import('@/assets/icons/file.svg'))
+const ChevronDownIcon = dynamic(() => import('@/assets/icons/chevron-down.svg'))
 
 interface Props {
   className?: string
-  icon: 'times' | 'check' | 'loader' | 'eye' | 'eye-off' | 'box' | 'file'
+  icon:
+    | 'times'
+    | 'check'
+    | 'loader'
+    | 'eye'
+    | 'eyeOff'
+    | 'box'
+    | 'file'
+    | 'chevronDown'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -27,12 +36,14 @@ export default function Icon({ icon, className }: Props) {
         return LoaderIcon
       case 'eye':
         return EyeIcon
-      case 'eye-off':
+      case 'eyeOff':
         return EyeOffIcon
       case 'box':
         return BoxIcon
       case 'file':
         return FileIcon
+      case 'chevronDown':
+        return ChevronDownIcon
       default:
         return null
     }
