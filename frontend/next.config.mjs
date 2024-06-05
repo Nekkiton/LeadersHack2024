@@ -9,8 +9,10 @@ const nextConfig = {
       },
       use: ['@svgr/webpack'],
     })
-
     return config
+  },
+  images: {
+    domains: ['img-cdn.pixlr.com'], // TODO: remove
   },
 }
 

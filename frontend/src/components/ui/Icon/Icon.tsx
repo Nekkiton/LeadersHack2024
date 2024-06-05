@@ -11,6 +11,10 @@ const EyeOffIcon = dynamic(() => import('@/assets/icons/eye-off.svg'))
 const BoxIcon = dynamic(() => import('@/assets/icons/box.svg'))
 const FileIcon = dynamic(() => import('@/assets/icons/file.svg'))
 const ChevronDownIcon = dynamic(() => import('@/assets/icons/chevron-down.svg'))
+const LoginIcon = dynamic(() => import('@/assets/icons/login.svg'))
+const LogoutIcon = dynamic(() => import('@/assets/icons/logout.svg'))
+const BellIcon = dynamic(() => import('@/assets/icons/bell.svg'))
+const UserIcon = dynamic(() => import('@/assets/icons/user.svg'))
 
 interface Props {
   className?: string
@@ -23,6 +27,10 @@ interface Props {
     | 'box'
     | 'file'
     | 'chevronDown'
+    | 'login'
+    | 'logout'
+    | 'bell'
+    | 'user'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -44,6 +52,14 @@ export default function Icon({ icon, className }: Props) {
         return FileIcon
       case 'chevronDown':
         return ChevronDownIcon
+      case 'login':
+        return LoginIcon
+      case 'logout':
+        return LogoutIcon
+      case 'bell':
+        return BellIcon
+      case 'user':
+        return UserIcon
       default:
         return null
     }
