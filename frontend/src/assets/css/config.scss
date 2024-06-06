@@ -239,12 +239,18 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
 @mixin content {
   margin: 0 auto;
   width: 100%;
-  max-width: calc(1200px + 32px * 2);
-  padding: 0 32px;
+  max-width: calc(1200px + 24px * 2);
+  padding: 0 24px;
 
   @include tablet {
     padding: 0 16px;
   }
+}
+
+@mixin card {
+  padding: 16px;
+  border-radius: 8px;
+  background: $white;
 }
 
 @mixin no-scrollbar {

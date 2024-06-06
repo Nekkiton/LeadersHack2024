@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import classNames from 'classnames'
-import { User } from '@/types/entities/user'
+import { Role, User } from '@/types/entities/user'
 import { getUserName } from '@/lib/get-user-name'
+import { Routes } from '@/config/routes'
 import WithPopover from '@/components/ui/WithPopover'
 import Icon from '@/components/ui/Icon'
 import Image from '@/components/ui/Image'
@@ -42,7 +43,10 @@ export default function UserMenu({ user }: Props) {
       }
       popover={
         <div className={styles.menu}>
-          <Button type="text">
+          <Button
+            type="text"
+            href={{ [Role.Recruiter]: Routes.recruiterProfile }[user.role]}
+          >
             <Icon icon="user" />
             <span>Профиль</span>
           </Button>
