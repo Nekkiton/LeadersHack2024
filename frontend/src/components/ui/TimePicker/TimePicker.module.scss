@@ -25,7 +25,7 @@
   box-shadow: none;
 
   &:global(:is(.enter-done, .enter-active, .appear-active)) {
-    max-height: 300px;
+    max-height: 250px;
   }
 
   .container.error & {

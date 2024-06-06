@@ -19,6 +19,9 @@ const UserIcon = dynamic(() => import('@/assets/icons/user.svg'))
 const MessageSentIcon = dynamic(() => import('@/assets/icons/message-sent.svg'))
 const HouseIcon = dynamic(() => import('@/assets/icons/house.svg'))
 const PenIcon = dynamic(() => import('@/assets/icons/pen.svg'))
+const PlusIcon = dynamic(() => import('@/assets/icons/plus.svg'))
+const DocumentLoupe = dynamic(() => import('@/assets/icons/document-loupe.svg'))
+const DocumentCheck = dynamic(() => import('@/assets/icons/document-check.svg'))
 
 interface Props {
   className?: string
@@ -39,6 +42,9 @@ interface Props {
     | 'messageSent'
     | 'house'
     | 'pen'
+    | 'plus'
+    | 'documentLoupe'
+    | 'documentCheck'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -76,6 +82,12 @@ export default function Icon({ icon, className }: Props) {
         return HouseIcon
       case 'pen':
         return PenIcon
+      case 'plus':
+        return PlusIcon
+      case 'documentLoupe':
+        return DocumentLoupe
+      case 'documentCheck':
+        return DocumentCheck
     }
   }, [icon])
 
