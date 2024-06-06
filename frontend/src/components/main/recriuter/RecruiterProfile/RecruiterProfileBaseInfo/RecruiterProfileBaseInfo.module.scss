@@ -1,0 +1,31 @@
+@import '@/assets/css/config';
+
+.container {
+  @include card;
+
+  display: flex;
+  gap: 24px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+}
+
+.mainBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mainBlockFieldsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mainBlockHalfField {
+  width: calc(50% - 8px);
+}
