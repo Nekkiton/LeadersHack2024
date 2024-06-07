@@ -1,0 +1,48 @@
+name: "Project CI"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  files-changed:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.changes.outputs.backend }}
+      frontend: ${{ steps.changes.outputs.frontend }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check for folder file changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            backend:
+              - 'api/**'
+            frontend:
+              - 'frontend/**'
+  build-frontend:
+    needs: files-changed
+    if: needs.files-changed.outputs.frontend == 'true'
+    uses: ./.github/workflows/build-frontend.yaml
+
+  deploy-frontend:
+    needs: build-frontend
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      dockerfile: frontend/Dockerfile
+      context: frontend
+      image: leaders.cr.cloud.ru/leaders-hack-2024-gb/frontend
+    secrets: inherit
+
+  deploy-backend:
+    needs: files-changed
+    if: needs.files-changed.outputs.backend == 'true'
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      dockerfile: api/Dockerfile
+      context: backend
+      image: leaders.cr.cloud.ru/leaders-hack-2024-gb/backend
+    secrets: inherit
