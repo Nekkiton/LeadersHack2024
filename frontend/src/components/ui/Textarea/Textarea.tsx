@@ -1,6 +1,7 @@
 import { FormEventHandler, useEffect, useRef } from 'react'
 import { FormError } from '@/lib/use-form-error'
 import { useControlValue } from '@/lib/use-control-value'
+import classNames from 'classnames'
 import ControlContainer from '@/components/ui/ControlContainer'
 import styles from './Textarea.module.scss'
 
@@ -56,7 +57,9 @@ export default function Textarea({
       notRequiredHint={notRequiredHint}
       error={error}
     >
-      <div className={styles.container}>
+      <div
+        className={classNames(styles.container, { [styles.error]: !!error })}
+      >
         <div
           ref={targetDivRef}
           className={styles.targetDiv}
