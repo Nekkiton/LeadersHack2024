@@ -7,7 +7,7 @@ on:
 
 jobs:
   files-changed:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       backend: ${{ steps.changes.outputs.backend }}
       frontend: ${{ steps.changes.outputs.frontend }}

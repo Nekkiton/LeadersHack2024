@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-frontend:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
