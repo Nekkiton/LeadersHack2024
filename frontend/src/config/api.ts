@@ -8,7 +8,11 @@ import {
 import { Education } from '@/types/entities/education'
 import { Skill } from '@/types/entities/skill'
 import { Role, User } from '@/types/entities/user'
-import { GetVacanciesParams, Vacancy } from '@/types/entities/vacancy'
+import {
+  GetVacanciesParams,
+  Vacancy,
+  VacancyStatus,
+} from '@/types/entities/vacancy'
 import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
@@ -59,7 +63,22 @@ export const Api = {
     all: (params?: GetVacanciesParams) =>
       Axios.get<Vacancy[]>('/vacancies/', params)
         .then((res) => res.data)
-        .catch(() => []),
+        .catch(
+          () =>
+            [
+              {
+                id: '1',
+                responces: [],
+                status: VacancyStatus.Active,
+                scope_id: 'Разработка',
+                recruiter: {
+                  name: 'Name',
+                  surname: 'Surname',
+                },
+                title: 'Vacancy title',
+              },
+            ] as Vacancy[]
+        ),
   },
 
   workScopes: {

@@ -1,0 +1,21 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  .container.green & {
+    background: $green;
+  }
+
+  .container.gray-4 & {
+    background: $gray-4;
+  }
+}

@@ -1,0 +1,76 @@
+@import '@/assets/css/config';
+
+.container {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerInfo {
+  @include paragraph-3;
+  color: $gray-3;
+
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.headerTag {
+  @include caption-1;
+
+  padding: 5px 12px;
+  border: 1px solid $gray-5;
+  border-radius: 4px;
+}
+
+.vacancyInfo {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+}
+
+.vacancyInfoKeys {
+  @include paragraph-3;
+  color: $gray-3;
+
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.main {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userImg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.userHint {
+  @include paragraph-3;
+  color: $gray-3;
+}
+
+.separator {
+  height: 1px;
+  background: $gray-6;
+}
