@@ -1,18 +1,10 @@
 @import '@/assets/css/config';
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-  gap: 16px;
-  width: 100%;
-}
-
 .pages {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 0 auto;
 }
 
 .pagesMoveBtn {

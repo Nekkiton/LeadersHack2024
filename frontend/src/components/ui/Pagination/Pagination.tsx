@@ -7,98 +7,81 @@ import styles from './Pagination.module.scss'
 interface Props {
   currentPage: number
   lastPage: number
-  loadMore: () => void
-  hasMore: boolean
   loadPage: (page: number) => void
-  isLoadingMore: boolean
 }
 
-export default function Pagination({
-  currentPage,
-  lastPage,
-  loadMore,
-  hasMore,
-  loadPage,
-  isLoadingMore,
-}: Props) {
+export default function Pagination({ currentPage, lastPage, loadPage }: Props) {
   return (
-    <div className={styles.container}>
-      {hasMore && (
-        <Button type="secondary" onClick={loadMore} loading={isLoadingMore}>
-          Показать еще
-        </Button>
+    <div className={styles.pages}>
+      {currentPage > 1 && (
+        <BaseButton
+          className={styles.pagesMoveBtn}
+          onClick={() => loadPage(currentPage - 1)}
+          hoverable
+        >
+          <Icon icon="chevronLeft" />
+        </BaseButton>
       )}
-      <div className={styles.pages}>
-        {currentPage > 1 && (
-          <BaseButton
-            className={styles.pagesMoveBtn}
-            onClick={() => loadPage(currentPage - 1)}
-            hoverable
-          >
-            <Icon icon="chevronLeft" />
-          </BaseButton>
-        )}
-        <BaseButton
-          className={classNames(styles.page, {
-            [styles.showed]: currentPage >= 4,
-            [styles.mobileShowed]: currentPage >= 3,
-          })}
-          onClick={() => loadPage(1)}
-        >
-          1
-        </BaseButton>
-        <Icon
-          className={classNames(styles.pagesSeparator, {
-            [styles.showed]: currentPage >= 5,
-            [styles.mobileShowed]: currentPage >= 4,
-          })}
-          icon="moreH"
-        />
-        {Array.from({ length: 5 }).map((_, idx) => {
-          let page = currentPage + idx - 2
-          return (
-            <BaseButton
-              className={classNames(styles.page, {
-                [styles.active]: page === currentPage,
-                [styles.showed]: page > 0 && page <= lastPage,
-                [styles.mobileShowed]:
-                  page > 0 &&
-                  Math.abs(page - currentPage) < 2 &&
-                  page <= lastPage,
-              })}
-              onClick={() => loadPage(page)}
-              key={idx}
-            >
-              {page}
-            </BaseButton>
-          )
+      <BaseButton
+        className={classNames(styles.page, {
+          [styles.showed]: currentPage >= 4,
+          [styles.mobileShowed]: currentPage >= 3,
         })}
-        <Icon
-          className={classNames(styles.pagesSeparator, {
-            [styles.showed]: currentPage + 4 <= lastPage,
-            [styles.mobileShowed]: currentPage + 3 <= lastPage,
-          })}
-          icon="moreH"
-        />
-        <BaseButton
-          className={classNames(styles.page, {
-            [styles.showed]: currentPage + 3 <= lastPage,
-            [styles.mobileShowed]: currentPage + 2 <= lastPage,
-          })}
-          onClick={() => loadPage(lastPage)}
-        >
-          {lastPage}
-        </BaseButton>
-        {currentPage < lastPage && (
+        onClick={() => loadPage(1)}
+      >
+        1
+      </BaseButton>
+      <Icon
+        className={classNames(styles.pagesSeparator, {
+          [styles.showed]: currentPage >= 5,
+          [styles.mobileShowed]: currentPage >= 4,
+        })}
+        icon="moreH"
+      />
+      {Array.from({ length: 5 }).map((_, idx) => {
+        let page = currentPage + idx - 2
+        return (
           <BaseButton
-            className={styles.pagesMoveBtn}
-            onClick={() => loadPage(currentPage + 1)}
-            hoverable
+            className={classNames(styles.page, {
+              [styles.active]: page === currentPage,
+              [styles.showed]: page > 0 && page <= lastPage,
+              [styles.mobileShowed]:
+                page > 0 &&
+                Math.abs(page - currentPage) < 2 &&
+                page <= lastPage,
+            })}
+            onClick={() => loadPage(page)}
+            key={idx}
           >
-            <Icon icon="chevronRight" />
+            {page}
           </BaseButton>
-        )}
-      </div>
+        )
+      })}
+      <Icon
+        className={classNames(styles.pagesSeparator, {
+          [styles.showed]: currentPage + 4 <= lastPage,
+          [styles.mobileShowed]: currentPage + 3 <= lastPage,
+        })}
+        icon="moreH"
+      />
+      <BaseButton
+        className={classNames(styles.page, {
+          [styles.showed]: currentPage + 3 <= lastPage,
+          [styles.mobileShowed]: currentPage + 2 <= lastPage,
+        })}
+        onClick={() => loadPage(lastPage)}
+      >
+        {lastPage}
+      </BaseButton>
+      {currentPage < lastPage && (
+        <BaseButton
+          className={styles.pagesMoveBtn}
+          onClick={() => loadPage(currentPage + 1)}
+          hoverable
+        >
+          <Icon icon="chevronRight" />
+        </BaseButton>
+      )}
     </div>
   )
 }
