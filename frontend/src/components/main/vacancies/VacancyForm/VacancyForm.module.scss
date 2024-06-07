@@ -1,0 +1,40 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.sidebar {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 8px;
+  width: 37%;
+}
+
+.form {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 16px;
+}
+
+.formControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
