@@ -1,18 +1,8 @@
 import { useFormContext, Controller } from 'react-hook-form'
-import classNames from 'classnames'
+import { FormData } from '../utils'
 import AvatarUpload from '@/components/ui/AvatarUpload'
 import Input from '@/components/ui/Input'
 import styles from './RecruiterProfileBaseInfo.module.scss'
-
-interface FormData {
-  avatar: any
-  name: string
-  surname: string
-  patronymic: string
-  phone: string
-  tgNickname: string | null
-  email: string
-}
 
 export default function RecruiterProfileBaseInfo() {
   const { control } = useFormContext<FormData>()
@@ -21,7 +11,7 @@ export default function RecruiterProfileBaseInfo() {
     <div className={styles.container}>
       <Controller
         control={control}
-        name="avatar"
+        name="photo"
         render={({ field, fieldState }) => (
           <AvatarUpload {...field} error={fieldState.error} />
         )}
@@ -49,7 +39,6 @@ export default function RecruiterProfileBaseInfo() {
             <Controller
               control={control}
               name="patronymic"
-              rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
@@ -80,7 +69,7 @@ export default function RecruiterProfileBaseInfo() {
           <div className={styles.mainBlockFieldsRow}>
             <Controller
               control={control}
-              name="tgNickname"
+              name="telegram"
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
@@ -92,6 +81,7 @@ export default function RecruiterProfileBaseInfo() {
             <Controller
               control={control}
               name="email"
+              rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Input
                   {...field}

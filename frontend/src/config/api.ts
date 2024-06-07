@@ -6,8 +6,22 @@ import {
   ResetPasswordData,
 } from '@/types/entities/auth'
 import { Role, User } from '@/types/entities/user'
+import { GetVacanciesParams, Vacancy } from '@/types/entities/vacancy'
+import { WorkExperience } from '@/types/entities/work-experience'
+import { WorkSchedule } from '@/types/entities/work-schedule'
+import { WorkScope } from '@/types/entities/work-scope'
+import { WorkType } from '@/types/entities/work-type'
 
 export const Api = {
+  auth: {
+    login: (data: LoginData) => Axios.post('/auth/login/', data),
+    register: (data: RegisterData) => Axios.post('/auth/register/', data),
+    forgotPassword: (data: ForgotPasswordData) =>
+      Axios.post('/auth/forgot/', data),
+    resetPassword: (data: ResetPasswordData) =>
+      Axios.post('/auth/reset-password/', data),
+  },
+
   users: {
     me: () =>
       Axios.get<User>('/users/me/')
@@ -23,12 +37,37 @@ export const Api = {
     // .catch(() => null),
   },
 
-  auth: {
-    login: (data: LoginData) => Axios.post('/auth/login/', data),
-    register: (data: RegisterData) => Axios.post('/auth/register/', data),
-    forgotPassword: (data: ForgotPasswordData) =>
-      Axios.post('/auth/forgot/', data),
-    resetPassword: (data: ResetPasswordData) =>
-      Axios.post('/auth/reset-password/', data),
+  recruiters: {
+    me: {
+      updateProfile: (data: any) => Axios.patch('/recruiters/me/', data), // TODO: data type
+    },
+  },
+
+  vacancies: {
+    all: (params?: GetVacanciesParams) =>
+      Axios.get<Vacancy[]>('/vacancies/', params)
+        .then((res) => res.data)
+        .catch(() => []),
+  },
+
+  workScopes: {
+    all: () =>
+      Axios.get<WorkScope[]>('/work-scopes/')
+        .then((res) => res.data)
+        .catch(() => [{ id: '1', scope: 'Аналитика' }] as WorkScope[]),
+  },
+
+  workTypes: {
+    all: () => Axios.get<WorkType[]>('/work-types/').then((res) => res.data),
+  },
+
+  workSchedules: {
+    all: () =>
+      Axios.get<WorkSchedule[]>('/work-schedules/').then((res) => res.data),
+  },
+
+  workExperiences: {
+    all: () =>
+      Axios.get<WorkExperience[]>('/work-experiences/').then((res) => res.data),
   },
 }

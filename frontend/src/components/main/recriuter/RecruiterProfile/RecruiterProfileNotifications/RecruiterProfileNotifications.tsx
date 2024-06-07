@@ -1,11 +1,7 @@
 import { useFormContext, Controller } from 'react-hook-form'
+import { FormData } from '../utils'
 import Checkbox from '@/components/ui/Checkbox'
 import styles from './RecruiterProfileNotifications.module.scss'
-
-interface FormData {
-  siteNotifications: boolean
-  tgNotifications: boolean
-}
 
 export default function RecruiterProfileNotifications() {
   const { control } = useFormContext<FormData>()
@@ -21,7 +17,7 @@ export default function RecruiterProfileNotifications() {
       <div className={styles.fields}>
         <Controller
           control={control}
-          name="siteNotifications"
+          name="_siteNotifications"
           render={({ field, fieldState }) => (
             <Checkbox {...field} error={fieldState.error}>
               На сайте
@@ -30,7 +26,7 @@ export default function RecruiterProfileNotifications() {
         />
         <Controller
           control={control}
-          name="tgNotifications"
+          name="_tgNotifications"
           render={({ field, fieldState }) => (
             <Checkbox {...field} error={fieldState.error}>
               В telegram

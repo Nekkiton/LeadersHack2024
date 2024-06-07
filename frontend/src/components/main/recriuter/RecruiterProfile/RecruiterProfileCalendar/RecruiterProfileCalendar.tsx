@@ -1,4 +1,5 @@
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form'
+import { FormData } from '../utils'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
 import BaseButton from '@/components/ui/BaseButton'
@@ -6,11 +7,6 @@ import Icon from '@/components/ui/Icon'
 import TimePicker from '@/components/ui/TimePicker'
 import styles from './RecruiterProfileCalendar.module.scss'
 import moment, { Moment } from 'moment'
-
-interface FormData {
-  maxCount: number
-  schedule: { from: Moment; to: Moment }[]
-}
 
 export default function RecruiterProfileCalendar() {
   const { control } = useFormContext<FormData>()
@@ -21,7 +17,7 @@ export default function RecruiterProfileCalendar() {
     remove: removeSchedule,
   } = useFieldArray({
     control,
-    name: 'schedule',
+    name: 'interview_slots',
   })
 
   return (
@@ -34,7 +30,7 @@ export default function RecruiterProfileCalendar() {
       </div>
       <Controller
         control={control}
-        name="maxCount"
+        name="interview_per_day"
         rules={{ required: true }}
         render={({ field, fieldState }) => (
           <Input
@@ -52,7 +48,7 @@ export default function RecruiterProfileCalendar() {
           <div className={styles.scheduleItem} key={scheduleItem.id}>
             <Controller
               control={control}
-              name={`schedule.${idx}.from`}
+              name={`interview_slots.${idx}.start_time`}
               rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <TimePicker {...field} error={fieldState.error} label="с" />
@@ -60,7 +56,7 @@ export default function RecruiterProfileCalendar() {
             />
             <Controller
               control={control}
-              name={`schedule.${idx}.to`}
+              name={`interview_slots.${idx}.end_time`}
               rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <TimePicker {...field} error={fieldState.error} label="до" />
@@ -77,7 +73,9 @@ export default function RecruiterProfileCalendar() {
         ))}
         <Button
           type="text"
-          onClick={() => addSchedule({ from: moment(), to: moment() })}
+          onClick={() =>
+            addSchedule({ start_time: moment(), end_time: moment() })
+          }
         >
           <Icon icon="plus" />
           <span>Добавить промежуток времени</span>
