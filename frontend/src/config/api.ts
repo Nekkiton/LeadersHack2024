@@ -60,9 +60,8 @@ export const Api = {
       Axios.get<Recruiter[]>('/recruiters/')
         .then((res) => res.data)
         .catch(() => [
-          // @ts-ignore
           {
-            id: 'f',
+            id: '1',
             name: 'Alexey',
             surname: 'Levedev',
             patronymic: 'Sergeevich',
@@ -71,10 +70,10 @@ export const Api = {
             telegram: null,
             birthday: '01.01.2000',
             photo: null,
-            avatar:
-              'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
             role: Role.Recruiter,
             notifications: [],
+            interview_per_day: 1,
+            interview_slots: [],
           } as Recruiter,
         ]),
     me: {
@@ -88,7 +87,6 @@ export const Api = {
         .then((res) => res.data)
         .catch(
           () =>
-            // @ts-ignore
             ({
               data: [
                 {
@@ -97,16 +95,42 @@ export const Api = {
                   status: VacancyStatus.Active,
                   scope_id: 'Разработка',
                   recruiter: {
-                    name: 'Name',
-                    surname: 'Surname',
+                    id: '1',
+                    name: 'Alexey',
+                    surname: 'Levedev',
+                    patronymic: 'Sergeevich',
+                    email: 'email@ya.ru',
+                    phone: '+7 (999) 999-99-99',
+                    telegram: null,
+                    birthday: '01.01.2000',
+                    photo: null,
+                    role: Role.Recruiter,
+                    notifications: [],
+                    interview_per_day: 1,
+                    interview_slots: [],
                   },
                   title: 'Vacancy title',
+                  description: 'some description',
+                  responsibilities: 'responsibilites',
+                  conditions: 'conditions',
+                  additions: 'additions',
+                  salary_from: 100000,
+                  work_experience_id: '1',
+                  salary_to: null,
+                  candidate_expectation: 'expectations',
+                  work_type_id: '1',
+                  work_schedule_id: '1',
+                  skills: ['1'],
+                  recruiter_id: '1',
+                  stages: [],
+                  creation_date: '12.05.2012',
                 },
               ],
               current_page: 1,
               last_page: 5,
             } as Paginated<Vacancy[]>)
         ),
+    create: (data: any) => Axios.post('/vacancies/', data), // TODO: data type
   },
 
   workScopes: {
@@ -117,24 +141,39 @@ export const Api = {
   },
 
   workTypes: {
-    all: () => Axios.get<WorkType[]>('/work-types/').then((res) => res.data),
+    all: () =>
+      Axios.get<WorkType[]>('/work-types/')
+        .then((res) => res.data)
+        .catch(() => [{ id: '1', type: 'Type 1' }] as WorkType[]),
   },
 
   workSchedules: {
     all: () =>
-      Axios.get<WorkSchedule[]>('/work-schedules/').then((res) => res.data),
+      Axios.get<WorkSchedule[]>('/work-schedules/')
+        .then((res) => res.data)
+        .catch(() => [{ id: '1', schedule: 'Schedule 1' }] as WorkSchedule[]),
   },
 
   workExperiences: {
     all: () =>
-      Axios.get<WorkExperience[]>('/work-experiences/').then((res) => res.data),
+      Axios.get<WorkExperience[]>('/work-experiences/')
+        .then((res) => res.data)
+        .catch(
+          () => [{ id: '1', experience: 'Experience 1' }] as WorkExperience[]
+        ),
   },
 
   skills: {
-    all: () => Axios.get<Skill[]>('/skills/').then((res) => res.data),
+    all: () =>
+      Axios.get<Skill[]>('/skills/')
+        .then((res) => res.data)
+        .catch(() => [{ id: '1', skill: 'Skill 1' }] as Skill[]),
   },
 
   educations: {
-    all: () => Axios.get<Education[]>('/educations/').then((res) => res.data),
+    all: () =>
+      Axios.get<Education[]>('/educations/')
+        .then((res) => res.data)
+        .catch(() => [{ id: '1', education: 'Education 1' }] as Education[]),
   },
 }

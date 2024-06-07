@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Site } from '@/config/site'
 import { useCurUser } from '@/api/users'
-import { FormData } from './utils'
+import { useCreateVacancy } from '@/api/vacancies'
+import { FormData, transformFormData } from './utils'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Steps from '@/components/ui/Steps'
@@ -20,7 +21,7 @@ interface Props {
 export default function VacancyForm({ backLink }: Props) {
   const user = useCurUser()
 
-  const [activeStepIdx, setActiveStepIdx] = useState(1)
+  const [activeStepIdx, setActiveStepIdx] = useState(0)
 
   const steps = [
     {
@@ -36,11 +37,14 @@ export default function VacancyForm({ backLink }: Props) {
   const methods = useForm<FormData>()
   const { handleSubmit, reset } = methods
 
+  const { mutate: createVacancy, status } = useCreateVacancy()
+
   const submit = handleSubmit((data) => {
     if (activeStepIdx < steps.length - 1) {
       setActiveStepIdx(activeStepIdx + 1)
+    } else {
+      createVacancy(transformFormData(data))
     }
-    console.log(data)
   })
 
   useEffect(() => {
@@ -85,7 +89,11 @@ export default function VacancyForm({ backLink }: Props) {
                 </Button>
               )}
               {activeStepIdx === steps.length - 1 && (
-                <Button type="primary" htmlType="submit">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={status === 'pending'}
+                >
                   Опубликовать
                 </Button>
               )}

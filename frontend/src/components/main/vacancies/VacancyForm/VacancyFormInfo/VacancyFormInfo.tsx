@@ -3,27 +3,12 @@ import { useWorkTypes } from '@/api/work-types'
 import { useWorkScopes } from '@/api/work-scopes'
 import { useWorkExperiences } from '@/api/work-experiences'
 import { useWorkSchedules } from '@/api/work-schedules'
+import { FormData } from '../utils'
 import Input from '@/components/ui/Input'
 import Textarea from '@/components/ui/Textarea'
 import KeywordsInput from '@/components/ui/KeywordsInput'
 import Select from '@/components/ui/Select'
 import styles from './VacancyFormInfo.module.scss'
-
-interface FormData {
-  title: string
-  work_scope_id: string
-  description: string | null
-  responsibilities: string
-  candidate_expectation: string
-  _plus: string | null
-  _conditions: string | null
-  work_type_id: string
-  work_schedule_id: string
-  work_experience_id: string
-  salary_from: string | null
-  salary_to: string | null
-  _skills: string[]
-}
 
 export default function VacancyFormInfo() {
   const { control } = useFormContext<FormData>()
@@ -51,7 +36,7 @@ export default function VacancyFormInfo() {
         />
         <Controller
           control={control}
-          name="work_scope_id"
+          name="scope_id"
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <Select
@@ -108,7 +93,7 @@ export default function VacancyFormInfo() {
       />
       <Controller
         control={control}
-        name="_plus"
+        name="additions"
         render={({ field, fieldState }) => (
           <Textarea
             {...field}
@@ -120,7 +105,7 @@ export default function VacancyFormInfo() {
       />
       <Controller
         control={control}
-        name="_conditions"
+        name="conditions"
         render={({ field, fieldState }) => (
           <Textarea
             {...field}
@@ -204,6 +189,7 @@ export default function VacancyFormInfo() {
                 label="Заработная плата"
                 placeholder="от"
                 postfix="₽"
+                type="number"
               />
             )}
           />
@@ -217,6 +203,7 @@ export default function VacancyFormInfo() {
                 label="⠀"
                 placeholder="до"
                 postfix="₽"
+                type="number"
               />
             )}
           />
@@ -224,7 +211,7 @@ export default function VacancyFormInfo() {
       </div>
       <Controller
         control={control}
-        name="_skills"
+        name="skills"
         rules={{ required: true }}
         render={({ field, fieldState }) => (
           <KeywordsInput

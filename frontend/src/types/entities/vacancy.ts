@@ -16,19 +16,19 @@ export const VacancyStatuses: Record<
 
 export interface Vacancy extends BaseEntity {
   title: string
-  description: string
+  description: string | null
   responsibilities: string
   candidate_expectation: string
-  additions: string
-  conditions: string
-  salary_from: number
-  salary_to: number
+  additions: string | null
+  conditions: string | null
+  salary_from: number | null
+  salary_to: number | null
   status: VacancyStatus
   responces: string[] // TODO
   skills: string[] // TODO
   recruiter_id: string
   recruiter?: Recruiter // TODO
-  work_experience: string
+  work_experience_id: string
   work_type_id: string
   work_schedule_id: string
   scope_id: string
