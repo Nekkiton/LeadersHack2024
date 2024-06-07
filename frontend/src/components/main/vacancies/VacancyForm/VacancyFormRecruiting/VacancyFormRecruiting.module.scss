@@ -1,0 +1,74 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hint {
+  color: $gray-3;
+}
+
+.stages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stage {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  --gap: 12px;
+  padding: 17px;
+  background: $gray-6;
+}
+
+.stageHeader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.stageHeaderTitleContainer {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+
+  > * {
+    flex-shrink: 0;
+  }
+}
+
+.stageHeaderTitle {
+  @include heading-7;
+}
+
+.stageHeaderInput {
+  max-width: 343px;
+  flex-shrink: 1;
+}
+
+.stageHeaderInputInput {
+  @include heading-7;
+}
+
+.stageHeaderControls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.stageHeaderRemoveIcon {
+  stroke: $red;
+}
+
+.stageBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

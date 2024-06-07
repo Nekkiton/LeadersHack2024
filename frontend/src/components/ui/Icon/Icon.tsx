@@ -12,6 +12,7 @@ const BoxIcon = dynamic(() => import('@/assets/icons/box.svg'))
 const FileIcon = dynamic(() => import('@/assets/icons/file.svg'))
 const FileFilledIcon = dynamic(() => import('@/assets/icons/file-filled.svg'))
 const ChevronDownIcon = dynamic(() => import('@/assets/icons/chevron-down.svg'))
+const ChevronUpIcon = dynamic(() => import('@/assets/icons/chevron-up.svg'))
 const ChevronLeftIcon = dynamic(() => import('@/assets/icons/chevron-left.svg'))
 const ChevronRightIcon = dynamic(
   () => import('@/assets/icons/chevron-right.svg')
@@ -25,6 +26,7 @@ const MessageSentIcon = dynamic(() => import('@/assets/icons/message-sent.svg'))
 const HouseIcon = dynamic(() => import('@/assets/icons/house.svg'))
 const PenIcon = dynamic(() => import('@/assets/icons/pen.svg'))
 const PlusIcon = dynamic(() => import('@/assets/icons/plus.svg'))
+const MinusIcon = dynamic(() => import('@/assets/icons/minus.svg'))
 const DocumentLoupeIcon = dynamic(
   () => import('@/assets/icons/document-loupe.svg')
 )
@@ -36,6 +38,8 @@ const MoreHIcon = dynamic(() => import('@/assets/icons/more-h.svg'))
 const LinkExternalIcon = dynamic(
   () => import('@/assets/icons/link-external.svg')
 )
+const TrashIcon = dynamic(() => import('@/assets/icons/trash.svg'))
+const QuestionIcon = dynamic(() => import('@/assets/icons/question.svg'))
 
 interface Props {
   className?: string
@@ -49,6 +53,7 @@ interface Props {
     | 'file'
     | 'fileFilled'
     | 'chevronDown'
+    | 'chevronUp'
     | 'chevronLeft'
     | 'chevronRight'
     | 'login'
@@ -60,11 +65,14 @@ interface Props {
     | 'house'
     | 'pen'
     | 'plus'
+    | 'minus'
     | 'documentLoupe'
     | 'documentCheck'
     | 'loupe'
     | 'moreH'
     | 'linkExternal'
+    | 'trash'
+    | 'question'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -88,6 +96,8 @@ export default function Icon({ icon, className }: Props) {
         return FileFilledIcon
       case 'chevronDown':
         return ChevronDownIcon
+      case 'chevronUp':
+        return ChevronUpIcon
       case 'chevronLeft':
         return ChevronLeftIcon
       case 'chevronRight':
@@ -110,6 +120,8 @@ export default function Icon({ icon, className }: Props) {
         return PenIcon
       case 'plus':
         return PlusIcon
+      case 'minus':
+        return MinusIcon
       case 'documentLoupe':
         return DocumentLoupeIcon
       case 'documentCheck':
@@ -120,6 +132,10 @@ export default function Icon({ icon, className }: Props) {
         return MoreHIcon
       case 'linkExternal':
         return LinkExternalIcon
+      case 'trash':
+        return TrashIcon
+      case 'question':
+        return QuestionIcon
     }
   }, [icon])
 

@@ -43,7 +43,7 @@ export default function Vacancies({ role }: Props) {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>Вакансии</h1>
-        {role === Role.Recruiter && vacanciesExist && (
+        {role === Role.Recruiter && vacanciesExist !== false && (
           <Button type="primary" href={Routes.recruiterNewVacancy}>
             <Icon icon="plus" />
             <span>Создать вакансию</span>

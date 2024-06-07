@@ -60,6 +60,7 @@ export const Api = {
       Axios.get<Recruiter[]>('/recruiters/')
         .then((res) => res.data)
         .catch(() => [
+          // @ts-ignore
           {
             id: 'f',
             name: 'Alexey',
@@ -87,6 +88,7 @@ export const Api = {
         .then((res) => res.data)
         .catch(
           () =>
+            // @ts-ignore
             ({
               data: [
                 {

@@ -4,6 +4,12 @@
   padding: 10px 12px;
   border: 1px solid $gray-4;
   border-radius: 8px;
+  background: $white;
+  transition: $transition;
+
+  &.error {
+    border-color: $red;
+  }
 }
 
 .targetDiv {
