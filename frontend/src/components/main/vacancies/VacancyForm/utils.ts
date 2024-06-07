@@ -1,1 +1,3 @@
-export interface FormData {}
+export interface FormData {
+  stages: any[]
+}

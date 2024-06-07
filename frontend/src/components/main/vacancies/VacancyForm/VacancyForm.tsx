@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Site } from '@/config/site'
+import { FormData } from './utils'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Steps from '@/components/ui/Steps'

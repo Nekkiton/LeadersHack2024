@@ -153,7 +153,12 @@ export default function VacancyFormRecruiting() {
             </AppearTransition>
           </div>
         ))}
-        <Button type="text" underline="dashed" onClick={() => addStage({})}>
+        {/* TODO: fix */}
+        <Button
+          type="text"
+          underline="dashed"
+          onClick={() => addStage({} as any)}
+        >
           <Icon icon="plus" />
           <span>Добавить этап</span>
         </Button>
