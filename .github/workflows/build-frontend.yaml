@@ -12,10 +12,10 @@ jobs:
         working-directory: frontend
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -25,7 +25,7 @@ jobs:
           echo "version=$(node -v)" >> $GITHUB_OUTPUT
 
       - name: Get node_modules cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: node_modules
         with:
           path: |
