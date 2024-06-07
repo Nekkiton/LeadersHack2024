@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Site } from '@/config/site'
+import { useCurUser } from '@/api/users'
 import { FormData } from './utils'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export default function VacancyForm({ backLink }: Props) {
+  const user = useCurUser()
+
   const [activeStepIdx, setActiveStepIdx] = useState(1)
 
   const steps = [
@@ -30,18 +33,8 @@ export default function VacancyForm({ backLink }: Props) {
     },
   ]
 
-  const methods = useForm<FormData>({
-    defaultValues: {
-      stages: [
-        {
-          title: 'Неразобранные отклики',
-          auto_interview: true,
-          _isRequired: true,
-        },
-      ],
-    },
-  })
-  const { handleSubmit } = methods
+  const methods = useForm<FormData>()
+  const { handleSubmit, reset } = methods
 
   const submit = handleSubmit((data) => {
     if (activeStepIdx < steps.length - 1) {
@@ -49,6 +42,20 @@ export default function VacancyForm({ backLink }: Props) {
     }
     console.log(data)
   })
+
+  useEffect(() => {
+    if (user.status === 'success' && user.value) {
+      reset({
+        stages: Site.recruitingDefaultStages.map((i) => ({
+          ...i,
+          approve_template: i.approve_template.replaceAll(
+            'RECRUITER_NAME',
+            user.value.name
+          ),
+        })),
+      })
+    }
+  }, [user.status, reset])
 
   return (
     <div className={styles.container}>

@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form'
+import { FormData } from '../utils'
+import { Site } from '@/config/site'
 import Icon from '@/components/ui/Icon'
 import BaseButton from '@/components/ui/BaseButton'
 import Button from '@/components/ui/Button'
@@ -8,17 +10,6 @@ import AppearTransition from '@/components/ui/AppearTransition'
 import Checkbox from '@/components/ui/Checkbox'
 import Textarea from '@/components/ui/Textarea'
 import styles from './VacancyFormRecruiting.module.scss'
-
-interface FormData {
-  stages: {
-    title: string
-    auto_interview: boolean
-    approve_template: string
-    reject_template: string
-    position: number
-    _isRequired: boolean
-  }[]
-}
 
 export default function VacancyFormRecruiting() {
   const { control } = useFormContext<FormData>()
@@ -129,6 +120,7 @@ export default function VacancyFormRecruiting() {
                   <Controller
                     control={control}
                     name={`stages.${idx}.approve_template`}
+                    rules={{ required: true }}
                     render={({ field, fieldState }) => (
                       <Textarea
                         {...field}
@@ -140,6 +132,7 @@ export default function VacancyFormRecruiting() {
                   <Controller
                     control={control}
                     name={`stages.${idx}.reject_template`}
+                    rules={{ required: true }}
                     render={({ field, fieldState }) => (
                       <Textarea
                         {...field}
@@ -153,11 +146,18 @@ export default function VacancyFormRecruiting() {
             </AppearTransition>
           </div>
         ))}
-        {/* TODO: fix */}
         <Button
           type="text"
           underline="dashed"
-          onClick={() => addStage({} as any)}
+          onClick={() =>
+            addStage({
+              title: '',
+              auto_interview: false,
+              approve_template: '',
+              reject_template: Site.recruitingDefaultRejectTemplate,
+              _isRequired: false,
+            })
+          }
         >
           <Icon icon="plus" />
           <span>Добавить этап</span>
