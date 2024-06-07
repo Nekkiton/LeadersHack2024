@@ -5,6 +5,8 @@ import {
   RegisterData,
   ResetPasswordData,
 } from '@/types/entities/auth'
+import { Education } from '@/types/entities/education'
+import { Skill } from '@/types/entities/skill'
 import { Role, User } from '@/types/entities/user'
 import { GetVacanciesParams, Vacancy } from '@/types/entities/vacancy'
 import { WorkExperience } from '@/types/entities/work-experience'
@@ -41,6 +43,7 @@ export const Api = {
               avatar:
                 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
               role: Role.Recruiter,
+              notifications: [],
             } as User)
         ),
     // .catch(() => null),
@@ -78,5 +81,13 @@ export const Api = {
   workExperiences: {
     all: () =>
       Axios.get<WorkExperience[]>('/work-experiences/').then((res) => res.data),
+  },
+
+  skills: {
+    all: () => Axios.get<Skill[]>('/skills/').then((res) => res.data),
+  },
+
+  educations: {
+    all: () => Axios.get<Education[]>('/educations/').then((res) => res.data),
   },
 }

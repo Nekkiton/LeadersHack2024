@@ -8,11 +8,12 @@ export enum Role {
 export interface User extends BaseEntity {
   surname: string
   name: string
-  patronymic: string
+  patronymic: string | null
   birthday: string
   phone: string
   email: string
-  telegram: string
-  photo: unknown
+  telegram: string | null
+  photo: any // TODO:
   role: Role
+  notifications: string[] // TODO
 }
