@@ -22,9 +22,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      HOME: "/root"
-    steps:      
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
 
