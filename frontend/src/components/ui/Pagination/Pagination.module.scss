@@ -1,0 +1,87 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  gap: 16px;
+  width: 100%;
+}
+
+.pages {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagesMoveBtn {
+  &:first-child {
+    margin-right: -6px;
+  }
+
+  &:last-child {
+    margin-left: -6px;
+  }
+}
+
+.page {
+  @include paragraph-2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background: $gray-6;
+  border-radius: 4px;
+  transition: $transition;
+
+  &:hover {
+    transform: scale($scale);
+  }
+
+  &.active {
+    color: $white;
+    background: $gray-3;
+  }
+}
+
+.pagesSeparator {
+  margin: 0 -2px;
+  stroke: $gray-4;
+}
+
+@include not-tablet {
+  .page {
+    &:not(.showed) {
+      display: none;
+    }
+  }
+
+  .pagesSeparator {
+    &:not(.showed) {
+      display: none;
+    }
+  }
+}
+
+@include tablet {
+  .page {
+    &:not(.mobileShowed) {
+      display: none;
+    }
+  }
+
+  .pagesSeparator {
+    &:not(.mobileShowed) {
+      display: none;
+    }
+  }
+}
+
+@include mobile {
+  .pages {
+    gap: 0;
+  }
+}
