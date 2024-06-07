@@ -10,6 +10,10 @@ interface Props {
 }
 
 export default function Pagination({ currentPage, lastPage, loadPage }: Props) {
+  if (lastPage === 1) {
+    return null
+  }
+
   return (
     <div className={styles.pages}>
       {currentPage > 1 && (

@@ -36,4 +36,10 @@ export interface Vacancy extends BaseEntity {
   creation_date: string
 }
 
-export interface GetVacanciesParams {}
+export interface GetVacanciesParams {
+  page?: number
+  query?: string
+  statuses?: string[]
+  recruiters?: string[]
+  work_scopes?: string[]
+}

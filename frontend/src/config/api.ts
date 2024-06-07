@@ -6,6 +6,7 @@ import {
   ResetPasswordData,
 } from '@/types/entities/auth'
 import { Education } from '@/types/entities/education'
+import { Paginated } from '@/types/entities/paginated'
 import { Recruiter } from '@/types/entities/recruiter'
 import { Skill } from '@/types/entities/skill'
 import { Role, User } from '@/types/entities/user'
@@ -82,23 +83,27 @@ export const Api = {
 
   vacancies: {
     all: (params?: GetVacanciesParams) =>
-      Axios.get<Vacancy[]>('/vacancies/', params)
+      Axios.get<Paginated<Vacancy[]>>('/vacancies/', { params })
         .then((res) => res.data)
         .catch(
           () =>
-            [
-              {
-                id: '1',
-                responces: [],
-                status: VacancyStatus.Active,
-                scope_id: 'Разработка',
-                recruiter: {
-                  name: 'Name',
-                  surname: 'Surname',
+            ({
+              data: [
+                {
+                  id: '1',
+                  responces: [],
+                  status: VacancyStatus.Active,
+                  scope_id: 'Разработка',
+                  recruiter: {
+                    name: 'Name',
+                    surname: 'Surname',
+                  },
+                  title: 'Vacancy title',
                 },
-                title: 'Vacancy title',
-              },
-            ] as Vacancy[]
+              ],
+              current_page: 1,
+              last_page: 5,
+            } as Paginated<Vacancy[]>)
         ),
   },
 

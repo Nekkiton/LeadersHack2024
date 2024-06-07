@@ -87,7 +87,7 @@ export default function VacanciesFilters() {
       />
       <Controller
         control={control}
-        name="workScopes"
+        name="work_scopes"
         render={({ field }) => (
           <Select
             {...field}
