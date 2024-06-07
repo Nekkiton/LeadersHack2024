@@ -68,6 +68,7 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   font-weight: 700;
   font-size: 40px;
   line-height: 130%;
+  color: $gray-1;
 
   @include tablet {
     font-size: 30px;
@@ -81,6 +82,7 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   font-weight: 700;
   font-size: 30px;
   line-height: 130%;
+  color: $gray-1;
 
   @include tablet {
     font-size: 28px;
@@ -94,6 +96,7 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   font-weight: 700;
   font-size: 24px;
   line-height: 130%;
+  color: $gray-1;
 
   @include tablet {
     font-size: 24px;

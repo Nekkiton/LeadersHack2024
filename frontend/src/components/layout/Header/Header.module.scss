@@ -23,6 +23,18 @@
   gap: 32px;
 }
 
+.user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userAvatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+}
+
 @include tablet {
   .desktop {
     display: none;
@@ -34,5 +46,10 @@
 
   .logo {
     height: 31px;
+  }
+
+  .userAvatar {
+    width: 45px;
+    height: 45px;
   }
 }

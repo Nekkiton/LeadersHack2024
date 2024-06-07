@@ -10,18 +10,32 @@ const EyeIcon = dynamic(() => import('@/assets/icons/eye.svg'))
 const EyeOffIcon = dynamic(() => import('@/assets/icons/eye-off.svg'))
 const BoxIcon = dynamic(() => import('@/assets/icons/box.svg'))
 const FileIcon = dynamic(() => import('@/assets/icons/file.svg'))
+const FileFilledIcon = dynamic(() => import('@/assets/icons/file-filled.svg'))
 const ChevronDownIcon = dynamic(() => import('@/assets/icons/chevron-down.svg'))
 const ChevronLeftIcon = dynamic(() => import('@/assets/icons/chevron-left.svg'))
+const ChevronRightIcon = dynamic(
+  () => import('@/assets/icons/chevron-right.svg')
+)
 const LoginIcon = dynamic(() => import('@/assets/icons/login.svg'))
 const LogoutIcon = dynamic(() => import('@/assets/icons/logout.svg'))
 const BellIcon = dynamic(() => import('@/assets/icons/bell.svg'))
 const UserIcon = dynamic(() => import('@/assets/icons/user.svg'))
+const UsersIcon = dynamic(() => import('@/assets/icons/users.svg'))
 const MessageSentIcon = dynamic(() => import('@/assets/icons/message-sent.svg'))
 const HouseIcon = dynamic(() => import('@/assets/icons/house.svg'))
 const PenIcon = dynamic(() => import('@/assets/icons/pen.svg'))
 const PlusIcon = dynamic(() => import('@/assets/icons/plus.svg'))
-const DocumentLoupe = dynamic(() => import('@/assets/icons/document-loupe.svg'))
-const DocumentCheck = dynamic(() => import('@/assets/icons/document-check.svg'))
+const DocumentLoupeIcon = dynamic(
+  () => import('@/assets/icons/document-loupe.svg')
+)
+const DocumentCheckIcon = dynamic(
+  () => import('@/assets/icons/document-check.svg')
+)
+const LoupeIcon = dynamic(() => import('@/assets/icons/loupe.svg'))
+const MoreHIcon = dynamic(() => import('@/assets/icons/more-h.svg'))
+const LinkExternalIcon = dynamic(
+  () => import('@/assets/icons/link-external.svg')
+)
 
 interface Props {
   className?: string
@@ -33,18 +47,24 @@ interface Props {
     | 'eyeOff'
     | 'box'
     | 'file'
+    | 'fileFilled'
     | 'chevronDown'
     | 'chevronLeft'
+    | 'chevronRight'
     | 'login'
     | 'logout'
     | 'bell'
     | 'user'
+    | 'users'
     | 'messageSent'
     | 'house'
     | 'pen'
     | 'plus'
     | 'documentLoupe'
     | 'documentCheck'
+    | 'loupe'
+    | 'moreH'
+    | 'linkExternal'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -64,10 +84,14 @@ export default function Icon({ icon, className }: Props) {
         return BoxIcon
       case 'file':
         return FileIcon
+      case 'fileFilled':
+        return FileFilledIcon
       case 'chevronDown':
         return ChevronDownIcon
       case 'chevronLeft':
         return ChevronLeftIcon
+      case 'chevronRight':
+        return ChevronRightIcon
       case 'login':
         return LoginIcon
       case 'logout':
@@ -76,6 +100,8 @@ export default function Icon({ icon, className }: Props) {
         return BellIcon
       case 'user':
         return UserIcon
+      case 'users':
+        return UsersIcon
       case 'messageSent':
         return MessageSentIcon
       case 'house':
@@ -85,9 +111,15 @@ export default function Icon({ icon, className }: Props) {
       case 'plus':
         return PlusIcon
       case 'documentLoupe':
-        return DocumentLoupe
+        return DocumentLoupeIcon
       case 'documentCheck':
-        return DocumentCheck
+        return DocumentCheckIcon
+      case 'loupe':
+        return LoupeIcon
+      case 'moreH':
+        return MoreHIcon
+      case 'linkExternal':
+        return LinkExternalIcon
     }
   }, [icon])
 

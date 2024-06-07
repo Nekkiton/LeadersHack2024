@@ -9,8 +9,8 @@ export default function AuthLayout({ children }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>
-        <p className={styles.sidebarSibtitle}>АККРЕДИТОВАННАЯ ИТ-КОМПАНИЯ</p>
-        <h1>Команда. Технологии. Драйв</h1>
+        <p className={styles.sidebarSubtitle}>АККРЕДИТОВАННАЯ ИТ-КОМПАНИЯ</p>
+        <h1 className={styles.sidebarTitle}>Команда. Технологии. Драйв</h1>
         <p className={styles.sidebarHint}>
           Мы помогаем ИТ-специалистам преумножать таланты и строить карьерув
           компании профессионалов. Создаем условия работы, вдохновляющие на

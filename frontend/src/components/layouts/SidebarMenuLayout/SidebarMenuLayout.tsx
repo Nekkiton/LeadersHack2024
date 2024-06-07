@@ -2,12 +2,13 @@ import { ReactNode } from 'react'
 import { useRouter } from 'next/router'
 import { Routes } from '@/config/routes'
 import { useCurUser } from '@/api/users'
+import { Role } from '@/types/entities/user'
 import classNames from 'classnames'
 import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
 import Button from '@/components/ui/Button'
+import BaseButton from '@/components/ui/BaseButton'
 import styles from './SidebarMenuLayout.module.scss'
-import { Role } from '@/types/entities/user'
 
 interface Props {
   children?: ReactNode
@@ -18,38 +19,66 @@ export default function SidebarMenuLayout({ children }: Props) {
 
   const user = useCurUser()
 
+  const logout = () => {
+    alert('coming soon') // TODO
+  }
+
   const links = {
     [Role.Recruiter]: [
-      {
-        name: 'Главная',
-        url: Routes.recruiterHome,
-        icon: <Icon icon="house" />,
-      },
       {
         name: 'Вакансии',
         url: Routes.recruiterVacancies,
         icon: <Icon icon="documentCheck" />,
       },
+      {
+        name: 'База резюме',
+        url: Routes.recruiterCandidates,
+        icon: <Icon icon="users" />,
+      },
+      {
+        name: 'Нвовости',
+        url: Routes.recruiterNews,
+        icon: <Icon icon="fileFilled" />,
+      },
+      {
+        name: 'Профиль',
+        url: Routes.recruiterProfile,
+        icon: <Icon icon="user" />,
+      },
     ],
+    [Role.Candidate]: [],
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>
-        {user.status === 'success' &&
-          user.value &&
-          links[user.value.role]?.map((link, idx) => (
-            <Link
-              className={classNames(styles.sidebarLink, {
-                [styles.active]: router.pathname === link.url,
-              })}
-              key={idx + link.name}
-              href={link.url}
+        {user.status === 'success' && user.value && (
+          <>
+            {links[user.value.role]?.map((link, idx) => (
+              <Link
+                className={classNames(styles.sidebarLink, {
+                  [styles.active]: router.pathname === link.url,
+                })}
+                key={idx + link.name}
+                href={link.url}
+              >
+                {link.icon}
+                <span>{link.name}</span>
+              </Link>
+            ))}
+            <span className={styles.sidebarSeparator} />
+            <BaseButton
+              className={classNames(
+                styles.sidebarLink,
+                styles.sidebarLogoutBtn
+              )}
+              onClick={logout}
             >
-              {link.icon}
-              <span>{link.name}</span>
-            </Link>
-          ))}
+              <Icon icon="logout" />
+              <span>Выйти</span>
+            </BaseButton>
+          </>
+        )}
       </div>
       <div className={styles.main}>
         {children}

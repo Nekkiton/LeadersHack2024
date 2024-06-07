@@ -43,6 +43,19 @@
   }
 }
 
+.sidebarSeparator {
+  height: 1px;
+  background: $gray-5;
+}
+
+.sidebarLogoutBtn {
+  color: $red;
+
+  :global(.icon) {
+    stroke: $red;
+  }
+}
+
 .main {
   display: flex;
   flex-direction: column;

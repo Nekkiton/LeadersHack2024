@@ -6,7 +6,9 @@ export const Routes = {
   resetPassword: '/reset-password',
   privacy: '/privacy',
 
-  recruiterHome: '/recruiter/home',
-  recruiterProfile: '/recruiter/profile',
   recruiterVacancies: '/recruiter/vacancies',
+  recruiterCandidates: '/recruiter/candidates',
+  recruiterNews: '/recruiter/news',
+  recruiterProfile: '/recruiter/profile',
+  recruiterNewVacancy: '/recruiter/new-vacancy',
 }

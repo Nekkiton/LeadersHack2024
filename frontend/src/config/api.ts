@@ -26,14 +26,23 @@ export const Api = {
     me: () =>
       Axios.get<User>('/users/me/')
         .then((res) => res.data)
-        .catch(() => ({
-          id: 'f',
-          name: 'Alexey',
-          surname: 'Levedev',
-          avatar:
-            'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-          role: Role.Recruiter,
-        })),
+        .catch(
+          () =>
+            ({
+              id: 'f',
+              name: 'Alexey',
+              surname: 'Levedev',
+              patronymic: 'Sergeevich',
+              email: 'email@ya.ru',
+              phone: '+7 (999) 999-99-99',
+              telegram: null,
+              birthday: '01.01.2000',
+              photo: null,
+              avatar:
+                'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
+              role: Role.Recruiter,
+            } as User)
+        ),
     // .catch(() => null),
   },
 
