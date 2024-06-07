@@ -51,6 +51,7 @@ export default function VacanciesFilters() {
               <VacancyStatus status={key as keyof typeof VacancyStatuses} />
             )}
             multiple
+            longPopover
           />
         )}
       />
@@ -82,6 +83,7 @@ export default function VacanciesFilters() {
             )}
             withConfirmation
             multiple
+            longPopover
           />
         )}
       />
@@ -99,6 +101,7 @@ export default function VacanciesFilters() {
             }
             withConfirmation
             multiple
+            longPopover
           />
         )}
       />
