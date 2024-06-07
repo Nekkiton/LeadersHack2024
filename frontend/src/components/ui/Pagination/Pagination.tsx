@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import Button from '@/components/ui/Button'
 import BaseButton from '@/components/ui/BaseButton'
 import Icon from '@/components/ui/Icon'
 import styles from './Pagination.module.scss'

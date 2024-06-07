@@ -1,0 +1,42 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input {
+  flex-shrink: 0.95;
+}
+
+.clearBtn {
+  flex-shrink: 0;
+  margin-left: 5px;
+  color: $red !important;
+
+  :global(.icon) {
+    stroke: $red !important;
+  }
+
+  &:after {
+    background: $red !important;
+  }
+
+  &:not(.active) {
+    opacity: 0;
+    cursor: default;
+  }
+}
+
+.recruiter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recruiterImg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}

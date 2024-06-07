@@ -20,7 +20,7 @@ export default function VacancyCard({ className, vacancy }: Props) {
       <div className={styles.header}>
         <div className={styles.headerInfo}>
           <p>От {moment('12.05.2012').format('DD MMMM YYYY')}</p>
-          <VacancyStatus vacancy={vacancy} />
+          <VacancyStatus status={vacancy.status} />
         </div>
         <span className={styles.headerTag}>{vacancy.scope_id}</span>
       </div>

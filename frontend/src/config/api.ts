@@ -6,6 +6,7 @@ import {
   ResetPasswordData,
 } from '@/types/entities/auth'
 import { Education } from '@/types/entities/education'
+import { Recruiter } from '@/types/entities/recruiter'
 import { Skill } from '@/types/entities/skill'
 import { Role, User } from '@/types/entities/user'
 import {
@@ -54,6 +55,26 @@ export const Api = {
   },
 
   recruiters: {
+    all: () =>
+      Axios.get<Recruiter[]>('/recruiters/')
+        .then((res) => res.data)
+        .catch(() => [
+          {
+            id: 'f',
+            name: 'Alexey',
+            surname: 'Levedev',
+            patronymic: 'Sergeevich',
+            email: 'email@ya.ru',
+            phone: '+7 (999) 999-99-99',
+            telegram: null,
+            birthday: '01.01.2000',
+            photo: null,
+            avatar:
+              'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
+            role: Role.Recruiter,
+            notifications: [],
+          } as Recruiter,
+        ]),
     me: {
       updateProfile: (data: any) => Axios.patch('/recruiters/me/', data), // TODO: data type
     },
