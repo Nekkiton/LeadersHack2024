@@ -1,0 +1,28 @@
+@import '@/assets/css/config';
+
+.container {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.matchPercent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

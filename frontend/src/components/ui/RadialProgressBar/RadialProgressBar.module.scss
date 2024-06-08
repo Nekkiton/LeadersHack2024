@@ -11,4 +11,9 @@
     background: radial-gradient(closest-side, $white 55%, transparent 56% 100%),
       conic-gradient($green calc(var(--value) * 1%), $gray-5 0);
   }
+
+  &.error {
+    background: radial-gradient(closest-side, $white 55%, transparent 56% 100%),
+      conic-gradient($red calc(var(--value) * 1%), $gray-5 0);
+  }
 }

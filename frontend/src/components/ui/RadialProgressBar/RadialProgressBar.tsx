@@ -10,7 +10,8 @@ export default function RadialProgressBar({ className, value }: Props) {
   return (
     <div
       className={classNames(className, styles.progressBar, {
-        [styles.success]: value > 50,
+        [styles.error]: value <= 29,
+        [styles.success]: value >= 50,
       })}
       style={{ '--value': value } as any}
     />
