@@ -51,6 +51,7 @@
 
   &.secondary {
     color: $gray-2;
+    background: $white;
 
     :global(.icon) {
       stroke: $gray-2;

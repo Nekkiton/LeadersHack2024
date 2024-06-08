@@ -130,6 +130,48 @@ export const Api = {
               last_page: 5,
             } as Paginated<Vacancy[]>)
         ),
+    one: (id: string) =>
+      Axios.get<Vacancy>(`/vacancies/${id}`)
+        .then((res) => res.data)
+        .catch(
+          () =>
+            ({
+              id: '1',
+              responces: [],
+              status: VacancyStatus.Active,
+              scope_id: 'Разработка',
+              recruiter: {
+                id: '1',
+                name: 'Alexey',
+                surname: 'Levedev',
+                patronymic: 'Sergeevich',
+                email: 'email@ya.ru',
+                phone: '+7 (999) 999-99-99',
+                telegram: null,
+                birthday: '01.01.2000',
+                photo: null,
+                role: Role.Recruiter,
+                notifications: [],
+                interview_per_day: 1,
+                interview_slots: [],
+              },
+              title: 'Vacancy title',
+              description: 'some description',
+              responsibilities: 'responsibilites',
+              conditions: 'conditions\nconditions\nconditions',
+              additions: 'additions',
+              salary_from: 100000,
+              work_experience_id: '1',
+              salary_to: null,
+              candidate_expectation: 'expectations',
+              work_type_id: '1',
+              work_schedule_id: '1',
+              skills: ['1'],
+              recruiter_id: '1',
+              stages: [],
+              creation_date: '12.05.2012',
+            } as Vacancy)
+        ),
     create: (data: any) => Axios.post('/vacancies/', data), // TODO: data type
   },
 

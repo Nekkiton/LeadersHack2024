@@ -3,7 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 8px;
   position: relative;
 
   &:after {
@@ -28,16 +28,20 @@
   height: 12px;
   z-index: 1;
   border-radius: 50%;
-  border: 1px solid $purpure;
+  border: 1px solid $gray-4;
   background: $white;
 
   .item.active & {
     background: $purpure;
   }
+
+  .item.done & {
+    background: $gray-4;
+  }
 }
 
 .itemContent {
-  .item:not(.active) & {
-    color: $gray-3;
+  .item.done & {
+    color: $gray-4;
   }
 }

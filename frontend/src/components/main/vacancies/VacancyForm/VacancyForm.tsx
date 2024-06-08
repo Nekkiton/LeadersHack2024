@@ -18,6 +18,8 @@ interface Props {
   }
 }
 
+// TODO: editing, copying from another vacancy
+
 export default function VacancyForm({ backLink }: Props) {
   const user = useCurUser()
 

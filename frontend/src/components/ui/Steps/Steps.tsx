@@ -1,4 +1,4 @@
-import { Key, ReactNode } from 'react'
+import { Key, ReactNode, useMemo } from 'react'
 import classNames from 'classnames'
 import styles from './Steps.module.scss'
 
@@ -9,12 +9,18 @@ interface Props {
 }
 
 export default function Steps({ className, items = [], activeKey }: Props) {
+  const activeItemIdx = useMemo(
+    () => items.findIndex(({ key }) => key === activeKey),
+    [items, activeKey]
+  )
+
   return (
     <div className={classNames(className, styles.container)}>
-      {items.map(({ key, value }) => (
+      {items.map(({ key, value }, idx) => (
         <div
           className={classNames(styles.item, {
             [styles.active]: key === activeKey,
+            [styles.done]: idx < activeItemIdx,
           })}
           key={key}
         >

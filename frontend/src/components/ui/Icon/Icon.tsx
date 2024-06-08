@@ -40,6 +40,7 @@ const LinkExternalIcon = dynamic(
 )
 const TrashIcon = dynamic(() => import('@/assets/icons/trash.svg'))
 const QuestionIcon = dynamic(() => import('@/assets/icons/question.svg'))
+const CopyIcon = dynamic(() => import('@/assets/icons/copy.svg'))
 
 interface Props {
   className?: string
@@ -73,6 +74,7 @@ interface Props {
     | 'linkExternal'
     | 'trash'
     | 'question'
+    | 'copy'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -136,6 +138,8 @@ export default function Icon({ icon, className }: Props) {
         return TrashIcon
       case 'question':
         return QuestionIcon
+      case 'copy':
+        return CopyIcon
     }
   }, [icon])
 
