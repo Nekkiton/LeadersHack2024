@@ -11,4 +11,8 @@ export const Routes = {
   recruiterNews: '/recruiter/news',
   recruiterProfile: '/recruiter/profile',
   recruiterNewVacancy: '/recruiter/new-vacancy',
+
+  candidateVacancies: '/candidate/vacancies',
+  candidateProfile: '/candidate/profile',
+  candidateResponses: '/candidate/responses',
 }

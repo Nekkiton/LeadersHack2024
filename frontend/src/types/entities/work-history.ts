@@ -4,6 +4,6 @@ export interface WorkHistory extends BaseEntity {
   company: string
   job_title: string
   start_date: string
-  end_date: string
+  end_date: string | null
   responsibilities: string
 }

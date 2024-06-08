@@ -9,7 +9,7 @@ export interface User extends BaseEntity {
   surname: string
   name: string
   patronymic: string | null
-  birthday: string
+  birthday: string | null
   phone: string
   email: string
   telegram: string | null

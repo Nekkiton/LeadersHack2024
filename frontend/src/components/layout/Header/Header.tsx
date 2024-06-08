@@ -30,7 +30,7 @@ export default function Header() {
               href={
                 {
                   [Role.Recruiter]: Routes.recruiterVacancies,
-                  [Role.Candidate]: Routes.home,
+                  [Role.Candidate]: Routes.candidateVacancies,
                 }[user.value.role]
               }
             >

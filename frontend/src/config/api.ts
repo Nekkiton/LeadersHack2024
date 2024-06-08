@@ -9,7 +9,10 @@ import { Candidate } from '@/types/entities/candidate'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter } from '@/types/entities/recruiter'
-import { Response } from '@/types/entities/response'
+import {
+  ResponseStage,
+  ResponseStageStatus,
+} from '@/types/entities/response-stage'
 import { Skill } from '@/types/entities/skill'
 import { Role, User } from '@/types/entities/user'
 import {
@@ -42,14 +45,21 @@ const candidate: Candidate = {
   work_schedule_id: '1',
   work_type_id: '1',
   notifications: [],
-  responces: [],
+  responses: [],
 }
 
-const response: Response = {
+const responseStage: ResponseStage = {
   id: '1',
   candidate_id: candidate.id,
   candidate: candidate,
   vacancy_id: '1',
+  stage_id: '1',
+  status: ResponseStageStatus.ApprovedByCandidate,
+  meet_link: '',
+  recruiter_message: '',
+  recruiter_message_timestamp: '',
+  meed_date: '',
+  candidate_timestamp: '',
 }
 
 export const Api = {
@@ -66,24 +76,25 @@ export const Api = {
     me: () =>
       Axios.get<User>('/users/me/')
         .then((res) => res.data)
-        .catch(
-          () =>
-            ({
-              id: 'f',
-              name: 'Alexey',
-              surname: 'Levedev',
-              patronymic: 'Sergeevich',
-              email: 'email@ya.ru',
-              phone: '+7 (999) 999-99-99',
-              telegram: null,
-              birthday: '01.01.2000',
-              photo: null,
-              avatar:
-                'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-              role: Role.Recruiter,
-              notifications: [],
-            } as User)
-        ),
+        .catch(() => candidate as User),
+    // .catch(
+    //   () =>
+    //     ({
+    //       id: 'f',
+    //       name: 'Alexey',
+    //       surname: 'Levedev',
+    //       patronymic: 'Sergeevich',
+    //       email: 'email@ya.ru',
+    //       phone: '+7 (999) 999-99-99',
+    //       telegram: null,
+    //       birthday: '01.01.2000',
+    //       photo: null,
+    //       avatar:
+    //         'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
+    //       role: Role.Recruiter,
+    //       notifications: [],
+    //     } as User)
+    // ),
     // .catch(() => null),
   },
 
@@ -110,6 +121,12 @@ export const Api = {
         ]),
     me: {
       updateProfile: (data: any) => Axios.patch('/recruiters/me/', data), // TODO: data type
+    },
+  },
+
+  candidates: {
+    me: {
+      updateProfile: (data: any) => Axios.patch('/candidates/me/', data), // TODO: data type
     },
   },
 
@@ -169,7 +186,7 @@ export const Api = {
           () =>
             ({
               id: '1',
-              responses: [response],
+              responses: [responseStage],
               status: VacancyStatus.Active,
               scope_id: 'Разработка',
               recruiter: {

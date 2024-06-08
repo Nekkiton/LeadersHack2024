@@ -46,7 +46,23 @@ export default function SidebarMenuLayout({ children }: Props) {
         icon: <Icon icon="user" />,
       },
     ],
-    [Role.Candidate]: [],
+    [Role.Candidate]: [
+      {
+        name: 'Вакансии для вас',
+        url: Routes.candidateVacancies,
+        icon: <Icon icon="documentCheck" />,
+      },
+      {
+        name: 'Отклики и приглашения',
+        url: Routes.candidateResponses,
+        icon: <Icon icon="comment" />,
+      },
+      {
+        name: 'Профиль',
+        url: Routes.candidateProfile,
+        icon: <Icon icon="user" />,
+      },
+    ],
   }
 
   return (
