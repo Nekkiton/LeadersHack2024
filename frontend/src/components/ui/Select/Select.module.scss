@@ -34,7 +34,10 @@
   }
 
   &.long {
-    right: -70%;
+    right: auto;
+    min-width: 110%;
+    max-width: 160%;
+    width: max-content;
     border-top-right-radius: 8px !important;
   }
 
@@ -94,6 +97,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   padding: 0 16px;
 }
 
