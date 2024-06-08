@@ -21,9 +21,30 @@ import {
   VacancyStatus,
 } from '@/types/entities/vacancy'
 import { WorkExperience } from '@/types/entities/work-experience'
+import { WorkHistory } from '@/types/entities/work-history'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
+
+const workHistory1: WorkHistory = {
+  id: '1',
+  job_title: 'FullStack разработчик',
+  company: 'СБЕР',
+  start_date: '01.01.2022',
+  end_date: null,
+  responsibilities:
+    'Участие в проектировании архитектуры систем\nСерверная разработка приложений на Python3',
+}
+
+const workHistory2: WorkHistory = {
+  id: '2',
+  job_title: 'FullStack разработчик',
+  company: 'СБЕР2',
+  start_date: '02.02.2022',
+  end_date: '02.02.2023',
+  responsibilities:
+    'Участие в проектировании архитектуры систем\nСерверная разработка приложений на Python3',
+}
 
 const recruiter: Recruiter = {
   id: 'f',
@@ -57,7 +78,7 @@ const candidate: Candidate = {
   job_title: 'Jot title',
   work_experience_id: '1',
   education_id: '1',
-  work_history: [],
+  work_history: [workHistory1, workHistory2],
   work_schedule_id: '1',
   work_type_id: '1',
   notifications: [],

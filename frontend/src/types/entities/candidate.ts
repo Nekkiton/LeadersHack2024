@@ -1,5 +1,6 @@
 import { User, Role } from '@/types/entities/user'
 import { ResponseStage } from '@/types/entities/response-stage'
+import { WorkHistory } from '@/types/entities/work-history'
 
 export interface Candidate extends User {
   role: Role.Candidate
@@ -9,7 +10,8 @@ export interface Candidate extends User {
   work_schedule_id: string
   work_type_id: string
   work_experience_id: string
-  work_history: string[] // TODO
+  // work_history: string[] // TODO
+  work_history?: WorkHistory[] // TODO
   skills: string[] // TODO
   // responces: string[] // TODO
   responses?: ResponseStage[]

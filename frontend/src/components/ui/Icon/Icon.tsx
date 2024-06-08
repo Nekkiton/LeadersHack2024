@@ -44,6 +44,8 @@ const CopyIcon = dynamic(() => import('@/assets/icons/copy.svg'))
 const TelegramIcon = dynamic(() => import('@/assets/icons/telegram.svg'))
 const CommentIcon = dynamic(() => import('@/assets/icons/comment.svg'))
 const CalendarIcon = dynamic(() => import('@/assets/icons/calendar.svg'))
+const MailIcon = dynamic(() => import('@/assets/icons/mail.svg'))
+const PhoneIcon = dynamic(() => import('@/assets/icons/phone.svg'))
 
 interface Props {
   className?: string
@@ -81,6 +83,8 @@ interface Props {
     | 'telegram'
     | 'comment'
     | 'calendar'
+    | 'mail'
+    | 'phone'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -152,6 +156,10 @@ export default function Icon({ icon, className }: Props) {
         return CommentIcon
       case 'calendar':
         return CalendarIcon
+      case 'mail':
+        return MailIcon
+      case 'phone':
+        return PhoneIcon
     }
   }, [icon])
 
