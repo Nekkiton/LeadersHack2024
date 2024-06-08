@@ -2,8 +2,8 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { useCurCandidateUpdateProfile } from '@/api/candidates'
 import Button from '@/components/ui/Button'
 import CandidateProfileBaseInfo from './CandidateProfileBaseInfo'
+import CandidateProfilePassword from './CandidteProfilePassword'
 // import RecruiterProfileCalendar from './RecruiterProfileCalendar'
-// import RecruiterProfilePassword from './RecruiterProfilePassword'
 // import RecruiterProfileNotifications from './RecruiterProfileNotifications'
 import styles from './CandidateProfile.module.scss'
 
@@ -21,9 +21,7 @@ export default function CandidateProfile() {
     <FormProvider {...formMethods}>
       <form className={styles.container} onSubmit={submit}>
         <CandidateProfileBaseInfo />
-        {/* <RecruiterProfileNotifications />
-        <RecruiterProfileCalendar />
-        <RecruiterProfilePassword /> */}
+        <CandidateProfilePassword />
         <Button type="primary" htmlType="submit" loading={status === 'pending'}>
           Сохранить изменения
         </Button>
