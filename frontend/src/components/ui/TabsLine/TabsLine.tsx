@@ -2,7 +2,7 @@ import { Key, ReactNode, useEffect, useRef } from 'react'
 import { useControlValue } from '@/lib/use-control-value'
 import classNames from 'classnames'
 import BaseButton from '@/components/ui/BaseButton'
-import styles from './Tabs.module.scss'
+import styles from './TabsLine.module.scss'
 
 interface Props<Value extends Key> {
   items: {
@@ -13,7 +13,7 @@ interface Props<Value extends Key> {
   onChange?: (val: Value) => void
 }
 
-export default function Tabs<Value extends Key = Key>({
+export default function TabsLine<Value extends Key = Key>({
   items,
   value: baseValue,
   onChange: baseOnChange,
@@ -43,17 +43,8 @@ export default function Tabs<Value extends Key = Key>({
     <div className={styles.container} ref={containerRef}>
       <span className={styles.activeBg} ref={activeBgRef} />
       {items.map((item) => (
-        <div
-          className={classNames(styles.item, {
-            [styles.active]: item.key === value,
-          })}
-          key={item.key}
-          data-key={item.key}
-        >
-          <BaseButton
-            className={styles.itemBtn}
-            onClick={() => setValue(item.key)}
-          >
+        <div key={item.key} data-key={item.key}>
+          <BaseButton onClick={() => setValue(item.key)}>
             {item.value}
           </BaseButton>
         </div>
