@@ -5,7 +5,7 @@ import {
   RegisterData,
   ResetPasswordData,
 } from '@/types/entities/auth'
-import { Candidate } from '@/types/entities/candidate'
+import { Candidate, GetCandidatesParams } from '@/types/entities/candidate'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter } from '@/types/entities/recruiter'
@@ -108,10 +108,15 @@ export const Api = {
   },
 
   candidates: {
-    all: () =>
-      Axios.get<Candidate[]>('/candidates/')
+    all: (params: GetCandidatesParams) =>
+      Axios.get<Paginated<Candidate[]>>('/candidates/', { params })
         .then((res) => res.data)
-        .catch(() => [candidate]),
+        .catch(
+          () =>
+            ({ data: [candidate], current_page: 1, last_page: 1 } as Paginated<
+              Candidate[]
+            >)
+        ),
     me: {
       updateProfile: (data: any) => Axios.patch('/candidates/me/', data), // TODO: data type
     },

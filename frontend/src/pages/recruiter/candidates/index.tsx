@@ -1,9 +1,10 @@
 import { Role } from '@/types/entities/user'
 import { Page } from '@/types/page'
 import SidebarMenuLayout from '@/components/layouts/SidebarMenuLayout'
+import Candidates from '@/components/main/candidate/Candidates'
 
 export default function RecruiterCandidatesPage() {
-  return <div>coming soon</div>
+  return <Candidates />
 }
 
 ;(RecruiterCandidatesPage as Page).layout = SidebarMenuLayout

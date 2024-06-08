@@ -43,7 +43,7 @@ export default function Vacancy({ id, backLink, role }: Props) {
               <Tabs
                 items={[
                   { key: 'responses', value: 'Отклики' },
-                  { key: 'candidates', value: 'Кандидаты' },
+                  { key: 'candidates', value: 'Подходящие кандидаты' },
                 ]}
                 value={activeKey}
                 onChange={setActiveKey}

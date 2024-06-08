@@ -14,3 +14,10 @@ export interface Candidate extends User {
   // responces: string[] // TODO
   responses?: ResponseStage[]
 }
+
+export interface GetCandidatesParams {
+  query?: string
+  work_experiences?: string[]
+  skills?: string[]
+  page?: number
+}
