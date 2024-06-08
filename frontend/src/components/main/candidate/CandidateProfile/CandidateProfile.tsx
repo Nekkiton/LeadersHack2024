@@ -3,8 +3,7 @@ import { useCurCandidateUpdateProfile } from '@/api/candidates'
 import Button from '@/components/ui/Button'
 import CandidateProfileBaseInfo from './CandidateProfileBaseInfo'
 import CandidateProfilePassword from './CandidteProfilePassword'
-// import RecruiterProfileCalendar from './RecruiterProfileCalendar'
-// import RecruiterProfileNotifications from './RecruiterProfileNotifications'
+import CandidateProfileNotifications from './CandidateProfileNotifications'
 import styles from './CandidateProfile.module.scss'
 
 export default function CandidateProfile() {
@@ -21,6 +20,7 @@ export default function CandidateProfile() {
     <FormProvider {...formMethods}>
       <form className={styles.container} onSubmit={submit}>
         <CandidateProfileBaseInfo />
+        <CandidateProfileNotifications />
         <CandidateProfilePassword />
         <Button type="primary" htmlType="submit" loading={status === 'pending'}>
           Сохранить изменения

@@ -1,0 +1,3 @@
+import CandidateProfileNotifications from './CandidateProfileNotifications'
+
+export default CandidateProfileNotifications
