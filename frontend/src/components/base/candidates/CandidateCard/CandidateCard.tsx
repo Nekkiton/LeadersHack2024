@@ -33,6 +33,32 @@ export default function CandidateCard({
         </div>
       )}
       <CandidateCardInfo candidate={candidate} />
+      {type === 'expandedBottom' && (
+        <>
+          <span className={styles.separator} />
+          <div className={styles.footer}>
+            <div className={styles.footerTagsContainer}>
+              <p className={styles.footerTagsTitle}>Ключевые навыки</p>
+              <div className={styles.footerTags}>
+                {candidate.skills.map((skill) => (
+                  <span className={styles.footerTag} key={skill}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className={styles.footerControls}>
+              {/* TODO: actions */}
+              <Button type="secondary" onClick={() => alert('coming soon')}>
+                Открыть резюме
+              </Button>
+              <Button type="text" onClick={() => alert('coming soon')}>
+                Пригласить на вакансию
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

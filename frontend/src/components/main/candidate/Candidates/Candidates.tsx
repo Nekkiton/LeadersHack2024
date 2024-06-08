@@ -58,12 +58,11 @@ export default function Candidates() {
           ) : (
             <>
               {candidates.data.map((candidate) => (
-                <Link
-                  href={Routes.recruiterCandidate(candidate.id)}
+                <CandidateCard
+                  candidate={candidate}
+                  type="expandedBottom"
                   key={candidate.id}
-                >
-                  <CandidateCard candidate={candidate} />
-                </Link>
+                />
               ))}
               <Pagination
                 currentPage={candidates.current_page}

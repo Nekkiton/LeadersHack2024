@@ -113,7 +113,7 @@ export const Api = {
         .then((res) => res.data)
         .catch(
           () =>
-            ({ data: [candidate], current_page: 1, last_page: 1 } as Paginated<
+            ({ data: [candidate], current_page: 1, last_page: 2 } as Paginated<
               Candidate[]
             >)
         ),
