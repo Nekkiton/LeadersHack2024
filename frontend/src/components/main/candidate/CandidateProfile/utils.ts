@@ -23,7 +23,7 @@ export interface FormData {
     company: string
     job_title: string
     responsibilities: string
-    start_date: string
-    end_date: string | null
+    start_date: Moment
+    end_date: Moment | null
   }[]
 }
