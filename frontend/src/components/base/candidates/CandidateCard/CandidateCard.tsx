@@ -1,3 +1,4 @@
+import { Routes } from '@/config/routes'
 import { Candidate } from '@/types/entities/candidate'
 import CandidateCardInfo from '@/components/base/candidates/CandidateCardInfo'
 import Button from '@/components/ui/Button'
@@ -26,7 +27,11 @@ export default function CandidateCard({
             <Button type="primary" onClick={() => alert('coming soon')}>
               Пригласить
             </Button>
-            <Button type="secondary" onClick={() => alert('coming soon')}>
+            <Button
+              type="secondary"
+              href={Routes.recruiterCandidate(candidate.id)}
+              target="_blank"
+            >
               Открыть резюме
             </Button>
           </div>
@@ -48,10 +53,13 @@ export default function CandidateCard({
               </div>
             </div>
             <div className={styles.footerControls}>
-              {/* TODO: actions */}
-              <Button type="secondary" onClick={() => alert('coming soon')}>
+              <Button
+                type="secondary"
+                href={Routes.recruiterCandidate(candidate.id)}
+              >
                 Открыть резюме
               </Button>
+              {/* TODO: actions */}
               <Button type="text" onClick={() => alert('coming soon')}>
                 Пригласить на вакансию
               </Button>

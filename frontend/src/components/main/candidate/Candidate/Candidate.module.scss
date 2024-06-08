@@ -1,0 +1,9 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

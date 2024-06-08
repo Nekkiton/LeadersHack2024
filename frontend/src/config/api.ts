@@ -117,6 +117,10 @@ export const Api = {
               Candidate[]
             >)
         ),
+    one: (pk: string) =>
+      Axios.get<Candidate>(`/candidates/${pk}`)
+        .then((res) => res.data)
+        .catch(() => candidate),
     me: {
       updateProfile: (data: any) => Axios.patch('/candidates/me/', data), // TODO: data type
     },

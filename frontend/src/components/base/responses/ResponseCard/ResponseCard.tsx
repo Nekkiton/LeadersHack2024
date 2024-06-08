@@ -7,6 +7,7 @@ import CandidateCardInfo from '@/components/base/candidates/CandidateCardInfo'
 import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
 import styles from './ResponseCard.module.scss'
+import { Routes } from '@/config/routes'
 
 interface Props {
   className?: string
@@ -28,10 +29,15 @@ export default function ResponseCard({ className, response }: Props) {
             <span>55% соответствия</span>
           </div>
         </div>
-        {/* TODO: action */}
-        <Button type="secondary" onClick={() => alert('coming soon')}>
-          Открыть резюме
-        </Button>
+        {response.candidate && (
+          <Button
+            type="secondary"
+            href={Routes.recruiterCandidate(response.candidate.id)}
+            target="_blank"
+          >
+            Открыть резюме
+          </Button>
+        )}
       </div>
       {response.candidate && (
         <CandidateCardInfo candidate={response.candidate} />
