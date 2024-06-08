@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button'
 import CandidateProfileWorks from './CandidateProfileWorks'
 import CandidateProfileBaseInfo from './CandidateProfileBaseInfo'
 import CandidateProfilePassword from './CandidteProfilePassword'
+import CandidateProfileFromFile from './CandidateProfileFromFile'
 import CandidateProfileNotifications from './CandidateProfileNotifications'
 import styles from './CandidateProfile.module.scss'
 
@@ -20,6 +21,7 @@ export default function CandidateProfile() {
   return (
     <FormProvider {...formMethods}>
       <form className={styles.container} onSubmit={submit}>
+        <CandidateProfileFromFile />
         <CandidateProfileBaseInfo />
         <CandidateProfileWorks />
         <CandidateProfileNotifications />

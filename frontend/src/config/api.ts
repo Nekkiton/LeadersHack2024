@@ -113,8 +113,8 @@ export const Api = {
     me: () =>
       Axios.get<User>('/users/me/')
         .then((res) => res.data)
-        .catch(() => recruiter as User),
-    // .catch(() => candidate as User),
+        // .catch(() => recruiter as User),
+        .catch(() => candidate as User),
     // .catch(() => null),
   },
 
@@ -144,6 +144,7 @@ export const Api = {
         .catch(() => candidate),
     me: {
       updateProfile: (data: any) => Axios.patch('/candidates/me/', data), // TODO: data type
+      updateProfileFromFile: (data: any) => Axios.post('/candidates/me/', data), // TODO: data type
     },
   },
 

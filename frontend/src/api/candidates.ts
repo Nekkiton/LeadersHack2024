@@ -12,3 +12,7 @@ export const useCandidate = createUseQuery('candidate.one', Api.candidates.one)
 export const useCurCandidateUpdateProfile = createUseMutation(
   Api.candidates.me.updateProfile
 )
+
+export const useCurCandidateUpdateProfileFromFile = createUseMutation(
+  Api.candidates.me.updateProfileFromFile
+)

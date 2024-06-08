@@ -1,9 +1,7 @@
 import { ReactNode } from 'react'
-// import { RemoveScroll } from 'react-remove-scroll'
+import { RemoveScroll } from 'react-remove-scroll'
 import classNames from 'classnames'
-import Floating from '@/components/ui/Overlay'
-import Icon from '@/components/ui/Icon'
-import BaseButton from '@/components/ui/BaseButton'
+import Overlay from '@/components/ui/Overlay'
 import styles from './Modal.module.scss'
 
 export interface ModalStateProps {
@@ -31,29 +29,26 @@ export default function Modal({
   setIsShowed,
 }: ModalProps) {
   return (
-    <Floating
+    <Overlay
       className={classNames('modal', styles.container)}
       isShowed={isShowed}
       setIsShowed={setIsShowed}
     >
-      {/* <RemoveScroll> */}
-      <span className={styles.backdrop} onClick={() => setIsShowed(false)} />
-      <div className={classNames(className, styles.modal)} style={{ width }}>
-        <div className={styles.modalHeader}>
-          <div className={classNames(styles.modalTitle, styles.desktop)}>
-            {header}
+      <RemoveScroll>
+        <span className={styles.backdrop} onClick={() => setIsShowed(false)} />
+        <div className={classNames(className, styles.modal)} style={{ width }}>
+          <div className={styles.modalHeader}>
+            <div className={classNames(styles.modalTitle, styles.desktop)}>
+              {header}
+            </div>
+            <div className={classNames(styles.modalTitle, styles.mobile)}>
+              {mobileHeader}
+            </div>
           </div>
-          <div className={classNames(styles.modalTitle, styles.mobile)}>
-            {mobileHeader}
-          </div>
-          <BaseButton onClick={() => setIsShowed(false)} hoverable>
-            <Icon icon="times" />
-          </BaseButton>
+          {children}
+          {footer && <div className={styles.modalFooter}>{footer}</div>}
         </div>
-        {children}
-        {footer && <div className={styles.modalFooter}>{footer}</div>}
-      </div>
-      {/* </RemoveScroll> */}
-    </Floating>
+      </RemoveScroll>
+    </Overlay>
   )
 }
