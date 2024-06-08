@@ -17,7 +17,8 @@ export default function VacancyCandidates({ vacancy }: Props) {
       renderSuccess={(candidates) => (
         <div className={styles.container}>
           <div className={styles.candidates}>
-            {candidates.map((candidate) => (
+            {/* TODO: deal with pagination */}
+            {candidates.data.map((candidate) => (
               <CandidateCard key={candidate.id} candidate={candidate} />
             ))}
           </div>
