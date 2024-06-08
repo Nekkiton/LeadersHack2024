@@ -43,6 +43,6 @@ jobs:
     uses: ./.github/workflows/deploy.yaml
     with:
       dockerfile: api/Dockerfile
-      context: backend
+      context: api
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/backend
     secrets: inherit
