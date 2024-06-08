@@ -5,7 +5,6 @@ import RemoteData from '@/components/special/RemoteData'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Tabs from '@/components/ui/Tabs'
-import AppearTransition from '@/components/ui/AppearTransition'
 import VacancyInfo from './VacancyInfo'
 import VacancyResponses from './VacancyResponses'
 import VacancyCandidates from './VacancyCandidates'
@@ -49,14 +48,12 @@ export default function Vacancy({ id, backLink, role }: Props) {
                 value={activeKey}
                 onChange={setActiveKey}
               />
-              <AppearTransition orientation="v" gap>
-                {activeKey === 'responses' && (
-                  <VacancyResponses vacancy={vacancy} />
-                )}
-              </AppearTransition>
-              <AppearTransition orientation="v" gap>
-                {activeKey === 'candidates' && <VacancyCandidates />}
-              </AppearTransition>
+              {activeKey === 'responses' && (
+                <VacancyResponses vacancy={vacancy} />
+              )}
+              {activeKey === 'candidates' && (
+                <VacancyCandidates vacancy={vacancy} />
+              )}
             </div>
           </div>
         )}

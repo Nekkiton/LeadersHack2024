@@ -1,0 +1,21 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.candidates {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+.sidebar {
+  @include card;
+
+  flex-shrink: 0;
+  width: 23%;
+}
