@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.encoders import ENCODERS_BY_TYPE
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers.auth.router import router as Authentication
+from app.settings import Settings
 
 ENCODERS_BY_TYPE[ObjectId] = lambda x: str(x)
 
@@ -13,7 +14,7 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Замените на разрешённые домены
+    allow_origins=[Settings.ALLOWED_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

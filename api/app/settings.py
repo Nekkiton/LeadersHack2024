@@ -13,4 +13,5 @@ class Settings(EnvClass):
     ACCESS_TOKEN_EXPIRES_IN: int = 15*60
     JWT_ALGORITHM: str
 
+    ALLOWED_ORIGINS: str
 
