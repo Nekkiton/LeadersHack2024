@@ -9,6 +9,7 @@ ENCODERS_BY_TYPE[ObjectId] = lambda x: str(x)
 app = FastAPI(
     title="LeadersHack2024 API",
     version="0.0.1",
+    root_path="/api",
 )
 app.add_middleware(
     CORSMiddleware,

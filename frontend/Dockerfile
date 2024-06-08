@@ -1,4 +1,4 @@
-FROM node:18.20.2
+FROM node:18-alpine
 
 WORKDIR app
 
@@ -11,4 +11,6 @@ COPY . .
 
 RUN yarn build
 
-CMD yarn start
+EXPOSE 80
+
+CMD ["yarn", "start"]
