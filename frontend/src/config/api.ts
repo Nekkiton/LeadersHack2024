@@ -5,9 +5,11 @@ import {
   RegisterData,
   ResetPasswordData,
 } from '@/types/entities/auth'
+import { Candidate } from '@/types/entities/candidate'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter } from '@/types/entities/recruiter'
+import { Response } from '@/types/entities/response'
 import { Skill } from '@/types/entities/skill'
 import { Role, User } from '@/types/entities/user'
 import {
@@ -19,6 +21,36 @@ import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
+
+const candidate: Candidate = {
+  id: '2',
+  role: Role.Candidate,
+  name: 'Candidate',
+  surname: 'Surname',
+  patronymic: 'Patronymic',
+  email: 'email@ya.ru',
+  phone: '+7 (999) 999-99-99',
+  telegram: 'fff',
+  birthday: '01.01.2000',
+  photo: null,
+  city: 'Moscow',
+  skills: ['skill 1', 'skill 2'],
+  job_title: 'Jot title',
+  work_experience_id: '1',
+  education_id: '1',
+  work_history: [],
+  work_schedule_id: '1',
+  work_type_id: '1',
+  notifications: [],
+  responces: [],
+}
+
+const response: Response = {
+  id: '1',
+  candidate_id: candidate.id,
+  candidate: candidate,
+  vacancy_id: '1',
+}
 
 export const Api = {
   auth: {
@@ -91,7 +123,7 @@ export const Api = {
               data: [
                 {
                   id: '1',
-                  responces: [],
+                  responses: [],
                   status: VacancyStatus.Active,
                   scope_id: 'Разработка',
                   recruiter: {
@@ -137,7 +169,7 @@ export const Api = {
           () =>
             ({
               id: '1',
-              responces: [],
+              responses: [response],
               status: VacancyStatus.Active,
               scope_id: 'Разработка',
               recruiter: {

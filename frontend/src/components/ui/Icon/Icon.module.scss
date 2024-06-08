@@ -5,15 +5,18 @@
   flex-shrink: 0;
   width: 24px;
   height: 24px;
-  stroke: $gray-2;
-  stroke-width: 1px;
   transition: $transition;
 
-  svg {
-    path {
-      fill: inherit;
-      stroke: inherit;
-      stroke-width: inherit;
+  &:not(.pure) {
+    stroke: $gray-2;
+    stroke-width: 1px;
+
+    svg {
+      path {
+        fill: inherit;
+        stroke: inherit;
+        stroke-width: inherit;
+      }
     }
   }
 }

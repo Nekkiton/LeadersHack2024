@@ -1,0 +1,46 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+.userImgContainer {
+  display: flex;
+  flex-grow: 1;
+  gap: 16px;
+}
+
+.userImg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+.blockTitleContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.blockContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+
+  .light {
+    color: $gray-3;
+  }
+
+  .email {
+    color: $blue;
+  }
+}

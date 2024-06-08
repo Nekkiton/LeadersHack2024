@@ -41,6 +41,7 @@ const LinkExternalIcon = dynamic(
 const TrashIcon = dynamic(() => import('@/assets/icons/trash.svg'))
 const QuestionIcon = dynamic(() => import('@/assets/icons/question.svg'))
 const CopyIcon = dynamic(() => import('@/assets/icons/copy.svg'))
+const TelegramIcon = dynamic(() => import('@/assets/icons/telegram.svg'))
 
 interface Props {
   className?: string
@@ -75,6 +76,7 @@ interface Props {
     | 'trash'
     | 'question'
     | 'copy'
+    | 'telegram'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -140,11 +142,17 @@ export default function Icon({ icon, className }: Props) {
         return QuestionIcon
       case 'copy':
         return CopyIcon
+      case 'telegram':
+        return TelegramIcon
     }
   }, [icon])
 
   return (
-    <div className={classNames(styles.container, className, 'icon')}>
+    <div
+      className={classNames(styles.container, className, 'icon', {
+        [styles.pure]: icon === 'telegram',
+      })}
+    >
       <Icon />
     </div>
   )

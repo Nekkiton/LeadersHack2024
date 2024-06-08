@@ -1,6 +1,8 @@
 import { BaseEntity } from '@/types/entities/base-entity'
+import { Candidate } from './candidate'
 
 export interface Response extends BaseEntity {
-  cnadidate_id: string
+  candidate_id: string
+  candidate?: Candidate // TODO
   vacancy_id: string
 }
