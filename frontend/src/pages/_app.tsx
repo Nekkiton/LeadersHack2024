@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { AppProps } from 'next/app'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { registerLocale, setDefaultLocale } from 'react-datepicker'
+import { ru } from 'date-fns/locale/ru'
 import { Page } from '@/types/page'
 import { Site } from '@/config/site'
 import moment from 'moment'
@@ -19,6 +21,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     moment.locale('ru')
+    registerLocale('ru', ru)
+    setDefaultLocale('ru')
   }, [])
 
   return (

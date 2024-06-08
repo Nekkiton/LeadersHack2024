@@ -43,6 +43,7 @@ const QuestionIcon = dynamic(() => import('@/assets/icons/question.svg'))
 const CopyIcon = dynamic(() => import('@/assets/icons/copy.svg'))
 const TelegramIcon = dynamic(() => import('@/assets/icons/telegram.svg'))
 const CommentIcon = dynamic(() => import('@/assets/icons/comment.svg'))
+const CalendarIcon = dynamic(() => import('@/assets/icons/calendar.svg'))
 
 interface Props {
   className?: string
@@ -79,6 +80,7 @@ interface Props {
     | 'copy'
     | 'telegram'
     | 'comment'
+    | 'calendar'
 }
 
 export default function Icon({ icon, className }: Props) {
@@ -148,6 +150,8 @@ export default function Icon({ icon, className }: Props) {
         return TelegramIcon
       case 'comment':
         return CommentIcon
+      case 'calendar':
+        return CalendarIcon
     }
   }, [icon])
 
