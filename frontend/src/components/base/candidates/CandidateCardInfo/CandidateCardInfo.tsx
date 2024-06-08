@@ -27,9 +27,11 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
           <h6>{getUserName(candidate, 'Name Surname')}</h6>
           <div className={styles.blockContent}>
             <p className={styles.light}>{candidate.job_title}</p>
-            <p className={styles.light}>
-              {getUserAge(candidate.birthday)}, {candidate.city}
-            </p>
+            {candidate.birthday && (
+              <p className={styles.light}>
+                {getUserAge(candidate.birthday)}, {candidate.city}
+              </p>
+            )}
             <p className={styles.light}>TODO</p>
           </div>
         </div>
