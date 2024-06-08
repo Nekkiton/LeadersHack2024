@@ -27,11 +27,11 @@ export default function VacancyInfo({ vacancy, role }: Props) {
         {role === Role.Recruiter && (
           <div className={styles.headerControls}>
             {/* TODO: actions */}
-            <Button type="text">
+            <Button type="text" onClick={() => alert('coming soon')}>
               <Icon icon="copy" />
               <span>Создать копию</span>
             </Button>
-            <Button type="secondary">
+            <Button type="secondary" onClick={() => alert('coming soon')}>
               <Icon icon="pen" />
               <span>Редактировать</span>
             </Button>

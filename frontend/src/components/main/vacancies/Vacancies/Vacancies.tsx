@@ -4,6 +4,7 @@ import { Role } from '@/types/entities/user'
 import { useVacancies } from '@/api/vacancies'
 import { Routes } from '@/config/routes'
 import { FiltersFormData, transformFilters } from './utils'
+import Link from 'next/link'
 import RemoteData from '@/components/special/RemoteData'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
@@ -77,7 +78,18 @@ export default function Vacancies({ role }: Props) {
             </div>
           ) : (
             <>
-              <VacancyCard vacancy={vacancies.data[0]} />
+              {vacancies.data.map((vacancy) => (
+                <Link
+                  href={
+                    role === Role.Recruiter
+                      ? Routes.recruiterVacancy(vacancy.id)
+                      : '#'
+                  }
+                  key={vacancy.id}
+                >
+                  <VacancyCard vacancy={vacancy} />
+                </Link>
+              ))}
               <Pagination
                 currentPage={vacancies.current_page}
                 lastPage={vacancies.last_page}

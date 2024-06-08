@@ -1,6 +1,6 @@
 import { BaseEntity } from '@/types/entities/base-entity'
 import { Recruiter } from '@/types/entities/recruiter'
-import { Response } from '@/types/entities/response'
+import { ResponseStage } from '@/types/entities/response-stage'
 
 export enum VacancyStatus {
   Active = 'active',
@@ -26,7 +26,7 @@ export interface Vacancy extends BaseEntity {
   salary_to: number | null
   status: VacancyStatus
   // responces: string[] // TODO
-  responses: Response[] // TODo
+  responses?: ResponseStage[] // TODo
   skills: string[] // TODO
   recruiter_id: string
   recruiter?: Recruiter // TODO

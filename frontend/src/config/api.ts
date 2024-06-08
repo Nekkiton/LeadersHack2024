@@ -25,6 +25,22 @@ import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
 
+const recruiter: Recruiter = {
+  id: 'f',
+  name: 'Alexey',
+  surname: 'Levedev',
+  patronymic: 'Sergeevich',
+  email: 'email@ya.ru',
+  phone: '+7 (999) 999-99-99',
+  telegram: null,
+  birthday: '01.01.2000',
+  photo: null,
+  role: Role.Recruiter,
+  notifications: [],
+  interview_per_day: 1,
+  interview_slots: [],
+}
+
 const candidate: Candidate = {
   id: '2',
   role: Role.Candidate,
@@ -76,25 +92,8 @@ export const Api = {
     me: () =>
       Axios.get<User>('/users/me/')
         .then((res) => res.data)
-        .catch(() => candidate as User),
-    // .catch(
-    //   () =>
-    //     ({
-    //       id: 'f',
-    //       name: 'Alexey',
-    //       surname: 'Levedev',
-    //       patronymic: 'Sergeevich',
-    //       email: 'email@ya.ru',
-    //       phone: '+7 (999) 999-99-99',
-    //       telegram: null,
-    //       birthday: '01.01.2000',
-    //       photo: null,
-    //       avatar:
-    //         'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-    //       role: Role.Recruiter,
-    //       notifications: [],
-    //     } as User)
-    // ),
+        .catch(() => recruiter as User),
+    // .catch(() => candidate as User),
     // .catch(() => null),
   },
 
@@ -102,23 +101,7 @@ export const Api = {
     all: () =>
       Axios.get<Recruiter[]>('/recruiters/')
         .then((res) => res.data)
-        .catch(() => [
-          {
-            id: '1',
-            name: 'Alexey',
-            surname: 'Levedev',
-            patronymic: 'Sergeevich',
-            email: 'email@ya.ru',
-            phone: '+7 (999) 999-99-99',
-            telegram: null,
-            birthday: '01.01.2000',
-            photo: null,
-            role: Role.Recruiter,
-            notifications: [],
-            interview_per_day: 1,
-            interview_slots: [],
-          } as Recruiter,
-        ]),
+        .catch(() => [recruiter]),
     me: {
       updateProfile: (data: any) => Axios.patch('/recruiters/me/', data), // TODO: data type
     },
@@ -143,21 +126,7 @@ export const Api = {
                   responses: [],
                   status: VacancyStatus.Active,
                   scope_id: 'Разработка',
-                  recruiter: {
-                    id: '1',
-                    name: 'Alexey',
-                    surname: 'Levedev',
-                    patronymic: 'Sergeevich',
-                    email: 'email@ya.ru',
-                    phone: '+7 (999) 999-99-99',
-                    telegram: null,
-                    birthday: '01.01.2000',
-                    photo: null,
-                    role: Role.Recruiter,
-                    notifications: [],
-                    interview_per_day: 1,
-                    interview_slots: [],
-                  },
+                  recruiter: recruiter,
                   title: 'Vacancy title',
                   description: 'some description',
                   responsibilities: 'responsibilites',

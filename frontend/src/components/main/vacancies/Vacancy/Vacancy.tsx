@@ -50,7 +50,9 @@ export default function Vacancy({ id, backLink, role }: Props) {
                 onChange={setActiveKey}
               />
               <AppearTransition orientation="v" gap>
-                {activeKey === 'responses' && <VacancyResponses />}
+                {activeKey === 'responses' && (
+                  <VacancyResponses vacancy={vacancy} />
+                )}
               </AppearTransition>
               <AppearTransition orientation="v" gap>
                 {activeKey === 'candidates' && <VacancyCandidates />}

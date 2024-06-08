@@ -51,8 +51,12 @@ export default function VacancyCard({ className, vacancy }: Props) {
         )}
       </div>
 
-      <span className={styles.separator} />
-      <Button type="text">Откликов: {vacancy.responces.length}</Button>
+      {vacancy.responses && (
+        <>
+          <span className={styles.separator} />
+          <Button type="text">Откликов: {vacancy.responses.length}</Button>
+        </>
+      )}
     </div>
   )
 }
