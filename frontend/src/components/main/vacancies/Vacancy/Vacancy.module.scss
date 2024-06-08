@@ -13,3 +13,10 @@
   flex-direction: column;
   gap: 48px;
 }
+
+.tabsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  --gap: 16px;
+}
