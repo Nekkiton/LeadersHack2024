@@ -11,6 +11,7 @@ import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import KeepRecruitingModal from '@/components/base/candidates/KeepRecruitingModal'
 import RejectRecruitingModal from '@/components/base/candidates/RejectRecruitingModal'
+import RejectVacancyModal from '@/components/base/vacancies/RejectVacancyModal'
 import styles from './ResponseCardFunnel.module.scss'
 import moment from 'moment'
 
@@ -30,6 +31,8 @@ export default function ResponseCardFunnel({
   const [isKeepRecruitingModalShowed, setIsKeepRecruitingModalShowed] =
     useState(false)
   const [isRejectRecruitingModalShowed, setIsRejectRecruitingModalShowed] =
+    useState(false)
+  const [isRejectVacancyModalShowed, setIsRejectVacancyModalShowed] =
     useState(false)
 
   const curResponse = useMemo(
@@ -266,7 +269,11 @@ export default function ResponseCardFunnel({
                     ResponseStageStatus.WaitingForCandidate) && (
                   <Button type="text">Выбрать время для интервью</Button>
                 )}
-                <Button className={styles.controlsRejectBtn} type="text">
+                <Button
+                  className={styles.controlsRejectBtn}
+                  type="text"
+                  onClick={() => setIsRejectVacancyModalShowed(true)}
+                >
                   Отказать
                 </Button>
               </div>
@@ -279,10 +286,16 @@ export default function ResponseCardFunnel({
         setIsShowed={setIsKeepRecruitingModalShowed}
         stage={curResponse.stage}
       />
+
       <RejectRecruitingModal
         isShowed={isRejectRecruitingModalShowed}
         setIsShowed={setIsRejectRecruitingModalShowed}
         stage={curResponse.stage}
+      />
+
+      <RejectVacancyModal
+        isShowed={isRejectVacancyModalShowed}
+        setIsShowed={setIsRejectVacancyModalShowed}
       />
     </>
   )
