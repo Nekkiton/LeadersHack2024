@@ -1,63 +1,72 @@
-from typing import Annotated
 from bson import ObjectId
+from typing import Annotated
 from pymongo.errors import DuplicateKeyError
 from fastapi import APIRouter, Depends, Response
-from app.oauth import create_tokens, require_user
-from app.database import Users
-from app.exceptions import NOT_FOUND
 
-from .schemas import Login, ApplicantInsert, RecruiterInsert
-from .exceptions import INCORRECT_EMAIL_OR_PASSWORD, EMAIL_ALREADY_EXISTS
+from app.utils import basemodel_to_dict, get_now
+from app.database import Users
+from app.oauth import create_access_token, create_tokens, require_refresh, delete_tokens
+
 from .utils import validate_password, hash_password
+from .schemas import Login, RecruiterPost, RecruiterResponse
+from .exceptions import INCORRECT_EMAIL_OR_PASSWORD, EMAIL_ALREADY_EXISTS
 
 router = APIRouter(tags=["Аутентификация"])
 
+
 @router.post(
-    "/login",
-    name="Вход",
+    "/login/recruiter",
+    name="Вход для рекрутера",
+    response_model=RecruiterResponse
     )
-async def login(
-    payload: Login, 
-    response: Response
-    ):
-    user = Users.find_one({"email": payload.email}, {"password"})
+async def login(payload: Login, response: Response):
+    user = Users.find_one({"email": payload.email, "role": "recruiter"})
     if user is None or not validate_password(payload.password, user["password"]):
         raise INCORRECT_EMAIL_OR_PASSWORD
-    access, refresh = create_tokens(user.id, response)
+    create_tokens(user["_id"], response)
+    return user
+
+
+@router.post(
+    "/registration/recruiter",
+    name="Регистрация для рекрутера",
+    response_model=RecruiterResponse
+    )
+async def registration(payload: RecruiterPost,  response: Response):
+    payload.password = hash_password(payload.password)
+    user_insert_data = {
+        **basemodel_to_dict(payload),
+        "created_at": get_now(),
+        "updated_at": get_now(),
+        "role": "recruiter"
+    }
+    try:
+        inserted_id = Users.insert_one(user_insert_data).inserted_id
+    except DuplicateKeyError:
+        raise EMAIL_ALREADY_EXISTS
+    create_tokens(inserted_id, response)
     return {
-        "access_token": access,
-        "refresh_token": refresh,
-        "user": user
+        "_id": inserted_id,
+        **user_insert_data,
     }
 
 
 @router.post(
-    "/registration",
-    name="Регистрация",
+    "/refresh",
+    name="Обновить токен доступа",
+    status_code=200
     )
-async def registration(
-    payload: RecruiterInsert | ApplicantInsert, 
+async def refresh(
+    user_id: Annotated[ObjectId, Depends(require_refresh)],
     response: Response
     ):
-    try:
-        payload.password = hash_password(payload.password)
-        user_id = Users.insert_one(payload.__dict__).inserted_id
-    except DuplicateKeyError:
-        raise EMAIL_ALREADY_EXISTS
-    access, refresh = create_tokens(user_id, response)
-    user = Users.find_one({"_id": user_id}, {"password": 0})
-    return {
-        "access_token": access,
-        "refresh_token": refresh,
-        "user": user,
-    }
+    create_access_token(user_id, response)
 
 
-@router.get("/self")
-async def get_self(
-    user_id: Annotated[ObjectId, Depends(require_user)]
-):
-    user = Users.find_one({"_id": user_id})
-    if not user:
-        raise NOT_FOUND
-    return user
+@router.post(
+    "/logout",
+    name="Выйти",
+    status_code=200
+    )
+async def logout(response: Response):
+    delete_tokens(response)

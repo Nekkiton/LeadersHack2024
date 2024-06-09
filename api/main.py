@@ -20,4 +20,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(Authentication, prefix="/auth")
+app.include_router(Authentication)
