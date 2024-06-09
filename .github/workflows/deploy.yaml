@@ -73,15 +73,20 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            sudo docker pull leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest
-            sudo docker run -d -t -i \
-              -e MONGO_HOST=${{ secrets.MONGO_HOST }} \ 
+            docker pull ${{ inputs.image }}:latest
+            docker ps -q --filter "name=leaders_backend" | xargs -r docker stop
+            docker ps -aq --filter "name=leaders_backend" | xargs -r docker rm
+            docker run -d -t -i -e MONGO_HOST=${{ secrets.MONGO_HOST }} \
               -e MONGO_USERNAME=${{ secrets.MONGO_USERNAME }} \
               -e MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} \
               -e MONGO_DATABASE=${{ secrets.MONGO_DATABASE }} \
-              -e JWT_PUBLIC_KEY_PATH='~/.ssh/jwtRS256.key.pub' \
-              -e JWT_PRIVATE_KEY_PATH='~/.ssh/jwtRS256.key' \
+              -e MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }} \
+              -e JWT_PUBLIC_KEY_PATH='/cert/jwtRS256.key.pub' \
+              -e JWT_PRIVATE_KEY_PATH='/cert/jwtRS256.key' \
               -e JWT_ALGORITHM='HS256' \
               -e ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
+              --net bridge \
               --name leaders_backend \
-              leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest
+              --mount type=bind,source="$(pwd)"/cert,target=/cert,readonly \
+              -p 8080:8080 \
+              ${{ inputs.image }}:latest

@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives import serialization
 from fastapi.security.utils import get_authorization_scheme_param
 
 from app.settings import Settings
-from api.app.database import Users
+from app.database import Users
 from app.exceptions import ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
 
 public_key = serialization.load_pem_public_key(open(Settings.JWT_PUBLIC_KEY_PATH).read().encode(), None)
