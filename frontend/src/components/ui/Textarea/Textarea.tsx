@@ -12,6 +12,7 @@ interface Props {
   postscript?: string
   notRequiredHint?: boolean
   error?: FormError
+  height?: number
   value?: string | null
   onChange?: (val: string | null) => void
 }
@@ -23,6 +24,7 @@ export default function Textarea({
   postscript,
   notRequiredHint,
   error,
+  height,
   value: baseValue,
   onChange: baseOnChange,
 }: Props) {
@@ -65,6 +67,7 @@ export default function Textarea({
           className={styles.targetDiv}
           data-placeholder={placeholder}
           onInput={onInput}
+          style={{ height }}
           contentEditable
         />
       </div>

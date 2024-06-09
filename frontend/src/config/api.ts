@@ -226,6 +226,8 @@ export const Api = {
             } as Vacancy)
         ),
     create: (data: any) => Axios.post('/vacancies/', data), // TODO: data type
+    respond: ({ pk, ...data }: any) =>
+      Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
   },
 
   workScopes: {
