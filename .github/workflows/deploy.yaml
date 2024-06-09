@@ -74,7 +74,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             sudo docker pull leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest
-            sudo docker run -d -t -i -e MONGO_HOST=${{ secrets.MONGO_HOST }} \ 
+            sudo docker run -d -t -i \
+              -e MONGO_HOST=${{ secrets.MONGO_HOST }} \ 
               -e MONGO_USERNAME=${{ secrets.MONGO_USERNAME }} \
               -e MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} \
               -e MONGO_DATABASE=${{ secrets.MONGO_DATABASE }} \
@@ -82,4 +83,5 @@ jobs:
               -e JWT_PRIVATE_KEY_PATH='~/.ssh/jwtRS256.key' \
               -e JWT_ALGORITHM='HS256' \
               -e ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
-              --name leaders_backend
+              --name leaders_backend \
+              leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest
