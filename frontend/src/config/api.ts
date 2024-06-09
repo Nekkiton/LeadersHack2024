@@ -218,6 +218,16 @@ export const Api = {
     me: {
       updateProfile: (data: any) => Axios.patch('/candidates/me/', data), // TODO: data type
       updateProfileFromFile: (data: any) => Axios.post('/candidates/me/', data), // TODO: data type
+      responses: () =>
+        Axios.get<{
+          responses: ResponseStage[][]
+          invites: ResponseStage[][]
+        }>(`/candidates/me/responses`)
+          .then((res) => res.data)
+          .catch(() => ({
+            responses: [[responseStage1, responseStage1, responseStage2]],
+            invites: [[responseStage1, responseStage1, responseStage2]],
+          })),
     },
   },
 

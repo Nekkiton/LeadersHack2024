@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ResponseStage } from '@/types/entities/response-stage'
+import { Routes } from '@/config/routes'
+import { Vacancy } from '@/types/entities/vacancy'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import RadialProgressBar from '@/components/ui/RadialProgressBar'
@@ -7,8 +9,6 @@ import CandidateCardInfo from '@/components/base/candidates/CandidateCardInfo'
 import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
 import styles from './ResponseCard.module.scss'
-import { Routes } from '@/config/routes'
-import { Vacancy } from '@/types/entities/vacancy'
 
 interface Props {
   className?: string
