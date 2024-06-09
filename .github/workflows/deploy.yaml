@@ -33,7 +33,7 @@ jobs:
           images: ${{ inputs.image }}
           tags: |
             type=raw,value=release-{{date 'YYYYMMDD-HHmm'}}-{{sha}}
-        
+            type=raw,value=latest
       - name: Login to docker registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
