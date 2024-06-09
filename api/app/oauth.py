@@ -12,8 +12,8 @@ from app.settings import Settings
 from api.app.database import Users
 from app.exceptions import ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
 
-public_key = serialization.load_pem_public_key(open("api/public.key.pub").read().encode(), None)
-private_key = serialization.load_pem_private_key(open("api/private.key").read().encode(), None)
+public_key = serialization.load_pem_public_key(open(Settings.JWT_PUBLIC_KEY_PATH).read().encode(), None)
+private_key = serialization.load_pem_private_key(open(Settings.JWT_PRIVATE_KEY_PATH).read().encode(), None)
 
 
 def require_refresh(request: Request) -> ObjectId:
