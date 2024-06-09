@@ -15,6 +15,8 @@ export interface Candidate extends User {
   skills: string[] // TODO
   // responces: string[] // TODO
   responses?: ResponseStage[]
+  vacancy_match?: number
+  salary_expectation: number
 }
 
 export interface GetCandidatesParams {

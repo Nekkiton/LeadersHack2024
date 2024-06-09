@@ -8,13 +8,21 @@ import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
 import styles from './ResponseCard.module.scss'
 import { Routes } from '@/config/routes'
+import { Vacancy } from '@/types/entities/vacancy'
 
 interface Props {
   className?: string
   response: ResponseStage
+  responseStages?: ResponseStage[]
+  vacancy: Vacancy
 }
 
-export default function ResponseCard({ className, response }: Props) {
+export default function ResponseCard({
+  className,
+  response,
+  responseStages,
+  vacancy,
+}: Props) {
   const [activeKey, setActiveKey] = useState<
     'funnel' | 'responsesHistory' | 'comments'
   >('funnel')
@@ -52,7 +60,9 @@ export default function ResponseCard({ className, response }: Props) {
         value={activeKey}
         onChange={setActiveKey}
       />
-      {activeKey === 'funnel' && <ResponseCardFunnel response={response} />}
+      {activeKey === 'funnel' && responseStages && (
+        <ResponseCardFunnel responses={responseStages} vacancy={vacancy} />
+      )}
       {activeKey !== 'funnel' && 'coming soon'}
     </div>
   )
