@@ -39,22 +39,24 @@ export default function Vacancy({ id, backLink, role }: Props) {
         renderSuccess={(vacancy) => (
           <div className={styles.main}>
             <VacancyInfo vacancy={vacancy} role={role} />
-            <div className={styles.tabsContainer}>
-              <Tabs
-                items={[
-                  { key: 'responses', value: 'Отклики' },
-                  { key: 'candidates', value: 'Подходящие кандидаты' },
-                ]}
-                value={activeKey}
-                onChange={setActiveKey}
-              />
-              {activeKey === 'responses' && (
-                <VacancyResponses vacancy={vacancy} />
-              )}
-              {activeKey === 'candidates' && (
-                <VacancyCandidates vacancy={vacancy} />
-              )}
-            </div>
+            {role === Role.Recruiter && (
+              <div className={styles.tabsContainer}>
+                <Tabs
+                  items={[
+                    { key: 'responses', value: 'Отклики' },
+                    { key: 'candidates', value: 'Подходящие кандидаты' },
+                  ]}
+                  value={activeKey}
+                  onChange={setActiveKey}
+                />
+                {activeKey === 'responses' && (
+                  <VacancyResponses vacancy={vacancy} />
+                )}
+                {activeKey === 'candidates' && (
+                  <VacancyCandidates vacancy={vacancy} />
+                )}
+              </div>
+            )}
           </div>
         )}
       />

@@ -11,6 +11,7 @@ import Icon from '@/components/ui/Icon'
 import Steps from '@/components/ui/Steps'
 import AppearTransition from '@/components/ui/AppearTransition'
 import styles from './VacancyInfo.module.scss'
+import RadialProgressBar from '@/components/ui/RadialProgressBar'
 
 interface Props {
   vacancy: Vacancy
@@ -18,32 +19,52 @@ interface Props {
 }
 
 export default function VacancyInfo({ vacancy, role }: Props) {
-  const [isDescriptionShowed, setIsDescriptionShowed] = useState(false)
+  const [isDescriptionShowed, setIsDescriptionShowed] = useState(
+    role === Role.Recruiter ? false : true
+  )
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>{vacancy?.title}</h1>
-        {role === Role.Recruiter && (
-          <div className={styles.headerControls}>
-            {/* TODO: actions */}
-            <Button type="text" onClick={() => alert('coming soon')}>
-              <Icon icon="copy" />
-              <span>Создать копию</span>
+        <div className={styles.headerTitleContainer}>
+          <h1>{vacancy?.title}</h1>
+          {role === Role.Candidate && (
+            <div className={styles.headerMatchPercent}>
+              <RadialProgressBar value={67} />
+              <span>Подходит на 67%</span>
+            </div>
+          )}
+        </div>
+        <div className={styles.headerControls}>
+          {/* TODO: actions */}
+          {role === Role.Recruiter && (
+            <>
+              <Button type="text" onClick={() => alert('coming soon')}>
+                <Icon icon="copy" />
+                <span>Создать копию</span>
+              </Button>
+              <Button type="secondary" onClick={() => alert('coming soon')}>
+                <Icon icon="pen" />
+                <span>Редактировать</span>
+              </Button>
+            </>
+          )}
+          {role === Role.Candidate && (
+            // TODO: and has no responses
+            <Button type="primary" onClick={() => alert('coming soon')}>
+              Откликнуться
             </Button>
-            <Button type="secondary" onClick={() => alert('coming soon')}>
-              <Icon icon="pen" />
-              <span>Редактировать</span>
-            </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-      {vacancy.recruiter && (
+
+      {role === Role.Recruiter && vacancy.recruiter && (
         <p className={styles.hint}>
           Ответственный рекрутер:{' '}
           {getUserName(vacancy.recruiter, 'Name Surname')}
         </p>
       )}
+
       <div className={styles.mainContainer}>
         <div className={styles.main}>
           <div className={classNames(styles.mainCard, styles.aThird)}>
@@ -80,21 +101,23 @@ export default function VacancyInfo({ vacancy, role }: Props) {
               ))}
             </div>
           </div>
-          <Button
-            onClick={() => setIsDescriptionShowed(!isDescriptionShowed)}
-            type="secondary"
-            fullWidth
-          >
-            <Icon
-              className={classNames(styles.mainDescriptionBtnIcon, {
-                [styles.active]: isDescriptionShowed,
-              })}
-              icon="chevronDown"
-            />
-            <span>
-              {isDescriptionShowed ? 'Скрыть' : 'Показать'} полное описание
-            </span>
-          </Button>
+          {role === Role.Recruiter && (
+            <Button
+              onClick={() => setIsDescriptionShowed(!isDescriptionShowed)}
+              type="secondary"
+              fullWidth
+            >
+              <Icon
+                className={classNames(styles.mainDescriptionBtnIcon, {
+                  [styles.active]: isDescriptionShowed,
+                })}
+                icon="chevronDown"
+              />
+              <span>
+                {isDescriptionShowed ? 'Скрыть' : 'Показать'} полное описание
+              </span>
+            </Button>
+          )}
           <AppearTransition
             className={styles.mainDescriptionCardContainer}
             orientation="v"
@@ -158,28 +181,41 @@ export default function VacancyInfo({ vacancy, role }: Props) {
             )}
           </AppearTransition>
         </div>
-        <div className={styles.sidebar}>
-          <p className={styles.sidebarHint}>Статус</p>
-          <Steps
-            items={[
-              { key: '', value: 'Создана' },
-              ...Object.keys(VacancyStatuses).map((key) => ({
-                key: key,
-                value:
-                  VacancyStatuses[key as keyof typeof VacancyStatuses].title,
-              })),
-            ]}
-            activeKey={vacancy.status}
-          />
-          <Button
-            type="text"
-            href={Site.links.changingVacancyStatuses}
-            target="_blank"
+
+        {role === Role.Recruiter && (
+          <div className={styles.sidebar}>
+            <p className={styles.sidebarHint}>Статус</p>
+            <Steps
+              items={[
+                { key: '', value: 'Создана' },
+                ...Object.keys(VacancyStatuses).map((key) => ({
+                  key: key,
+                  value:
+                    VacancyStatuses[key as keyof typeof VacancyStatuses].title,
+                })),
+              ]}
+              activeKey={vacancy.status}
+            />
+            <Button
+              type="text"
+              href={Site.links.changingVacancyStatuses}
+              target="_blank"
+            >
+              <span>Подробнее о смене статусов</span>
+              <Icon icon="linkExternal" />
+            </Button>
+          </div>
+        )}
+
+        {role === Role.Candidate && (
+          // TODO: hidden if there is no response
+          <div
+            className={classNames(styles.sidebar, { [styles.hidden]: true })}
           >
-            <span>Подробнее о смене статусов</span>
-            <Icon icon="linkExternal" />
-          </Button>
-        </div>
+            <p className={styles.sidebarHint}>Статус отклика</p>
+            coming soon
+          </div>
+        )}
       </div>
     </div>
   )

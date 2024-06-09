@@ -13,6 +13,19 @@
   gap: 24px;
 }
 
+.headerTitleContainer {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.headerMatchPercent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 7px 0;
+}
+
 .headerControls {
   display: flex;
   align-items: center;
@@ -116,6 +129,10 @@
   position: sticky;
   top: 24px;
   width: 23%;
+
+  &.hidden {
+    opacity: 0;
+  }
 }
 
 .sidebarHint {
