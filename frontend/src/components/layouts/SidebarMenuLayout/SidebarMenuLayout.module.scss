@@ -1,0 +1,68 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  align-items: stretch;
+  gap: 30px;
+  flex-grow: 1;
+}
+
+.sidebar {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 16px;
+  width: 25%;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  padding: 8px 0;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 100%;
+    height: 2px;
+    border-radius: 10px;
+    background: $gray-2;
+    transition: $transition;
+  }
+
+  &.active:after {
+    right: 0;
+  }
+}
+
+.sidebarSeparator {
+  height: 1px;
+  background: $gray-5;
+}
+
+.sidebarLogoutBtn {
+  color: $red;
+
+  :global(.icon) {
+    stroke: $red;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+}
+
+.mainFooter {
+  margin-top: auto;
+}

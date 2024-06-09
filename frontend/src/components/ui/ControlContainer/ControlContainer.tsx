@@ -10,6 +10,7 @@ export interface ControlContainerProps {
   label?: string
   postscript?: string
   error?: FormError
+  notRequiredHint?: boolean
   children?: ReactNode
 }
 
@@ -19,6 +20,7 @@ export default function ControlContainer({
   label,
   postscript,
   error,
+  notRequiredHint,
   children,
 }: ControlContainerProps) {
   const errorMsg = useFormError(error)
@@ -28,6 +30,9 @@ export default function ControlContainer({
       {label && (
         <label className={styles.label} htmlFor={controlId}>
           {label}
+          {notRequiredHint && (
+            <span className={styles.labelHint}> — необязательно</span>
+          )}
         </label>
       )}
       {children}

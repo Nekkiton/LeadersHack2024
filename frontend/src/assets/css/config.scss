@@ -68,6 +68,7 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   font-weight: 700;
   font-size: 40px;
   line-height: 130%;
+  color: $gray-1;
 
   @include tablet {
     font-size: 30px;
@@ -81,6 +82,7 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   font-weight: 700;
   font-size: 30px;
   line-height: 130%;
+  color: $gray-1;
 
   @include tablet {
     font-size: 28px;
@@ -94,6 +96,7 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
   font-weight: 700;
   font-size: 24px;
   line-height: 130%;
+  color: $gray-1;
 
   @include tablet {
     font-size: 24px;
@@ -239,20 +242,19 @@ $transition: $transition-duration cubic-bezier(0.51, 0.92, 0.24, 1.15);
 @mixin content {
   margin: 0 auto;
   width: 100%;
-  max-width: calc(1200px + 32px * 2);
-  padding: 0 32px;
+  max-width: calc(1200px + 24px * 2);
+  padding: 0 24px;
 
   @include tablet {
     padding: 0 16px;
   }
 }
 
-// @mixin page {
-//   @include content;
-
-//   margin-top: 48px;
-//   margin-bottom: 48px;
-// }
+@mixin card {
+  padding: 16px;
+  border-radius: 8px;
+  background: $white;
+}
 
 @mixin no-scrollbar {
   &::-webkit-scrollbar {

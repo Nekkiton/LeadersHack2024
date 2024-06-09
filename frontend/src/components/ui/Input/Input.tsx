@@ -8,11 +8,19 @@ interface Props<Type extends InputType>
   className?: string
   label?: string
   postscript?: string
+  notRequiredHint?: boolean
   error?: FormError
 }
 
 const Input = <Type extends InputType = 'text'>(
-  { className, label, postscript, error, ...baseInputProps }: Props<Type>,
+  {
+    className,
+    label,
+    postscript,
+    notRequiredHint,
+    error,
+    ...baseInputProps
+  }: Props<Type>,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const defaultInputId = useId()
@@ -29,6 +37,7 @@ const Input = <Type extends InputType = 'text'>(
       controlId={inputId}
       label={label}
       postscript={postscript}
+      notRequiredHint={notRequiredHint}
       error={error}
     >
       <BaseInput {...baseInputProps} ref={ref} id={inputId} error={!!error} />

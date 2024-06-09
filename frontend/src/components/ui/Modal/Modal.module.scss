@@ -11,7 +11,7 @@
 
   &:global(:is(.enter-done, .enter-active, .appear-active)) {
     backdrop-filter: blur(2px);
-    background: rgba(0, 0, 0, 0.5);
+    background: #6f6f6fb2;
   }
 }
 
@@ -29,7 +29,7 @@
   max-height: 90vh;
   overflow: auto;
   background: $white;
-  border-radius: $radius;
+  border-radius: 8px;
   transform: scale(0);
   transition: $transition;
 

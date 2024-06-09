@@ -1,0 +1,18 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  gap: 24px;
+  position: relative;
+  padding-bottom: 4px;
+  width: fit-content;
+  border-bottom: 1px solid $gray-3;
+}
+
+.activeBg {
+  position: absolute;
+  height: 2px;
+  bottom: 0px;
+  background: $gray-2;
+  transition: $transition;
+}

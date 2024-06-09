@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userImg {
+  width: 164px;
+  height: 164px;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.userInfoData {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

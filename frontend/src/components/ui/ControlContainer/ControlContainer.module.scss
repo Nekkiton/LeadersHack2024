@@ -12,6 +12,10 @@
   @include paragraph-3;
 }
 
+.labelHint {
+  color: $gray-4;
+}
+
 .postscript {
   @include caption-1;
 

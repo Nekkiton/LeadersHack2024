@@ -1,0 +1,66 @@
+@import '@/assets/css/config';
+
+.inputContainer {
+  cursor: pointer;
+
+  .withPopover.active & {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.input {
+  pointer-events: none;
+}
+
+.popover {
+  display: flex;
+  width: 100%;
+  max-height: 0;
+  top: 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+  transform: none;
+  box-shadow: none;
+
+  &:global(:is(.enter-done, .enter-active, .appear-active)) {
+    max-height: 250px;
+  }
+
+  .container.error & {
+    border-color: $red;
+  }
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex-grow: 1;
+
+  &:first-child {
+    border-right: 1px solid $gray-4;
+  }
+}
+
+.item {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover,
+  &.active {
+    background: $gray-6;
+  }
+}
+
+.chevronIcon {
+  transition: $transition;
+
+  &.active {
+    transform: rotate(180deg);
+  }
+}

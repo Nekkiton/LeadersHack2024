@@ -23,8 +23,12 @@
   color: $white;
 }
 
-.sidebarSibtitle {
+.sidebarSubtitle {
   @include heading-7;
+}
+
+.sidebarTitle {
+  color: $white;
 }
 
 .sidebarHint {

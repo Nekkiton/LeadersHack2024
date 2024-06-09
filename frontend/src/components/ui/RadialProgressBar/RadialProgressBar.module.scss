@@ -1,0 +1,19 @@
+@import '@/assets/css/config';
+
+.progressBar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, $white 55%, transparent 56% 100%),
+    conic-gradient($orange calc(var(--value) * 1%), $gray-5 0);
+
+  &.success {
+    background: radial-gradient(closest-side, $white 55%, transparent 56% 100%),
+      conic-gradient($green calc(var(--value) * 1%), $gray-5 0);
+  }
+
+  &.error {
+    background: radial-gradient(closest-side, $white 55%, transparent 56% 100%),
+      conic-gradient($red calc(var(--value) * 1%), $gray-5 0);
+  }
+}

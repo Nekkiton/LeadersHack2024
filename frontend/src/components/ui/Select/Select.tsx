@@ -39,6 +39,7 @@ interface Props<ItemValue, IsMultiple extends boolean> {
   clearable?: boolean
   inputtable?: boolean
   withConfirmation?: boolean
+  longPopover?: boolean
   items?: Item<ItemValue>[]
   value?: Value<IsMultiple>
   onChange?: (val: Value<IsMultiple>) => void
@@ -61,6 +62,7 @@ export default function Select<
   clearable: isClearable,
   inputtable: isInputtable,
   withConfirmation: isWithConfirmation,
+  longPopover: isLongPopover,
   items = [],
   value: baseValue,
   onChange: baseOnChange,
@@ -223,7 +225,9 @@ export default function Select<
           [styles.error]: !!error,
           [styles.active]: isActive,
         })}
-        popoverClassName={styles.popover}
+        popoverClassName={classNames(styles.popover, {
+          [styles.long]: isLongPopover,
+        })}
         reference={
           <div
             ref={inputContainerRef}

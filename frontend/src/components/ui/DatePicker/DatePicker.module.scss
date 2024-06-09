@@ -1,0 +1,85 @@
+@import '@/assets/css/config';
+
+.inputContainer {
+  cursor: pointer;
+
+  .container.error & {
+    border-color: $red;
+  }
+}
+
+.input {
+  pointer-events: none;
+}
+
+.popover {
+  max-height: 320px;
+
+  > div {
+    display: flex !important;
+  }
+
+  .container.error & {
+    border-color: $red;
+  }
+}
+
+.calendar {
+  border: none !important;
+
+  :global(.react-datepicker__header) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+    background: none;
+    border-bottom: 1px solid $gray-4;
+  }
+
+  :global(.react-datepicker__navigation-icon) {
+    top: 3px;
+
+    &:before {
+      border-color: $gray-4;
+      transition: $transition;
+    }
+
+    &:hover:before {
+      border-color: $gray-3;
+    }
+  }
+
+  :global(.react-datepicker__day-name) {
+    @include paragraph-3;
+  }
+
+  :global(.react-datepicker__day) {
+    @include paragraph-3;
+
+    line-height: 30px !important;
+    width: 30px;
+    border-radius: 4px;
+    background: $white;
+    transition: $transition;
+
+    &:global(.react-datepicker__day--today) {
+      background: $orange !important;
+    }
+
+    &:global(.react-datepicker__day--selected) {
+      background: $blue !important;
+    }
+
+    &:global(.react-datepicker__day--outside-month) {
+      color: $gray-4;
+    }
+
+    &:hover {
+      background: $gray-6;
+    }
+  }
+
+  :global(.react-datepicker__current-month) {
+    @include heading-8;
+  }
+}

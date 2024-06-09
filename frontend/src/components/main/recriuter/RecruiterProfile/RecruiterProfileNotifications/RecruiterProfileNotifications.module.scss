@@ -1,0 +1,25 @@
+@import '@/assets/css/config';
+
+.container {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headerHint {
+  color: $gray-3;
+}
+
+.fields {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}

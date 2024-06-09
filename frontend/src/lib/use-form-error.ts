@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+// TODO: move to types
 export type FormError =
   | string
   | {
@@ -16,7 +17,7 @@ export const useFormError = (error?: FormError) => {
     }
 
     if (error.type === 'required') {
-      return 'Заполни это поле'
+      return 'Заполните это поле'
     } else if (error.message) {
       return error.message
     } else if (error.type) {

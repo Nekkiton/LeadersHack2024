@@ -1,0 +1,8 @@
+@import '@/assets/css/config';
+
+.loading {
+  @include content;
+
+  display: flex;
+  justify-content: center;
+}

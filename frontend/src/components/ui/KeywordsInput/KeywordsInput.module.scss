@@ -1,0 +1,95 @@
+@import '@/assets/css/config';
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid $gray-4;
+  border-radius: 8px;
+  transition: $transition;
+
+  .withPopover.active & {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .withPopover.error & {
+    border-color: $red;
+  }
+}
+
+.selectedItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 1px solid $gray-5;
+  border-radius: 0;
+  transition: $transition;
+
+  &:hover {
+    background: $gray-5;
+  }
+}
+
+.selectedItemIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.input {
+  @include paragraph-2;
+
+  flex-grow: 1;
+  margin: 5px 0;
+  min-width: 150px;
+  border: none;
+  outline: none;
+  background: none;
+  color: $gray-2;
+
+  &::placeholder {
+    color: $gray-4;
+  }
+}
+
+.popover {
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 0;
+  overflow: auto;
+  border-top: none;
+  box-shadow: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform: none;
+
+  .withPopover.active & {
+    max-height: 210px;
+  }
+
+  .withPopover.error & {
+    border-color: $red;
+  }
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+  background: $white;
+}
+
+.item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: $gray-6;
+  }
+}

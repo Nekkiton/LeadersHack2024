@@ -1,0 +1,65 @@
+@import '@/assets/css/config';
+
+.container {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &:not(:last-child) {
+    position: relative;
+    margin-bottom: 16px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: -16px;
+      height: 1px;
+      background-color: $gray-5;
+    }
+  }
+}
+
+.workHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.workTitle {
+  @include heading-7;
+}
+
+.workRemoveIcon {
+  stroke: $red !important;
+}
+
+.workFieldsRow {
+  display: flex;
+  gap: 16px;
+}
+
+.workEndDateContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.workEndDateContainerCheckbox {
+  flex-shrink: 0;
+}
