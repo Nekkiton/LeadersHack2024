@@ -8,14 +8,12 @@ from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
 from fastapi.security.utils import get_authorization_scheme_param
 
-from api.app.database import Users
-from api.app.schemas import Role
 from app.settings import Settings
+from api.app.database import Users
 from app.exceptions import ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
 
-
-public_key = serialization.load_pem_public_key(Settings.JWT_PUBLIC_KEY.encode(), None)
-private_key = serialization.load_pem_private_key(Settings.JWT_PRIVATE_KEY.encode(), None)
+public_key = serialization.load_pem_public_key(open("api/public.key.pub").read().encode(), None)
+private_key = serialization.load_pem_private_key(open("api/private.key").read().encode(), None)
 
 
 def require_refresh(request: Request) -> ObjectId:
