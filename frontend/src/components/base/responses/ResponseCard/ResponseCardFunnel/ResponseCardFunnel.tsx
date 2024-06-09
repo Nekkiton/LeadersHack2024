@@ -5,6 +5,7 @@ import {
 } from '@/types/entities/response-stage'
 import { Vacancy } from '@/types/entities/vacancy'
 import { getUserName } from '@/lib/get-user-name'
+import { useToasts } from '@/lib/use-toasts'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import KeepRecruitingModal from '@/components/base/candidates/KeepRecruitingModal'
@@ -18,6 +19,8 @@ interface Props {
 }
 
 export default function ResponseCardFunnel({ responses, vacancy }: Props) {
+  const toasts = useToasts()
+
   const [isKeepRecruitingModalShowed, setIsKeepRecruitingModalShowed] =
     useState(false)
   const [isRejectRecruitingModalShowed, setIsRejectRecruitingModalShowed] =
@@ -43,6 +46,15 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
   return (
     <>
       <div className={styles.container}>
+        {prevResponse && (
+          <Button
+            className={styles.centerEl}
+            type="text"
+            onClick={() => toasts.info({ content: 'Функционал в разработке' })}
+          >
+            Показать все этапы
+          </Button>
+        )}
         {(curResponse.status === ResponseStageStatus.WaitingForRecruiter ||
           curResponse.status === ResponseStageStatus.RejectedByCandidate) && (
           <>
