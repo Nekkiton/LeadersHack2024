@@ -18,8 +18,8 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://backend:8080/:path*', // The :path parameter is used here so will not be automatically passed in the query
-      },
+        destination: `${process.env.API_HOST}/:path*`,
+      }
     ]
   },
 }
