@@ -1,3 +1,5 @@
 .venv
 __pycache__
 .vscode
+private.key
+public.key.pub
