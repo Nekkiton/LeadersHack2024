@@ -14,14 +14,6 @@ const nextConfig = {
   images: {
     domains: ['img-cdn.pixlr.com'], // TODO: remove
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.API_HOST}/:path*`,
-      }
-    ]
-  },
 }
 
 export default nextConfig
