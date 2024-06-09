@@ -1,77 +1,111 @@
 import jwt
 from uuid import uuid4
 from bson import ObjectId
-from pydantic import BaseModel
-from app.settings import Settings
-from app.exceptions import UNATHORIZED
-from fastapi import Depends, Request, Response, Cookie
+from fastapi import Request, Response
 from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
-from fastapi.security import HTTPBearer, OAuth2PasswordBearer
+from fastapi.security.utils import get_authorization_scheme_param
+
+from app.settings import Settings
+from app.exceptions import UNATHORIZED
 
 
-oauth_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
-security = HTTPBearer(description="Вставьте access_token в это поле")
 public_key = serialization.load_pem_public_key(Settings.JWT_PUBLIC_KEY.encode(), None)
 private_key = serialization.load_pem_private_key(Settings.JWT_PRIVATE_KEY.encode(), None)
 
 
-def create_tokens(user_id: str | ObjectId, response: Response) -> tuple[str, str]:
-    access = create_access_token(user_id, response)
-    refresh = create_refresh_token(user_id, response)
-    return access, refresh
+def delete_tokens(response: Response):
+    response.delete_cookie(
+        key="access",
+        secure=True,
+        httponly=True,
+        samesite="lax"
+        )
+    response.delete_cookie(
+        key="refresh",
+        secure=True,
+        httponly=True,
+        samesite="lax"
+        )
 
 
-def require_user(request: Request) -> ObjectId:
-    if not request.cookies.get("lh2024a"):
+def create_tokens(user_id: str | ObjectId, response: Response) -> None:
+    create_access_token(user_id, response)
+    create_refresh_token(user_id, response)
+
+
+def require_refresh(request: Request) -> ObjectId:
+    schema, token = get_authorization_scheme_param(request.cookies.get("refresh"))
+    if not token or schema.lower() != "bearer":
         raise UNATHORIZED
     try:
-        payload = jwt.decode(request.cookies.get("lh2024a"), Settings.JWT_PUBLIC_KEY, algorithms=[Settings.JWT_ALGORITHM])
-        user_id = payload.get("sub")
-        expiration = payload.get("exp")
-        if user_id is None or expiration is None or expiration < datetime.now(tz=timezone.utc):
-            raise UNATHORIZED
+        payload = jwt.decode(token, Settings.JWT_PUBLIC_KEY, algorithms=[Settings.JWT_ALGORITHM])
     except jwt.PyJWTError:
+        raise UNATHORIZED
+    user_id, expiration = payload.get("sub"), payload.get("exp")
+    if user_id is None or expiration is None:
+        raise UNATHORIZED
+    if datetime.fromtimestamp(expiration, tz=timezone.utc) < datetime.now(tz=timezone.utc):
+        raise UNATHORIZED
+    if not ObjectId.is_valid(user_id):
         raise UNATHORIZED
     return ObjectId(user_id)
 
 
-def create_access_token(user_id: str | ObjectId, response: Response) -> str:
+def require_user(request: Request) -> ObjectId:
+    schema, token = get_authorization_scheme_param(request.cookies.get("access"))
+    if not token or schema.lower() != "bearer":
+        raise UNATHORIZED
+    try:
+        payload = jwt.decode(token, Settings.JWT_PUBLIC_KEY, algorithms=[Settings.JWT_ALGORITHM])
+    except jwt.PyJWTError:
+        raise UNATHORIZED
+    user_id, expiration = payload.get("sub"), payload.get("exp")
+    if user_id is None or expiration is None:
+        raise UNATHORIZED
+    if datetime.fromtimestamp(expiration, tz=timezone.utc) < datetime.now(tz=timezone.utc):
+        raise UNATHORIZED
+    if not ObjectId.is_valid(user_id):
+        raise UNATHORIZED
+    return ObjectId(user_id)
+
+
+def create_access_token(user_id: str | ObjectId, response: Response) -> None:
+    expires_at = datetime.now(tz=timezone.utc) + timedelta(minutes=Settings.ACCESS_TOKEN_EXPIRES_IN)
     token = jwt.encode(
         {
             "sub": str(user_id),
-            "exp": datetime.now(tz=timezone.utc) + timedelta(minutes=Settings.ACCESS_TOKEN_EXPIRES_IN)
+            "exp": expires_at.timestamp()
         },
         key=private_key,
         algorithm=Settings.JWT_ALGORITHM
     )
     response.set_cookie(
-        key="lh2024a",
+        key="access",
         value=f"Bearer {token}",
         max_age=Settings.ACCESS_TOKEN_EXPIRES_IN,
         secure=True,
         httponly=True,
         samesite="lax"
     )
-    return token
 
 
-def create_refresh_token(user_id: str | ObjectId, response: Response) -> str:
+def create_refresh_token(user_id: str | ObjectId, response: Response) -> None:
+    expires_at = datetime.now(tz=timezone.utc) + timedelta(minutes=Settings.REFRESH_TOKEN_EXPIRES_IN)
     token = jwt.encode(
         {
             "sub": str(user_id),
-            "exp": datetime.now(tz=timezone.utc) + timedelta(minutes=Settings.REFRESH_TOKEN_EXPIRES_IN),
+            "exp": expires_at.timestamp(),
             "jti": str(uuid4())
         },
         key=private_key,
         algorithm=Settings.JWT_ALGORITHM
     )
     response.set_cookie(
-        key="lh2024r",
+        key="refresh",
         value=f"Bearer {token}",
         max_age=Settings.REFRESH_TOKEN_EXPIRES_IN,
         secure=True,
         httponly=True,
         samesite="lax"
     )
-    return token
