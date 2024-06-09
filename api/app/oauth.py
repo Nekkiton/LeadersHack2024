@@ -1,3 +1,5 @@
+from typing import Annotated
+from fastapi.params import Depends
 import jwt
 from uuid import uuid4
 from bson import ObjectId
@@ -6,32 +8,14 @@ from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
 from fastapi.security.utils import get_authorization_scheme_param
 
+from api.app.database import Users
+from api.app.schemas import Role
 from app.settings import Settings
-from app.exceptions import UNATHORIZED
+from app.exceptions import ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
 
 
 public_key = serialization.load_pem_public_key(Settings.JWT_PUBLIC_KEY.encode(), None)
 private_key = serialization.load_pem_private_key(Settings.JWT_PRIVATE_KEY.encode(), None)
-
-
-def delete_tokens(response: Response):
-    response.delete_cookie(
-        key="access",
-        secure=True,
-        httponly=True,
-        samesite="lax"
-        )
-    response.delete_cookie(
-        key="refresh",
-        secure=True,
-        httponly=True,
-        samesite="lax"
-        )
-
-
-def create_tokens(user_id: str | ObjectId, response: Response) -> None:
-    create_access_token(user_id, response)
-    create_refresh_token(user_id, response)
 
 
 def require_refresh(request: Request) -> ObjectId:
@@ -68,6 +52,11 @@ def require_user(request: Request) -> ObjectId:
     if not ObjectId.is_valid(user_id):
         raise UNATHORIZED
     return ObjectId(user_id)
+
+
+def create_tokens(user_id: str | ObjectId, response: Response) -> None:
+    create_access_token(user_id, response)
+    create_refresh_token(user_id, response)
 
 
 def create_access_token(user_id: str | ObjectId, response: Response) -> None:
@@ -109,3 +98,35 @@ def create_refresh_token(user_id: str | ObjectId, response: Response) -> None:
         httponly=True,
         samesite="lax"
     )
+
+
+def delete_tokens(response: Response):
+    response.delete_cookie(
+        key="access",
+        secure=True,
+        httponly=True,
+        samesite="lax"
+        )
+    response.delete_cookie(
+        key="refresh",
+        secure=True,
+        httponly=True,
+        samesite="lax"
+        )
+
+
+RequiredUserID = Annotated[ObjectId, Depends(require_user)]
+
+
+def require_candidate(user_id: RequiredUserID) -> ObjectId:
+    if not Users.count_documents({"_id": user_id, "role": "candidate"}):
+        raise ONLY_CANDIDATE
+
+
+def require_recruiter(user_id: RequiredUserID) -> ObjectId:
+    if not Users.count_documents({"_id": user_id, "role": "recruiter"}):
+        raise ONLY_RECRUITER
+
+
+RequiredCandidateID = Annotated[ObjectId, Depends(require_candidate)]
+RequiredRecruiterID = Annotated[ObjectId, Depends(require_recruiter)]

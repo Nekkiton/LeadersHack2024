@@ -55,7 +55,7 @@ class UserBase(BaseModel):
     Минимальные данные по пользователю
     """
     email: EmailStr
-    password: str
+    password: str = Field(exclude=True)
 
 
 class UserCommon(UserBase):
@@ -97,7 +97,7 @@ class UserBaseResponse(UserBase, BaseResponse):
     """
     Возвращаемые поля для минимального пользователя
     """
-    password: str = Field(exclude=True)
+    pass
 
 
 class CandidateResponse(CandidatePost, UserResponse):

@@ -5,7 +5,7 @@ from typing import Annotated
 from pymongo.errors import DuplicateKeyError
 from fastapi import APIRouter, Depends, Response
 
-from app.utils import basemodel_to_dict, get_now
+from app.utils import get_now
 from app.database import Users
 from app.schemas import RecruiterResponse, CandidateResponse, UserBaseResponse
 from app.oauth import create_access_token, create_tokens, require_refresh, delete_tokens
@@ -40,7 +40,7 @@ async def login(payload: LoginRequest, response: Response):
 async def registration(payload: RegisterRequest,  response: Response):
     payload.password = hash_password(payload.password)
     user_insert_data = {
-        **basemodel_to_dict(payload),
+        **payload.__dict__,
         "created_at": get_now(),
         "updated_at": get_now(),
     }
