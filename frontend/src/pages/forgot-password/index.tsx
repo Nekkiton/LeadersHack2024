@@ -16,7 +16,6 @@ export default function ForgotPasswordPage() {
 
   const submit = handleSubmit((data) => {
     forgotPassword(data)
-    console.log(data)
   })
 
   return (

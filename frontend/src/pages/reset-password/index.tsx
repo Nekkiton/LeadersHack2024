@@ -20,7 +20,6 @@ export default function ResetPasswordPage() {
 
   const submit = handleSubmit((data) => {
     resetPassword(data)
-    console.log(data)
   })
 
   const password = watch('password')

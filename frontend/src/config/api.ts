@@ -213,10 +213,14 @@ const responseStage3: ResponseStage = {
 
 export const Api = {
   auth: {
-    login: (data: LoginData) => Axios.post('/auth/login/', data),
-    register: (data: RegisterData) => Axios.post('/auth/register/', data),
+    login: (data: LoginData) =>
+      Axios.post<User>('/auth/login/', data).then((res) => res.data),
+    register: (data: RegisterData) =>
+      Axios.post<{ role: Role }>('/auth/register/', data).then(
+        (res) => res.data
+      ),
     forgotPassword: (data: ForgotPasswordData) =>
-      Axios.post('/auth/forgot/', data),
+      Axios.post('/auth/forgot-password/', data),
     resetPassword: (data: ResetPasswordData) =>
       Axios.post('/auth/reset-password/', data),
   },

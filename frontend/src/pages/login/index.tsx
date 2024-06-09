@@ -15,7 +15,6 @@ export default function LoginPage() {
 
   const submit = handleSubmit((data) => {
     login(data)
-    console.log(data)
   })
 
   return (
