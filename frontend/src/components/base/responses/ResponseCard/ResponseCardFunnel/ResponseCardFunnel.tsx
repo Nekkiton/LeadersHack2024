@@ -12,6 +12,7 @@ import Button from '@/components/ui/Button'
 import KeepRecruitingModal from '@/components/base/candidates/KeepRecruitingModal'
 import RejectRecruitingModal from '@/components/base/candidates/RejectRecruitingModal'
 import RejectVacancyModal from '@/components/base/vacancies/RejectVacancyModal'
+import SetupInterviewModal from '@/components/base/vacancies/SetupInterviewModal'
 import styles from './ResponseCardFunnel.module.scss'
 import moment from 'moment'
 
@@ -33,6 +34,8 @@ export default function ResponseCardFunnel({
   const [isRejectRecruitingModalShowed, setIsRejectRecruitingModalShowed] =
     useState(false)
   const [isRejectVacancyModalShowed, setIsRejectVacancyModalShowed] =
+    useState(false)
+  const [isSetupInterviewModalShowed, setIsSetupInterviewModalShowed] =
     useState(false)
 
   const curResponse = useMemo(
@@ -267,7 +270,12 @@ export default function ResponseCardFunnel({
                   ResponseStageStatus.ApprovedByRecruiter ||
                   curResponse.status ===
                     ResponseStageStatus.WaitingForCandidate) && (
-                  <Button type="text">Выбрать время для интервью</Button>
+                  <Button
+                    type="text"
+                    onClick={() => setIsSetupInterviewModalShowed(true)}
+                  >
+                    Выбрать время для интервью
+                  </Button>
                 )}
                 <Button
                   className={styles.controlsRejectBtn}
@@ -296,6 +304,11 @@ export default function ResponseCardFunnel({
       <RejectVacancyModal
         isShowed={isRejectVacancyModalShowed}
         setIsShowed={setIsRejectVacancyModalShowed}
+      />
+
+      <SetupInterviewModal
+        isShowed={isSetupInterviewModalShowed}
+        setIsShowed={setIsSetupInterviewModalShowed}
       />
     </>
   )
