@@ -1,14 +1,16 @@
 import { Vacancy } from '@/types/entities/vacancy'
 import { useVacancyResponses } from '@/api/vacancies'
+import { Role } from '@/types/entities/user'
 import RemoteData from '@/components/special/RemoteData'
 import ResponseCard from '@/components/base/responses/ResponseCard'
 import styles from './VacancyResponses.module.scss'
 
 interface Props {
   vacancy: Vacancy
+  role: Role
 }
 
-export default function VacancyResponses({ vacancy }: Props) {
+export default function VacancyResponses({ vacancy, role }: Props) {
   const responses = useVacancyResponses(vacancy.id)
 
   return (
@@ -23,6 +25,7 @@ export default function VacancyResponses({ vacancy }: Props) {
                 response={responses[responses.length - 1]}
                 responseStages={responses}
                 vacancy={vacancy}
+                role={role}
               />
             ))}
           </div>

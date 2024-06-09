@@ -6,6 +6,7 @@ import {
 import { Vacancy } from '@/types/entities/vacancy'
 import { getUserName } from '@/lib/get-user-name'
 import { useToasts } from '@/lib/use-toasts'
+import { Role } from '@/types/entities/user'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import KeepRecruitingModal from '@/components/base/candidates/KeepRecruitingModal'
@@ -16,9 +17,14 @@ import moment from 'moment'
 interface Props {
   responses: ResponseStage[]
   vacancy: Vacancy
+  role: Role
 }
 
-export default function ResponseCardFunnel({ responses, vacancy }: Props) {
+export default function ResponseCardFunnel({
+  responses,
+  vacancy,
+  role,
+}: Props) {
   const toasts = useToasts()
 
   const [isKeepRecruitingModalShowed, setIsKeepRecruitingModalShowed] =
@@ -41,16 +47,46 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
     [vacancy, curResponse]
   )
 
-  if (!curResponse.stage || !vacancy.stages) return null
+  const candidateName = useMemo(() => {
+    if (role === Role.Candidate) {
+      return 'Вы'
+    } else if (curResponse.candidate) {
+      return getUserName(curResponse.candidate, 'Name Surname')
+    } else {
+      return 'Соискатель'
+    }
+  }, [role, curResponse])
+
+  const recruiterName = useMemo(() => {
+    if (role === Role.Recruiter) {
+      return 'Вы'
+    } else if (vacancy.recruiter) {
+      return getUserName(vacancy.recruiter, 'Name Surname')
+    } else {
+      return 'Соискатель'
+    }
+  }, [role, vacancy])
+
+  const candidateAnswerTitle = useMemo(
+    () => (role === Role.Candidate ? 'Ваш ответ' : 'Ответ кандидата'),
+    [role]
+  )
+
+  if (!curResponse.stage || !vacancy.stages) return 'Данные не загружены'
 
   return (
     <>
-      <div className={styles.container}>
+      <div
+        className={classNames(styles.container, {
+          [styles.inverse]: role === Role.Candidate,
+        })}
+      >
         {prevResponse && (
           <Button
             className={styles.centerEl}
             type="text"
             onClick={() => toasts.info({ content: 'Функционал в разработке' })}
+            // TODO: show all messages
           >
             Показать все этапы
           </Button>
@@ -71,7 +107,7 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
                 </p>
                 <div className={styles.blockContent}>
                   <div className={classNames(styles.message, styles.outgoing)}>
-                    <p className={styles.messageFrom}>Вы</p>
+                    <p className={styles.messageFrom}>{recruiterName}</p>
                     {curResponse.recruiter_message}
                     <p className={styles.messageDate}>
                       {moment(curResponse.recruiter_message_timestamp).format(
@@ -86,15 +122,13 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
               <p className={styles.blockTitle}>
                 {prevResponse ||
                 curResponse.status === ResponseStageStatus.RejectedByCandidate
-                  ? 'Ответ кандидата'
+                  ? candidateAnswerTitle
                   : 'Отклик на вакансию'}
               </p>
               <div className={styles.blockContent}>
                 <div className={classNames(styles.message, styles.incoming)}>
                   {curResponse.candidate && (
-                    <p className={styles.messageFrom}>
-                      {getUserName(curResponse.candidate, 'Name Surname')}
-                    </p>
+                    <p className={styles.messageFrom}>{candidateName}</p>
                   )}
                   {curResponse.candidate_message}
                   <p className={styles.messageDate}>
@@ -114,7 +148,7 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
             </p>
             <div className={styles.blockContent}>
               <div className={classNames(styles.message, styles.outgoing)}>
-                <p className={styles.messageFrom}>Вы</p>
+                <p className={styles.messageFrom}>{recruiterName}</p>
                 {curResponse.recruiter_message}
                 <p className={styles.messageDate}>
                   {moment(curResponse.recruiter_message_timestamp).format(
@@ -129,14 +163,12 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
           <>
             <div className={styles.block}>
               <p className={styles.blockTitle}>
-                {prevResponse ? 'Ответ кандидата' : 'Отклик на вакансию'}
+                {prevResponse ? candidateAnswerTitle : 'Отклик на вакансию'}
               </p>
               <div className={styles.blockContent}>
                 <div className={classNames(styles.message, styles.incoming)}>
                   {curResponse.candidate && (
-                    <p className={styles.messageFrom}>
-                      {getUserName(curResponse.candidate, 'Name Surname')}
-                    </p>
+                    <p className={styles.messageFrom}>{candidateName}</p>
                   )}
                   {curResponse.candidate_message}
                   <p className={styles.messageDate}>
@@ -153,7 +185,7 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
               </p>
               <div className={styles.blockContent}>
                 <div className={classNames(styles.message, styles.outgoing)}>
-                  <p className={styles.messageFrom}>Вы</p>
+                  <p className={styles.messageFrom}>{recruiterName}</p>
                   {curResponse.recruiter_message}
                   <p className={styles.messageDate}>
                     {moment(curResponse.recruiter_message_timestamp).format(
@@ -169,14 +201,12 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
           <>
             <div className={styles.block}>
               <p className={styles.blockTitle}>
-                {prevResponse ? 'Ответ кандидата' : 'Отклик на вакансию'}
+                {prevResponse ? candidateAnswerTitle : 'Отклик на вакансию'}
               </p>
               <div className={styles.blockContent}>
                 <div className={classNames(styles.message, styles.incoming)}>
                   {curResponse.candidate && (
-                    <p className={styles.messageFrom}>
-                      {getUserName(curResponse.candidate, 'Name Surname')}
-                    </p>
+                    <p className={styles.messageFrom}>{candidateName}</p>
                   )}
                   {curResponse.candidate_message}
                   <p className={styles.messageDate}>
@@ -191,7 +221,7 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
               <p className={styles.blockTitle}>Итог</p>
               <div className={styles.blockContent}>
                 <div className={classNames(styles.message, styles.outgoing)}>
-                  <p className={styles.messageFrom}>Вы</p>
+                  <p className={styles.messageFrom}>{recruiterName}</p>
                   {curResponse.recruiter_message}
                   <p className={styles.messageDate}>
                     {moment(curResponse.recruiter_message_timestamp).format(
@@ -203,26 +233,45 @@ export default function ResponseCardFunnel({ responses, vacancy }: Props) {
             </div>
           </>
         )}
-        {curResponse.status === ResponseStageStatus.WaitingForRecruiter && (
-          <div className={styles.block}>
-            <p className={styles.blockTitle}>Ваши действия</p>
-            <div className={classNames(styles.blockContent, styles.controls)}>
-              <Button
-                type="text"
-                onClick={() => setIsKeepRecruitingModalShowed(true)}
-              >
-                {nextStage ? `Пригласить на ${nextStage.title}` : 'Принять'}
-              </Button>
-              <Button
-                className={styles.controlsRejectBtn}
-                type="text"
-                onClick={() => setIsRejectRecruitingModalShowed(true)}
-              >
-                Отказать
-              </Button>
+        {role === Role.Recruiter &&
+          curResponse.status === ResponseStageStatus.WaitingForRecruiter && (
+            <div className={styles.block}>
+              <p className={styles.blockTitle}>Ваши действия</p>
+              <div className={classNames(styles.blockContent, styles.controls)}>
+                <Button
+                  type="text"
+                  onClick={() => setIsKeepRecruitingModalShowed(true)}
+                >
+                  {nextStage ? `Пригласить на ${nextStage.title}` : 'Принять'}
+                </Button>
+                <Button
+                  className={styles.controlsRejectBtn}
+                  type="text"
+                  onClick={() => setIsRejectRecruitingModalShowed(true)}
+                >
+                  Отказать
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        {role === Role.Candidate &&
+          curResponse.status !== ResponseStageStatus.RejectedByCandidate &&
+          curResponse.status !== ResponseStageStatus.RejectedByRecruiter && (
+            <div className={styles.block}>
+              <p className={styles.blockTitle}>Ваши действия</p>
+              <div className={classNames(styles.blockContent, styles.controls)}>
+                {(curResponse.status ===
+                  ResponseStageStatus.ApprovedByRecruiter ||
+                  curResponse.status ===
+                    ResponseStageStatus.WaitingForCandidate) && (
+                  <Button type="text">Выбрать время для интервью</Button>
+                )}
+                <Button className={styles.controlsRejectBtn} type="text">
+                  Отказать
+                </Button>
+              </div>
+            </div>
+          )}
       </div>
 
       <KeepRecruitingModal

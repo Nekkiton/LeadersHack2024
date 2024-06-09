@@ -49,11 +49,13 @@
   border-radius: 8px;
   background: $gray-6;
 
-  &.incoming {
+  .container:not(.inverse) &.incoming,
+  .container.inverse &.outgoing {
     border-bottom-left-radius: 0;
   }
 
-  &.outgoing {
+  .container:not(.inverse) &.outgoing,
+  .container.inverse &.incoming {
     margin-left: auto;
     border-bottom-right-radius: 0;
   }

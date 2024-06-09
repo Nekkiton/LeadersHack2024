@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/types/entities/base-entity'
 import { Candidate } from '@/types/entities/candidate'
 import { Stage } from '@/types/entities/stage'
+import { Vacancy } from '@/types/entities/vacancy'
 
 export enum ResponseStageStatus {
   WaitingForCandidate = 'waiting_for_candidate',
@@ -15,6 +16,7 @@ export interface ResponseStage extends BaseEntity {
   candidate_id: string
   candidate?: Candidate // TODO
   vacancy_id: string
+  vacancy?: Vacancy // TODO
   stage_id: string
   stage?: Stage // TODO
   status: ResponseStageStatus
