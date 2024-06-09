@@ -1,7 +1,9 @@
+import { UpdateAttachment } from '@/types/entities/attachment'
+import { RegisterCandidateData } from '@/types/entities/candidate'
 import { Moment } from 'moment'
 
 export interface FormData {
-  photo: any // TODO
+  photo: UpdateAttachment | null
   name: string
   surname: string
   patronymic: string | null
@@ -16,9 +18,7 @@ export interface FormData {
   work_schedule_id: string
   work_type_id: string
   work_experience_id: string
-  _salary: number // TODO
-  _siteNotifications: boolean // TODO
-  _tgNotifications: boolean // TODO
+  salary_expectation: number
   work_history: {
     company: string
     job_title: string
@@ -26,4 +26,18 @@ export interface FormData {
     start_date: Moment
     end_date: Moment | null
   }[]
+  site_notifications: boolean
+  tg_notifications: boolean
+}
+
+export const transformData = (data: FormData): RegisterCandidateData => {
+  return {
+    ...data,
+    birthday: data.birthday.toISOString(),
+    work_history: data.work_history.map((i) => ({
+      ...i,
+      start_date: i.start_date.toISOString(),
+      end_date: i.end_date ? i.end_date.toISOString() : null,
+    })),
+  }
 }

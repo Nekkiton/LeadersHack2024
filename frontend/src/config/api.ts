@@ -5,7 +5,11 @@ import {
   RegisterData,
   ResetPasswordData,
 } from '@/types/entities/auth'
-import { Candidate, GetCandidatesParams } from '@/types/entities/candidate'
+import {
+  Candidate,
+  GetCandidatesParams,
+  UpdateCandidateData,
+} from '@/types/entities/candidate'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter } from '@/types/entities/recruiter'
@@ -259,7 +263,8 @@ export const Api = {
         .then((res) => res.data)
         .catch(() => candidate),
     me: {
-      updateProfile: (data: any) => Axios.patch('/candidates/me/', data), // TODO: data type
+      updateProfile: (data: UpdateCandidateData) =>
+        Axios.patch('/candidates/me/', data), // TODO: data type
       updateProfileFromFile: (data: any) => Axios.post('/candidates/me/', data), // TODO: data type
       responses: () =>
         Axios.get<{
