@@ -58,3 +58,28 @@ jobs:
           docker rmi $DOCKER_METADATA_OUTPUT_TAGS
           docker builder prune -f
 
+  deploy:
+      needs: build-and-push
+      name: deploy backend
+      if: inputs.context == 'api'
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: connect and pull
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo docker pull leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest
+            sudo docker run -d -t -i -e MONGO_HOST=${{ secrets.MONGO_HOST }} \ 
+              -e MONGO_USERNAME=${{ secrets.MONGO_USERNAME }} \
+              -e MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} \
+              -e MONGO_DATABASE=${{ secrets.MONGO_DATABASE }} \
+              -e JWT_PUBLIC_KEY_PATH='~/.ssh/jwtRS256.key.pub' \
+              -e JWT_PRIVATE_KEY_PATH='~/.ssh/jwtRS256.key' \
+              -e JWT_ALGORITHM='HS256' \
+              -e ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
+              --name leaders_backend
