@@ -23,6 +23,12 @@
   gap: 24px;
 }
 
+.headerMatchPercent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .headerTag {
   @include caption-1;
 

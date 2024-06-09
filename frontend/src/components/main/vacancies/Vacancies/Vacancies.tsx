@@ -14,7 +14,7 @@ import styles from './Vacancies.module.scss'
 import Pagination from '@/components/ui/Pagination'
 
 interface Props {
-  role?: Role
+  role: Role
 }
 
 export default function Vacancies({ role }: Props) {
@@ -24,6 +24,7 @@ export default function Vacancies({ role }: Props) {
       statuses: [],
       recruiters: [],
       work_scopes: [],
+      skills: [],
     },
   })
   const { watch } = formMethods
@@ -43,7 +44,7 @@ export default function Vacancies({ role }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Вакансии</h1>
+        <h1>{role === Role.Candidate ? 'Вакансии для вас' : 'Вакансии'}</h1>
         {role === Role.Recruiter && vacanciesExist !== false && (
           <Button type="primary" href={Routes.recruiterNewVacancy}>
             <Icon icon="plus" />
@@ -53,7 +54,7 @@ export default function Vacancies({ role }: Props) {
       </div>
       {vacanciesExist && (
         <FormProvider {...formMethods}>
-          <VacanciesFilters />
+          <VacanciesFilters role={role} />
         </FormProvider>
       )}
       <RemoteData
@@ -75,19 +76,27 @@ export default function Vacancies({ role }: Props) {
                   </Button>
                 </>
               )}
+              {role === Role.Candidate && (
+                <p>
+                  Сейчас для вас нет подходящих
+                  <br />
+                  вакансий
+                </p>
+              )}
             </div>
           ) : (
             <>
               {vacancies.data.map((vacancy) => (
                 <Link
                   href={
-                    role === Role.Recruiter
-                      ? Routes.recruiterVacancy(vacancy.id)
-                      : '#'
+                    {
+                      [Role.Recruiter]: Routes.recruiterVacancy(vacancy.id),
+                      [Role.Candidate]: Routes.candidateVacancy(vacancy.id),
+                    }[role]
                   }
                   key={vacancy.id}
                 >
-                  <VacancyCard vacancy={vacancy} />
+                  <VacancyCard vacancy={vacancy} role={role} />
                 </Link>
               ))}
               <Pagination

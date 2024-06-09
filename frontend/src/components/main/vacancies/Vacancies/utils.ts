@@ -5,6 +5,7 @@ export interface FiltersFormData {
   statuses: string[]
   recruiters: string[]
   work_scopes: string[]
+  skills: string[]
 }
 
 export const transformFilters = (data: FiltersFormData): GetVacanciesParams => {

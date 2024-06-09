@@ -44,4 +44,5 @@ export interface GetVacanciesParams {
   statuses?: string[]
   recruiters?: string[]
   work_scopes?: string[]
+  skills?: string[]
 }
