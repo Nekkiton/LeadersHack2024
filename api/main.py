@@ -1,11 +1,12 @@
-from datetime import datetime
 from bson import ObjectId
 from fastapi import FastAPI
+from datetime import datetime
 from fastapi.encoders import ENCODERS_BY_TYPE
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers.auth.router import router as Authentication
 from app.routers.user.router import router as User
+from app.routers.common.router import router as Common
 from app.settings import Settings
 
 ENCODERS_BY_TYPE[ObjectId] = lambda x: str(x)
@@ -27,3 +28,4 @@ app.add_middleware(
 
 app.include_router(Authentication)
 app.include_router(User)
+app.include_router(Common)

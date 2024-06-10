@@ -1,6 +1,7 @@
 from bson import ObjectId
 from decimal import Decimal
 from datetime import datetime
+from literals import Education, Skills, WorkExperience, WorkSchedule, WorkType
 from pydantic_core import core_schema
 from typing import Any, List, Literal, Optional
 from pydantic import BaseModel, EmailStr, Field
@@ -64,13 +65,13 @@ class CandidatePost(BaseModel):
     birthday: datetime
     city: str
     job_title: str
-    education_id: OID
-    work_schedule_id: OID
-    work_type_id: OID
-    work_experience_id: OID
+    education: Education
+    work_schedule: WorkSchedule
+    work_type: WorkType
+    work_experience: WorkExperience
     work_history: List[WorkHistoryItem]
     salary_expectation: Decimal = Field(decimal_places=2)
-    skills: List[OID]
+    skills: List[Skills]
 
 
 class CandidateResponse(CandidatePost, UserResponse):
