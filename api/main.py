@@ -5,6 +5,7 @@ from fastapi.encoders import ENCODERS_BY_TYPE
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers.auth.router import router as Authentication
+from app.routers.candidate.router import router as Candidate
 from app.settings import Settings
 
 ENCODERS_BY_TYPE[ObjectId] = lambda x: str(x)
@@ -25,3 +26,4 @@ app.add_middleware(
 )
 
 app.include_router(Authentication)
+app.include_router(Candidate)

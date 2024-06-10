@@ -7,10 +7,10 @@ from fastapi import APIRouter, Depends, Response
 
 from app.utils import get_now
 from app.database import Users
+from app.utils import validate_password, hash_password
 from app.schemas import RecruiterResponse, CandidateResponse, UserBaseResponse
 from app.oauth import create_access_token, create_tokens, require_refresh, delete_tokens
 
-from .utils import validate_password, hash_password
 from .schemas import LoginRequest, RegisterRequest, ResetPasswordRequest, ForgotPasswordRequest
 from .exceptions import INCORRECT_EMAIL_OR_PASSWORD, EMAIL_ALREADY_EXISTS, INVALID_TOKEN
 

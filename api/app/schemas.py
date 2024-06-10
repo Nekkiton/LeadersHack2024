@@ -1,7 +1,7 @@
 from datetime import datetime
 from bson import ObjectId
 from pydantic_core import core_schema
-from typing import Any, List, Literal, Optional
+from typing import Any, List, Literal, Optional, Type
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_extra_types.phone_numbers import PhoneNumber
 

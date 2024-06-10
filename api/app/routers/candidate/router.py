@@ -1,12 +1,13 @@
 from fastapi import APIRouter
 
 from api.app.database import Users
-from api.app.exceptions import ALREADY_COMPLETE
+from api.app.exceptions import ALREADY_COMPLETE, BAD_OLD_PASSWORD
+from api.app.routers.candidate.schemas import CandidateUpdate
 from api.app.schemas import CandidateResponse, CandidatePost
 from api.app.oauth import RequiredCandidateID, RequiredUserID
-from api.app.utils import get_now
+from api.app.utils import get_now, hash_password, validate_password
 
-router = APIRouter()
+router = APIRouter(tags=["Соискатель"], prefix="/candidate")
 
 
 @router.post(
@@ -44,3 +45,20 @@ async def complete_as_candidate(
 async def get_self_candidate(user_id: RequiredCandidateID):
     return Users.find_one({"_id": user_id})
 
+
+@router.patch(
+    "/self",
+    name="Обновить себя",
+    response_model=CandidateResponse
+    )
+async def update_self_candidate(user_id: RequiredCandidateID, payload: CandidateUpdate):
+    user = Users.find_one({"_id": user_id})
+    update_data = {
+        **payload.model_dump(exclude_unset=True, exclude_none=True, exclude={'old_password', 'new_password'}),
+        "updated_at": get_now()
+    }
+    if payload.old_password:
+        if not validate_password(payload.old_password, user["password"]):
+            raise BAD_OLD_PASSWORD
+        update_data["password"] = hash_password(payload.new_password)
+    return Users.find_one_and_update({"_id": user_id}, {"$set": update_data})
