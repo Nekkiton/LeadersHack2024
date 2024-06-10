@@ -48,7 +48,7 @@ class WorkHistoryItem(BaseModel):
     company: str
     job_title: str
     start_date: datetime
-    end_date: Optional[datetime]
+    end_date: Optional[datetime] = None
     responsabilites: str
 
 
@@ -58,7 +58,7 @@ class CandidatePost(BaseModel):
     """
     name: str
     surname: str
-    patronymic: Optional[str]
+    patronymic: Optional[str] = None
     phone: PhoneNumber
     telegram: str
     birthday: datetime
