@@ -1,8 +1,8 @@
 from pydantic import Field, model_validator
 from typing import Optional, Self
 
-from api.app.schemas import CandidatePost
-from api.app.utils import optional
+from app.schemas import CandidatePost
+from app.utils import optional
 
 
 class CandidateUpdate(optional(CandidatePost)):

@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
-from api.app.database import Users
-from api.app.exceptions import ALREADY_COMPLETE, BAD_OLD_PASSWORD
-from api.app.routers.candidate.schemas import CandidateUpdate
-from api.app.schemas import CandidateResponse, CandidatePost
-from api.app.oauth import RequiredCandidateID, RequiredUserID
-from api.app.utils import get_now, hash_password, validate_password
+from app.database import Users
+from app.exceptions import ALREADY_COMPLETE, BAD_OLD_PASSWORD
+from app.routers.candidate.schemas import CandidateUpdate
+from app.schemas import CandidateResponse, CandidatePost
+from app.oauth import RequiredCandidateID, RequiredUserID
+from app.utils import get_now, hash_password, validate_password
 
 router = APIRouter(tags=["Соискатель"], prefix="/candidate")
 
