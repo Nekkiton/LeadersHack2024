@@ -242,10 +242,6 @@ export const Api = {
 
   // TODO
   recruiters: {
-    all: () =>
-      Axios.get<Recruiter[]>('/recruiters/')
-        .then((res) => res.data)
-        .catch(() => [recruiter]),
     me: {
       updateProfile: (data: UpdateRecruiterData) =>
         Axios.patch('/recruiters/me/', data),
