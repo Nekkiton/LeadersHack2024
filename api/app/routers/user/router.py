@@ -1,10 +1,11 @@
 from fastapi import APIRouter
+from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
-from app.utils import get_now, hash_password, validate_password
 from app.database import Users
 from app.oauth import RequiredCandidateID, RequiredUserID
 from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED
+from app.utils import get_now, hash_password, validate_password
 from app.schemas import CandidateResponse, CandidatePost, UserResponse
 
 from .schemas import PasswordUpdate
@@ -55,7 +56,8 @@ async def fill_as_candidate(
                     "updated_at": get_now(),
                     "filled": True,
                 }
-            }
+            },
+            return_document=ReturnDocument.AFTER
         )
     except DuplicateKeyError:
         raise EMAIL_ALREADY_USED
