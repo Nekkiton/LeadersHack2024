@@ -8,7 +8,6 @@ from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
 from fastapi.security.utils import get_authorization_scheme_param
 
-from api.app.schemas import Role
 from app.database import Users
 from app.settings import Settings
 from app.exceptions import FILL_CANDIDATE, ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
