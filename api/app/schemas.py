@@ -1,7 +1,6 @@
 from bson import ObjectId
-from decimal import Decimal
 from datetime import datetime
-from literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
+from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
 from pydantic_core import core_schema
 from typing import Any, List, Literal, Optional
 from pydantic import BaseModel, EmailStr, Field
