@@ -1,3 +1,5 @@
+import Home from '@/components/main/Home'
+
 export default function HomePage() {
-  return <h1>Leaders Hack 2024!</h1>
+  return <Home />
 }

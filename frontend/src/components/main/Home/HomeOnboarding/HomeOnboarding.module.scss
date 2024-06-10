@@ -1,0 +1,44 @@
+@import '@/assets/css/config';
+
+.outerContainer {
+  @include content;
+}
+
+.container {
+  display: flex;
+  gap: 99px;
+  background: $white;
+  border-radius: 8px;
+  overflow: hidden;
+
+  > * {
+    width: 100%;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+}
+
+.mainText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mainTextHint {
+  color: $gray-3;
+}
+
+.mainControls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.img {
+  width: 110%;
+}
