@@ -83,7 +83,7 @@ jobs:
               -e MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }} \
               -e JWT_PUBLIC_KEY_PATH='/cert/jwtRS256.key.pub' \
               -e JWT_PRIVATE_KEY_PATH='/cert/jwtRS256.key' \
-              -e JWT_ALGORITHM='HS256' \
+              -e JWT_ALGORITHM='RS256' \
               -e ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
               --net bridge \
               --name leaders_backend \
