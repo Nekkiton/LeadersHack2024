@@ -49,7 +49,7 @@ class WorkHistoryItem(BaseModel):
     company: str
     job_title: str
     start_date: datetime
-    end_date: datetime
+    end_date: Optional[datetime]
     responsabilites: str
 
 
