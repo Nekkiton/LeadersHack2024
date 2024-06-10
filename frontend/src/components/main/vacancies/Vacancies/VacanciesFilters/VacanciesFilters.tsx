@@ -1,11 +1,9 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { VacancyStatuses } from '@/types/entities/vacancy'
-import { useRecruiters } from '@/api/recruiters'
-import { getUserName } from '@/lib/get-user-name'
 import { useWorkScopes } from '@/api/work-scopes'
 import { useSkills } from '@/api/skills'
 import { Role } from '@/types/entities/user'
-import { FiltersFormData } from '../utils'
+import { CandidateFiltersFormData, RecruiterFiltersFormData } from '../utils'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
@@ -21,9 +19,10 @@ interface Props {
 }
 
 export default function VacanciesFilters({ role }: Props) {
-  const { control, formState, reset } = useFormContext<FiltersFormData>()
+  const { control, formState, reset } = useFormContext<
+    CandidateFiltersFormData & RecruiterFiltersFormData
+  >()
 
-  const recruiters = useRecruiters({ enabled: role === Role.Recruiter })
   const skills = useSkills({ enabled: role === Role.Candidate })
   const workScopes = useWorkScopes()
 
@@ -57,40 +56,6 @@ export default function VacanciesFilters({ role }: Props) {
               renderItem={({ key }) => (
                 <VacancyStatus status={key as keyof typeof VacancyStatuses} />
               )}
-              multiple
-              longPopover
-            />
-          )}
-        />
-      )}
-      {role === Role.Recruiter && (
-        <Controller
-          control={control}
-          name="recruiters"
-          render={({ field }) => (
-            <Select
-              {...field}
-              placeholder="Все рекрутеры"
-              items={
-                recruiters.status === 'success'
-                  ? recruiters.value.map((recruiter) => ({
-                      key: recruiter.id,
-                      value: recruiter,
-                    }))
-                  : []
-              }
-              renderItem={({ value }) => (
-                <div className={styles.recruiter}>
-                  <Image
-                    className={styles.recruiterImg}
-                    src={value.photo ?? userImg}
-                    width={60}
-                    height={60}
-                  />
-                  <p>{getUserName(value, 'Name Surname')}</p>
-                </div>
-              )}
-              withConfirmation
               multiple
               longPopover
             />

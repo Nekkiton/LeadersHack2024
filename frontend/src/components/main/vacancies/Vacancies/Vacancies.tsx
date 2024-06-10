@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Role } from '@/types/entities/user'
-import { useVacancies } from '@/api/vacancies'
+import {
+  useCurCandidateVacancies,
+  useCurRecruiterVacancies,
+} from '@/api/vacancies'
 import { Routes } from '@/config/routes'
-import { FiltersFormData, transformFilters } from './utils'
+import {
+  CandidateFiltersFormData,
+  RecruiterFiltersFormData,
+  transformCandidateFilters,
+  transformRecruiterFilters,
+} from './utils'
 import Link from 'next/link'
 import RemoteData from '@/components/special/RemoteData'
 import Button from '@/components/ui/Button'
@@ -18,12 +26,13 @@ interface Props {
 }
 
 export default function Vacancies({ role }: Props) {
-  const formMethods = useForm<FiltersFormData>({
+  const formMethods = useForm<
+    CandidateFiltersFormData & RecruiterFiltersFormData
+  >({
     defaultValues: {
       query: null,
-      statuses: [],
-      recruiters: [],
       work_scopes: [],
+      statuses: [],
       skills: [],
     },
   })
@@ -33,13 +42,27 @@ export default function Vacancies({ role }: Props) {
   const [page, setPage] = useState(1)
   const [vacanciesExist, setVacanciesExist] = useState<null | boolean>(null)
 
-  const vacancies = useVacancies({ ...transformFilters(filters), page })
+  const candidateVacancies = useCurCandidateVacancies(
+    { ...transformCandidateFilters(filters), page },
+    { enabled: role === Role.Candidate }
+  )
+  const recruiterVacancies = useCurRecruiterVacancies(
+    { ...transformRecruiterFilters(filters), page },
+    { enabled: role === Role.Recruiter }
+  )
 
   useEffect(() => {
-    if (vacanciesExist === null && vacancies.status === 'success') {
-      setVacanciesExist(!!vacancies.value.data.length)
+    if (vacanciesExist === null) {
+      if (role === Role.Candidate && candidateVacancies.status === 'success') {
+        setVacanciesExist(!!candidateVacancies.value.data.length)
+      } else if (
+        role === Role.Recruiter &&
+        recruiterVacancies.status === 'success'
+      ) {
+        setVacanciesExist(!!recruiterVacancies.value.data.length)
+      }
     }
-  }, [vacancies, vacanciesExist])
+  }, [vacanciesExist, candidateVacancies, recruiterVacancies, role])
 
   return (
     <div className={styles.container}>
@@ -58,7 +81,7 @@ export default function Vacancies({ role }: Props) {
         </FormProvider>
       )}
       <RemoteData
-        data={vacancies}
+        data={role === Role.Candidate ? candidateVacancies : recruiterVacancies}
         renderSuccess={(vacancies) =>
           !vacanciesExist ? (
             <div className={styles.nothing}>

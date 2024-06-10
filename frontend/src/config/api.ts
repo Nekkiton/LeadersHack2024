@@ -13,7 +13,7 @@ import {
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
-import { Recruiter } from '@/types/entities/recruiter'
+import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import {
   ResponseStage,
   ResponseStageStatus,
@@ -22,6 +22,8 @@ import { Skill } from '@/types/entities/skill'
 import { Stage } from '@/types/entities/stage'
 import { BaseUser, Role, User } from '@/types/entities/user'
 import {
+  GetCandidateVacanciesParams,
+  GetRecruiterVacanciesParams,
   GetVacanciesParams,
   Vacancy,
   VacancyStatus,
@@ -216,30 +218,37 @@ const responseStage3: ResponseStage = {
 
 export const Api = {
   auth: {
+    // done
     login: (data: LoginData) =>
       Axios.post<User | BaseUser>('/login', data).then((res) => res.data),
     register: (data: RegisterData) => Axios.post('/registration', data),
     logout: () => Axios.post('/logout'),
+    // TODO
     forgotPassword: (data: ForgotPasswordData) =>
       Axios.post('/auth/forgot-password/', data),
     resetPassword: (data: ResetPasswordData) =>
       Axios.post('/auth/reset-password/', data),
   },
 
+  // done
   users: {
     me: () =>
       Axios.get<User | BaseUser>('/user')
         .then((res) => res.data)
+        // .catch(() => candidate as User),
+        // .catch(() => recruiter as User),
         .catch(() => null),
   },
 
+  // TODO
   recruiters: {
-    all: () =>
-      Axios.get<Recruiter[]>('/recruiters/')
-        .then((res) => res.data)
-        .catch(() => [recruiter]),
     me: {
-      updateProfile: (data: any) => Axios.patch('/recruiters/me/', data), // TODO: data type
+      updateProfile: (data: UpdateRecruiterData) =>
+        Axios.patch('/recruiters/me/', data),
+      vacancies: (params?: GetRecruiterVacanciesParams) =>
+        Axios.get<Paginated<Vacancy[]>>('/recruiter/me/vacancies', {
+          params,
+        }).then((res) => res.data),
     },
   },
 
@@ -271,6 +280,10 @@ export const Api = {
             responses: [[responseStage1], [responseStage1, responseStage2]],
             invites: [[responseStage1], [responseStage1, responseStage2]],
           })),
+      vacancies: (params?: GetCandidateVacanciesParams) =>
+        Axios.get<Paginated<Vacancy[]>>('/candidate/me/vacancies', {
+          params,
+        }).then((res) => res.data),
     },
   },
 
@@ -369,6 +382,8 @@ export const Api = {
     respond: ({ pk, ...data }: any) =>
       Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
   },
+
+  // done
 
   workScopes: {
     all: () =>

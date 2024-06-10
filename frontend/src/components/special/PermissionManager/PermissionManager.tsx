@@ -54,6 +54,12 @@ export default function PermissionManager({ permission, children }: Props) {
       ) {
         router.replace(Routes.home)
         return loader
+      } else if (
+        !user.value.name &&
+        router.pathname !== Routes.candidateProfile &&
+        router.pathname !== Routes.recruiterProfile
+      ) {
+        return loader
       }
     } else {
       return loader

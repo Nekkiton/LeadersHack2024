@@ -25,7 +25,12 @@ export default function RecruiterProfileBaseInfo() {
               name="surname"
               rules={{ required: true }}
               render={({ field, fieldState }) => (
-                <Input {...field} error={fieldState.error} label="Фамилия" />
+                <Input
+                  {...field}
+                  error={fieldState.error}
+                  label="Фамилия"
+                  placeholder="Введите фамилию"
+                />
               )}
             />
             <Controller
@@ -33,7 +38,12 @@ export default function RecruiterProfileBaseInfo() {
               name="name"
               rules={{ required: true }}
               render={({ field, fieldState }) => (
-                <Input {...field} error={fieldState.error} label="Имя" />
+                <Input
+                  {...field}
+                  error={fieldState.error}
+                  label="Имя"
+                  placeholder="Введите имя"
+                />
               )}
             />
             <Controller
@@ -44,6 +54,7 @@ export default function RecruiterProfileBaseInfo() {
                   {...field}
                   error={fieldState.error}
                   label="Отчество"
+                  placeholder="Введите отчество"
                   notRequiredHint
                 />
               )}
@@ -70,11 +81,13 @@ export default function RecruiterProfileBaseInfo() {
             <Controller
               control={control}
               name="telegram"
+              rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
                   error={fieldState.error}
                   label="Ник в телеграм"
+                  placeholder="Введите без @"
                 />
               )}
             />
@@ -88,6 +101,7 @@ export default function RecruiterProfileBaseInfo() {
                   error={fieldState.error}
                   label="Эл. почта"
                   type="email"
+                  placeholder="Введите эл. почту"
                 />
               )}
             />
