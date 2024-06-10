@@ -81,9 +81,7 @@ export default function CandidateMain({ candidate }: Props) {
                 </div>
                 <div>
                   <p>Задачи:</p>
-                  <div className={styles.workTasks}>
-                    {work.responsibilities}
-                  </div>
+                  <div className={styles.workTasks}>{work.responsabilites}</div>
                 </div>
               </div>
             ))}

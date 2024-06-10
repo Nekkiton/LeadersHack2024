@@ -15,7 +15,20 @@ export const useCurCandidateResponses = createUseQuery(
 )
 
 export const useCurCandidateUpdateProfile = createUseMutation(
-  Api.candidates.me.updateProfile
+  Api.candidates.me.updateProfile,
+  {
+    onError: ([error], { setError }) => {
+      if (setError) {
+        const detail = (error.response?.data as any).detail
+        if (Array.isArray(detail)) {
+          detail.forEach((i) => {
+            const name = i.loc.slice(1).join('.')
+            setError(name, { message: i.msg, type: '' })
+          })
+        }
+      }
+    },
+  }
 )
 
 export const useCurCandidateUpdateProfileFromFile = createUseMutation(

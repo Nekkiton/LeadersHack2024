@@ -32,7 +32,7 @@ export default function CandidateProfileWorks() {
             addWork({
               company: '',
               job_title: '',
-              responsibilities: '',
+              responsabilites: '',
               start_date: undefined as any,
               end_date: null,
             })
@@ -116,7 +116,7 @@ export default function CandidateProfileWorks() {
           </div>
           <Controller
             control={control}
-            name={`work_history.${idx}.responsibilities`}
+            name={`work_history.${idx}.responsabilites`}
             rules={{ required: true }}
             render={({ field, fieldState }) => (
               <Textarea

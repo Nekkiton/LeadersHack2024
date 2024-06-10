@@ -37,7 +37,7 @@ const workHistory1: WorkHistory = {
   company: 'СБЕР',
   start_date: '01.01.2022',
   end_date: null,
-  responsibilities:
+  responsabilites:
     'Участие в проектировании архитектуры систем\nСерверная разработка приложений на Python3',
 }
 
@@ -47,7 +47,7 @@ const workHistory2: WorkHistory = {
   company: 'СБЕР2',
   start_date: '02.02.2022',
   end_date: '02.02.2023',
-  responsibilities:
+  responsabilites:
     'Участие в проектировании архитектуры систем\nСерверная разработка приложений на Python3',
 }
 
@@ -58,8 +58,7 @@ const recruiter: Recruiter = {
   patronymic: 'Sergeevich',
   email: 'email@ya.ru',
   phone: '+7 (999) 999-99-99',
-  telegram: null,
-  birthday: '01.01.2000',
+  telegram: 'telegram',
   photo: null,
   role: Role.Recruiter,
   notifications: [],
@@ -130,8 +129,7 @@ const vacancy: Vacancy = {
     patronymic: 'Sergeevich',
     email: 'email@ya.ru',
     phone: '+7 (999) 999-99-99',
-    telegram: null,
-    birthday: '01.01.2000',
+    telegram: 't',
     photo: null,
     role: Role.Recruiter,
     notifications: [],
@@ -260,7 +258,7 @@ export const Api = {
         .catch(() => candidate),
     me: {
       updateProfile: (data: UpdateCandidateData) =>
-        Axios.patch('/candidates/me/', data), // TODO: data type
+        Axios.put('/user/candidate', data),
       updateProfileFromFile: (data: any) => Axios.post('/candidates/me/', data), // TODO: data type
       responses: () =>
         Axios.get<{
@@ -325,9 +323,9 @@ export const Api = {
                 name: 'Alexey',
                 surname: 'Levedev',
                 patronymic: 'Sergeevich',
+                telegram: 'f',
                 email: 'email@ya.ru',
                 phone: '+7 (999) 999-99-99',
-                telegram: null,
                 birthday: '01.01.2000',
                 photo: null,
                 role: Role.Recruiter,

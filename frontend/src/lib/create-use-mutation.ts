@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-query'
 import { useToasts } from '@/lib/use-toasts'
 import { AxiosError } from 'axios'
+import { UseFormSetError } from 'react-hook-form'
 
 export const createUseMutation = <Args, Data>(
   func: (args: Args) => Promise<Data>,
@@ -22,6 +23,7 @@ export const createUseMutation = <Args, Data>(
         toasts: ReturnType<typeof useToasts>
         router: NextRouter
         queryClient: QueryClient
+        setError?: UseFormSetError<any>
       }
     ) => boolean | void
     onSuccess?: (
@@ -34,7 +36,10 @@ export const createUseMutation = <Args, Data>(
     ) => void
   }
 ) => {
-  return () => {
+  return (extraOptions?: {
+    setError?: UseFormSetError<any>
+    handleError?: boolean
+  }) => {
     const queryClient = useQueryClient()
     const toasts = useToasts()
     const router = useRouter()
@@ -55,10 +60,17 @@ export const createUseMutation = <Args, Data>(
         })
       },
       onError: (...args_) => {
-        if (!options?.onError?.(args_, { toasts, router, queryClient })) {
-          console.log('ERROR')
-          console.log(args_[0])
-          if ((args_[0].response?.data as any)?.detail) {
+        if (
+          !options?.onError?.(args_, {
+            toasts,
+            router,
+            queryClient,
+            setError: extraOptions?.setError,
+          }) &&
+          (extraOptions?.handleError ?? true)
+        ) {
+          const detail = (args_[0].response?.data as any)?.detail
+          if (typeof detail === 'string') {
             toasts.error({
               content: (args_[0].response?.data as any)?.detail,
             })

@@ -148,6 +148,7 @@ export default function RecruiterProfileBaseInfo() {
             <Controller
               control={control}
               name="telegram"
+              rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Input
                   {...field}

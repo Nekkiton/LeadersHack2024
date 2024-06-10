@@ -16,10 +16,9 @@ export interface User extends BaseEntity {
   surname: string
   name: string
   patronymic: string | null
-  birthday: string | null
   phone: string
   email: string
-  telegram: string | null
+  telegram: string
   photo?: Attachment | null
   role: Role
   notifications: string[] // TODO
