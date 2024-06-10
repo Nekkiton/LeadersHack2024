@@ -2,19 +2,25 @@ import { User, Role } from '@/types/entities/user'
 import { ResponseStage } from '@/types/entities/response-stage'
 import { UpdateWorkHistory, WorkHistory } from '@/types/entities/work-history'
 import { UpdateAttachment } from '@/types/entities/attachment'
+import { City } from '@/types/entities/city'
+import { Education } from '@/types/entities/education'
+import { WorkSchedule } from '@/types/entities/work-schedule'
+import { WorkType } from '@/types/entities/work-type'
+import { WorkExperience } from '@/types/entities/work-experience'
+import { Skill } from '@/types/entities/skill'
 
 export interface Candidate extends User {
   role: Role.Candidate
-  city: string
+  city: City
   birthday: string
   job_title: string
-  education_id: string
-  work_schedule_id: string
-  work_type_id: string
-  work_experience_id: string
+  education: Education
+  work_schedule: WorkSchedule
+  work_type: WorkType
+  work_experience: WorkExperience
+  skills: Skill[]
   // work_history: string[] // TODO
   work_history?: WorkHistory[] // TODO
-  skills: string[] // TODO
   // responces: string[] // TODO
   responses?: ResponseStage[]
   vacancy_match?: number
@@ -35,15 +41,15 @@ export interface UpdateCandidateData {
   patronymic: string | null
   birthday: string
   city: string
-  education_id: string
+  education: Education
   phone: string
   telegram: string
   email: string
-  skills: string[] // array of ids
+  skills: Skill[]
   job_title: string
-  work_schedule_id: string
-  work_type_id: string
-  work_experience_id: string
+  work_schedule: WorkSchedule
+  work_type: WorkType
+  work_experience: WorkExperience
   salary_expectation: number
   work_history: UpdateWorkHistory[]
   site_notifications: boolean

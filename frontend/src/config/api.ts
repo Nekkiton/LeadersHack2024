@@ -10,6 +10,7 @@ import {
   GetCandidatesParams,
   UpdateCandidateData,
 } from '@/types/entities/candidate'
+import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter } from '@/types/entities/recruiter'
@@ -80,11 +81,11 @@ const candidate: Candidate = {
   city: 'Moscow',
   skills: ['skill 1', 'skill 2'],
   job_title: 'Jot title',
-  work_experience_id: '1',
-  education_id: '1',
+  work_experience: '1',
+  education: '1',
   work_history: [workHistory1, workHistory2],
-  work_schedule_id: '1',
-  work_type_id: '1',
+  work_schedule: '1',
+  work_type: '1',
   notifications: [],
   responses: [],
   salary_expectation: 100000,
@@ -371,45 +372,38 @@ export const Api = {
 
   workScopes: {
     all: () =>
-      Axios.get<WorkScope[]>('/work-scopes/')
-        .then((res) => res.data)
-        .catch(() => [{ id: '1', scope: 'Аналитика' }] as WorkScope[]),
+      Axios.get<WorkScope[]>('/common/work-scopes').then((res) => res.data),
   },
 
   workTypes: {
     all: () =>
-      Axios.get<WorkType[]>('/work-types/')
-        .then((res) => res.data)
-        .catch(() => [{ id: '1', type: 'Type 1' }] as WorkType[]),
+      Axios.get<WorkType[]>('/common/work-types').then((res) => res.data),
   },
 
   workSchedules: {
     all: () =>
-      Axios.get<WorkSchedule[]>('/work-schedules/')
-        .then((res) => res.data)
-        .catch(() => [{ id: '1', schedule: 'Schedule 1' }] as WorkSchedule[]),
+      Axios.get<WorkSchedule[]>('/common/work-schedules').then(
+        (res) => res.data
+      ),
   },
 
   workExperiences: {
     all: () =>
-      Axios.get<WorkExperience[]>('/work-experiences/')
-        .then((res) => res.data)
-        .catch(
-          () => [{ id: '1', experience: 'Experience 1' }] as WorkExperience[]
-        ),
+      Axios.get<WorkExperience[]>('/common/work-experiences').then(
+        (res) => res.data
+      ),
   },
 
   skills: {
-    all: () =>
-      Axios.get<Skill[]>('/skills/')
-        .then((res) => res.data)
-        .catch(() => [{ id: '1', skill: 'Skill 1' }] as Skill[]),
+    all: () => Axios.get<Skill[]>('/common/skills').then((res) => res.data),
   },
 
   educations: {
     all: () =>
-      Axios.get<Education[]>('/educations/')
-        .then((res) => res.data)
-        .catch(() => [{ id: '1', education: 'Education 1' }] as Education[]),
+      Axios.get<Education[]>('/common/educations').then((res) => res.data),
+  },
+
+  cities: {
+    all: () => Axios.get<City[]>('/common/cities').then((res) => res.data),
   },
 }

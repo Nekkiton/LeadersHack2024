@@ -1,5 +1,7 @@
-import { BaseEntity } from '@/types/entities/base-entity'
+export type WorkSchedule = string
 
-export interface WorkSchedule extends BaseEntity {
-  schedule: string
-}
+// import { BaseEntity } from '@/types/entities/base-entity'
+
+// export interface WorkSchedule extends BaseEntity {
+//   schedule: string
+// }

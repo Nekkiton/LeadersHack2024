@@ -106,7 +106,7 @@ export default function VacanciesFilters({ role }: Props) {
             placeholder="Все направления"
             items={
               workScopes.status === 'success'
-                ? workScopes.value.map((i) => ({ key: i.id, value: i.scope }))
+                ? workScopes.value.map((i) => ({ key: i, value: i }))
                 : []
             }
             withConfirmation
@@ -126,7 +126,7 @@ export default function VacanciesFilters({ role }: Props) {
               placeholder="Все ключевые навыки"
               items={
                 skills.status === 'success'
-                  ? skills.value.map((i) => ({ key: i.id, value: i.skill }))
+                  ? skills.value.map((i) => ({ key: i, value: i }))
                   : []
               }
               withConfirmation

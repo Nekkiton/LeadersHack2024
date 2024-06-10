@@ -46,7 +46,7 @@ export default function VacancyFormInfo() {
               placeholder="Выберите из списка"
               items={
                 workScopes.status === 'success'
-                  ? workScopes.value.map((i) => ({ key: i.id, value: i.scope }))
+                  ? workScopes.value.map((i) => ({ key: i, value: i }))
                   : []
               }
             />
@@ -128,7 +128,7 @@ export default function VacancyFormInfo() {
               placeholder="Выберите из списка"
               items={
                 workTypes.status === 'success'
-                  ? workTypes.value.map((i) => ({ key: i.id, value: i.type }))
+                  ? workTypes.value.map((i) => ({ key: i, value: i }))
                   : []
               }
             />
@@ -147,8 +147,8 @@ export default function VacancyFormInfo() {
               items={
                 workSchedules.status === 'success'
                   ? workSchedules.value.map((i) => ({
-                      key: i.id,
-                      value: i.schedule,
+                      key: i,
+                      value: i,
                     }))
                   : []
               }
@@ -170,8 +170,8 @@ export default function VacancyFormInfo() {
               items={
                 workExperiences.status === 'success'
                   ? workExperiences.value.map((i) => ({
-                      key: i.id,
-                      value: i.experience,
+                      key: i,
+                      value: i,
                     }))
                   : []
               }

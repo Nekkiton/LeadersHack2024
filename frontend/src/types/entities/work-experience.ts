@@ -1,5 +1,7 @@
-import { BaseEntity } from '@/types/entities/base-entity'
+export type WorkExperience = string
 
-export interface WorkExperience extends BaseEntity {
-  experience: string
-}
+// import { BaseEntity } from '@/types/entities/base-entity'
+
+// export interface WorkExperience extends BaseEntity {
+//   experience: string
+// }

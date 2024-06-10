@@ -91,7 +91,7 @@ const BaseInput = <Type extends InputType = 'text'>(
     const val = e.target.value
     if (val === '') {
       baseOnChange?.(null)
-    } else if (type === 'number') {
+    } else if (baseType === 'number') {
       baseOnChange?.(+val as Type extends 'number' ? number : string)
     } else {
       baseOnChange?.(val as Type extends 'number' ? number : string)

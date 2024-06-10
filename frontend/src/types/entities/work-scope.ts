@@ -1,5 +1,7 @@
-import { BaseEntity } from '@/types/entities/base-entity'
+export type WorkScope = string
 
-export interface WorkScope extends BaseEntity {
-  scope: string
-}
+// import { BaseEntity } from '@/types/entities/base-entity'
+
+// export interface WorkScope extends BaseEntity {
+//   scope: string
+// }

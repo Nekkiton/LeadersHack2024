@@ -1,6 +1,11 @@
 import { UpdateAttachment } from '@/types/entities/attachment'
 import { Candidate, UpdateCandidateData } from '@/types/entities/candidate'
+import { Education } from '@/types/entities/education'
+import { Skill } from '@/types/entities/skill'
 import { BaseUser } from '@/types/entities/user'
+import { WorkExperience } from '@/types/entities/work-experience'
+import { WorkSchedule } from '@/types/entities/work-schedule'
+import { WorkType } from '@/types/entities/work-type'
 import moment, { Moment } from 'moment'
 
 export interface FormData {
@@ -10,15 +15,15 @@ export interface FormData {
   patronymic: string | null
   birthday: Moment
   city: string
-  education_id: string
+  education: Education
   phone: string
   telegram: string
   email: string
-  skills: string[]
+  skills: Skill[]
   job_title: string
-  work_schedule_id: string
-  work_type_id: string
-  work_experience_id: string
+  work_schedule: WorkSchedule
+  work_type: WorkType
+  work_experience: WorkExperience
   salary_expectation: number
   work_history: {
     company: string

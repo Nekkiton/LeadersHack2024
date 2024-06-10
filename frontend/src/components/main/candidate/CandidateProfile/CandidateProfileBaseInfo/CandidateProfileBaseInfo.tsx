@@ -1,10 +1,10 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { useEducations } from '@/api/educations'
-import { Cities } from '@/config/cities'
 import { useSkills } from '@/api/skills'
 import { useWorkSchedules } from '@/api/work-schedules'
 import { useWorkTypes } from '@/api/work-types'
 import { useWorkExperiences } from '@/api/work-experiences'
+import { useCitites } from '@/api/cities'
 import { FormData } from '../utils'
 import AvatarUpload from '@/components/ui/AvatarUpload'
 import Input from '@/components/ui/Input'
@@ -21,6 +21,7 @@ export default function RecruiterProfileBaseInfo() {
   const workSchedules = useWorkSchedules()
   const workTypes = useWorkTypes()
   const workExperiences = useWorkExperiences()
+  const cities = useCitites()
 
   return (
     <div className={styles.container}>
@@ -99,7 +100,11 @@ export default function RecruiterProfileBaseInfo() {
                   error={fieldState.error}
                   label="Город"
                   placeholder="Выберите из списка"
-                  items={Cities.map((i) => ({ key: i, value: i }))}
+                  items={
+                    cities.status === 'success'
+                      ? cities.value.map((i) => ({ key: i, value: i }))
+                      : undefined
+                  }
                   inputtable
                 />
               )}
@@ -107,7 +112,7 @@ export default function RecruiterProfileBaseInfo() {
           </div>
           <Controller
             control={control}
-            name="education_id"
+            name="education"
             rules={{ required: true }}
             render={({ field, fieldState }) => (
               <Select
@@ -119,8 +124,8 @@ export default function RecruiterProfileBaseInfo() {
                 items={
                   educations.status === 'success'
                     ? educations.value.map((i) => ({
-                        key: i.id,
-                        value: i.education,
+                        key: i,
+                        value: i,
                       }))
                     : undefined
                 }
@@ -189,7 +194,7 @@ export default function RecruiterProfileBaseInfo() {
                 maxCount={10}
                 items={
                   skills.status === 'success'
-                    ? skills.value.map((i) => ({ key: i.id, value: i.skill }))
+                    ? skills.value.map((i) => ({ key: i, value: i }))
                     : undefined
                 }
               />
@@ -211,7 +216,7 @@ export default function RecruiterProfileBaseInfo() {
           <div className={styles.mainBlockFieldsRow}>
             <Controller
               control={control}
-              name="work_schedule_id"
+              name="work_schedule"
               rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Select
@@ -222,8 +227,8 @@ export default function RecruiterProfileBaseInfo() {
                   items={
                     workSchedules.status === 'success'
                       ? workSchedules.value.map((i) => ({
-                          key: i.id,
-                          value: i.schedule,
+                          key: i,
+                          value: i,
                         }))
                       : undefined
                   }
@@ -232,7 +237,7 @@ export default function RecruiterProfileBaseInfo() {
             />
             <Controller
               control={control}
-              name="work_type_id"
+              name="work_type"
               rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Select
@@ -243,8 +248,8 @@ export default function RecruiterProfileBaseInfo() {
                   items={
                     workTypes.status === 'success'
                       ? workTypes.value.map((i) => ({
-                          key: i.id,
-                          value: i.type,
+                          key: i,
+                          value: i,
                         }))
                       : undefined
                   }
@@ -255,7 +260,7 @@ export default function RecruiterProfileBaseInfo() {
           <div className={styles.mainBlockFieldsRow}>
             <Controller
               control={control}
-              name="work_experience_id"
+              name="work_experience"
               rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Select
@@ -266,8 +271,8 @@ export default function RecruiterProfileBaseInfo() {
                   items={
                     workExperiences.status === 'success'
                       ? workExperiences.value.map((i) => ({
-                          key: i.id,
-                          value: i.experience,
+                          key: i,
+                          value: i,
                         }))
                       : undefined
                   }
