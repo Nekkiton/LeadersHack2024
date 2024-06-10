@@ -29,5 +29,5 @@ app.add_middleware(
 
 app.include_router(Authentication)
 app.include_router(User)
-app.include_router(Common)
 app.include_router(Vacancies)
+app.include_router(Common)
