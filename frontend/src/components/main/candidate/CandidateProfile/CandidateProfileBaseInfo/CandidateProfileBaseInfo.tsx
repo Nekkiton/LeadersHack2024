@@ -253,6 +253,7 @@ export default function RecruiterProfileBaseInfo() {
                         }))
                       : undefined
                   }
+                  inputtable
                 />
               )}
             />

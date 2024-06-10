@@ -28,6 +28,9 @@ export const useCurCandidateUpdateProfile = createUseMutation(
         }
       }
     },
+    onSuccess: ([], { toasts }) => {
+      toasts.info({ content: 'Профиль обновлен' })
+    },
   }
 )
 
