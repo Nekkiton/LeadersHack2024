@@ -24,7 +24,6 @@ export default function RegisterPage() {
 
   const submit = handleSubmit((data) => {
     register(data)
-    console.log(data)
   })
 
   const password = watch('password')

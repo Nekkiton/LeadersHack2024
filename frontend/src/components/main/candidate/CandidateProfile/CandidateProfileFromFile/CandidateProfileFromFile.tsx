@@ -12,7 +12,7 @@ export default function CandidateProfileFromFile() {
   const { mutate: updateProfile, status } =
     useCurCandidateUpdateProfileFromFile()
 
-  const [isModalShowed, setIsModalShowed] = useState(true)
+  const [isModalShowed, setIsModalShowed] = useState(false)
 
   const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0]

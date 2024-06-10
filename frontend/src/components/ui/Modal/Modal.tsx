@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { FormEventHandler, ReactNode } from 'react'
 import { RemoveScroll } from 'react-remove-scroll'
 import classNames from 'classnames'
 import Overlay from '@/components/ui/Overlay'
@@ -15,6 +15,8 @@ export interface ModalProps extends ModalStateProps {
   header: ReactNode
   mobileHeader?: ReactNode
   footer?: ReactNode
+  form?: boolean
+  onSubmit?: FormEventHandler<HTMLFormElement>
   children?: ReactNode
 }
 
@@ -26,8 +28,25 @@ export default function Modal({
   footer,
   children,
   isShowed,
+  form: isForm,
+  onSubmit,
   setIsShowed,
 }: ModalProps) {
+  const content = (
+    <>
+      <div className={styles.modalHeader}>
+        <div className={classNames(styles.modalTitle, styles.desktop)}>
+          {header}
+        </div>
+        <div className={classNames(styles.modalTitle, styles.mobile)}>
+          {mobileHeader}
+        </div>
+      </div>
+      {children}
+      {footer && <div className={styles.modalFooter}>{footer}</div>}
+    </>
+  )
+
   return (
     <Overlay
       className={classNames('modal', styles.container)}
@@ -36,18 +55,22 @@ export default function Modal({
     >
       <RemoveScroll>
         <span className={styles.backdrop} onClick={() => setIsShowed(false)} />
-        <div className={classNames(className, styles.modal)} style={{ width }}>
-          <div className={styles.modalHeader}>
-            <div className={classNames(styles.modalTitle, styles.desktop)}>
-              {header}
-            </div>
-            <div className={classNames(styles.modalTitle, styles.mobile)}>
-              {mobileHeader}
-            </div>
+        {isForm ? (
+          <form
+            className={classNames(className, styles.modal)}
+            style={{ width }}
+            onSubmit={onSubmit}
+          >
+            {content}
+          </form>
+        ) : (
+          <div
+            className={classNames(className, styles.modal)}
+            style={{ width }}
+          >
+            {content}
           </div>
-          {children}
-          {footer && <div className={styles.modalFooter}>{footer}</div>}
-        </div>
+        )}
       </RemoveScroll>
     </Overlay>
   )

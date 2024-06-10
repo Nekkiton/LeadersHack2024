@@ -50,7 +50,7 @@ export default function Vacancy({ id, backLink, role }: Props) {
                   onChange={setActiveKey}
                 />
                 {activeKey === 'responses' && (
-                  <VacancyResponses vacancy={vacancy} />
+                  <VacancyResponses vacancy={vacancy} role={role} />
                 )}
                 {activeKey === 'candidates' && (
                   <VacancyCandidates vacancy={vacancy} />

@@ -1,0 +1,19 @@
+.nothing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  gap: 32px;
+}
+
+.nothingIcon {
+  width: 150px;
+  height: 150px;
+}
+
+.responses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

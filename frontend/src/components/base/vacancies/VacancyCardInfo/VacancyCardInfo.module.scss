@@ -1,0 +1,21 @@
+@import '@/assets/css/config';
+
+.vacancyInfo {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+}
+
+.vacancyName {
+  @include paragraph-1;
+}
+
+.vacancyInfoKeys {
+  @include paragraph-3;
+  color: $gray-3;
+
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}

@@ -12,10 +12,10 @@ import styles from './AvatarUpload.module.scss'
 
 // TODO: get that out
 interface Attachment {
-  _id: string
+  _id?: string
   name: string
   size: number
-  data: string
+  data?: string
 }
 
 interface Props {
@@ -39,7 +39,8 @@ export default function AvatarUpload({
   const { value, setValue } = useControlValue({
     baseValue: baseValue,
     baseOnChange: baseOnChange,
-    transformBaseValue: (val) => val ?? null,
+    transformBaseValue: (val) =>
+      val ? { ...val, _id: val._id ?? generateId() } : null,
     transformValue: (val) => val,
   })
 
@@ -92,7 +93,7 @@ export default function AvatarUpload({
         />
         <Image
           className={styles.image}
-          src={value ? value.data : userImg}
+          src={value?.data ?? userImg} // TODO
           width={200}
           height={200}
         />

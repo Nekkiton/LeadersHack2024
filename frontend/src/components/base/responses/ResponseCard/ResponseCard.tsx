@@ -1,20 +1,32 @@
 import { useState } from 'react'
 import { ResponseStage } from '@/types/entities/response-stage'
+import { Routes } from '@/config/routes'
+import { Vacancy } from '@/types/entities/vacancy'
+import { Role } from '@/types/entities/user'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import RadialProgressBar from '@/components/ui/RadialProgressBar'
 import CandidateCardInfo from '@/components/base/candidates/CandidateCardInfo'
+import VacancyCardInfo from '@/components/base/vacancies/VacancyCardInfo'
 import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
 import styles from './ResponseCard.module.scss'
-import { Routes } from '@/config/routes'
 
 interface Props {
   className?: string
   response: ResponseStage
+  responseStages?: ResponseStage[]
+  vacancy: Vacancy
+  role: Role
 }
 
-export default function ResponseCard({ className, response }: Props) {
+export default function ResponseCard({
+  className,
+  response,
+  responseStages,
+  vacancy,
+  role,
+}: Props) {
   const [activeKey, setActiveKey] = useState<
     'funnel' | 'responsesHistory' | 'comments'
   >('funnel')
@@ -26,10 +38,11 @@ export default function ResponseCard({ className, response }: Props) {
           <span className={styles.headerTag}>TODO</span>
           <div className={styles.headerMathPercent}>
             <RadialProgressBar value={55} />
-            <span>55% соответствия</span>
+            {role === Role.Recruiter && <span>55% соответствия</span>}
+            {role === Role.Candidate && <span>Подходит на 55%</span>}
           </div>
         </div>
-        {response.candidate && (
+        {role === Role.Recruiter && response.candidate && (
           <Button
             type="secondary"
             href={Routes.recruiterCandidate(response.candidate.id)}
@@ -38,21 +51,39 @@ export default function ResponseCard({ className, response }: Props) {
             Открыть резюме
           </Button>
         )}
+        {role === Role.Candidate && (
+          <Button
+            type="secondary"
+            target="_blank"
+            href={Routes.candidateVacancy(vacancy.id)}
+          >
+            Открыть вакансию
+          </Button>
+        )}
       </div>
-      {response.candidate && (
+      {role === Role.Recruiter && response.candidate && (
         <CandidateCardInfo candidate={response.candidate} />
       )}
+      {role === Role.Candidate && <VacancyCardInfo vacancy={vacancy} />}
       <span className={styles.separator} />
-      <TabsLine
-        items={[
-          { key: 'funnel', value: 'Движение по воронке' },
-          { key: 'responsesHistory', value: 'История откликов' },
-          { key: 'comments', value: 'Комментарий' },
-        ]}
-        value={activeKey}
-        onChange={setActiveKey}
-      />
-      {activeKey === 'funnel' && <ResponseCardFunnel response={response} />}
+      {role === Role.Recruiter && (
+        <TabsLine
+          items={[
+            { key: 'funnel', value: 'Движение по воронке' },
+            { key: 'responsesHistory', value: 'История откликов' },
+            { key: 'comments', value: 'Комментарий' },
+          ]}
+          value={activeKey}
+          onChange={setActiveKey}
+        />
+      )}
+      {activeKey === 'funnel' && responseStages && (
+        <ResponseCardFunnel
+          responses={responseStages}
+          vacancy={vacancy}
+          role={role}
+        />
+      )}
       {activeKey !== 'funnel' && 'coming soon'}
     </div>
   )

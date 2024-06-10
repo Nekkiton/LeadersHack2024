@@ -1,15 +1,16 @@
 import { forwardRef } from 'react'
 import { StaticImageData } from 'next/image'
+import { Attachment } from '@/types/entities/attachment'
+import { Site } from '@/config/site'
 import classNames from 'classnames'
 import BaseImage from 'next/image'
-import { Site } from '@/config/site'
 import plugImg from '@/assets/images/plug.png'
 import styles from './Image.module.scss'
 
 interface Props {
   className?: string
   alt?: string
-  src: StaticImageData | string
+  src: StaticImageData | string | Attachment
   width?: number
   height?: number
 }
@@ -20,7 +21,7 @@ const Image = forwardRef<HTMLImageElement, Props>(
       className={classNames(className, styles.image)}
       ref={ref}
       alt={alt}
-      src={src}
+      src={(src as Attachment).id ? plugImg : (src as string | StaticImageData)} // TODO
       width={width}
       height={height}
       placeholder="blur"

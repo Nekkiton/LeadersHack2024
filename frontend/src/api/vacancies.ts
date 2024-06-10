@@ -6,4 +6,16 @@ export const useVacancies = createUseQuery('vacancies.all', Api.vacancies.all)
 
 export const useVacancy = createUseQuery('vacancy.one', Api.vacancies.one)
 
-export const useCreateVacancy = createUseMutation(Api.vacancies.create)
+export const useVacancyResponses = createUseQuery(
+  'vacancy.responses',
+  Api.vacancies.responses
+)
+
+export const useCreateVacancy = createUseMutation(Api.vacancies.create) // TODO: process result
+
+export const useRespondToVacancy = createUseMutation(Api.vacancies.respond, {
+  invalidateQueriesFn: () => [
+    { queryKey: ['vacancies.all'] },
+    { queryKey: ['vacancies.one'] },
+  ],
+})

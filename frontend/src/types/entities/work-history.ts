@@ -7,3 +7,7 @@ export interface WorkHistory extends BaseEntity {
   end_date: string | null
   responsibilities: string
 }
+
+export interface UpdateWorkHistory extends Omit<WorkHistory, 'id'> {
+  id?: string
+}

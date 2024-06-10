@@ -17,7 +17,7 @@ export default function CandidateProfileNotifications() {
       <div className={styles.fields}>
         <Controller
           control={control}
-          name="_siteNotifications"
+          name="site_notifications"
           render={({ field, fieldState }) => (
             <Checkbox {...field} error={fieldState.error}>
               На сайте
@@ -26,7 +26,7 @@ export default function CandidateProfileNotifications() {
         />
         <Controller
           control={control}
-          name="_tgNotifications"
+          name="tg_notifications"
           render={({ field, fieldState }) => (
             <Checkbox {...field} error={fieldState.error}>
               В telegram

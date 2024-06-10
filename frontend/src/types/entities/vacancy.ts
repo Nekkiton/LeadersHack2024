@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/types/entities/base-entity'
 import { Recruiter } from '@/types/entities/recruiter'
 import { ResponseStage } from '@/types/entities/response-stage'
+import { Stage } from '@/types/entities/stage'
 
 export enum VacancyStatus {
   Active = 'active',
@@ -34,7 +35,8 @@ export interface Vacancy extends BaseEntity {
   work_type_id: string
   work_schedule_id: string
   scope_id: string
-  stages: string[] // TODO
+  // stages: string[] // TODO
+  stages?: Stage[]
   creation_date: string
 }
 

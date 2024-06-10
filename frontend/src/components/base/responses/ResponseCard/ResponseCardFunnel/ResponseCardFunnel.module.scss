@@ -5,3 +5,68 @@
   flex-direction: column;
   gap: 8px;
 }
+
+.centerEl {
+  align-self: center;
+}
+
+.block {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.blockTitle {
+  width: 180px;
+  flex-shrink: 0;
+  color: $gray-3;
+}
+
+.blockContent {
+  flex-grow: 1;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.controlsRejectBtn {
+  color: $red !important;
+
+  &:after {
+    background: $red !important;
+  }
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  background: $gray-6;
+
+  .container:not(.inverse) &.incoming,
+  .container.inverse &.outgoing {
+    border-bottom-left-radius: 0;
+  }
+
+  .container:not(.inverse) &.outgoing,
+  .container.inverse &.incoming {
+    margin-left: auto;
+    border-bottom-right-radius: 0;
+  }
+
+  a {
+    color: $blue;
+  }
+}
+
+.messageFrom,
+.messageDate {
+  @include caption-1;
+  color: $gray-3;
+}

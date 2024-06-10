@@ -1,5 +1,6 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { useCurCandidateUpdateProfile } from '@/api/candidates'
+import { FormData, transformData } from './utils'
 import Button from '@/components/ui/Button'
 import CandidateProfileWorks from './CandidateProfileWorks'
 import CandidateProfileBaseInfo from './CandidateProfileBaseInfo'
@@ -9,13 +10,13 @@ import CandidateProfileNotifications from './CandidateProfileNotifications'
 import styles from './CandidateProfile.module.scss'
 
 export default function CandidateProfile() {
-  const formMethods = useForm() // TODO: initialValues
+  const formMethods = useForm<FormData>() // TODO: initialValues
   const { handleSubmit } = formMethods
 
   const { mutate: updateProfile, status } = useCurCandidateUpdateProfile()
 
   const submit = handleSubmit((data) => {
-    updateProfile(data)
+    updateProfile(transformData(data))
   })
 
   return (
