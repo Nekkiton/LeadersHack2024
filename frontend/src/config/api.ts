@@ -13,7 +13,7 @@ import {
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
 import { Paginated } from '@/types/entities/paginated'
-import { Recruiter } from '@/types/entities/recruiter'
+import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import {
   ResponseStage,
   ResponseStageStatus,
@@ -247,7 +247,8 @@ export const Api = {
         .then((res) => res.data)
         .catch(() => [recruiter]),
     me: {
-      updateProfile: (data: any) => Axios.patch('/recruiters/me/', data), // TODO: data type
+      updateProfile: (data: UpdateRecruiterData) =>
+        Axios.patch('/recruiters/me/', data),
       vacancies: (params?: GetRecruiterVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/recruiter/me/vacancies', {
           params,
