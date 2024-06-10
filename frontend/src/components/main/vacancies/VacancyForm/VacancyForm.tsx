@@ -56,7 +56,7 @@ export default function VacancyForm({ backLink }: Props) {
           ...i,
           approve_template: i.approve_template.replaceAll(
             'RECRUITER_NAME',
-            user.value.name
+            user.value?.name ?? '' // TODO
           ),
         })),
       })

@@ -49,7 +49,8 @@ export default function WithPopover({
 
   useEffectExceptMount(() => {
     if (!isNotInteractive && !isActive && shouldFocusAfterDeactivate.current) {
-      referenceRef.current?.focus()
+      // referenceRef.current?.focus()
+      // TODO
     }
   }, [isActive])
 

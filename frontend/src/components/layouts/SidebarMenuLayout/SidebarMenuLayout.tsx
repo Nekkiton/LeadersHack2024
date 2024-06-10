@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Routes } from '@/config/routes'
 import { useCurUser } from '@/api/users'
 import { Role } from '@/types/entities/user'
+import { useLogout } from '@/api/auth'
 import classNames from 'classnames'
 import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
@@ -19,9 +20,7 @@ export default function SidebarMenuLayout({ children }: Props) {
 
   const user = useCurUser()
 
-  const logout = () => {
-    alert('coming soon') // TODO
-  }
+  const { mutate: logout, status: logoutStatus } = useLogout()
 
   const links = {
     [Role.Recruiter]: [
@@ -89,6 +88,7 @@ export default function SidebarMenuLayout({ children }: Props) {
                 styles.sidebarLogoutBtn
               )}
               onClick={logout}
+              disabled={logoutStatus === 'pending'}
             >
               <Icon icon="logout" />
               <span>Выйти</span>

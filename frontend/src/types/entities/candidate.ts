@@ -6,6 +6,7 @@ import { UpdateAttachment } from '@/types/entities/attachment'
 export interface Candidate extends User {
   role: Role.Candidate
   city: string
+  birthday: string
   job_title: string
   education_id: string
   work_schedule_id: string
@@ -27,7 +28,7 @@ export interface GetCandidatesParams {
   page?: number
 }
 
-export interface RegisterCandidateData {
+export interface UpdateCandidateData {
   photo: UpdateAttachment | null
   name: string
   surname: string
@@ -36,7 +37,7 @@ export interface RegisterCandidateData {
   city: string
   education_id: string
   phone: string
-  telegram: string | null
+  telegram: string
   email: string
   skills: string[] // array of ids
   job_title: string
@@ -48,5 +49,3 @@ export interface RegisterCandidateData {
   site_notifications: boolean
   tg_notifications: boolean
 }
-
-export interface UpdateCandidateData extends Partial<RegisterCandidateData> {}

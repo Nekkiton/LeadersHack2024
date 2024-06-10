@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useCurUser } from '@/api/users'
 import { Role } from '@/types/entities/user'
 import { Routes } from '@/config/routes'
+import { useToasts } from '@/lib/use-toasts'
 import Spinner from '@/components/ui/Spinner'
 import styles from './PermissionManager.module.scss'
 
@@ -13,8 +14,28 @@ interface Props {
 
 export default function PermissionManager({ permission, children }: Props) {
   const router = useRouter()
+  const toasts = useToasts()
 
   const user = useCurUser({ enabled: !!permission })
+
+  useEffect(() => {
+    if (
+      permission &&
+      user.status === 'success' &&
+      user.value &&
+      !user.value.name &&
+      router.pathname !== Routes.candidateProfile &&
+      router.pathname !== Routes.recruiterProfile
+    ) {
+      toasts.info({ content: 'Заполните профиль' })
+      router.replace(
+        {
+          [Role.Candidate]: Routes.candidateProfile,
+          [Role.Recruiter]: Routes.recruiterProfile,
+        }[user.value.role]
+      )
+    }
+  }, [user.status, router.pathname])
 
   const loader = (
     <div className={styles.loading}>
