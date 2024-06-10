@@ -1,10 +1,10 @@
-from datetime import datetime
 from bson import ObjectId
+from decimal import Decimal
+from datetime import datetime
 from pydantic_core import core_schema
-from typing import Any, List, Literal, Optional, Type
+from typing import Any, List, Literal, Optional
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_extra_types.phone_numbers import PhoneNumber
-
 
 Role = Literal["recruiter", "candidate"]
 
@@ -35,32 +35,26 @@ class OID(str):
         return ObjectId(value)
 
 
-class BaseResponse(BaseModel):
+class UserResponse(BaseModel):
     """
-    Дополнительные поля, возвращаемые из Монго
+    Минимальные возвращаемые данные по пользователю
     """
-    _id: OID
-
-
-class UserResponse(BaseResponse):
-    """
-    Дополнительные возвращаемые поля пользователя
-    """
-    role: Role
-    password: str = Field(exclude=True)
-
-
-class UserBase(BaseModel):
-    """
-    Минимальные данные по пользователю
-    """
+    id: OID = Field(alias="_id")
     email: EmailStr
-    password: str = Field(exclude=True)
+    role: Role
 
 
-class UserCommon(UserBase):
+class WorkHistoryItem(BaseModel):
+    company: str
+    job_title: str
+    start_date: datetime
+    end_date: datetime
+    responsabilites: str
+
+
+class CandidatePost(BaseModel):
     """
-    Общие поля у обоих типов пользователей
+    Заполнение соискателя
     """
     name: str
     surname: str
@@ -68,47 +62,19 @@ class UserCommon(UserBase):
     phone: PhoneNumber
     telegram: str
     birthday: datetime
-
-
-class RecruiterPost(UserCommon):
-    """
-    Регистрация рекрутера
-    """
-    interviews_per_day: int
-    interview_slots: List[OID]
-
-
-class CandidatePost(UserCommon):
-    """
-    Регистрация соискателя
-    """
     city: str
     job_title: str
     education_id: OID
     work_schedule_id: OID
     work_type_id: OID
     work_experience_id: OID
-    work_history: List[OID]
+    work_history: List[WorkHistoryItem]
+    salary_expectation: Decimal = Field(decimal_places=2)
     skills: List[OID]
-    responses: List[OID]
-
-
-class UserBaseResponse(UserBase, BaseResponse):
-    """
-    Возвращаемые поля для минимального пользователя
-    """
-    pass
 
 
 class CandidateResponse(CandidatePost, UserResponse):
     """
     Возвращаемые данные для соискателя
-    """
-    pass
-
-
-class RecruiterResponse(RecruiterPost, UserResponse):
-    """
-    Возвращаемые данные для рекрутера
     """
     pass

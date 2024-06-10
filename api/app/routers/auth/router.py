@@ -7,21 +7,22 @@ from fastapi import APIRouter, Depends, Response
 
 from app.utils import get_now
 from app.database import Users
+from app.exceptions import EMAIL_ALREADY_USED
 from app.utils import validate_password, hash_password
-from app.schemas import RecruiterResponse, CandidateResponse, UserBaseResponse
+from app.schemas import CandidateResponse, UserResponse
 from app.oauth import create_access_token, create_tokens, require_refresh, delete_tokens
 
+from .exceptions import INCORRECT_EMAIL_OR_PASSWORD, INVALID_TOKEN
 from .schemas import LoginRequest, RegisterRequest, ResetPasswordRequest, ForgotPasswordRequest
-from .exceptions import INCORRECT_EMAIL_OR_PASSWORD, EMAIL_ALREADY_EXISTS, INVALID_TOKEN
 
 router = APIRouter(tags=["Аутентификация"])
 
 
 @router.post(
     "/login",
-    name="Вход для всех пользователей",
+    name="Вход",
     description="Возвращает рекрутера или соискателя в зависимости от роли",
-    response_model=RecruiterResponse | CandidateResponse | UserBaseResponse
+    response_model=CandidateResponse | UserResponse
     )
 async def login(payload: LoginRequest, response: Response):
     user = Users.find_one({"email": payload.email})
@@ -35,7 +36,7 @@ async def login(payload: LoginRequest, response: Response):
     "/registration",
     name="Регистрация",
     description="После регистрации пользователь автоматически входит в аккаунт",
-    response_model=UserBaseResponse
+    response_model=UserResponse
     )
 async def registration(payload: RegisterRequest,  response: Response):
     payload.password = hash_password(payload.password)
@@ -43,11 +44,13 @@ async def registration(payload: RegisterRequest,  response: Response):
         **payload.__dict__,
         "created_at": get_now(),
         "updated_at": get_now(),
+        "role": "candidate",
+        "filled": False,
     }
     try:
         inserted_id = Users.insert_one(user_insert_data).inserted_id
     except DuplicateKeyError:
-        raise EMAIL_ALREADY_EXISTS
+        raise EMAIL_ALREADY_USED
     create_tokens(inserted_id, response)
     return {
         "_id": inserted_id,
@@ -84,7 +87,7 @@ async def forgot_password(payload: ForgotPasswordRequest):
     "/reset-password",
     name="Восстановить пароль",
     description="После восстановления пароля пользователь автоматически входит в аккаунт",
-    response_model=RecruiterResponse | CandidateResponse | UserBaseResponse
+    response_model=CandidateResponse | UserResponse
     )
 async def reset_password(
     payload: ResetPasswordRequest, 

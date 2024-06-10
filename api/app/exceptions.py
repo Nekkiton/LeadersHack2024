@@ -14,19 +14,29 @@ NOT_FOUND = HTTPException(
 ONLY_CANDIDATE = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail="Только соискателю доступно это действие"
-)
+    )
 
 ONLY_RECRUITER = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail="Только рекрутеру доступно это действие"
-)
+    )
 
 ALREADY_COMPLETE = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail="Пользователь уже заполнен"
-)
+    )
 
 BAD_OLD_PASSWORD = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail="Неверный старый пароль"
-)
+    )
+
+EMAIL_ALREADY_USED = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="Указанная почта уже занята другим пользователем"
+    )
+
+FILL_CANDIDATE = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="Пользователь не заполнен"
+    )

@@ -1,16 +1,16 @@
-from typing import Annotated
-from fastapi.params import Depends
 import jwt
 from uuid import uuid4
 from bson import ObjectId
+from typing import Annotated
+from fastapi.params import Depends
 from fastapi import Request, Response
 from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
 from fastapi.security.utils import get_authorization_scheme_param
 
-from app.settings import Settings
 from app.database import Users
-from app.exceptions import ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
+from app.settings import Settings
+from app.exceptions import FILL_CANDIDATE, ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
 
 public_key = serialization.load_pem_public_key(open(Settings.JWT_PUBLIC_KEY_PATH).read().encode(), None)
 private_key = serialization.load_pem_private_key(open(Settings.JWT_PRIVATE_KEY_PATH).read().encode(), None)
@@ -21,7 +21,7 @@ def require_refresh(request: Request) -> ObjectId:
     if not token or schema.lower() != "bearer":
         raise UNATHORIZED
     try:
-        payload = jwt.decode(token, Settings.JWT_PUBLIC_KEY, algorithms=[Settings.JWT_ALGORITHM])
+        payload = jwt.decode(token, public_key, algorithms=[Settings.JWT_ALGORITHM])
     except jwt.PyJWTError:
         raise UNATHORIZED
     user_id, expiration = payload.get("sub"), payload.get("exp")
@@ -39,7 +39,7 @@ def require_user(request: Request) -> ObjectId:
     if not token or schema.lower() != "bearer":
         raise UNATHORIZED
     try:
-        payload = jwt.decode(token, Settings.JWT_PUBLIC_KEY, algorithms=[Settings.JWT_ALGORITHM])
+        payload = jwt.decode(token, public_key, algorithms=[Settings.JWT_ALGORITHM])
     except jwt.PyJWTError:
         raise UNATHORIZED
     user_id, expiration = payload.get("sub"), payload.get("exp")
@@ -121,6 +121,11 @@ def require_candidate(user_id: RequiredUserID) -> ObjectId:
         raise ONLY_CANDIDATE
 
 
+def require_filled_candidate(user_id: RequiredUserID) -> ObjectId:
+    if not Users.count_documents({"_id": user_id, "role": "candidate", "filled": True}):
+        raise FILL_CANDIDATE
+
+
 def require_recruiter(user_id: RequiredUserID) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "recruiter"}):
         raise ONLY_RECRUITER
@@ -128,3 +133,4 @@ def require_recruiter(user_id: RequiredUserID) -> ObjectId:
 
 RequiredCandidateID = Annotated[ObjectId, Depends(require_candidate)]
 RequiredRecruiterID = Annotated[ObjectId, Depends(require_recruiter)]
+RequiredFilledCandidateID = Annotated[ObjectId, Depends(require_filled_candidate)]
