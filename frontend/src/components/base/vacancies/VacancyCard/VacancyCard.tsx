@@ -11,7 +11,7 @@ import styles from './VacancyCard.module.scss'
 interface Props {
   className?: string
   vacancy: Vacancy
-  role: Role
+  role?: Role
 }
 
 export default function VacancyCard({ className, vacancy, role }: Props) {

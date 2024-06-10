@@ -4,18 +4,24 @@ import Icon from '@/components/ui/Icon'
 import styles from './Pagination.module.scss'
 
 interface Props {
+  className?: string
   currentPage: number
   lastPage: number
   loadPage: (page: number) => void
 }
 
-export default function Pagination({ currentPage, lastPage, loadPage }: Props) {
+export default function Pagination({
+  className,
+  currentPage,
+  lastPage,
+  loadPage,
+}: Props) {
   if (lastPage === 1) {
     return null
   }
 
   return (
-    <div className={styles.pages}>
+    <div className={classNames(styles.pages, className)}>
       {currentPage > 1 && (
         <BaseButton
           className={styles.pagesMoveBtn}

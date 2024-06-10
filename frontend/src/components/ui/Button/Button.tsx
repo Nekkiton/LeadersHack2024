@@ -36,7 +36,10 @@ export default function Button({
           className,
           styles.link,
           styles[type],
-          styles[`underline-${underline}`]
+          styles[`underline-${underline}`],
+          {
+            [styles.full]: fullWidth,
+          }
         )}
         href={href}
         target={target}

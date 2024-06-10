@@ -1,0 +1,67 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.scopes {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.scope {
+  padding: 5px 12px;
+  border: 1px solid $gray-5;
+  border-radius: 4px;
+  background: $white;
+  transition: $transition;
+
+  &.active,
+  &:hover {
+    background: $gray-5;
+  }
+}
+
+.main {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.vacancies {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+.vacanciesPagination {
+  padding-top: 8px;
+}
+
+.sidebar {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-shrink: 0;
+  width: 26%;
+}
+
+.sidebarText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebarTextHint {
+  color: $gray-3;
+}
