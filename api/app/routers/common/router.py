@@ -9,7 +9,7 @@ router = APIRouter(tags=["Словари и прочее"], prefix="/common")
     "/educations",
     )
 async def get_educations():
-    return literals.Education.__dict__.get("__args__")
+    return literals.Educations.__dict__.get("__args__")
 
 
 @router.get(
@@ -23,14 +23,14 @@ async def get_work_scopes():
     "/work-schedules"
     )
 async def get_work_schedules():
-    return literals.WorkSchedule.__dict__.get("__args__")
+    return literals.WorkSchedules.__dict__.get("__args__")
 
 
 @router.get(
     "/work-experiences"
 )
 async def get_work_experiences():
-    return literals.WorkExperience.__dict__.get("__args__")
+    return literals.WorkExperiences.__dict__.get("__args__")
 
 
 @router.get(
@@ -44,7 +44,7 @@ async def get_cities():
     "/work-types"
 )
 async def get_work_types():
-    return literals.WorkType.__dict__.get("__args__")
+    return literals.WorkTypes.__dict__.get("__args__")
 
 
 @router.get(

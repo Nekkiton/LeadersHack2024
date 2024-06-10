@@ -1,20 +1,20 @@
 from typing import Literal
 
 
-Education = Literal[
+Educations = Literal[
     "Основное общее (9 классов)",
     "Среднее общее (11 классов)",
     "Среднее профессиональное",
     "Высшее",
 ]
 
-WorkSchedule = Literal[
+WorkSchedules = Literal[
     "5.2",
     "2.2",
     "3.3",
 ]
 
-WorkExperience = Literal[
+WorkExperiences = Literal[
     "Нет опыта",
     "от 1 до 3 лет",
     "от 3 до 6 лет",
@@ -102,7 +102,7 @@ Cities = Literal[
     "Ярославль",
 ]
 
-WorkType = Literal[
+WorkTypes = Literal[
     "Удаленно", 
     Cities
 ]

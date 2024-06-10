@@ -1,7 +1,7 @@
 from bson import ObjectId
 from decimal import Decimal
 from datetime import datetime
-from literals import Education, Skills, WorkExperience, WorkSchedule, WorkType
+from literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
 from pydantic_core import core_schema
 from typing import Any, List, Literal, Optional
 from pydantic import BaseModel, EmailStr, Field
@@ -65,12 +65,12 @@ class CandidatePost(BaseModel):
     birthday: datetime
     city: str
     job_title: str
-    education: Education
-    work_schedule: WorkSchedule
-    work_type: WorkType
-    work_experience: WorkExperience
+    education: Educations
+    work_schedule: WorkSchedules
+    work_type: WorkTypes
+    work_experience: WorkExperiences
     work_history: List[WorkHistoryItem]
-    salary_expectation: Decimal = Field(decimal_places=2)
+    salary_expectation: float
     skills: List[Skills]
 
 
