@@ -1,0 +1,8 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  margin-top: -24px;
+}

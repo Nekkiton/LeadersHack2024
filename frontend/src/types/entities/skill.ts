@@ -1,5 +1,7 @@
-import { BaseEntity } from '@/types/entities/base-entity'
+export type Skill = string
 
-export interface Skill extends BaseEntity {
-  skill: string
-}
+// import { BaseEntity } from '@/types/entities/base-entity'
+
+// export interface Skill extends BaseEntity {
+//   skill: string
+// }

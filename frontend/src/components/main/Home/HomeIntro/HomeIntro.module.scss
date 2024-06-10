@@ -1,0 +1,27 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 174px 24px;
+  background: url(../../../../assets/images/intro-bg.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: $white;
+}
+
+.subtitle {
+  @include heading-7;
+}
+
+.title {
+  color: $white;
+}
+
+.description {
+  @include paragraph-1;
+}

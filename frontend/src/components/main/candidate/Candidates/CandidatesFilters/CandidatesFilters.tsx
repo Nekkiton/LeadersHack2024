@@ -39,8 +39,8 @@ export default function CandidatesFilters() {
             items={
               workExperiences.status === 'success'
                 ? workExperiences.value.map((experience) => ({
-                    key: experience.id,
-                    value: experience.experience,
+                    key: experience,
+                    value: experience,
                   }))
                 : []
             }
@@ -59,8 +59,8 @@ export default function CandidatesFilters() {
             items={
               skills.status === 'success'
                 ? skills.value.map((skill) => ({
-                    key: skill.id,
-                    value: skill.skill,
+                    key: skill,
+                    value: skill,
                   }))
                 : []
             }
