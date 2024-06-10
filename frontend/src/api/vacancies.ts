@@ -4,6 +4,16 @@ import { createUseQuery } from '@/lib/create-use-query'
 
 export const useVacancies = createUseQuery('vacancies.all', Api.vacancies.all)
 
+export const useCurCandidateVacancies = createUseQuery(
+  'candidates.me.vacancies',
+  Api.candidates.me.vacancies
+)
+
+export const useCurRecruiterVacancies = createUseQuery(
+  'recruiters.me.vacancies',
+  Api.recruiters.me.vacancies
+)
+
 export const useVacancy = createUseQuery('vacancy.one', Api.vacancies.one)
 
 export const useVacancyResponses = createUseQuery(

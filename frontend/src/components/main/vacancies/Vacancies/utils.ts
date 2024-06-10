@@ -1,14 +1,35 @@
-import { GetVacanciesParams } from '@/types/entities/vacancy'
+import { Skill } from '@/types/entities/skill'
+import {
+  GetCandidateVacanciesParams,
+  GetRecruiterVacanciesParams,
+  VacancyStatus,
+} from '@/types/entities/vacancy'
+import { WorkScope } from '@/types/entities/work-scope'
 
-export interface FiltersFormData {
+export interface CandidateFiltersFormData {
   query: string | null
-  statuses: string[]
-  recruiters: string[]
-  work_scopes: string[]
-  skills: string[]
+  work_scopes: WorkScope[]
+  skills: Skill[]
 }
 
-export const transformFilters = (data: FiltersFormData): GetVacanciesParams => {
+export interface RecruiterFiltersFormData {
+  query: string | null
+  statuses?: VacancyStatus[]
+  work_scopes?: WorkScope[]
+}
+
+export const transformCandidateFilters = (
+  data: CandidateFiltersFormData
+): GetCandidateVacanciesParams => {
+  return {
+    ...data,
+    query: data.query ?? undefined,
+  }
+}
+
+export const transformRecruiterFilters = (
+  data: RecruiterFiltersFormData
+): GetRecruiterVacanciesParams => {
   return {
     ...data,
     query: data.query ?? undefined,

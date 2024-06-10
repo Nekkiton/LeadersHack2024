@@ -2,6 +2,8 @@ import { BaseEntity } from '@/types/entities/base-entity'
 import { Recruiter } from '@/types/entities/recruiter'
 import { ResponseStage } from '@/types/entities/response-stage'
 import { Stage } from '@/types/entities/stage'
+import { WorkScope } from '@/types/entities/work-scope'
+import { Skill } from '@/types/entities/skill'
 
 export enum VacancyStatus {
   Active = 'active',
@@ -42,9 +44,19 @@ export interface Vacancy extends BaseEntity {
 
 export interface GetVacanciesParams {
   page?: number
+  scope?: WorkScope
+}
+
+export interface GetCandidateVacanciesParams {
+  page?: number
   query?: string
-  statuses?: string[]
-  recruiters?: string[]
-  work_scopes?: string[]
-  skills?: string[]
+  work_scopes?: WorkScope[]
+  skills?: Skill[]
+}
+
+export interface GetRecruiterVacanciesParams {
+  page?: number
+  query?: string
+  statuses?: VacancyStatus[]
+  work_scopes?: WorkScope[]
 }

@@ -21,7 +21,7 @@ export default function HomeVacancies() {
     setPage(0)
   }, [activeScope])
 
-  const vacancies = useVacancies()
+  const vacancies = useVacancies({ page, scope: activeScope ?? undefined })
 
   return (
     <div className={styles.container}>
@@ -74,7 +74,7 @@ export default function HomeVacancies() {
               предложим вам вакансию, как только появится подходящая
             </p>
           </div>
-          <Button type="secondary" href={Routes.login} fullWidth>
+          <Button type="secondary" href={Routes.register} fullWidth>
             Создать аккаунт
           </Button>
         </div>
