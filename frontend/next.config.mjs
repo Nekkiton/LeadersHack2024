@@ -12,7 +12,7 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['img-cdn.pixlr.com'], // TODO: remove
+    domains: [],
   },
 }
 

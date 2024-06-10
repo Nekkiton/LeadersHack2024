@@ -5,31 +5,24 @@ import { Role } from '@/types/entities/user'
 
 export const useLogin = createUseMutation(Api.auth.login, {
   invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
-  onError: ([e], { toasts }) => {
-    if (e.status === 400) {
-      toasts.error({ content: 'Почта или пароль не правильны' })
-      return true
-    }
-  },
   onSuccess: ([user], { router }) => {
-    router.push(
-      {
-        [Role.Recruiter]: Routes.recruiterVacancies,
-        [Role.Candidate]: Routes.candidateVacancies,
-      }[user.role]
-    )
+    setTimeout(() => {
+      router.push(
+        {
+          [Role.Recruiter]: Routes.recruiterVacancies,
+          [Role.Candidate]: Routes.candidateVacancies,
+        }[user.role]
+      )
+    }, 100)
   },
 })
 
 export const useRegister = createUseMutation(Api.auth.register, {
   invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
-  onSuccess: ([user], { router }) => {
-    router.push(
-      {
-        [Role.Recruiter]: Routes.recruiterProfile,
-        [Role.Candidate]: Routes.candidateProfile,
-      }[user.role]
-    )
+  onSuccess: ([], { router }) => {
+    setTimeout(() => {
+      router.push(Routes.candidateProfile)
+    }, 100)
   },
 })
 
@@ -44,5 +37,12 @@ export const useResetPassword = createUseMutation(Api.auth.resetPassword, {
   onError: ([], { toasts }) => {
     toasts.info({ content: 'Данный функционал пока в разработке' })
     return true
+  },
+})
+
+export const useLogout = createUseMutation(Api.auth.logout, {
+  onSuccess: ([], { queryClient, router }) => {
+    queryClient.resetQueries()
+    router.push(Routes.home)
   },
 })

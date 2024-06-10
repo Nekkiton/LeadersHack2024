@@ -1,7 +1,9 @@
+import { RemoteData } from '@/types/remote-data'
+import { AxiosError } from 'axios'
 import { useCurUser } from '@/api/users'
 import { Routes } from '@/config/routes'
 import { getUserName } from '@/lib/get-user-name'
-import { Role } from '@/types/entities/user'
+import { BaseUser, Role, User } from '@/types/entities/user'
 import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
 import Image from '@/components/ui/Image'
@@ -12,7 +14,7 @@ import userImg from '@/assets/images/user.png'
 import styles from './Header.module.scss'
 
 export default function Header() {
-  const user = useCurUser()
+  const user: RemoteData<User | BaseUser | null, AxiosError> = useCurUser()
 
   return (
     <div className={styles.container}>
@@ -36,12 +38,15 @@ export default function Header() {
             >
               <Image
                 className={styles.userAvatar}
-                src={user.value.photo ?? userImg}
+                src={(user.value.name ? user.value.photo : null) ?? userImg}
                 width={58}
                 height={58}
-                alt={getUserName(user.value, 'Name Surname')}
               />
-              <p>{getUserName(user.value, 'Name S.')}</p>
+              <p>
+                {user.value.name
+                  ? getUserName(user.value, 'Name S.')
+                  : user.value.email}
+              </p>
             </Link>
           </div>
         ) : (

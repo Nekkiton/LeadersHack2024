@@ -6,6 +6,12 @@ export enum Role {
   Candidate = 'candidate',
 }
 
+export interface BaseUser {
+  email: string
+  role: Role
+  name: undefined
+}
+
 export interface User extends BaseEntity {
   surname: string
   name: string

@@ -1,6 +1,7 @@
 import { NextRouter, useRouter } from 'next/router'
 import {
   InvalidateQueryFilters,
+  QueryClient,
   UseMutationOptions,
   useMutation,
   useQueryClient,
@@ -17,11 +18,19 @@ export const createUseMutation = <Args, Data>(
     invalidateQueriesFn?: (args: Args) => InvalidateQueryFilters[]
     onError?: (
       [error, variables, context]: [AxiosError, Args, unknown],
-      utils: { toasts: ReturnType<typeof useToasts>; router: NextRouter }
+      utils: {
+        toasts: ReturnType<typeof useToasts>
+        router: NextRouter
+        queryClient: QueryClient
+      }
     ) => boolean | void
     onSuccess?: (
       [data, variables, context]: [Data, Args, unknown],
-      utils: { toasts: ReturnType<typeof useToasts>; router: NextRouter }
+      utils: {
+        toasts: ReturnType<typeof useToasts>
+        router: NextRouter
+        queryClient: QueryClient
+      }
     ) => void
   }
 ) => {
@@ -39,13 +48,25 @@ export const createUseMutation = <Args, Data>(
             .invalidateQueriesFn(variables)
             .forEach((i) => queryClient.invalidateQueries(i))
         }
-        options?.onSuccess?.([data, variables, context], { toasts, router })
+        options?.onSuccess?.([data, variables, context], {
+          toasts,
+          router,
+          queryClient,
+        })
       },
       onError: (...args_) => {
-        if (!options?.onError?.(args_, { toasts, router })) {
-          toasts.error({
-            content: 'Что-то пошло не так',
-          })
+        if (!options?.onError?.(args_, { toasts, router, queryClient })) {
+          console.log('ERROR')
+          console.log(args_[0])
+          if ((args_[0].response?.data as any)?.detail) {
+            toasts.error({
+              content: (args_[0].response?.data as any)?.detail,
+            })
+          } else {
+            toasts.error({
+              content: 'Что-то пошло не так',
+            })
+          }
         }
       },
     })

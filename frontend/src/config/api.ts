@@ -19,7 +19,7 @@ import {
 } from '@/types/entities/response-stage'
 import { Skill } from '@/types/entities/skill'
 import { Stage } from '@/types/entities/stage'
-import { Role, User } from '@/types/entities/user'
+import { BaseUser, Role, User } from '@/types/entities/user'
 import {
   GetVacanciesParams,
   Vacancy,
@@ -218,11 +218,9 @@ const responseStage3: ResponseStage = {
 export const Api = {
   auth: {
     login: (data: LoginData) =>
-      Axios.post<User>('/auth/login/', data).then((res) => res.data),
-    register: (data: RegisterData) =>
-      Axios.post<{ role: Role }>('/auth/register/', data).then(
-        (res) => res.data
-      ),
+      Axios.post<User | BaseUser>('/login', data).then((res) => res.data),
+    register: (data: RegisterData) => Axios.post('/registration', data),
+    logout: () => Axios.post('/logout'),
     forgotPassword: (data: ForgotPasswordData) =>
       Axios.post('/auth/forgot-password/', data),
     resetPassword: (data: ResetPasswordData) =>
@@ -231,11 +229,9 @@ export const Api = {
 
   users: {
     me: () =>
-      Axios.get<User>('/users/me/')
+      Axios.get<User | BaseUser>('/user')
         .then((res) => res.data)
-        // .catch(() => recruiter as User),
-        .catch(() => candidate as User),
-    // .catch(() => null),
+        .catch(() => null),
   },
 
   recruiters: {
