@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
 from fastapi.security.utils import get_authorization_scheme_param
 
+from api.app.schemas import Role
 from app.database import Users
 from app.settings import Settings
 from app.exceptions import FILL_CANDIDATE, ONLY_CANDIDATE, ONLY_RECRUITER, UNATHORIZED
@@ -119,16 +120,19 @@ RequiredUserID = Annotated[ObjectId, Depends(require_user)]
 def require_candidate(user_id: RequiredUserID) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "candidate"}):
         raise ONLY_CANDIDATE
+    return user_id
 
 
 def require_filled_candidate(user_id: RequiredUserID) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "candidate", "filled": True}):
         raise FILL_CANDIDATE
+    return user_id
 
 
 def require_recruiter(user_id: RequiredUserID) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "recruiter"}):
         raise ONLY_RECRUITER
+    return user_id
 
 
 RequiredCandidateID = Annotated[ObjectId, Depends(require_candidate)]
