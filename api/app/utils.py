@@ -11,14 +11,6 @@ def get_now() -> datetime:
     return datetime.now(tz=timezone.utc)
 
 
-def optional(source: Type[BaseModel]) -> Type[BaseModel]:
-    """
-    Делает все поля класса опциональными
-    """
-    fields = {field: (Optional[type_], None) for field, type_ in source.__annotations__.items()}
-    return create_model(source.__name__, **fields)
-
-
 def hash_password(password: str) -> str:
     """
     Хэширует пароль
