@@ -51,7 +51,7 @@ async def fill_as_candidate(
             },
             {
                 "$set": {
-                    **payload.__dict__,
+                    **payload.model_dump(exclude_unset=True, exlude_none=True),
                     "updated_at": get_now(),
                     "filled": True,
                 },
