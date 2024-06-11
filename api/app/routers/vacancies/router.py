@@ -1,15 +1,16 @@
 import math
+from typing import List, Optional
 from fastapi import APIRouter
-from pymongo import DeleteMany, UpdateOne
+from pymongo import DeleteMany, InsertOne, UpdateOne
 
 from app.schemas import OID
 from app.utils import get_now
-from app.literals import VacancyStatus
+from app.literals import Skills, VacancyStatus, WorkScopes
 from app.oauth import RequiredRecruiterID
 from app.database import Stages, Vacancies, DetailedVacancies
 
 from .exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
-from .schemas import VacancyPost, VacancyResponse, PaginationVacanciesResponse
+from .schemas import VacancyPost, VacancyResponse, PaginationVacanciesResponse, VacancyUpdate
 
 router = APIRouter(tags=["Вакансии"], prefix="/vacancies")
 
@@ -21,14 +22,16 @@ router = APIRouter(tags=["Вакансии"], prefix="/vacancies")
 )
 async def get_vacancies(
     page: int = 0,
-    limit: int = 25
+    limit: int = 25,
+    scope: Optional[WorkScopes] = None,
 ):
-    total_pages = DetailedVacancies.count_documents({}) // limit
-    items = DetailedVacancies.find().limit(limit).skip(page * limit)
+    query = {}
+    if scope is not None:
+        query["scope"] = scope
     return {
-        "total_pages": total_pages,
+        "total_pages": DetailedVacancies.count_documents(query) // limit,
         "page": page,
-        "items": items
+        "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
     }
 
 
@@ -41,13 +44,26 @@ async def get_recruiter_vacancies(
     recruiter_id: RequiredRecruiterID,
     page: int = 0,
     limit: int = 25,
+    query: str = "",
+    statuses: Optional[List[VacancyStatus]] = None,
+    skills: Optional[List[Skills]] = None
+
 ):
-    total_pages = DetailedVacancies.count_documents({"recruiter_id": recruiter_id}) // limit
-    items = DetailedVacancies.find({"recruiter_id": recruiter_id}).limit(limit).skip(page * limit)
+    query = {
+        "recruiter_id": recruiter_id,
+        "or": [
+            {"description": {"$regex": query}},
+            {"title": {"$regex": query}}
+        ]
+    }
+    if statuses is not None:
+        query["status"] = {"$in": statuses}
+    if skills is not None:
+        query["skills"] = {"$in": skills}
     return {
-        "total_pages": total_pages,
+        "total_pages": DetailedVacancies.count_documents(query) // limit,
         "page": page,
-        "items": items
+        "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
     }
 
 
@@ -91,7 +107,7 @@ async def create_vacancy(
 async def update_vacancy(
     user_id: RequiredRecruiterID,
     vacancy_id: OID,
-    payload: VacancyPost
+    payload: VacancyUpdate
     ):
     now = get_now()
     vacancy_dump = {
@@ -112,23 +128,32 @@ async def update_vacancy(
         )
     if not vacancy_result.modified_count:
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
-    bulk_operations = [DeleteMany({"vacancy_id": vacancy_id, "position": {"gt": max(payload.stages, lambda x: x.position)}})]
+    stage_ids = [stage.id for stage in payload.stages if stage.id is not None]
+    bulk_operations = [DeleteMany({"vacancy_id": vacancy_id, "_id": {"$nin": stage_ids}})]
     for stage in payload.stages:
-        bulk_operations.append(
-            UpdateOne(
+        stage_dump = {
+            **stage.model_dump(),
+            "updated_at": now,
+        }
+        if stage.id is not None:
+            opertaion = UpdateOne(
                 {
-                    "position": stage.position,
+                    "_id": stage.id,
                     "vacancy_id": vacancy_id,
                 },
                 {
-                    **stage.model_dump(),
+                    "$set": stage_dump
+                }
+            )
+        else:
+            opertaion = InsertOne(
+                {
+                    **stage_dump,
                     "vacancy_id": vacancy_id,
                     "created_at": now,
-                    "updated_at": now,
-                },
-                upsert=True
+                }
             )
-        )
+        bulk_operations.append(opertaion)
     Stages.bulk_write(bulk_operations)
     return DetailedVacancies.find_one({"_id": vacancy_id})
 

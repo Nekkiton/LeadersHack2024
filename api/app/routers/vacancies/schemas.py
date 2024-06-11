@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
 
@@ -18,6 +18,10 @@ class StageItemResponse(StageItem):
     id: OID = Field(alias="_id")
 
 
+class StageItemUpdate(StageItem):
+    id: Optional[OID] = Field(default=None, alias="_id")
+
+
 class VacancyPost(BaseModel):
     title: str
     scope: WorkScopes
@@ -35,7 +39,11 @@ class VacancyPost(BaseModel):
     stages: List[StageItem]
 
 
-class VacancyResponse(VacancyPost):
+class VacancyUpdate(VacancyPost):
+    stages: List[StageItemUpdate]
+
+
+class VacancyResponse(VacancyUpdate):
     id: OID = Field(alias="_id")
     status: VacancyStatus
     responses: int
@@ -43,7 +51,11 @@ class VacancyResponse(VacancyPost):
     created_at: datetime
 
 
-class PaginationVacanciesResponse(BaseModel):
+class PaginationResponse(BaseModel):
     total_pages: int
     page: int
+    items: List[Any]
+
+
+class PaginationVacanciesResponse(PaginationResponse):
     items: List[VacancyResponse]
