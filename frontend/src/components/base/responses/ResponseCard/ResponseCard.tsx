@@ -45,7 +45,7 @@ export default function ResponseCard({
         {role === Role.Recruiter && response.candidate && (
           <Button
             type="secondary"
-            href={Routes.recruiterCandidate(response.candidate.id)}
+            href={Routes.recruiterCandidate(response.candidate._id)}
             target="_blank"
           >
             Открыть резюме
@@ -55,7 +55,7 @@ export default function ResponseCard({
           <Button
             type="secondary"
             target="_blank"
-            href={Routes.candidateVacancy(vacancy.id)}
+            href={Routes.candidateVacancy(vacancy._id)}
           >
             Открыть вакансию
           </Button>

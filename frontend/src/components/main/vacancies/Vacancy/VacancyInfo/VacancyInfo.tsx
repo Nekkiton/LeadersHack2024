@@ -96,7 +96,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
             </div>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>Дата создания вакансии</p>
-              <p>{moment(vacancy.creation_date).format('DD MMMM YYYY')}</p>
+              <p>{moment(`${vacancy.created_at}Z`).format('DD MMMM YYYY')}</p>
             </div>
             <div className={styles.mainCard}>
               <p className={styles.mainCardTitle}>Ключевые навыки</p>

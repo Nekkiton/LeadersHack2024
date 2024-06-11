@@ -61,7 +61,7 @@ export default function Candidates() {
                 <CandidateCard
                   candidate={candidate}
                   type="expandedBottom"
-                  key={candidate.id}
+                  key={candidate._id}
                 />
               ))}
               <Pagination

@@ -43,7 +43,7 @@ export default function ResponsesInvites({ invites }: Props) {
           responses[responses.length - 1].vacancy && (
             <ResponseCard
               response={responses[responses.length - 1]}
-              key={responses[responses.length - 1].id}
+              key={responses[responses.length - 1]._id}
               vacancy={responses[responses.length - 1].vacancy!}
               role={Role.Candidate}
               responseStages={responses}

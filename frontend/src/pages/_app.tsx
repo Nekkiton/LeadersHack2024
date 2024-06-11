@@ -31,10 +31,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>{Site.name}</title>
-        <meta
-          http-equiv="Content-Security-Policy-Report-Only"
-          content="default-src https: 'unsafe-inline' 'unsafe-eval';"
-        />
       </Head>
 
       <QueryClientProvider client={queryClient}>

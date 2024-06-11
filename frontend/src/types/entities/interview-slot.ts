@@ -1,11 +1,6 @@
-import { BaseEntity } from '@/types/entities/base-entity'
-
-export interface InterviewSlot extends BaseEntity {
-  // recruiter_id: string // TODO
+export interface InterviewSlot {
   start_time: string
   end_time: string
 }
 
-export interface UpdateInterviewSlot extends Omit<InterviewSlot, 'id'> {
-  id?: string
-}
+export interface UpdateInterviewSlot extends InterviewSlot {}

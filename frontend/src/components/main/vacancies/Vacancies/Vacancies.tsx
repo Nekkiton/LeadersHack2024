@@ -113,11 +113,11 @@ export default function Vacancies({ role }: Props) {
                 <Link
                   href={
                     {
-                      [Role.Recruiter]: Routes.recruiterVacancy(vacancy.id),
-                      [Role.Candidate]: Routes.candidateVacancy(vacancy.id),
+                      [Role.Recruiter]: Routes.recruiterVacancy(vacancy._id),
+                      [Role.Candidate]: Routes.candidateVacancy(vacancy._id),
                     }[role]
                   }
-                  key={vacancy.id}
+                  key={vacancy._id}
                 >
                   <VacancyCard vacancy={vacancy} role={role} />
                 </Link>

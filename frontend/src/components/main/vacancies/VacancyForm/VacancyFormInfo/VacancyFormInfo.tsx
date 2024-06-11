@@ -133,6 +133,7 @@ export default function VacancyFormInfo() {
                   ? workTypes.value.map((i) => ({ key: i, value: i }))
                   : []
               }
+              inputtable
             />
           )}
         />

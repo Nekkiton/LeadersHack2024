@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function VacancyResponses({ vacancy, role }: Props) {
-  const responses = useVacancyResponses(vacancy.id)
+  const responses = useVacancyResponses(vacancy._id)
 
   return (
     <RemoteData
@@ -21,7 +21,7 @@ export default function VacancyResponses({ vacancy, role }: Props) {
           <div className={styles.responses}>
             {data.responses.map((responses) => (
               <ResponseCard
-                key={responses[responses.length - 1].id}
+                key={responses[responses.length - 1]._id}
                 response={responses[responses.length - 1]}
                 responseStages={responses}
                 vacancy={vacancy}

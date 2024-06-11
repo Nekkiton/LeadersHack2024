@@ -33,16 +33,15 @@ export interface Vacancy extends BaseEntity {
   status: VacancyStatus
   // responces: string[] // TODO
   responses?: ResponseStage[] // TODo
-  skills: string[] // TODO
+  skills: Skill[]
   recruiter_id: string
   recruiter?: Recruiter // TODO
-  work_experience_id: string
-  work_type_id: string
-  work_schedule_id: string
-  scope_id: string
+  work_experience: WorkExperience
+  work_type: WorkType
+  work_schedule: WorkSchedule
+  scope: WorkScope
   // stages: string[] // TODO
   stages?: Stage[]
-  creation_date: string
 }
 
 export interface GetVacanciesParams {

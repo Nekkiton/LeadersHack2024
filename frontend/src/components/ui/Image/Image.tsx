@@ -21,7 +21,9 @@ const Image = forwardRef<HTMLImageElement, Props>(
       className={classNames(className, styles.image)}
       ref={ref}
       alt={alt}
-      src={(src as Attachment).id ? plugImg : (src as string | StaticImageData)} // TODO
+      src={
+        (src as Attachment)._id ? plugImg : (src as string | StaticImageData)
+      } // TODO
       width={width}
       height={height}
       placeholder="blur"

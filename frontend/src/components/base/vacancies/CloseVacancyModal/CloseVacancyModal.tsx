@@ -15,7 +15,7 @@ export default function CloseVacancyModal({ vacancy, ...stateProps }: Props) {
   const { mutate: closeVacancy_, status } = useCloseVacancy()
 
   const closeVacancy = () => {
-    closeVacancy_(vacancy.id, {
+    closeVacancy_(vacancy._id, {
       onSuccess: () => {
         router.push(Routes.recruiterVacancies)
       },

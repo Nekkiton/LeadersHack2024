@@ -54,7 +54,7 @@ export default function HomeVacancies() {
             renderSuccess={(vacancies) => (
               <>
                 {vacancies.data.map((vacancy) => (
-                  <VacancyCard key={vacancy.id} vacancy={vacancy} />
+                  <VacancyCard key={vacancy._id} vacancy={vacancy} />
                 ))}
                 <Pagination
                   className={styles.vacanciesPagination}
