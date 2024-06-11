@@ -180,10 +180,10 @@ const responseStage1: ResponseStage = {
   stage: stage1,
   // status: ResponseStageStatus.WaitingForRecruiter,
   // status: ResponseStageStatus.WaitingForCandidate,
-  status: ResponseStageStatus.ApprovedByRecruiter,
+  // status: ResponseStageStatus.ApprovedByRecruiter,
   // status: ResponseStageStatus.RejectedByRecruiter,
   // status: ResponseStageStatus.RejectedByCandidate,
-  // status: ResponseStageStatus.ApprovedByCandidate,
+  status: ResponseStageStatus.ApprovedByCandidate,
   meet_link: '',
   recruiter_message: 'Recruiter',
   recruiter_message_timestamp: '2022-01-01T10:00Z',
@@ -225,7 +225,8 @@ const responseStage3: ResponseStage = {
   vacancy: vacancy,
   stage_id: '1',
   stage: stage3,
-  status: ResponseStageStatus.WaitingForRecruiter,
+  // status: ResponseStageStatus.WaitingForRecruiter,
+  // status: ResponseStageStatus.ApprovedByRecruiter,
   meet_link: '',
   recruiter_message: 'Hello world',
   recruiter_message_timestamp: '2022-01-01T10:00Z',
@@ -301,7 +302,17 @@ export const Api = {
       vacancies: (params?: GetCandidateVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/candidate/me/vacancies', {
           params,
-        }).then((res) => res.data),
+        })
+          .then((res) => res.data)
+          .catch(() => ({
+            current_page: 1,
+            last_page: 1,
+            data: [vacancy],
+          })),
+      vacancyResponse: (pk: string) =>
+        Axios.get<ResponseStage[]>(`/candidate/me/vacancies/${pk}/response`)
+          .then((res) => res.data)
+          .catch(() => []),
     },
   },
 
@@ -342,7 +353,9 @@ export const Api = {
             } as Paginated<Vacancy[]>)
         ),
     one: (pk: string) =>
-      Axios.get<Vacancy>(`/vacancies/${pk}`).then((res) => res.data),
+      Axios.get<Vacancy>(`/vacancies/${pk}`)
+        .then((res) => res.data)
+        .catch(() => vacancy),
     // .catch(
     //   () =>
     //     ({

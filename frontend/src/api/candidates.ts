@@ -14,6 +14,11 @@ export const useCurCandidateResponses = createUseQuery(
   Api.candidates.me.responses
 )
 
+export const useCurCandidateVacancyResponse = createUseQuery(
+  'candidates.me.vacancy-response',
+  Api.candidates.me.vacancyResponse
+)
+
 export const useCurCandidateUpdateProfile = createUseMutation(
   Api.candidates.me.updateProfile,
   {

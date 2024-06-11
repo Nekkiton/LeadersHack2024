@@ -109,19 +109,26 @@ export default function Vacancies({ role }: Props) {
             </div>
           ) : (
             <>
-              {vacancies.data.map((vacancy) => (
-                <Link
-                  href={
-                    {
-                      [Role.Recruiter]: Routes.recruiterVacancy(vacancy._id),
-                      [Role.Candidate]: Routes.candidateVacancy(vacancy._id),
-                    }[role]
-                  }
-                  key={vacancy._id}
-                >
-                  <VacancyCard vacancy={vacancy} role={role} />
-                </Link>
-              ))}
+              {vacancies.data.length ? (
+                vacancies.data.map((vacancy) => (
+                  <Link
+                    href={
+                      {
+                        [Role.Recruiter]: Routes.recruiterVacancy(vacancy._id),
+                        [Role.Candidate]: Routes.candidateVacancy(vacancy._id),
+                      }[role]
+                    }
+                    key={vacancy._id}
+                  >
+                    <VacancyCard vacancy={vacancy} role={role} />
+                  </Link>
+                ))
+              ) : (
+                <div className={styles.nothing}>
+                  <Icon className={styles.nothingIcon} icon="loupeOff" />
+                  <p>К сожалению, по вашему запросу ничего не найдено</p>
+                </div>
+              )}
               <Pagination
                 currentPage={vacancies.current_page}
                 lastPage={vacancies.last_page}

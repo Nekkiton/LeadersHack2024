@@ -1,0 +1,42 @@
+@import '@/assets/css/config';
+
+.container {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
+  width: 23%;
+  transition: $transition;
+
+  &:not(.active) {
+    opacity: 0;
+  }
+}
+
+.title {
+  @include paragraph-3;
+  color: $gray-3;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  background: $gray-5;
+}
+
+.messageTitle {
+  @include heading-7;
+}
+
+.messageText {
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}

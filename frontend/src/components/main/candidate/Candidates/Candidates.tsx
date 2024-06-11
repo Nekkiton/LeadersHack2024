@@ -57,13 +57,20 @@ export default function Candidates() {
             </div>
           ) : (
             <>
-              {candidates.data.map((candidate) => (
-                <CandidateCard
-                  candidate={candidate}
-                  type="expandedBottom"
-                  key={candidate._id}
-                />
-              ))}
+              {candidates.data.length ? (
+                candidates.data.map((candidate) => (
+                  <CandidateCard
+                    candidate={candidate}
+                    type="expandedBottom"
+                    key={candidate._id}
+                  />
+                ))
+              ) : (
+                <div className={styles.nothing}>
+                  <Icon className={styles.nothingIcon} icon="loupeOff" />
+                  <p>К сожалению, по вашему запросу ничего не найдено</p>
+                </div>
+              )}
               <Pagination
                 currentPage={candidates.current_page}
                 lastPage={candidates.last_page}

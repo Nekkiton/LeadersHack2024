@@ -4,15 +4,17 @@ import { Vacancy, VacancyStatuses } from '@/types/entities/vacancy'
 import { getUserName } from '@/lib/get-user-name'
 import { Site } from '@/config/site'
 import { getVacancySalary } from '@/lib/get-vacancy-salary'
+import { useCurCandidateVacancyResponse } from '@/api/candidates'
 import classNames from 'classnames'
 import moment from 'moment'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Steps from '@/components/ui/Steps'
 import AppearTransition from '@/components/ui/AppearTransition'
-import RespondToVacancyModal from '@/components/base/vacancies/RespondToVacancyModal'
-import styles from './VacancyInfo.module.scss'
 import RadialProgressBar from '@/components/ui/RadialProgressBar'
+import RespondToVacancyModal from '@/components/base/vacancies/RespondToVacancyModal'
+import VacancyInfoCandidateResponse from './VacancyInfoCandidateResponse'
+import styles from './VacancyInfo.module.scss'
 
 interface Props {
   vacancy: Vacancy
@@ -23,8 +25,11 @@ export default function VacancyInfo({ vacancy, role }: Props) {
   const [isDescriptionShowed, setIsDescriptionShowed] = useState(
     role === Role.Recruiter ? false : true
   )
-
   const [isRespondModalShowed, setIsRespondModalShowed] = useState(false)
+
+  const candidateResponse = useCurCandidateVacancyResponse(vacancy._id, {
+    enabled: role === Role.Candidate,
+  })
 
   return (
     <>
@@ -53,15 +58,15 @@ export default function VacancyInfo({ vacancy, role }: Props) {
                 </Button>
               </>
             )}
-            {role === Role.Candidate && (
-              // TODO: and has no responses
-              <Button
-                type="primary"
-                onClick={() => setIsRespondModalShowed(true)}
-              >
-                Откликнуться
-              </Button>
-            )}
+            {candidateResponse.status === 'success' &&
+              !candidateResponse.value.length && (
+                <Button
+                  type="primary"
+                  onClick={() => setIsRespondModalShowed(true)}
+                >
+                  Откликнуться
+                </Button>
+              )}
           </div>
         </div>
 
@@ -76,15 +81,15 @@ export default function VacancyInfo({ vacancy, role }: Props) {
           <div className={styles.main}>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>Опыт</p>
-              <p>TODO</p>
+              <p>{vacancy.work_experience}</p>
             </div>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>Формат работы</p>
-              <p>TODO</p>
+              <p>{vacancy.work_type}</p>
             </div>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>График</p>
-              <p>TODO</p>
+              <p>{vacancy.work_schedule}</p>
             </div>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>З/п</p>
@@ -92,7 +97,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
             </div>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>Направление</p>
-              <p>TODO</p>
+              <p>{vacancy.scope}</p>
             </div>
             <div className={classNames(styles.mainCard, styles.aThird)}>
               <p className={styles.mainCardTitle}>Дата создания вакансии</p>
@@ -218,13 +223,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
           )}
 
           {role === Role.Candidate && (
-            // TODO: hidden if there is no response
-            <div
-              className={classNames(styles.sidebar, { [styles.hidden]: true })}
-            >
-              <p className={styles.sidebarHint}>Статус отклика</p>
-              coming soon
-            </div>
+            <VacancyInfoCandidateResponse vacancy={vacancy} />
           )}
         </div>
       </div>
