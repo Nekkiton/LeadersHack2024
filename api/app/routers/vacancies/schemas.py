@@ -1,4 +1,5 @@
 from typing import List, Optional
+from datetime import datetime
 from pydantic import BaseModel, Field
 
 from app.schemas import OID
@@ -39,6 +40,7 @@ class VacancyResponse(VacancyPost):
     status: VacancyStatus
     responses: int
     stages: List[StageItemResponse]
+    created_at: datetime
 
 
 class PaginationVacanciesResponse(BaseModel):

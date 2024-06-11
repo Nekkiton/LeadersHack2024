@@ -133,6 +133,15 @@ async def update_vacancy(
     return DetailedVacancies.find_one({"_id": vacancy_id})
 
 
+@router.get(
+    "/{vacancy_id}",
+    name="Получить вакансию",
+    response_model=VacancyResponse,
+    )
+async def get_vacancy(vacancy_id: OID):
+    return DetailedVacancies.find_one({"_id": vacancy_id})
+
+
 @router.patch(
     "/{vacancy_id}/status",
     name="Обновить статус вакансии",
