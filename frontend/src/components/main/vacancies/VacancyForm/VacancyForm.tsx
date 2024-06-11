@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Site } from '@/config/site'
 import { useCurUser } from '@/api/users'
-import { useCreateVacancy } from '@/api/vacancies'
-import { FormData, transformFormData } from './utils'
+import { Routes } from '@/config/routes'
+import { useCreateVacancy, useUpdateVacancy, useVacancy } from '@/api/vacancies'
+import { FormData, getInitialData, transformFormData } from './utils'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Steps from '@/components/ui/Steps'
@@ -12,15 +14,15 @@ import VacancyFormRecruiting from './VacancyFormRecruiting'
 import styles from './VacancyForm.module.scss'
 
 interface Props {
+  editId?: string
   backLink?: {
     url: string
     text: string
   }
 }
 
-// TODO: editing, copying from another vacancy
-
-export default function VacancyForm({ backLink }: Props) {
+export default function VacancyForm({ backLink, editId }: Props) {
+  const router = useRouter()
   const user = useCurUser()
 
   const [activeStepIdx, setActiveStepIdx] = useState(0)
@@ -36,16 +38,39 @@ export default function VacancyForm({ backLink }: Props) {
     },
   ]
 
-  const methods = useForm<FormData>()
+  const methods = useForm<FormData>({ defaultValues: getInitialData() })
   const { handleSubmit, reset } = methods
 
-  const { mutate: createVacancy, status } = useCreateVacancy()
+  const vacancy = useVacancy(editId!, { enabled: !!editId })
+
+  useEffect(() => {
+    if (vacancy.status === 'success') {
+      reset(getInitialData(vacancy.value))
+    }
+  }, [vacancy.status])
+
+  // TODO: handle errors
+  const { mutate: createVacancy, status: createStatus } = useCreateVacancy()
+  const { mutate: updateVacancy, status: updateStatus } = useUpdateVacancy()
 
   const submit = handleSubmit((data) => {
     if (activeStepIdx < steps.length - 1) {
       setActiveStepIdx(activeStepIdx + 1)
+    } else if (editId) {
+      updateVacancy(
+        { ...transformFormData(data), pk: editId },
+        {
+          onSuccess: () => {
+            router.push(Routes.recruiterVacancy(editId))
+          },
+        }
+      )
     } else {
-      createVacancy(transformFormData(data))
+      createVacancy(transformFormData(data), {
+        onSuccess: () => {
+          router.push(Routes.recruiterVacancies)
+        },
+      })
     }
   })
 
@@ -71,7 +96,7 @@ export default function VacancyForm({ backLink }: Props) {
           {backLink.text}
         </Button>
       )}
-      <h1>Создать вакансию</h1>
+      <h1>{editId ? 'Редактировать вакансию' : 'Создать вакансию'}</h1>
       <div className={styles.main}>
         <FormProvider {...methods}>
           <form className={styles.form} onSubmit={submit}>
@@ -94,9 +119,24 @@ export default function VacancyForm({ backLink }: Props) {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  loading={status === 'pending'}
+                  loading={
+                    updateStatus === 'pending' || createStatus === 'pending'
+                  }
                 >
                   Опубликовать
+                </Button>
+              )}
+              {editId && (
+                <Button
+                  className={styles.formControlsRemoveBtn}
+                  type="text"
+                  onClick={() => alert('coming soon')}
+                >
+                  <Icon
+                    className={styles.formControlsRemoveIcon}
+                    icon="trash"
+                  />
+                  <span>Удалить вакансию</span>
                 </Button>
               )}
             </div>

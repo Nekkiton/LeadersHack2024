@@ -7,3 +7,7 @@ export interface Stage extends BaseEntity {
   reject_template: string
   position: number
 }
+
+export interface UpdateStage extends Omit<Stage, 'id'> {
+  id?: string
+}

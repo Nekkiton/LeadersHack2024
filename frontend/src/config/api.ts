@@ -22,6 +22,7 @@ import { Skill } from '@/types/entities/skill'
 import { Stage } from '@/types/entities/stage'
 import { BaseUser, Role, User } from '@/types/entities/user'
 import {
+  CreateVacancyData,
   GetCandidateVacanciesParams,
   GetRecruiterVacanciesParams,
   GetVacanciesParams,
@@ -378,7 +379,9 @@ export const Api = {
             [responseStage1, responseStage2, responseStage3],
           ],
         })),
-    create: (data: any) => Axios.post('/vacancies/', data), // TODO: data type
+    create: (data: CreateVacancyData) => Axios.post('/vacancies', data),
+    update: ({ pk, ...data }: CreateVacancyData & { pk: string }) =>
+      Axios.post(`/vacancies/${pk}`, data),
     respond: ({ pk, ...data }: any) =>
       Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
   },

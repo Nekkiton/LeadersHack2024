@@ -17,6 +17,7 @@ export const useCurCandidateResponses = createUseQuery(
 export const useCurCandidateUpdateProfile = createUseMutation(
   Api.candidates.me.updateProfile,
   {
+    invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
     onError: ([error], { setError }) => {
       if (setError) {
         const detail = (error.response?.data as any).detail
