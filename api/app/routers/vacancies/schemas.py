@@ -51,6 +51,10 @@ class VacancyResponse(VacancyUpdate):
     created_at: datetime
 
 
+class VacancyCandidateResponse(VacancyResponse):
+    match: float = 50
+
+
 class PaginationResponse(BaseModel):
     total_pages: int
     page: int
@@ -59,3 +63,7 @@ class PaginationResponse(BaseModel):
 
 class PaginationVacanciesResponse(PaginationResponse):
     items: List[VacancyResponse]
+
+
+class PaginationVacanciesCandidateResponse(PaginationResponse):
+    items: List[VacancyCandidateResponse]

@@ -6,7 +6,6 @@ VacancyStatus = Literal[
     "closed"
 ]
 
-
 Educations = Literal[
     "Основное общее (9 классов)",
     "Среднее общее (11 классов)",

@@ -1,16 +1,16 @@
 import math
 from typing import List, Optional
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pymongo import DeleteMany, InsertOne, UpdateOne
 
 from app.schemas import OID
 from app.utils import get_now
 from app.literals import Skills, VacancyStatus, WorkScopes
-from app.oauth import RequiredRecruiterID
+from app.oauth import RequiredCandidateID, RequiredRecruiterID
 from app.database import Stages, Vacancies, DetailedVacancies
 
 from .exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
-from .schemas import VacancyPost, VacancyResponse, PaginationVacanciesResponse, VacancyUpdate
+from .schemas import PaginationVacanciesCandidateResponse, VacancyPost, VacancyResponse, PaginationVacanciesResponse, VacancyUpdate
 
 router = APIRouter(tags=["Вакансии"], prefix="/vacancies")
 
@@ -21,9 +21,9 @@ router = APIRouter(tags=["Вакансии"], prefix="/vacancies")
     response_model=PaginationVacanciesResponse
 )
 async def get_vacancies(
-    page: int = 0,
-    limit: int = 25,
-    scope: Optional[WorkScopes] = None,
+    page: int = Query(0, title="Страница"),
+    limit: int = Query(25, title="Элементов на странице"),
+    scope: Optional[WorkScopes] = Query(None, title="Направление"),
 ):
     query = {}
     if scope is not None:
@@ -42,24 +42,54 @@ async def get_vacancies(
 )
 async def get_recruiter_vacancies(
     recruiter_id: RequiredRecruiterID,
-    page: int = 0,
-    limit: int = 25,
-    query: str = "",
-    statuses: Optional[List[VacancyStatus]] = None,
-    skills: Optional[List[Skills]] = None
-
+    page: int = Query(0, title="Страница"),
+    limit: int = Query(25, title="Элементов на странице"),
+    query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
+    statuses: Optional[List[VacancyStatus]] = Query(None, title="Статусы"),
+    skills: Optional[List[Skills]] = Query(None, title="Навыки")
 ):
     query = {
         "recruiter_id": recruiter_id,
-        "or": [
-            {"description": {"$regex": query}},
-            {"title": {"$regex": query}}
+        "$or": [
+            {"description": {"$regex": query, "$options": "i"}},
+            {"title": {"$regex": query, "$options": "i"}}
         ]
     }
     if statuses is not None:
         query["status"] = {"$in": statuses}
     if skills is not None:
         query["skills"] = {"$in": skills}
+    return {
+        "total_pages": DetailedVacancies.count_documents(query) // limit,
+        "page": page,
+        "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
+    }
+
+
+@router.get(
+    "/for-candidates",
+    name="Вакансии соискателя",
+    response_model=PaginationVacanciesCandidateResponse
+)
+async def get_candidate_vacancies(
+    candidate_id: RequiredCandidateID,
+    page: int = Query(0, title="Страница"),
+    limit: int = Query(25, title="Элементов на странице"),
+    query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
+    scopes: Optional[List[WorkScopes]] = Query(None, title="Направления"),
+    skills: Optional[List[Skills]] = Query(None, title="Навыки")
+):
+    query = {
+        "$or": [
+            {"description": {"$regex": query, "$options": "i"}},
+            {"title": {"$regex": query, "$options": "i"}}
+        ]
+    }
+    if scopes is not None:
+        query["scope"] = {"$in": scopes}
+    if skills is not None:
+        query["skills"] = {"$in": skills}
+    print(query)
     return {
         "total_pages": DetailedVacancies.count_documents(query) // limit,
         "page": page,
