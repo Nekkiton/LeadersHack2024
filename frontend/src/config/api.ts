@@ -267,7 +267,7 @@ export const Api = {
   recruiters: {
     me: {
       updateProfile: (data: UpdateRecruiterData) =>
-        Axios.patch('/recruiters/me/', data),
+        Axios.put('/user/recruiter', data),
       vacancies: (params?: GetRecruiterVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/recruiter/me/vacancies', {
           params,

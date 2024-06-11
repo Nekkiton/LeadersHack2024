@@ -23,7 +23,7 @@ export const useCurCandidateUpdateProfile = createUseMutation(
   Api.candidates.me.updateProfile,
   {
     invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
-    onError: ([error], { setError }) => {
+    onError: ([error], { setError, toasts }) => {
       if (setError) {
         const detail = (error.response?.data as any).detail
         if (Array.isArray(detail)) {
@@ -32,6 +32,10 @@ export const useCurCandidateUpdateProfile = createUseMutation(
             setError(name, { message: i.msg, type: '' })
           })
         }
+      }
+      if (error.response?.status === 422) {
+        toasts.error({ content: 'Исправьте ошибки' })
+        return true
       }
     },
     onSuccess: ([], { toasts }) => {

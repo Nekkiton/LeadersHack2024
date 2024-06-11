@@ -16,7 +16,6 @@ export default function RecruiterProfile() {
 
   const { mutate: updateProfile, status } = useCurRecruiterUpdateProfile({
     setError,
-    handleError: false,
   })
 
   const user = useCurUser()

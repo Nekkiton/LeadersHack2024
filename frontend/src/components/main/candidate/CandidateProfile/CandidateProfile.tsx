@@ -16,11 +16,9 @@ export default function CandidateProfile() {
     defaultValues: getDefaultData(),
   })
   const { handleSubmit, reset, setError, formState } = formMethods
-  console.log(formState.errors)
 
   const { mutate: updateProfile, status } = useCurCandidateUpdateProfile({
     setError,
-    handleError: false,
   })
   const user = useCurUser()
 

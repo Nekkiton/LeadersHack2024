@@ -4,7 +4,7 @@ import { createUseMutation } from '@/lib/create-use-mutation'
 export const useCurRecruiterUpdateProfile = createUseMutation(
   Api.recruiters.me.updateProfile,
   {
-    onError: ([error], { setError }) => {
+    onError: ([error], { setError, toasts }) => {
       if (setError) {
         const detail = (error.response?.data as any).detail
         if (Array.isArray(detail)) {
@@ -14,6 +14,13 @@ export const useCurRecruiterUpdateProfile = createUseMutation(
           })
         }
       }
+      if (error.response?.status === 422) {
+        toasts.error({ content: 'Исправьте ошибки' })
+        return true
+      }
+    },
+    onSuccess: (_, { toasts }) => {
+      toasts.info({ content: 'Профиль обновлен' })
     },
   }
 )

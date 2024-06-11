@@ -20,6 +20,7 @@ export interface UpdateRecruiterData {
   phone: string
   telegram: string
   email: string
+  interview_per_day: number
   interview_slots: UpdateInterviewSlot[]
   site_notifications: boolean
   tg_notifications: boolean

@@ -24,8 +24,8 @@ export const transformData = (data: FormData): UpdateRecruiterData => {
     ...data,
     interview_slots: data.interview_slots.map((i) => ({
       ...i,
-      start_time: i.start_time.format('HH:mm'),
-      end_time: i.end_time.format('HH:mm'),
+      start_time: i.start_time.toISOString(),
+      end_time: i.end_time.toISOString(),
     })),
   }
 }
@@ -38,8 +38,8 @@ export const getDefaultData = (
     interview_slots: user?.name
       ? user.interview_slots?.map((i) => ({
           ...i,
-          start_time: moment(i.start_time),
-          end_time: moment(i.end_time),
+          start_time: moment(`${i.start_time}Z`),
+          end_time: moment(`${i.end_time}Z`),
         }))
       : [],
   }
