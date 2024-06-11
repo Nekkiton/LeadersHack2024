@@ -2,7 +2,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 from app.schemas import OID
-from app.literals import Skills, WorkScopes, WorkTypes, WorkSchedules, WorkExperiences
+from app.literals import Skills, VacancyStatus, WorkScopes, WorkTypes, WorkSchedules, WorkExperiences
 
 
 class StageItem(BaseModel):
@@ -11,6 +11,10 @@ class StageItem(BaseModel):
     approve_template: str
     reject_template: str
     position: int
+
+
+class StageItemResponse(StageItem):
+    id: OID = Field(alias="_id")
 
 
 class VacancyPost(BaseModel):
@@ -32,3 +36,12 @@ class VacancyPost(BaseModel):
 
 class VacancyResponse(VacancyPost):
     id: OID = Field(alias="_id")
+    status: VacancyStatus
+    responses: int
+    stages: List[StageItemResponse]
+
+
+class PaginationVacanciesResponse(BaseModel):
+    total_pages: int
+    page: int
+    items: List[VacancyResponse]

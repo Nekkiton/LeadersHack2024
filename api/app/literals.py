@@ -1,6 +1,12 @@
 from typing import Literal
 
 
+VacancyStatus = Literal[
+    "active",
+    "closed"
+]
+
+
 Educations = Literal[
     "Основное общее (9 классов)",
     "Среднее общее (11 классов)",
