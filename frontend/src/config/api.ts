@@ -269,7 +269,7 @@ export const Api = {
       updateProfile: (data: UpdateRecruiterData) =>
         Axios.put('/user/recruiter', data),
       vacancies: (params?: GetRecruiterVacanciesParams) =>
-        Axios.get<Paginated<Vacancy[]>>('/recruiter/me/vacancies', {
+        Axios.get<Paginated<Vacancy[]>>('/vacancies/for-recruiters', {
           params,
         }).then((res) => res.data),
     },
@@ -281,7 +281,7 @@ export const Api = {
         .then((res) => res.data)
         .catch(
           () =>
-            ({ data: [candidate], current_page: 1, last_page: 2 } as Paginated<
+            ({ items: [candidate], page: 1, total_pages: 2 } as Paginated<
               Candidate[]
             >)
         ),
@@ -304,15 +304,9 @@ export const Api = {
             invites: [[responseStage1], [responseStage1, responseStage2]],
           })),
       vacancies: (params?: GetCandidateVacanciesParams) =>
-        Axios.get<Paginated<Vacancy[]>>('/candidate/me/vacancies', {
+        Axios.get<Paginated<Vacancy[]>>('/vacancies/for-candidates', {
           params,
-        })
-          .then((res) => res.data)
-          .catch(() => ({
-            current_page: 1,
-            last_page: 1,
-            data: [vacancy],
-          })),
+        }).then((res) => res.data),
       vacancyResponse: (pk: string) =>
         Axios.get<ResponseStage[]>(`/candidate/me/vacancies/${pk}/response`)
           .then((res) => res.data)
@@ -322,40 +316,9 @@ export const Api = {
 
   vacancies: {
     all: (params?: GetVacanciesParams) =>
-      Axios.get<Paginated<Vacancy[]>>('/vacancies/', { params })
-        .then((res) => res.data)
-        .catch(
-          () =>
-            ({
-              data: [
-                {
-                  _id: '1',
-                  created_at: '10.10.2022',
-                  updated_at: '10.10.2022',
-                  responses: [],
-                  status: VacancyStatus.Active,
-                  scope: 'Разработка',
-                  recruiter: recruiter,
-                  title: 'Vacancy title',
-                  description: 'some description',
-                  responsabilities: 'responsibilites',
-                  conditions: 'conditions',
-                  additions: 'additions',
-                  salary_from: 100000,
-                  work_experience: '1',
-                  salary_to: null,
-                  candidate_expectation: 'expectations',
-                  work_type: '1',
-                  work_schedule: '1',
-                  skills: ['1'],
-                  recruiter_id: '1',
-                  stages: [],
-                },
-              ],
-              current_page: 1,
-              last_page: 5,
-            } as Paginated<Vacancy[]>)
-        ),
+      Axios.get<Paginated<Vacancy[]>>('/vacancies', { params }).then(
+        (res) => res.data
+      ),
     one: (pk: string) =>
       Axios.get<Vacancy>(`/vacancies/${pk}`)
         .then((res) => res.data)
@@ -429,9 +392,9 @@ export const Api = {
         .then((res) => res.data)
         .catch(
           (): Paginated<News[]> => ({
-            current_page: 1,
-            last_page: 1,
-            data: TempNews,
+            page: 1,
+            total_pages: 1,
+            items: TempNews,
           })
         ),
     daily: () =>

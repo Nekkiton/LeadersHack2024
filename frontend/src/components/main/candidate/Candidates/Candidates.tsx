@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useCandidates } from '@/api/candidates'
-import { Routes } from '@/config/routes'
 import { FiltersFormData, transformFilters } from './utils'
-import Link from 'next/link'
 import RemoteData from '@/components/special/RemoteData'
 import Icon from '@/components/ui/Icon'
 import Pagination from '@/components/ui/Pagination'
@@ -22,14 +20,14 @@ export default function Candidates() {
   const { watch } = formMethods
   const filters = watch()
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const [candidatesExist, setCandidatesExist] = useState<null | boolean>(null)
 
   const candidates = useCandidates({ ...transformFilters(filters), page })
 
   useEffect(() => {
     if (candidatesExist === null && candidates.status === 'success') {
-      setCandidatesExist(!!candidates.value.data.length)
+      setCandidatesExist(!!candidates.value.items.length)
     }
   }, [candidates, candidatesExist])
 
@@ -57,8 +55,8 @@ export default function Candidates() {
             </div>
           ) : (
             <>
-              {candidates.data.length ? (
-                candidates.data.map((candidate) => (
+              {candidates.items.length ? (
+                candidates.items.map((candidate) => (
                   <CandidateCard
                     candidate={candidate}
                     type="expandedBottom"
@@ -72,8 +70,8 @@ export default function Candidates() {
                 </div>
               )}
               <Pagination
-                currentPage={candidates.current_page}
-                lastPage={candidates.last_page}
+                page={candidates.page}
+                totalPages={candidates.total_pages}
                 loadPage={(val) => setPage(val)}
               />
             </>

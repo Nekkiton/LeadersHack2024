@@ -1,5 +1,5 @@
 export interface Paginated<T> {
-  data: T
-  current_page: number
-  last_page: number
+  items: T
+  page: number
+  total_pages: number
 }

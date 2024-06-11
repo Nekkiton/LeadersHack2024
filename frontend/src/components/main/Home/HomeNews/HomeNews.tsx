@@ -52,7 +52,7 @@ export default function HomeNews() {
               data={news}
               renderSuccess={(newsList) => (
                 <>
-                  {newsList.data.map((newsItem) => (
+                  {newsList.items.map((newsItem) => (
                     <NewsCard
                       className={styles.newsItem}
                       news={newsItem}
@@ -60,8 +60,8 @@ export default function HomeNews() {
                     />
                   ))}
                   <Pagination
-                    currentPage={newsList.current_page}
-                    lastPage={newsList.last_page}
+                    page={newsList.page}
+                    totalPages={newsList.total_pages}
                     loadPage={(val) => setPage(val)}
                   />
                 </>

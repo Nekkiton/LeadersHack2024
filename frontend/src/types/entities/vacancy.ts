@@ -46,11 +46,13 @@ export interface Vacancy extends BaseEntity {
 
 export interface GetVacanciesParams {
   page?: number
+  limit?: number
   scope?: WorkScope
 }
 
 export interface GetCandidateVacanciesParams {
   page?: number
+  limit?: number
   query?: string
   work_scopes?: WorkScope[]
   skills?: Skill[]
@@ -58,6 +60,7 @@ export interface GetCandidateVacanciesParams {
 
 export interface GetRecruiterVacanciesParams {
   page?: number
+  limit?: number
   query?: string
   statuses?: VacancyStatus[]
   work_scopes?: WorkScope[]

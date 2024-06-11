@@ -3,6 +3,7 @@ import { WorkScope } from '@/types/entities/work-scope'
 import { useWorkScopes } from '@/api/work-scopes'
 import { useVacancies } from '@/api/vacancies'
 import { Routes } from '@/config/routes'
+import { Site } from '@/config/site'
 import classNames from 'classnames'
 import BaseButton from '@/components/ui/BaseButton'
 import RemoteData from '@/components/special/RemoteData'
@@ -21,7 +22,11 @@ export default function HomeVacancies() {
     setPage(0)
   }, [activeScope])
 
-  const vacancies = useVacancies({ page, scope: activeScope ?? undefined })
+  const vacancies = useVacancies({
+    page,
+    scope: activeScope ?? undefined,
+    limit: Site.cardsPerPage,
+  })
 
   return (
     <div className={styles.container}>
@@ -31,6 +36,7 @@ export default function HomeVacancies() {
           className={classNames(styles.scope, {
             [styles.active]: !activeScope,
           })}
+          onClick={() => setActiveScope(null)}
         >
           Все
         </BaseButton>
@@ -53,13 +59,13 @@ export default function HomeVacancies() {
             data={vacancies}
             renderSuccess={(vacancies) => (
               <>
-                {vacancies.data.map((vacancy) => (
+                {vacancies.items.map((vacancy) => (
                   <VacancyCard key={vacancy._id} vacancy={vacancy} />
                 ))}
                 <Pagination
                   className={styles.vacanciesPagination}
-                  currentPage={vacancies.current_page}
-                  lastPage={vacancies.last_page}
+                  totalPages={vacancies.total_pages}
+                  page={vacancies.page}
                   loadPage={(val) => setPage(val)}
                 />
               </>

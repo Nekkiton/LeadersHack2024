@@ -18,7 +18,7 @@ export default function VacancyCandidates({ vacancy }: Props) {
         <div className={styles.container}>
           <div className={styles.candidates}>
             {/* TODO: deal with pagination */}
-            {candidates.data.map((candidate) => (
+            {candidates.items.map((candidate) => (
               <CandidateCard key={candidate._id} candidate={candidate} />
             ))}
           </div>

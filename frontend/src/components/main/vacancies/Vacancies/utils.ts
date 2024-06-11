@@ -1,3 +1,4 @@
+import { Site } from '@/config/site'
 import { Skill } from '@/types/entities/skill'
 import {
   GetCandidateVacanciesParams,
@@ -24,6 +25,7 @@ export const transformCandidateFilters = (
   return {
     ...data,
     query: data.query ?? undefined,
+    limit: Site.cardsPerPage,
   }
 }
 
@@ -33,5 +35,6 @@ export const transformRecruiterFilters = (
   return {
     ...data,
     query: data.query ?? undefined,
+    limit: Site.cardsPerPage,
   }
 }

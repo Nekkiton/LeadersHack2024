@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import classNames from 'classnames'
 import BaseButton from '@/components/ui/BaseButton'
 import Icon from '@/components/ui/Icon'
@@ -5,17 +6,21 @@ import styles from './Pagination.module.scss'
 
 interface Props {
   className?: string
-  currentPage: number
-  lastPage: number
+  page: number
+  totalPages: number
   loadPage: (page: number) => void
 }
 
 export default function Pagination({
   className,
-  currentPage,
-  lastPage,
-  loadPage,
+  page,
+  totalPages,
+  loadPage: loadPage_,
 }: Props) {
+  const currentPage = useMemo(() => page + 1, [page])
+  const lastPage = totalPages
+  const loadPage = (val: number) => loadPage_(val - 1)
+
   if (lastPage === 1) {
     return null
   }

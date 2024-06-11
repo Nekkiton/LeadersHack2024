@@ -39,7 +39,7 @@ export default function Vacancies({ role }: Props) {
   const { watch } = formMethods
   const filters = watch()
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const [vacanciesExist, setVacanciesExist] = useState<null | boolean>(null)
 
   const candidateVacancies = useCurCandidateVacancies(
@@ -54,12 +54,12 @@ export default function Vacancies({ role }: Props) {
   useEffect(() => {
     if (vacanciesExist === null) {
       if (role === Role.Candidate && candidateVacancies.status === 'success') {
-        setVacanciesExist(!!candidateVacancies.value.data.length)
+        setVacanciesExist(!!candidateVacancies.value.items.length)
       } else if (
         role === Role.Recruiter &&
         recruiterVacancies.status === 'success'
       ) {
-        setVacanciesExist(!!recruiterVacancies.value.data.length)
+        setVacanciesExist(!!recruiterVacancies.value.items.length)
       }
     }
   }, [vacanciesExist, candidateVacancies, recruiterVacancies, role])
@@ -109,8 +109,8 @@ export default function Vacancies({ role }: Props) {
             </div>
           ) : (
             <>
-              {vacancies.data.length ? (
-                vacancies.data.map((vacancy) => (
+              {vacancies.items.length ? (
+                vacancies.items.map((vacancy) => (
                   <Link
                     href={
                       {
@@ -130,8 +130,8 @@ export default function Vacancies({ role }: Props) {
                 </div>
               )}
               <Pagination
-                currentPage={vacancies.current_page}
-                lastPage={vacancies.last_page}
+                page={vacancies.page}
+                totalPages={vacancies.total_pages}
                 loadPage={(val) => setPage(val)}
               />
             </>
