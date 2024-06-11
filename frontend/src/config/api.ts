@@ -27,6 +27,7 @@ import {
   GetCandidateVacanciesParams,
   GetRecruiterVacanciesParams,
   GetVacanciesParams,
+  RespondToVacancyData,
   Vacancy,
   VacancyStatus,
 } from '@/types/entities/vacancy'
@@ -242,6 +243,7 @@ export const Api = {
     // done
     login: (data: LoginData) =>
       Axios.post<User | BaseUser>('/login', data).then((res) => res.data),
+    refresh: () => Axios.post('/refresh'),
     register: (data: RegisterData) => Axios.post('/registration', data),
     logout: () => Axios.post('/logout'),
     // TODO
@@ -417,8 +419,8 @@ export const Api = {
     update: ({ pk, ...data }: CreateVacancyData & { pk: string }) =>
       Axios.post(`/vacancies/${pk}`, data),
     close: (pk: string) => Axios.post(`/vacancies/${pk}/close`),
-    respond: ({ pk, ...data }: any) =>
-      Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
+    respond: ({ pk, ...data }: RespondToVacancyData & { pk: string }) =>
+      Axios.post(`/vacancies/${pk}/respond`, data),
   },
 
   news: {

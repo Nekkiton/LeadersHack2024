@@ -1,7 +1,6 @@
 import { Api } from '@/config/api'
 import { createUseMutation } from '@/lib/create-use-mutation'
 import { createUseQuery } from '@/lib/create-use-query'
-import { create } from 'domain'
 
 export const useVacancies = createUseQuery('vacancies.all', Api.vacancies.all)
 
@@ -57,4 +56,7 @@ export const useRespondToVacancy = createUseMutation(Api.vacancies.respond, {
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
   ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Отклик отправлен' })
+  },
 })

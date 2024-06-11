@@ -17,6 +17,8 @@ export const useLogin = createUseMutation(Api.auth.login, {
   },
 })
 
+export const useRefreshAuth = createUseMutation(Api.auth.refresh)
+
 export const useRegister = createUseMutation(Api.auth.register, {
   invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
   onSuccess: ([], { router }) => {

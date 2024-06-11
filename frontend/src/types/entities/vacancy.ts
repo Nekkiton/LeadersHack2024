@@ -79,3 +79,7 @@ export interface CreateVacancyData {
   skills: Skill[]
   stages: UpdateStage[]
 }
+
+export interface RespondToVacancyData {
+  message: string
+}
