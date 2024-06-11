@@ -56,6 +56,7 @@ class CandidatePost(BaseModel):
     """
     Заполнение соискателя
     """
+    email: str
     name: str
     surname: str
     patronymic: Optional[str] = None
@@ -76,5 +77,31 @@ class CandidatePost(BaseModel):
 class CandidateResponse(CandidatePost, UserResponse):
     """
     Возвращаемые данные для соискателя
+    """
+    pass
+
+
+class InterviewSlotItem(BaseModel):
+    start_time: datetime
+    end_time: datetime
+
+
+class RecruiterPost(BaseModel):
+    """
+    Заполнение рекрутера
+    """
+    email: str
+    name: str
+    surname: str
+    patronymic: Optional[str] = None
+    phone: PhoneNumber
+    telegram: str
+    interview_per_day: int
+    interview_slots: List[InterviewSlotItem]
+
+
+class RecruiterResponse(RecruiterPost, UserResponse):
+    """
+    Возвращаемые данные для рекрутера
     """
     pass
