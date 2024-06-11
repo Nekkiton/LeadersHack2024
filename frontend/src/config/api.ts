@@ -12,6 +12,7 @@ import {
 } from '@/types/entities/candidate'
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
+import { GetNewsParams, News } from '@/types/entities/news'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import {
@@ -34,6 +35,7 @@ import { WorkHistory } from '@/types/entities/work-history'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
+import { TempNews } from './_news-temp'
 
 const workHistory1: WorkHistory = {
   job_title: 'FullStack разработчик',
@@ -225,7 +227,7 @@ const responseStage3: ResponseStage = {
   vacancy: vacancy,
   stage_id: '1',
   stage: stage3,
-  // status: ResponseStageStatus.WaitingForRecruiter,
+  status: ResponseStageStatus.WaitingForRecruiter,
   // status: ResponseStageStatus.ApprovedByRecruiter,
   meet_link: '',
   recruiter_message: 'Hello world',
@@ -419,7 +421,22 @@ export const Api = {
       Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
   },
 
-  // done
+  news: {
+    all: (params?: GetNewsParams) =>
+      Axios.get<Paginated<News[]>>('/news/all', { params })
+        .then((res) => res.data)
+        .catch(
+          (): Paginated<News[]> => ({
+            current_page: 1,
+            last_page: 1,
+            data: TempNews,
+          })
+        ),
+    daily: () =>
+      Axios.get<News[]>('/news/daily')
+        .then((res) => res.data)
+        .catch((): News[] => TempNews),
+  },
 
   workScopes: {
     all: () =>

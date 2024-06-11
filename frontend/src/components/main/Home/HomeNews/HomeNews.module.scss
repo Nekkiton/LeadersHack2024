@@ -1,0 +1,32 @@
+@import '@/assets/css/config';
+
+.container {
+  padding: 64px;
+  background: $white;
+  border-radius: 24px 24px 0 0;
+}
+
+.content {
+  @include content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.newsList {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+}
+
+.newsItem {
+  width: calc(50% - 16px);
+}
