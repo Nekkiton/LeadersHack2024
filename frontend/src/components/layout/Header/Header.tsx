@@ -7,8 +7,8 @@ import { BaseUser, Role, User } from '@/types/entities/user'
 import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
 import Image from '@/components/ui/Image'
-import BaseButton from '@/components/ui/BaseButton'
 import Button from '@/components/ui/Button'
+import HeaderNotifications from './HeaderNotifications'
 import logoImg from '@/assets/images/logo.png'
 import userImg from '@/assets/images/user.png'
 import styles from './Header.module.scss'
@@ -24,9 +24,7 @@ export default function Header() {
         </Link>
         {user.status === 'success' && user.value ? (
           <div className={styles.menu}>
-            <BaseButton className={styles.desktop} hoverable>
-              <Icon icon="bell" />
-            </BaseButton>
+            <HeaderNotifications />
             <Link
               className={styles.user}
               href={
