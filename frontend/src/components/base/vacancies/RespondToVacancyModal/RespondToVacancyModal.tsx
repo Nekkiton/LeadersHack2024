@@ -1,17 +1,23 @@
 import { Controller, useForm } from 'react-hook-form'
 import { useRespondToVacancy } from '@/api/vacancies'
 import { useToasts } from '@/lib/use-toasts'
+import { Vacancy } from '@/types/entities/vacancy'
 import Modal, { ModalStateProps } from '@/components/ui/Modal'
 import Textarea from '@/components/ui/Textarea'
 import Button from '@/components/ui/Button'
 
-interface Props extends ModalStateProps {}
+interface Props extends ModalStateProps {
+  vacancy: Vacancy
+}
 
 interface FormData {
   message: string
 }
 
-export default function RespondToVacancyModal({ ...stateProps }: Props) {
+export default function RespondToVacancyModal({
+  vacancy,
+  ...stateProps
+}: Props) {
   const toasts = useToasts()
 
   const { control, handleSubmit, reset } = useForm<FormData>()
@@ -19,16 +25,19 @@ export default function RespondToVacancyModal({ ...stateProps }: Props) {
   const { mutate: respond, status } = useRespondToVacancy()
 
   const onSubmit = handleSubmit((data) => {
-    respond(data, {
-      onError: () => {
-        stateProps.setIsShowed(false)
-      },
-      onSuccess: () => {
-        stateProps.setIsShowed(false)
-        toasts.info({ content: 'Вы успешно откликнулись на вакансию' })
-        reset()
-      },
-    })
+    respond(
+      { ...data, pk: vacancy._id },
+      {
+        onError: () => {
+          stateProps.setIsShowed(false)
+        },
+        onSuccess: () => {
+          stateProps.setIsShowed(false)
+          toasts.info({ content: 'Вы успешно откликнулись на вакансию' })
+          reset()
+        },
+      }
+    )
   })
 
   return (

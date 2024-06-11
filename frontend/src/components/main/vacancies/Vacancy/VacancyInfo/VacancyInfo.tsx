@@ -232,6 +232,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
         <RespondToVacancyModal
           isShowed={isRespondModalShowed}
           setIsShowed={setIsRespondModalShowed}
+          vacancy={vacancy}
         />
       )}
     </>
