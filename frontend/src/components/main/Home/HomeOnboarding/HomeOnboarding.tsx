@@ -1,3 +1,4 @@
+import { useToasts } from '@/lib/use-toasts'
 import Checkbox from '@/components/ui/Checkbox'
 import Button from '@/components/ui/Button'
 import Image from '@/components/ui/Image'
@@ -6,6 +7,8 @@ import onboardingImg from '@/assets/images/onboarding.png'
 import styles from './HomeOnboarding.module.scss'
 
 export default function HomeOnboarding() {
+  const toasts = useToasts()
+
   return (
     <div className={styles.outerContainer}>
       <div className={styles.container}>
@@ -18,7 +21,12 @@ export default function HomeOnboarding() {
             </p>
           </div>
           <div className={styles.mainControls}>
-            <Button type="primary" onClick={() => alert('coming soon')}>
+            <Button
+              type="primary"
+              onClick={() =>
+                toasts.info({ content: 'Функционал в разработке' })
+              }
+            >
               Загрузить резюме
             </Button>
             <Checkbox>

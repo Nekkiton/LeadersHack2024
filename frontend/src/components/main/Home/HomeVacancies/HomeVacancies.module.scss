@@ -53,6 +53,8 @@
   flex-direction: column;
   gap: 24px;
   flex-shrink: 0;
+  position: sticky;
+  top: 24px;
   width: 26%;
 }
 
