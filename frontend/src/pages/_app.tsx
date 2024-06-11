@@ -31,6 +31,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>{Site.name}</title>
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
       </Head>
 
       <QueryClientProvider client={queryClient}>

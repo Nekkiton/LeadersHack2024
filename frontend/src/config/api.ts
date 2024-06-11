@@ -382,6 +382,7 @@ export const Api = {
     create: (data: CreateVacancyData) => Axios.post('/vacancies', data),
     update: ({ pk, ...data }: CreateVacancyData & { pk: string }) =>
       Axios.post(`/vacancies/${pk}`, data),
+    close: (pk: string) => Axios.post(`/vacancies/${pk}/close`),
     respond: ({ pk, ...data }: any) =>
       Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
   },
