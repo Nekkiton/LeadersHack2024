@@ -74,6 +74,10 @@ export const createUseMutation = <Args, Data>(
             toasts.error({
               content: (args_[0].response?.data as any)?.detail,
             })
+          } else if (args_[0].response?.status === 422) {
+            toasts.error({
+              content: 'Форма заполнена не правильно',
+            })
           } else {
             toasts.error({
               content: 'Что-то пошло не так',

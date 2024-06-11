@@ -1,0 +1,3 @@
+import VacancyInfoCandidateResponse from './VacancyInfoCandidateResponse'
+
+export default VacancyInfoCandidateResponse

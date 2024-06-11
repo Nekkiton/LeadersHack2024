@@ -19,7 +19,7 @@ export default function VacancyCandidates({ vacancy }: Props) {
           <div className={styles.candidates}>
             {/* TODO: deal with pagination */}
             {candidates.data.map((candidate) => (
-              <CandidateCard key={candidate.id} candidate={candidate} />
+              <CandidateCard key={candidate._id} candidate={candidate} />
             ))}
           </div>
           <div className={styles.sidebar}>coming soong</div>

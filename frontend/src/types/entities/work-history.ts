@@ -1,6 +1,4 @@
-import { BaseEntity } from '@/types/entities/base-entity'
-
-export interface WorkHistory extends BaseEntity {
+export interface WorkHistory {
   company: string
   job_title: string
   start_date: string
@@ -8,6 +6,4 @@ export interface WorkHistory extends BaseEntity {
   responsabilites: string
 }
 
-export interface UpdateWorkHistory extends Omit<WorkHistory, 'id'> {
-  id?: string
-}
+export interface UpdateWorkHistory extends WorkHistory {}

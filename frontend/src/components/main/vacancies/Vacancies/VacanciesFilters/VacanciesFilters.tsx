@@ -77,7 +77,6 @@ export default function VacanciesFilters({ role }: Props) {
             withConfirmation
             multiple
             longPopover
-            inputtable
           />
         )}
       />

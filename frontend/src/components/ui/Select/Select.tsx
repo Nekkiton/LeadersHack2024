@@ -109,7 +109,8 @@ export default function Select<
     }
   }, [isActive])
 
-  const shouldFocusAfterDeactivate = useRef(true)
+  // const shouldFocusAfterDeactivate = useRef(true)
+  const shouldFocusAfterDeactivate = useRef(false) // TODO: changed
 
   useEffectExceptMount(() => {
     if (isInputtable && !isActive && shouldFocusAfterDeactivate.current) {

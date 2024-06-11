@@ -40,3 +40,12 @@
   align-items: center;
   gap: 16px;
 }
+
+.formControlsRemoveBtn {
+  margin-left: auto;
+  color: $red !important;
+
+  &:after {
+    background: $red !important;
+  }
+}

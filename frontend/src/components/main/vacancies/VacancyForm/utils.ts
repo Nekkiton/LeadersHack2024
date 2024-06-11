@@ -1,14 +1,20 @@
+import { CreateVacancyData, Vacancy } from '@/types/entities/vacancy'
+import { WorkExperience } from '@/types/entities/work-experience'
+import { WorkSchedule } from '@/types/entities/work-schedule'
+import { WorkScope } from '@/types/entities/work-scope'
+import { WorkType } from '@/types/entities/work-type'
+
 export interface FormData {
   title: string
-  scope_id: string
+  scope: WorkScope
   description: string | null
-  responsibilities: string
+  responsabilities: string
   candidate_expectation: string
   additions: string | null
   conditions: string | null
-  work_type_id: string
-  work_schedule_id: string
-  work_experience_id: string
+  work_type: WorkType
+  work_schedule: WorkSchedule
+  work_experience: WorkExperience
   salary_from: number | null
   salary_to: number | null
   skills: string[]
@@ -21,12 +27,21 @@ export interface FormData {
   }[]
 }
 
-export const transformFormData = (data: FormData) => {
+export const transformFormData = (data: FormData): CreateVacancyData => {
   return {
     ...data,
     stages: data.stages.map((i, idx) => ({
       ...i,
       position: idx,
     })),
+  }
+}
+
+export const getInitialData = (vacancy?: Vacancy): Partial<FormData> => {
+  return {
+    ...(vacancy ?? {}),
+    stages:
+      vacancy?.stages?.map((i, idx) => ({ ...i, _isRequired: idx === 0 })) ??
+      [],
   }
 }

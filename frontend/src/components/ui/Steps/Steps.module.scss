@@ -11,7 +11,7 @@
     position: absolute;
     top: 16px;
     bottom: 16px;
-    left: 6px;
+    left: 5.5px;
     width: 1px;
     background: $gray-5;
   }
@@ -24,6 +24,7 @@
 }
 
 .itemMark {
+  flex-shrink: 0;
   width: 12px;
   height: 12px;
   z-index: 1;
@@ -33,6 +34,7 @@
 
   .item.active & {
     background: $purpure;
+    border: 1px solid $purpure;
   }
 
   .item.done & {

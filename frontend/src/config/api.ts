@@ -12,6 +12,7 @@ import {
 } from '@/types/entities/candidate'
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
+import { GetNewsParams, News } from '@/types/entities/news'
 import { Paginated } from '@/types/entities/paginated'
 import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import {
@@ -22,9 +23,11 @@ import { Skill } from '@/types/entities/skill'
 import { Stage } from '@/types/entities/stage'
 import { BaseUser, Role, User } from '@/types/entities/user'
 import {
+  CreateVacancyData,
   GetCandidateVacanciesParams,
   GetRecruiterVacanciesParams,
   GetVacanciesParams,
+  RespondToVacancyData,
   Vacancy,
   VacancyStatus,
 } from '@/types/entities/vacancy'
@@ -33,9 +36,9 @@ import { WorkHistory } from '@/types/entities/work-history'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
+import { TempNews } from './_news-temp'
 
 const workHistory1: WorkHistory = {
-  id: '1',
   job_title: 'FullStack разработчик',
   company: 'СБЕР',
   start_date: '01.01.2022',
@@ -45,7 +48,6 @@ const workHistory1: WorkHistory = {
 }
 
 const workHistory2: WorkHistory = {
-  id: '2',
   job_title: 'FullStack разработчик',
   company: 'СБЕР2',
   start_date: '02.02.2022',
@@ -55,7 +57,7 @@ const workHistory2: WorkHistory = {
 }
 
 const recruiter: Recruiter = {
-  id: 'f',
+  _id: 'f',
   name: 'Alexey',
   surname: 'Levedev',
   patronymic: 'Sergeevich',
@@ -67,10 +69,14 @@ const recruiter: Recruiter = {
   notifications: [],
   interview_per_day: 1,
   interview_slots: [],
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
 }
 
 const candidate: Candidate = {
-  id: '2',
+  _id: '2',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
   role: Role.Candidate,
   name: 'Candidate',
   surname: 'Surname',
@@ -95,7 +101,9 @@ const candidate: Candidate = {
 }
 
 const stage1: Stage = {
-  id: '1',
+  _id: '1',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
   title: 'Неразобранные отклики',
   auto_interview: false,
   approve_template: 'pprove',
@@ -104,7 +112,9 @@ const stage1: Stage = {
 }
 
 const stage2: Stage = {
-  id: '2',
+  _id: '2',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
   title: 'Первичное интервью',
   auto_interview: false,
   approve_template: '2pprove',
@@ -113,7 +123,9 @@ const stage2: Stage = {
 }
 
 const stage3: Stage = {
-  id: '3',
+  _id: '3',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
   title: 'Тезхническое интервью',
   auto_interview: false,
   approve_template: '3pprove',
@@ -122,11 +134,15 @@ const stage3: Stage = {
 }
 
 const vacancy: Vacancy = {
-  id: '1',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
+  _id: '1',
   status: VacancyStatus.Active,
-  scope_id: 'Разработка',
+  scope: 'Разработка',
   recruiter: {
-    id: '1',
+    _id: '1',
+    created_at: '10.10.2022',
+    updated_at: '10.10.2022',
     name: 'Alexey',
     surname: 'Levedev',
     patronymic: 'Sergeevich',
@@ -141,24 +157,25 @@ const vacancy: Vacancy = {
   },
   title: 'Vacancy title',
   description: 'some description',
-  responsibilities: 'responsibilites',
+  responsabilities: 'responsibilites',
   conditions: 'conditions\nconditions\nconditions',
   additions: 'additions',
   salary_from: 100000,
-  work_experience_id: '1',
+  work_experience: '1',
   salary_to: null,
   stages: [stage1, stage2, stage3],
   candidate_expectation: 'expectations',
-  work_type_id: '1',
-  work_schedule_id: '1',
+  work_type: '1',
+  work_schedule: '1',
   skills: ['1'],
   recruiter_id: '1',
-  creation_date: '12.05.2012',
 }
 
 const responseStage1: ResponseStage = {
-  id: '1',
-  candidate_id: candidate.id,
+  _id: '1',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
+  candidate_id: candidate._id,
   candidate: candidate,
   vacancy_id: '1',
   vacancy: vacancy,
@@ -166,10 +183,10 @@ const responseStage1: ResponseStage = {
   stage: stage1,
   // status: ResponseStageStatus.WaitingForRecruiter,
   // status: ResponseStageStatus.WaitingForCandidate,
-  status: ResponseStageStatus.ApprovedByRecruiter,
+  // status: ResponseStageStatus.ApprovedByRecruiter,
   // status: ResponseStageStatus.RejectedByRecruiter,
   // status: ResponseStageStatus.RejectedByCandidate,
-  // status: ResponseStageStatus.ApprovedByCandidate,
+  status: ResponseStageStatus.ApprovedByCandidate,
   meet_link: '',
   recruiter_message: 'Recruiter',
   recruiter_message_timestamp: '2022-01-01T10:00Z',
@@ -179,8 +196,10 @@ const responseStage1: ResponseStage = {
 }
 
 const responseStage2: ResponseStage = {
-  id: '2',
-  candidate_id: candidate.id,
+  _id: '2',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
+  candidate_id: candidate._id,
   candidate: candidate,
   vacancy_id: '1',
   vacancy: vacancy,
@@ -200,14 +219,17 @@ const responseStage2: ResponseStage = {
 }
 
 const responseStage3: ResponseStage = {
-  id: '3',
-  candidate_id: candidate.id,
+  _id: '3',
+  created_at: '10.10.2022',
+  updated_at: '10.10.2022',
+  candidate_id: candidate._id,
   candidate: candidate,
   vacancy_id: '1',
   vacancy: vacancy,
   stage_id: '1',
   stage: stage3,
   status: ResponseStageStatus.WaitingForRecruiter,
+  // status: ResponseStageStatus.ApprovedByRecruiter,
   meet_link: '',
   recruiter_message: 'Hello world',
   recruiter_message_timestamp: '2022-01-01T10:00Z',
@@ -221,6 +243,7 @@ export const Api = {
     // done
     login: (data: LoginData) =>
       Axios.post<User | BaseUser>('/login', data).then((res) => res.data),
+    refresh: () => Axios.post('/refresh'),
     register: (data: RegisterData) => Axios.post('/registration', data),
     logout: () => Axios.post('/logout'),
     // TODO
@@ -283,7 +306,17 @@ export const Api = {
       vacancies: (params?: GetCandidateVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/candidate/me/vacancies', {
           params,
-        }).then((res) => res.data),
+        })
+          .then((res) => res.data)
+          .catch(() => ({
+            current_page: 1,
+            last_page: 1,
+            data: [vacancy],
+          })),
+      vacancyResponse: (pk: string) =>
+        Axios.get<ResponseStage[]>(`/candidate/me/vacancies/${pk}/response`)
+          .then((res) => res.data)
+          .catch(() => []),
     },
   },
 
@@ -296,26 +329,27 @@ export const Api = {
             ({
               data: [
                 {
-                  id: '1',
+                  _id: '1',
+                  created_at: '10.10.2022',
+                  updated_at: '10.10.2022',
                   responses: [],
                   status: VacancyStatus.Active,
-                  scope_id: 'Разработка',
+                  scope: 'Разработка',
                   recruiter: recruiter,
                   title: 'Vacancy title',
                   description: 'some description',
-                  responsibilities: 'responsibilites',
+                  responsabilities: 'responsibilites',
                   conditions: 'conditions',
                   additions: 'additions',
                   salary_from: 100000,
-                  work_experience_id: '1',
+                  work_experience: '1',
                   salary_to: null,
                   candidate_expectation: 'expectations',
-                  work_type_id: '1',
-                  work_schedule_id: '1',
+                  work_type: '1',
+                  work_schedule: '1',
                   skills: ['1'],
                   recruiter_id: '1',
                   stages: [],
-                  creation_date: '12.05.2012',
                 },
               ],
               current_page: 1,
@@ -325,45 +359,48 @@ export const Api = {
     one: (pk: string) =>
       Axios.get<Vacancy>(`/vacancies/${pk}`)
         .then((res) => res.data)
-        .catch(
-          () =>
-            ({
-              id: '1',
-              responses: [responseStage1],
-              status: VacancyStatus.Active,
-              scope_id: 'Разработка',
-              recruiter: {
-                id: '1',
-                name: 'Alexey',
-                surname: 'Levedev',
-                patronymic: 'Sergeevich',
-                telegram: 'f',
-                email: 'email@ya.ru',
-                phone: '+7 (999) 999-99-99',
-                birthday: '01.01.2000',
-                photo: null,
-                role: Role.Recruiter,
-                notifications: [],
-                interview_per_day: 1,
-                interview_slots: [],
-              },
-              title: 'Vacancy title',
-              description: 'some description',
-              responsibilities: 'responsibilites',
-              conditions: 'conditions\nconditions\nconditions',
-              additions: 'additions',
-              salary_from: 100000,
-              work_experience_id: '1',
-              salary_to: null,
-              candidate_expectation: 'expectations',
-              work_type_id: '1',
-              work_schedule_id: '1',
-              skills: ['1'],
-              recruiter_id: '1',
-              stages: [stage1, stage2, stage3],
-              creation_date: '12.05.2012',
-            } as Vacancy)
-        ),
+        .catch(() => vacancy),
+    // .catch(
+    //   () =>
+    //     ({
+    //       _id: '1',
+    //       created_at: '10.10.2022',
+    //       updated_at: '10.10.2022',
+    //       responses: [responseStage1],
+    //       status: VacancyStatus.Active,
+    //       scope_id: 'Разработка',
+    //       recruiter: {
+    //         id: '1',
+    //         name: 'Alexey',
+    //         surname: 'Levedev',
+    //         patronymic: 'Sergeevich',
+    //         telegram: 'f',
+    //         email: 'email@ya.ru',
+    //         phone: '+7 (999) 999-99-99',
+    //         birthday: '01.01.2000',
+    //         photo: null,
+    //         role: Role.Recruiter,
+    //         notifications: [],
+    //         interview_per_day: 1,
+    //         interview_slots: [],
+    //       },
+    //       title: 'Vacancy title',
+    //       description: 'some description',
+    //       responsabilities: 'responsibilites',
+    //       conditions: 'conditions\nconditions\nconditions',
+    //       additions: 'additions',
+    //       salary_from: 100000,
+    //       work_experience_id: '1',
+    //       salary_to: null,
+    //       candidate_expectation: 'expectations',
+    //       work_type: '1',
+    //       work_schedule: '1',
+    //       skills: ['1'],
+    //       recruiter: '1',
+    //       stages: [stage1, stage2, stage3],
+    //       creation_date: '12.05.2012',
+    //     } as Vacancy)
+    // ),
     responses: (pk: string) =>
       Axios.get<{
         statistics: any
@@ -378,12 +415,30 @@ export const Api = {
             [responseStage1, responseStage2, responseStage3],
           ],
         })),
-    create: (data: any) => Axios.post('/vacancies/', data), // TODO: data type
-    respond: ({ pk, ...data }: any) =>
-      Axios.post(`/vacancies/${pk}/respond`, data), // TODO: data type
+    create: (data: CreateVacancyData) => Axios.post('/vacancies', data),
+    update: ({ pk, ...data }: CreateVacancyData & { pk: string }) =>
+      Axios.post(`/vacancies/${pk}`, data),
+    close: (pk: string) => Axios.post(`/vacancies/${pk}/close`),
+    respond: ({ pk, ...data }: RespondToVacancyData & { pk: string }) =>
+      Axios.post(`/vacancies/${pk}/respond`, data),
   },
 
-  // done
+  news: {
+    all: (params?: GetNewsParams) =>
+      Axios.get<Paginated<News[]>>('/news/all', { params })
+        .then((res) => res.data)
+        .catch(
+          (): Paginated<News[]> => ({
+            current_page: 1,
+            last_page: 1,
+            data: TempNews,
+          })
+        ),
+    daily: () =>
+      Axios.get<News[]>('/news/daily')
+        .then((res) => res.data)
+        .catch((): News[] => TempNews),
+  },
 
   workScopes: {
     all: () =>

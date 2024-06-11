@@ -11,9 +11,9 @@ export default function VacancyCardInfo({ vacancy }: Props) {
     <div className={styles.vacancyInfo}>
       <p className={styles.vacancyName}>{vacancy.title}</p>
       <div className={styles.vacancyInfoKeys}>
-        <span>TODO</span>
-        <span>TODO</span>
-        <span>TODO</span>
+        <span>{vacancy.work_experience}</span>
+        <span>{vacancy.work_type}</span>
+        <span>{vacancy.work_schedule}</span>
         <span>{getVacancySalary(vacancy)}</span>
       </div>
     </div>

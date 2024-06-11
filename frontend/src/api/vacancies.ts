@@ -21,11 +21,42 @@ export const useVacancyResponses = createUseQuery(
   Api.vacancies.responses
 )
 
-export const useCreateVacancy = createUseMutation(Api.vacancies.create) // TODO: process result
+export const useCreateVacancy = createUseMutation(Api.vacancies.create, {
+  invalidateQueriesFn: () => [
+    { queryKey: ['vacancies.all'] },
+    { queryKey: ['vacancies.one'] },
+  ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Вакансия создана' })
+  },
+})
+
+export const useUpdateVacancy = createUseMutation(Api.vacancies.update, {
+  invalidateQueriesFn: () => [
+    { queryKey: ['vacancies.all'] },
+    { queryKey: ['vacancies.one'] },
+  ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Вакансия изменена' })
+  },
+})
+
+export const useCloseVacancy = createUseMutation(Api.vacancies.close, {
+  invalidateQueriesFn: () => [
+    { queryKey: ['vacancies.all'] },
+    { queryKey: ['vacancies.one'] },
+  ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Вакансия закрыта' })
+  },
+})
 
 export const useRespondToVacancy = createUseMutation(Api.vacancies.respond, {
   invalidateQueriesFn: () => [
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
   ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Отклик отправлен' })
+  },
 })

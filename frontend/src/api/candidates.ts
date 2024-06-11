@@ -14,9 +14,15 @@ export const useCurCandidateResponses = createUseQuery(
   Api.candidates.me.responses
 )
 
+export const useCurCandidateVacancyResponse = createUseQuery(
+  'candidates.me.vacancy-response',
+  Api.candidates.me.vacancyResponse
+)
+
 export const useCurCandidateUpdateProfile = createUseMutation(
   Api.candidates.me.updateProfile,
   {
+    invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
     onError: ([error], { setError }) => {
       if (setError) {
         const detail = (error.response?.data as any).detail
@@ -27,6 +33,9 @@ export const useCurCandidateUpdateProfile = createUseMutation(
           })
         }
       }
+    },
+    onSuccess: ([], { toasts }) => {
+      toasts.info({ content: 'Профиль обновлен' })
     },
   }
 )

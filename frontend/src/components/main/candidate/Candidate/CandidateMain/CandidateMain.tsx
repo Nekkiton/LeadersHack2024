@@ -67,8 +67,8 @@ export default function CandidateMain({ candidate }: Props) {
         {!!candidate.work_history?.length && (
           <div className={styles.card}>
             <p className={styles.cardTitle}>Опыт работы</p>
-            {candidate.work_history.map((work) => (
-              <div className={styles.work} key={work.id}>
+            {candidate.work_history.map((work, idx) => (
+              <div className={styles.work} key={idx}>
                 <p className={styles.workDate}>
                   {moment(work.start_date).format('MMMM YYYY')} —{' '}
                   {work.end_date

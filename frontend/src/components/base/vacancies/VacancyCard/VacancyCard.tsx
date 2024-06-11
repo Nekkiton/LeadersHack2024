@@ -28,7 +28,7 @@ export default function VacancyCard({ className, vacancy, role }: Props) {
             </div>
           )}
         </div>
-        <span className={styles.headerTag}>{vacancy.scope_id}</span>
+        <span className={styles.headerTag}>{vacancy.scope}</span>
       </div>
 
       <VacancyCardInfo vacancy={vacancy} />

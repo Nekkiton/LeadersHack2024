@@ -32,8 +32,8 @@ export interface FormData {
     start_date: Moment
     end_date: Moment | null
   }[]
-  site_notifications: boolean
-  tg_notifications: boolean
+  site_notifications: boolean // TODO
+  tg_notifications: boolean // TODO
 }
 
 export const transformData = (data: FormData): UpdateCandidateData => {
@@ -53,18 +53,14 @@ export const getDefaultData = (
 ): Partial<FormData> => {
   return {
     ...(user ?? {}),
-    birthday: user?.name
-      ? user.birthday
-        ? moment(user.birthday)
-        : undefined
-      : undefined,
-    patronymic: null,
+    birthday: user?.name ? moment(`${user.birthday}Z`) : undefined,
+    patronymic: (user?.name ? user.patronymic : null) ?? null,
     work_history:
       (user?.name
         ? user?.work_history?.map((i) => ({
             ...i,
-            start_date: moment(i.start_date),
-            end_date: i.end_date ? moment(i.end_date) : null,
+            start_date: moment(`${i.start_date}Z`),
+            end_date: i.end_date ? moment(`${i.end_date}Z`) : null,
           }))
         : undefined) ?? [],
   }

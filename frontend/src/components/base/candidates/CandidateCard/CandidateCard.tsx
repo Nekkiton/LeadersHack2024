@@ -29,7 +29,7 @@ export default function CandidateCard({
             </Button>
             <Button
               type="secondary"
-              href={Routes.recruiterCandidate(candidate.id)}
+              href={Routes.recruiterCandidate(candidate._id)}
               target="_blank"
             >
               Открыть резюме
@@ -55,7 +55,7 @@ export default function CandidateCard({
             <div className={styles.footerControls}>
               <Button
                 type="secondary"
-                href={Routes.recruiterCandidate(candidate.id)}
+                href={Routes.recruiterCandidate(candidate._id)}
               >
                 Открыть резюме
               </Button>

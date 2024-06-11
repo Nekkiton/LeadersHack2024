@@ -34,6 +34,7 @@ const DocumentCheckIcon = dynamic(
   () => import('@/assets/icons/document-check.svg')
 )
 const LoupeIcon = dynamic(() => import('@/assets/icons/loupe.svg'))
+const LoupeOffIcon = dynamic(() => import('@/assets/icons/loupe-off.svg'))
 const MoreHIcon = dynamic(() => import('@/assets/icons/more-h.svg'))
 const LinkExternalIcon = dynamic(
   () => import('@/assets/icons/link-external.svg')
@@ -75,6 +76,7 @@ interface Props {
     | 'documentLoupe'
     | 'documentCheck'
     | 'loupe'
+    | 'loupeOff'
     | 'moreH'
     | 'linkExternal'
     | 'trash'
@@ -140,6 +142,8 @@ export default function Icon({ icon, className }: Props) {
         return DocumentCheckIcon
       case 'loupe':
         return LoupeIcon
+      case 'loupeOff':
+        return LoupeOffIcon
       case 'moreH':
         return MoreHIcon
       case 'linkExternal':

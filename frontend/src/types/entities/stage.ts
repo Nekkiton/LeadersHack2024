@@ -1,4 +1,8 @@
-import { BaseEntity } from '@/types/entities/base-entity'
+import {
+  BaseEntity,
+  BaseEntityPk,
+  BaseEntityPkType,
+} from '@/types/entities/base-entity'
 
 export interface Stage extends BaseEntity {
   title: string
@@ -6,4 +10,11 @@ export interface Stage extends BaseEntity {
   approve_template: string
   reject_template: string
   position: number
+}
+
+export interface UpdateStage
+  extends Omit<Stage, typeof BaseEntityPk | 'created_at' | 'updated_at'> {
+  [BaseEntityPk]?: BaseEntityPkType
+  created_at?: string
+  updated_at?: string
 }

@@ -3,6 +3,7 @@ import { useWorkTypes } from '@/api/work-types'
 import { useWorkScopes } from '@/api/work-scopes'
 import { useWorkExperiences } from '@/api/work-experiences'
 import { useWorkSchedules } from '@/api/work-schedules'
+import { useSkills } from '@/api/skills'
 import { FormData } from '../utils'
 import Input from '@/components/ui/Input'
 import Textarea from '@/components/ui/Textarea'
@@ -17,6 +18,7 @@ export default function VacancyFormInfo() {
   const workScopes = useWorkScopes()
   const workExperiences = useWorkExperiences()
   const workSchedules = useWorkSchedules()
+  const skills = useSkills()
 
   return (
     <>
@@ -36,7 +38,7 @@ export default function VacancyFormInfo() {
         />
         <Controller
           control={control}
-          name="scope_id"
+          name="scope"
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <Select
@@ -67,7 +69,7 @@ export default function VacancyFormInfo() {
       />
       <Controller
         control={control}
-        name="responsibilities"
+        name="responsabilities"
         rules={{ required: true }}
         render={({ field, fieldState }) => (
           <Textarea
@@ -118,7 +120,7 @@ export default function VacancyFormInfo() {
       <div className={styles.fieldsRow}>
         <Controller
           control={control}
-          name="work_type_id"
+          name="work_type"
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <Select
@@ -131,12 +133,13 @@ export default function VacancyFormInfo() {
                   ? workTypes.value.map((i) => ({ key: i, value: i }))
                   : []
               }
+              inputtable
             />
           )}
         />
         <Controller
           control={control}
-          name="work_schedule_id"
+          name="work_schedule"
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <Select
@@ -159,7 +162,7 @@ export default function VacancyFormInfo() {
       <div className={styles.fieldsRow}>
         <Controller
           control={control}
-          name="work_experience_id"
+          name="work_experience"
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <Select
@@ -220,11 +223,11 @@ export default function VacancyFormInfo() {
             label="Ключевые навыки *"
             placeholder="Укажите до 10 ключевых навыков, которыми должен обладать соискатель"
             maxCount={10}
-            items={[
-              { key: 1, value: 'hello' },
-              { key: 2, value: 'workd' },
-              { key: 3, value: 'how are you' },
-            ]}
+            items={
+              skills.status === 'success'
+                ? skills.value.map((i) => ({ key: i, value: i }))
+                : undefined
+            }
           />
         )}
       />
