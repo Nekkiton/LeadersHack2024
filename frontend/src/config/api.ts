@@ -70,13 +70,11 @@ const recruiter: Recruiter = {
   interview_per_day: 1,
   interview_slots: [],
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
 }
 
 const candidate: Candidate = {
   _id: '2',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   role: Role.Candidate,
   name: 'Candidate',
   surname: 'Surname',
@@ -103,7 +101,6 @@ const candidate: Candidate = {
 const stage1: Stage = {
   _id: '1',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   title: 'Неразобранные отклики',
   auto_interview: false,
   approve_template: 'pprove',
@@ -114,7 +111,6 @@ const stage1: Stage = {
 const stage2: Stage = {
   _id: '2',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   title: 'Первичное интервью',
   auto_interview: false,
   approve_template: '2pprove',
@@ -125,7 +121,6 @@ const stage2: Stage = {
 const stage3: Stage = {
   _id: '3',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   title: 'Тезхническое интервью',
   auto_interview: false,
   approve_template: '3pprove',
@@ -135,26 +130,24 @@ const stage3: Stage = {
 
 const vacancy: Vacancy = {
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   _id: '1',
   status: VacancyStatus.Active,
   scope: 'Разработка',
-  recruiter: {
-    _id: '1',
-    created_at: '10.10.2022',
-    updated_at: '10.10.2022',
-    name: 'Alexey',
-    surname: 'Levedev',
-    patronymic: 'Sergeevich',
-    email: 'email@ya.ru',
-    phone: '+7 (999) 999-99-99',
-    telegram: 't',
-    photo: null,
-    role: Role.Recruiter,
-    notifications: [],
-    interview_per_day: 1,
-    interview_slots: [],
-  },
+  // recruiter: {
+  //   _id: '1',
+  //   created_at: '10.10.2022',
+  //   name: 'Alexey',
+  //   surname: 'Levedev',
+  //   patronymic: 'Sergeevich',
+  //   email: 'email@ya.ru',
+  //   phone: '+7 (999) 999-99-99',
+  //   telegram: 't',
+  //   photo: null,
+  //   role: Role.Recruiter,
+  //   notifications: [],
+  //   interview_per_day: 1,
+  //   interview_slots: [],
+  // },
   title: 'Vacancy title',
   description: 'some description',
   responsabilities: 'responsibilites',
@@ -168,13 +161,13 @@ const vacancy: Vacancy = {
   work_type: '1',
   work_schedule: '1',
   skills: ['1'],
-  recruiter_id: '1',
+  responses: 3,
+  // recruiter_id: '1',
 }
 
 const responseStage1: ResponseStage = {
   _id: '1',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   candidate_id: candidate._id,
   candidate: candidate,
   vacancy_id: '1',
@@ -198,7 +191,6 @@ const responseStage1: ResponseStage = {
 const responseStage2: ResponseStage = {
   _id: '2',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   candidate_id: candidate._id,
   candidate: candidate,
   vacancy_id: '1',
@@ -221,7 +213,6 @@ const responseStage2: ResponseStage = {
 const responseStage3: ResponseStage = {
   _id: '3',
   created_at: '10.10.2022',
-  updated_at: '10.10.2022',
   candidate_id: candidate._id,
   candidate: candidate,
   vacancy_id: '1',
@@ -320,50 +311,7 @@ export const Api = {
         (res) => res.data
       ),
     one: (pk: string) =>
-      Axios.get<Vacancy>(`/vacancies/${pk}`)
-        .then((res) => res.data)
-        .catch(() => vacancy),
-    // .catch(
-    //   () =>
-    //     ({
-    //       _id: '1',
-    //       created_at: '10.10.2022',
-    //       updated_at: '10.10.2022',
-    //       responses: [responseStage1],
-    //       status: VacancyStatus.Active,
-    //       scope_id: 'Разработка',
-    //       recruiter: {
-    //         id: '1',
-    //         name: 'Alexey',
-    //         surname: 'Levedev',
-    //         patronymic: 'Sergeevich',
-    //         telegram: 'f',
-    //         email: 'email@ya.ru',
-    //         phone: '+7 (999) 999-99-99',
-    //         birthday: '01.01.2000',
-    //         photo: null,
-    //         role: Role.Recruiter,
-    //         notifications: [],
-    //         interview_per_day: 1,
-    //         interview_slots: [],
-    //       },
-    //       title: 'Vacancy title',
-    //       description: 'some description',
-    //       responsabilities: 'responsibilites',
-    //       conditions: 'conditions\nconditions\nconditions',
-    //       additions: 'additions',
-    //       salary_from: 100000,
-    //       work_experience_id: '1',
-    //       salary_to: null,
-    //       candidate_expectation: 'expectations',
-    //       work_type: '1',
-    //       work_schedule: '1',
-    //       skills: ['1'],
-    //       recruiter: '1',
-    //       stages: [stage1, stage2, stage3],
-    //       creation_date: '12.05.2012',
-    //     } as Vacancy)
-    // ),
+      Axios.get<Vacancy>(`/vacancies/${pk}`).then((res) => res.data),
     responses: (pk: string) =>
       Axios.get<{
         statistics: any

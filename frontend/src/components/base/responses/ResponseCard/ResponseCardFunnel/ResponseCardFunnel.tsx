@@ -66,8 +66,9 @@ export default function ResponseCardFunnel({
   const recruiterName = useMemo(() => {
     if (role === Role.Recruiter) {
       return 'Вы'
-    } else if (vacancy.recruiter) {
-      return getUserName(vacancy.recruiter, 'Name Surname')
+      // } else if (vacancy.recruiter) {
+      //   return getUserName(vacancy.recruiter, 'Name Surname')
+      // TODO
     } else {
       return 'Соискатель'
     }

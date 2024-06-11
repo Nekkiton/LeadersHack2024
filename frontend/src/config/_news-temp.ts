@@ -11,7 +11,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '2',
@@ -22,7 +21,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '3',
@@ -33,7 +31,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '4',
@@ -43,7 +40,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '5',
@@ -54,7 +50,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '6',
@@ -65,7 +60,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '7',
@@ -75,7 +69,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '8',
@@ -86,7 +79,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '9',
@@ -97,7 +89,6 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
   {
     _id: '10',
@@ -107,6 +98,5 @@ export const TempNews: News[] = [
     source: '',
     is_parsed: false,
     created_at: date,
-    updated_at: date,
   },
 ]

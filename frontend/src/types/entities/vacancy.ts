@@ -31,11 +31,12 @@ export interface Vacancy extends BaseEntity {
   salary_from: number | null
   salary_to: number | null
   status: VacancyStatus
+  responses: number
   // responces: string[] // TODO
-  responses?: ResponseStage[] // TODo
+  // responses?: ResponseStage[] // TODo
   skills: Skill[]
-  recruiter_id: string
-  recruiter?: Recruiter // TODO
+  // recruiter_id: string
+  // recruiter?: Recruiter // TODO
   work_experience: WorkExperience
   work_type: WorkType
   work_schedule: WorkSchedule

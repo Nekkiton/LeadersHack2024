@@ -19,7 +19,7 @@ export default function VacancyCard({ className, vacancy, role }: Props) {
     <div className={classNames(className, styles.container)}>
       <div className={styles.header}>
         <div className={styles.headerInfo}>
-          <p>От {moment('12.05.2012').format('DD MMMM YYYY')}</p>
+          <p>От {moment(`${vacancy.created_at}Z`).format('DD MMMM YYYY')}</p>
           {role === Role.Recruiter && <VacancyStatus status={vacancy.status} />}
           {role === Role.Candidate && (
             <div className={styles.headerMatchPercent}>
@@ -33,10 +33,10 @@ export default function VacancyCard({ className, vacancy, role }: Props) {
 
       <VacancyCardInfo vacancy={vacancy} />
 
-      {role === Role.Recruiter && vacancy.responses && (
+      {role === Role.Recruiter && (
         <>
           <span className={styles.separator} />
-          <Button type="text">Откликов: {vacancy.responses.length}</Button>
+          <Button type="text">Откликов: {vacancy.responses}</Button>
         </>
       )}
     </div>

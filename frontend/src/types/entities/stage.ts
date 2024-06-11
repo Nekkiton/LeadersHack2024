@@ -13,8 +13,7 @@ export interface Stage extends BaseEntity {
 }
 
 export interface UpdateStage
-  extends Omit<Stage, typeof BaseEntityPk | 'created_at' | 'updated_at'> {
+  extends Omit<Stage, typeof BaseEntityPk | 'created_at'> {
   [BaseEntityPk]?: BaseEntityPkType
   created_at?: string
-  updated_at?: string
 }

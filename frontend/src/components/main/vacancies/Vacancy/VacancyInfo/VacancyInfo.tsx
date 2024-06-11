@@ -70,13 +70,6 @@ export default function VacancyInfo({ vacancy, role }: Props) {
           </div>
         </div>
 
-        {role === Role.Recruiter && vacancy.recruiter && (
-          <p className={styles.hint}>
-            Ответственный рекрутер:{' '}
-            {getUserName(vacancy.recruiter, 'Name Surname')}
-          </p>
-        )}
-
         <div className={styles.mainContainer}>
           <div className={styles.main}>
             <div className={classNames(styles.mainCard, styles.aThird)}>
@@ -137,12 +130,14 @@ export default function VacancyInfo({ vacancy, role }: Props) {
             >
               {isDescriptionShowed && (
                 <div className={styles.mainDescriptionCard}>
-                  <div className={styles.mainDescriptionCardBlock}>
-                    <p className={styles.mainDescriptionCardBlockTitle}>
-                      Описание
-                    </p>
-                    <p>{vacancy.description}</p>
-                  </div>
+                  {vacancy.description && (
+                    <div className={styles.mainDescriptionCardBlock}>
+                      <p className={styles.mainDescriptionCardBlockTitle}>
+                        Описание
+                      </p>
+                      <p>{vacancy.description}</p>
+                    </div>
+                  )}
                   <div
                     className={classNames(
                       styles.mainDescriptionCardBlock,
