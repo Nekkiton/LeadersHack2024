@@ -1,5 +1,6 @@
 services:
   mongo:
+    container_name: mongo
     image: mongo:latest
     restart: always
     env_file: 
@@ -7,6 +8,10 @@ services:
         required: true
       - path: ./api/.env.prod
         required: false
+    ports:
+      - 27017:27017 # to open db for localhost
+    volumes:
+      - data-vol:/data/db
     networks:
       - back_network
 
@@ -59,3 +64,6 @@ services:
 networks:
   front_network:
   back_network:
+
+volumes:
+  data-vol:
