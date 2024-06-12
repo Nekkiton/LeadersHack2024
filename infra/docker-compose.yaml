@@ -68,5 +68,19 @@ services:
     - JWT_ALGORITHM=${JWT_ALGORITHM}
     - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
 
+  leaders_frontend:
+    container_name: leaders_frontend
+    image: leaders.cr.cloud.ru/leaders-hack-2024-gb/frontend:latest
+    restart: unless-stopped
+    depends_on:
+      - leaders_backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leaders_frontend.rule=Host(`leaders-gb.ru`)"
+      - "traefik.http.routers.leaders_frontend.entrypoints=websecure"
+      - "traefik.http.routers.leaders_frontend.tls=true"
+      - "traefik.http.routers.leaders_frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.leaders_frontend.loadbalancer.server.port=3000"
+
 volumes:
   data-vol:
