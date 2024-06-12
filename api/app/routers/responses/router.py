@@ -15,7 +15,7 @@ router = APIRouter(tags=["Отклики"], prefix="/responses")
 
 
 @router.post(
-    "/recruiter/{candidate_id}",
+    "/recruiter2/{candidate_id}", # TODO: similar paths
     name="Создать отклик от рекрутера",
     response_model=Response,
     )
@@ -129,7 +129,7 @@ async def answer_candidate_response(
     if response is None:
         raise NOT_FOUND
     if payload.status == "reject":
-        status = payload.status
+        status = 'rejected'
         message = {
             "type": "result",
             "sender_role": "candidate",
@@ -205,7 +205,7 @@ async def asnwer_recruiter_response(
         raise NOT_FOUND
     if payload.status == "reject":
         stage_id = response["stage_id"]
-        status = payload.status
+        status = 'rejected'
         message = {
             "type": "result",
             "sender_role": "recruiter",
@@ -228,9 +228,9 @@ async def asnwer_recruiter_response(
             }
         else:
             stage_id = response["stage_id"]
-            status = "approve"
+            status = "approved"
             message = {
-                "type": "next_stage_request",
+                "type": "result",
                 "sender_role": "recruiter",
                 "text": payload.message,
                 "created_at": now,
