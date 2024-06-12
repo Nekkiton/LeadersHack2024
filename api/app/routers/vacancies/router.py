@@ -24,10 +24,13 @@ async def get_vacancies(
     page: int = Query(0, title="Страница"),
     limit: int = Query(25, title="Элементов на странице"),
     scope: Optional[WorkScopes] = Query(None, title="Направление"),
+    status: Optional[VacancyStatus] = Query(None, title="Статус")
 ):
     query = {}
     if scope is not None:
         query["scope"] = scope
+    if status is not None:
+        query['status'] = status
     return {
         "total_pages": DetailedVacancies.count_documents(query) // limit,
         "page": page,
@@ -45,8 +48,8 @@ async def get_recruiter_vacancies(
     page: int = Query(0, title="Страница"),
     limit: int = Query(25, title="Элементов на странице"),
     query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
-    statuses: Optional[List[VacancyStatus]] = Query(None, title="Статусы"),
-    skills: Optional[List[Skills]] = Query(None, title="Навыки")
+    statuses: Optional[List[VacancyStatus]] = Query(None, title="Статусы", alias='statuses[]'),
+    scopes: Optional[List[WorkScopes]] = Query(None, title="Направления", alias='scopes[]'),
 ):
     query = {
         "recruiter_id": recruiter_id,
@@ -57,8 +60,8 @@ async def get_recruiter_vacancies(
     }
     if statuses is not None:
         query["status"] = {"$in": statuses}
-    if skills is not None:
-        query["skills"] = {"$in": skills}
+    if scopes is not None:
+        query["scope"] = {"$in": scopes}
     return {
         "total_pages": DetailedVacancies.count_documents(query) // limit,
         "page": page,
@@ -76,10 +79,11 @@ async def get_candidate_vacancies(
     page: int = Query(0, title="Страница"),
     limit: int = Query(25, title="Элементов на странице"),
     query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
-    scopes: Optional[List[WorkScopes]] = Query(None, title="Направления"),
-    skills: Optional[List[Skills]] = Query(None, title="Навыки")
+    scopes: Optional[List[WorkScopes]] = Query(None, title="Направления", alias='scopes[]'),
+    skills: Optional[List[Skills]] = Query(None, title="Навыки", alias='skills[]')
 ):
     query = {
+        'status': 'active',
         "$or": [
             {"description": {"$regex": query, "$options": "i"}},
             {"title": {"$regex": query, "$options": "i"}}
@@ -89,7 +93,6 @@ async def get_candidate_vacancies(
         query["scope"] = {"$in": scopes}
     if skills is not None:
         query["skills"] = {"$in": skills}
-    print(query)
     return {
         "total_pages": DetailedVacancies.count_documents(query) // limit,
         "page": page,
