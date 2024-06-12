@@ -15,18 +15,20 @@ import RejectVacancyModal from '@/components/base/vacancies/RejectVacancyModal'
 import SetupInterviewModal from '@/components/base/vacancies/SetupInterviewModal'
 import styles from './ResponseCardFunnel.module.scss'
 import moment from 'moment'
+import {
+  Response,
+  ResponseMessageType,
+  ResponseStatus,
+} from '@/types/entities/response'
 
 interface Props {
-  responses: ResponseStage[]
+  // responses: ResponseStage[]
+  response: Response
   vacancy: Vacancy
   role: Role
 }
 
-export default function ResponseCardFunnel({
-  responses,
-  vacancy,
-  role,
-}: Props) {
+export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
   const toasts = useToasts()
 
   const [isKeepRecruitingModalShowed, setIsKeepRecruitingModalShowed] =
@@ -38,48 +40,156 @@ export default function ResponseCardFunnel({
   const [isSetupInterviewModalShowed, setIsSetupInterviewModalShowed] =
     useState(false)
 
-  const curResponse = useMemo(
-    () => responses[responses.length - 1],
-    [responses]
+  return (
+    <>
+      <div className={styles.container}>
+        {response.messages.map((message, idx) => (
+          <div className={styles.block} key={idx}>
+            <p className={styles.blockTitle}>
+              {
+                {
+                  [ResponseMessageType.CandidateRequest]: 'Отклик на вакансию',
+                  [ResponseMessageType.CandidateAnswer]: '',
+                  [ResponseMessageType.RecruiterRequest]: '',
+                  [ResponseMessageType.NextStageRequest]: '',
+                  [ResponseMessageType.Result]: 'Итог',
+                }[message.type]
+              }
+            </p>
+            <div className={styles.blockContent}>
+              <div
+                className={classNames(styles.message, {
+                  [styles.outgoing]: role === message.sender_role,
+                  [styles.incoming]: role !== message.sender_role,
+                })}
+              >
+                <p className={styles.messageFrom}>
+                  {message.sender_role === role ? 'Вы' : 'Ваш друг'}
+                </p>
+                <p>{message.text}</p>
+                <p className={styles.messageDate}>
+                  {moment(`${message.created_at}Z`).format(
+                    'DD MMMM YYYY, HH:mm'
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+        {role === Role.Recruiter &&
+          (response.status === ResponseStatus.WaitingForCandidate ||
+            response.status === ResponseStatus.WaitingForRecruiter) && (
+            <div className={styles.block}>
+              <p className={styles.blockTitle}>Ваши действия</p>
+              <div className={classNames(styles.blockContent, styles.controls)}>
+                {/* <Button
+              type="text"
+              onClick={() => setIsKeepRecruitingModalShowed(true)}
+            >
+              {nextStage ? `Пригласить на ${nextStage.title}` : 'Принять'}
+            </Button>
+            <Button
+              className={styles.controlsRejectBtn}
+              type="text"
+              onClick={() => setIsRejectRecruitingModalShowed(true)}
+            >
+              Отказать
+            </Button> */}
+              </div>
+            </div>
+          )}
+        {role === Role.Candidate &&
+          (response.status === ResponseStatus.WaitingForCandidate ||
+            response.status === ResponseStatus.WaitingForRecruiter) && (
+            <div className={styles.block}>
+              <p className={styles.blockTitle}>Ваши действия</p>
+              <div className={classNames(styles.blockContent, styles.controls)}>
+                {response.status === ResponseStatus.WaitingForCandidate && (
+                  <Button
+                    type="text"
+                    onClick={() => setIsSetupInterviewModalShowed(true)}
+                  >
+                    Выбрать время для интервью
+                  </Button>
+                )}
+                <Button
+                  className={styles.controlsRejectBtn}
+                  type="text"
+                  onClick={() => setIsRejectVacancyModalShowed(true)}
+                >
+                  Отказать
+                </Button>
+              </div>
+            </div>
+          )}
+      </div>
+
+      {/* <KeepRecruitingModal
+        isShowed={isKeepRecruitingModalShowed}
+        setIsShowed={setIsKeepRecruitingModalShowed}
+        stage={curResponse.stage}
+      />
+
+      <RejectRecruitingModal
+        isShowed={isRejectRecruitingModalShowed}
+        setIsShowed={setIsRejectRecruitingModalShowed}
+        stage={curResponse.stage}
+      /> */}
+
+      <RejectVacancyModal
+        isShowed={isRejectVacancyModalShowed}
+        setIsShowed={setIsRejectVacancyModalShowed}
+      />
+
+      <SetupInterviewModal
+        isShowed={isSetupInterviewModalShowed}
+        setIsShowed={setIsSetupInterviewModalShowed}
+      />
+    </>
   )
 
-  const prevResponse: ResponseStage | null = useMemo(
-    () => responses[responses.length - 2] ?? null,
-    [responses]
-  )
+  // const curResponse = useMemo(
+  //   () => responses[responses.length - 1],
+  //   [responses]
+  // )
 
-  const nextStage = useMemo(
-    () => vacancy.stages?.[(curResponse.stage?.position ?? 0) + 1] ?? null,
-    [vacancy, curResponse]
-  )
+  // const prevResponse: ResponseStage | null = useMemo(
+  //   () => responses[responses.length - 2] ?? null,
+  //   [responses]
+  // )
 
-  const candidateName = useMemo(() => {
-    if (role === Role.Candidate) {
-      return 'Вы'
-    } else if (curResponse.candidate) {
-      return getUserName(curResponse.candidate, 'Name Surname')
-    } else {
-      return 'Соискатель'
-    }
-  }, [role, curResponse])
+  // const nextStage = useMemo(
+  //   () => vacancy.stages?.[(curResponse.stage?.position ?? 0) + 1] ?? null,
+  //   [vacancy, curResponse]
+  // )
 
-  const recruiterName = useMemo(() => {
-    if (role === Role.Recruiter) {
-      return 'Вы'
-      // } else if (vacancy.recruiter) {
-      //   return getUserName(vacancy.recruiter, 'Name Surname')
-      // TODO
-    } else {
-      return 'Соискатель'
-    }
-  }, [role, vacancy])
+  // const candidateName = useMemo(() => {
+  //   if (role === Role.Candidate) {
+  //     return 'Вы'
+  //   } else if (curResponse.candidate) {
+  //     return getUserName(curResponse.candidate, 'Name Surname')
+  //   } else {
+  //     return 'Соискатель'
+  //   }
+  // }, [role, curResponse])
 
-  const candidateAnswerTitle = useMemo(
-    () => (role === Role.Candidate ? 'Ваш ответ' : 'Ответ кандидата'),
-    [role]
-  )
+  // const recruiterName = useMemo(() => {
+  //   if (role === Role.Recruiter) {
+  //     return 'Вы'
+  //     // } else if (vacancy.recruiter) {
+  //     //   return getUserName(vacancy.recruiter, 'Name Surname')
+  //     // TODO
+  //   } else {
+  //     return 'Соискатель'
+  //   }
+  // }, [role, vacancy])
 
-  if (!curResponse.stage || !vacancy.stages) return 'Данные не загружены'
+  // const candidateAnswerTitle = useMemo(
+  //   () => (role === Role.Candidate ? 'Ваш ответ' : 'Ответ кандидата'),
+  //   [role]
+  // )
+
+  // if (!curResponse.stage || !vacancy.stages) return 'Данные не загружены'
 
   return (
     <>
@@ -261,6 +371,7 @@ export default function ResponseCardFunnel({
               </div>
             </div>
           )}
+
         {role === Role.Candidate &&
           curResponse.status !== ResponseStageStatus.RejectedByCandidate &&
           curResponse.status !== ResponseStageStatus.RejectedByRecruiter && (

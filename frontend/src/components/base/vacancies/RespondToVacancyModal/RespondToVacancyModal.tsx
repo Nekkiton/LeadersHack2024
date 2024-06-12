@@ -26,7 +26,7 @@ export default function RespondToVacancyModal({
 
   const onSubmit = handleSubmit((data) => {
     respond(
-      { ...data, pk: vacancy._id },
+      { ...data, vacancy_id: vacancy._id },
       {
         onError: () => {
           stateProps.setIsShowed(false)

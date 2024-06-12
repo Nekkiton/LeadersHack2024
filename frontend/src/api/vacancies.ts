@@ -14,7 +14,7 @@ export const useCurRecruiterVacancies = createUseQuery(
   Api.recruiters.me.vacancies
 )
 
-export const useVacancy = createUseQuery('vacancy.one', Api.vacancies.one)
+export const useVacancy = createUseQuery('vacancies.one', Api.vacancies.one)
 
 export const useVacancyResponses = createUseQuery(
   'vacancy.responses',
@@ -55,6 +55,7 @@ export const useRespondToVacancy = createUseMutation(Api.vacancies.respond, {
   invalidateQueriesFn: () => [
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
+    { queryKey: ['candidates.me.responses'] },
   ],
   onSuccess: (_, { toasts }) => {
     toasts.info({ content: 'Отклик отправлен' })

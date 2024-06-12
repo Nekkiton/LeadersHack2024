@@ -11,11 +11,12 @@ import VacancyCardInfo from '@/components/base/vacancies/VacancyCardInfo'
 import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
 import styles from './ResponseCard.module.scss'
+import { Response } from '@/types/entities/response'
 
 interface Props {
   className?: string
-  response: ResponseStage
-  responseStages?: ResponseStage[]
+  response: Response
+  // responseStages?: ResponseStage[]
   vacancy: Vacancy
   role: Role
 }
@@ -23,7 +24,7 @@ interface Props {
 export default function ResponseCard({
   className,
   response,
-  responseStages,
+  // responseStages,
   vacancy,
   role,
 }: Props) {
@@ -42,7 +43,7 @@ export default function ResponseCard({
             {role === Role.Candidate && <span>Подходит на 55%</span>}
           </div>
         </div>
-        {role === Role.Recruiter && response.candidate && (
+        {/* {role === Role.Recruiter && response.candidate && (
           <Button
             type="secondary"
             href={Routes.recruiterCandidate(response.candidate._id)}
@@ -50,7 +51,7 @@ export default function ResponseCard({
           >
             Открыть резюме
           </Button>
-        )}
+        )} */}
         {role === Role.Candidate && (
           <Button
             type="secondary"
@@ -61,9 +62,9 @@ export default function ResponseCard({
           </Button>
         )}
       </div>
-      {role === Role.Recruiter && response.candidate && (
+      {/* {role === Role.Recruiter && response.candidate && (
         <CandidateCardInfo candidate={response.candidate} />
-      )}
+      )} */}
       {role === Role.Candidate && <VacancyCardInfo vacancy={vacancy} />}
       <span className={styles.separator} />
       {role === Role.Recruiter && (
@@ -77,12 +78,8 @@ export default function ResponseCard({
           onChange={setActiveKey}
         />
       )}
-      {activeKey === 'funnel' && responseStages && (
-        <ResponseCardFunnel
-          responses={responseStages}
-          vacancy={vacancy}
-          role={role}
-        />
+      {activeKey === 'funnel' && (
+        <ResponseCardFunnel response={response} vacancy={vacancy} role={role} />
       )}
       {activeKey !== 'funnel' && 'coming soon'}
     </div>

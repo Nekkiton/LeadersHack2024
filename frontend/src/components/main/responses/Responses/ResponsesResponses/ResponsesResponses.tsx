@@ -1,26 +1,17 @@
-import { useEffect, useState } from 'react'
-import { ResponseStage } from '@/types/entities/response-stage'
 import { Routes } from '@/config/routes'
 import { Role } from '@/types/entities/user'
+import { Response } from '@/types/entities/response'
 import Icon from '@/components/ui/Icon'
 import Button from '@/components/ui/Button'
 import ResponseCard from '@/components/base/responses/ResponseCard'
 import styles from './ResponsesResponses.module.scss'
 
 interface Props {
-  responses: ResponseStage[][]
+  responses: Response[]
 }
 
 export default function ResponsesResponses({ responses }: Props) {
-  const [responsesExist, setResponsesExist] = useState<null | boolean>(null)
-
-  useEffect(() => {
-    if (responsesExist === null) {
-      setResponsesExist(!!responses.length)
-    }
-  }, [responses, responsesExist])
-
-  if (responsesExist === false) {
+  if (!responses.length) {
     return (
       <div className={styles.nothing}>
         <Icon className={styles.nothingIcon} icon="documentLoupe" />
@@ -39,14 +30,13 @@ export default function ResponsesResponses({ responses }: Props) {
   return (
     <div className={styles.responses}>
       {responses.map(
-        (responses) =>
-          responses[responses.length - 1].vacancy && (
+        (response) =>
+          response.vacancy && (
             <ResponseCard
-              response={responses[responses.length - 1]}
-              key={responses[responses.length - 1]._id}
-              vacancy={responses[responses.length - 1].vacancy!}
+              key={response._id}
+              response={response}
+              vacancy={response.vacancy}
               role={Role.Candidate}
-              responseStages={responses}
             />
           )
       )}

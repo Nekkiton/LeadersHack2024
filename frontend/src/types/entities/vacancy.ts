@@ -87,5 +87,6 @@ export interface CreateVacancyData {
 }
 
 export interface RespondToVacancyData {
+  vacancy_id: string
   message: string
 }
