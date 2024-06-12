@@ -24,3 +24,17 @@ export const useCurRecruiterUpdateProfile = createUseMutation(
     },
   }
 )
+
+export const useCurRecruiterAnswerToRespond = createUseMutation(
+  Api.recruiters.me.answerToResponse,
+  {
+    invalidateQueriesFn: () => [{ queryKey: ['vacancies.one'] }],
+    onSuccess: ([_, { status }], { toasts }) => {
+      if (status === 'approve') {
+        toasts.info({ content: 'Приглашение отправлено' })
+      } else if (status === 'reject') {
+        toasts.info({ content: 'Отказ отправлен' })
+      }
+    },
+  }
+)

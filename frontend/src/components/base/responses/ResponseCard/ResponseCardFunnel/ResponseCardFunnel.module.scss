@@ -4,10 +4,11 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  --gap: 8px;
 }
 
 .centerEl {
-  align-self: center;
+  margin: 0 auto;
 }
 
 .block {
@@ -48,6 +49,8 @@
   padding: 8px;
   border-radius: 8px;
   background: $gray-6;
+  white-space: pre-wrap;
+  text-wrap: pretty;
 
   .container:not(.inverse) &.incoming,
   .container.inverse &.outgoing {

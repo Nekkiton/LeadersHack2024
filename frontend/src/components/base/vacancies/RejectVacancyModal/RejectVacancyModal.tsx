@@ -1,19 +1,38 @@
 import { Controller, useForm } from 'react-hook-form'
+import { useCurCandidateAnswerToResponse } from '@/api/candidates'
+import { Response } from '@/types/entities/response'
 import Modal, { ModalStateProps } from '@/components/ui/Modal'
 import Textarea from '@/components/ui/Textarea'
 import Button from '@/components/ui/Button'
 
-interface Props extends ModalStateProps {}
+interface Props extends ModalStateProps {
+  response: Response
+}
 
 interface FormData {
   message: string
 }
 
-export default function RejectVacancyModal({ ...stateProps }: Props) {
+export default function RejectVacancyModal({ response, ...stateProps }: Props) {
   const { control, handleSubmit } = useForm<FormData>()
 
+  const { mutate, status } = useCurCandidateAnswerToResponse()
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    mutate(
+      {
+        ...data,
+        meet_at: null,
+        meet_on: null,
+        pk: response._id,
+        status: 'reject',
+      },
+      {
+        onSettled: () => {
+          stateProps.setIsShowed(false)
+        },
+      }
+    )
   })
 
   return (
@@ -30,7 +49,11 @@ export default function RejectVacancyModal({ ...stateProps }: Props) {
           >
             Отмена
           </Button>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={status === 'pending'}
+          >
             Подтвердить отказ
           </Button>
         </>

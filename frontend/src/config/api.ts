@@ -38,6 +38,8 @@ import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
 import { TempNews } from './_news-temp'
 import {
+  CurCandidateAnswerToResponseData,
+  CurRecruiterAnswerToResponseData,
   GetCandidateResponsesParams,
   Response,
 } from '@/types/entities/response'
@@ -270,6 +272,11 @@ export const Api = {
             statuses: params?.statuses,
           },
         }).then((res) => res.data),
+      answerToResponse: ({
+        pk,
+        ...data
+      }: CurRecruiterAnswerToResponseData & { pk: string }) =>
+        Axios.post(`/responses/recruiter/${pk}`, data),
     },
   },
 
@@ -303,6 +310,11 @@ export const Api = {
         Axios.get<ResponseStage[]>(`/candidate/me/vacancies/${pk}/response`)
           .then((res) => res.data)
           .catch(() => []),
+      answerToResponse: ({
+        pk,
+        ...data
+      }: CurCandidateAnswerToResponseData & { pk: string }) =>
+        Axios.post(`/responses/candidate/${pk}`, data),
     },
   },
 

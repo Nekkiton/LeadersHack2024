@@ -47,3 +47,20 @@ export const useCurCandidateUpdateProfile = createUseMutation(
 export const useCurCandidateUpdateProfileFromFile = createUseMutation(
   Api.candidates.me.updateProfileFromFile
 )
+
+export const useCurCandidateAnswerToResponse = createUseMutation(
+  Api.candidates.me.answerToResponse,
+  {
+    invalidateQueriesFn: () => [
+      { queryKey: ['candidates.me.responses'] },
+      { queryKey: ['candidates.me.vacancy-response'] },
+    ],
+    onSuccess: ([_, { status }], { toasts }) => {
+      if (status === 'approve') {
+        toasts.info({ content: 'Встреча назначена' })
+      } else if (status === 'reject') {
+        toasts.info({ content: 'Вы отказались от вакансии' })
+      }
+    },
+  }
+)

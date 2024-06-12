@@ -19,6 +19,7 @@ export enum ResponseMessageType {
 
 export interface Response extends BaseEntity {
   status: ResponseStatus
+  stage_id: string
   // candidate_id: string // TODO
   // vacancy_id: string // TODO
   vacancy?: Vacancy
@@ -37,4 +38,16 @@ export interface GetCandidateResponsesParams {
   page?: number
   limit?: number
   inviter?: 'recruiter' | 'candidate'
+}
+
+export interface CurCandidateAnswerToResponseData {
+  status: 'approve' | 'reject'
+  message: string | null
+  meet_at: string | null
+  meet_on: 'Zoom' | 'GoogleMeet' | 'Telemost' | null
+}
+
+export interface CurRecruiterAnswerToResponseData {
+  status: 'approve' | 'reject'
+  message: string
 }

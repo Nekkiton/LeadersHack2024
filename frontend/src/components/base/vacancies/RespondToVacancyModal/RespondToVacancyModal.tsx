@@ -20,7 +20,7 @@ export default function RespondToVacancyModal({
 }: Props) {
   const toasts = useToasts()
 
-  const { control, handleSubmit, reset } = useForm<FormData>()
+  const { control, handleSubmit } = useForm<FormData>()
 
   const { mutate: respond, status } = useRespondToVacancy()
 
@@ -28,13 +28,8 @@ export default function RespondToVacancyModal({
     respond(
       { ...data, vacancy_id: vacancy._id },
       {
-        onError: () => {
+        onSettled: () => {
           stateProps.setIsShowed(false)
-        },
-        onSuccess: () => {
-          stateProps.setIsShowed(false)
-          toasts.info({ content: 'Вы успешно откликнулись на вакансию' })
-          reset()
         },
       }
     )

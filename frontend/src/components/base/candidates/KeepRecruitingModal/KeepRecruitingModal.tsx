@@ -1,26 +1,42 @@
 import { Controller, useForm } from 'react-hook-form'
 import { Stage } from '@/types/entities/stage'
+import { Response } from '@/types/entities/response'
+import { useCurRecruiterAnswerToRespond } from '@/api/recruiters'
 import Modal, { ModalStateProps } from '@/components/ui/Modal'
 import Textarea from '@/components/ui/Textarea'
 import Button from '@/components/ui/Button'
 
 interface Props extends ModalStateProps {
   stage: Stage
+  response: Response
 }
 
 interface FormData {
   message: string
 }
 
-export default function KeepRecruitingModal({ stage, ...stateProps }: Props) {
-  const { control, handleSubmit, reset } = useForm<FormData>({
+export default function KeepRecruitingModal({
+  stage,
+  response,
+  ...stateProps
+}: Props) {
+  const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
       message: stage.approve_template,
     },
   })
 
+  const { mutate, status } = useCurRecruiterAnswerToRespond()
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    mutate(
+      { ...data, pk: response._id, status: 'approve' },
+      {
+        onSettled: () => {
+          stateProps.setIsShowed(false)
+        },
+      }
+    )
   })
 
   return (
@@ -37,7 +53,11 @@ export default function KeepRecruitingModal({ stage, ...stateProps }: Props) {
           >
             Отмена
           </Button>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={status === 'pending'}
+          >
             Пригласить
           </Button>
         </>
