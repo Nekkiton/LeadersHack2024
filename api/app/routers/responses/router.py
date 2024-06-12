@@ -103,15 +103,16 @@ async def answer_candidate_response(
     else:
         if response["status"] != "waiting_for_candidate":
             raise NOT_FOUND
+        url = "https://www.google.com"
         status = "waiting_for_recruiter"
         message = {
             "type": "candidate_answer",
             "sender_role": "candidate",
-            "text": payload.message,
+            "text": f"Интервью назначено на {payload.meet_at.strftime("%d.%m %H:%M")}. Ссылка на интервью: {url}",
             "created_at": now,
             "stage_id": response["stage_id"],
             "meet_on": payload.meet_on,
-            "meet_url": "https://www.google.com",
+            "meet_url": url,
             "meet_at": payload.meet_at,
         }
     return Responses.find_one_and_update(
