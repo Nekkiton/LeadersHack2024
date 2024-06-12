@@ -11,6 +11,7 @@ jobs:
     outputs:
       backend: ${{ steps.changes.outputs.backend }}
       frontend: ${{ steps.changes.outputs.frontend }}
+      infra: ${{ steps.changes.outputs.infra }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,10 +24,12 @@ jobs:
               - 'api/**'
             frontend:
               - 'frontend/**'
+            infra:
+              - 'infra/**'
 
   build-frontend:
     needs: files-changed
-    if: needs.files-changed.outputs.frontend == 'true'
+    if: needs.files-changed.outputs.frontend == 'true' || needs.files-changed.outputs.infra == 'true'
     uses: ./.github/workflows/build-frontend.yaml
 
   deploy-frontend:
@@ -40,7 +43,7 @@ jobs:
 
   deploy-backend:
     needs: files-changed
-    if: needs.files-changed.outputs.backend == 'true'
+    if: needs.files-changed.outputs.backend == 'true' || needs.files-changed.outputs.infra == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
       dockerfile: api/Dockerfile

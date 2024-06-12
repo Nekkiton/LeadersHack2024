@@ -43,7 +43,7 @@ services:
     volumes:
       - data-vol:/data/db
     #ports:
-    #  - 27017:27017 # TODO: remove later to aoid access to db
+    #  - 27017:27017 # TODO: remove later to avoid access to db
 
   leaders_backend:
     container_name: leaders_backend
