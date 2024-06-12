@@ -1,6 +1,5 @@
 from app.aggregations import get_match_field_stage
 
-
 SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
     {
         "$match": query,
@@ -11,8 +10,8 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         "$work_type", 
         "$work_schedule",
         candidate["skills"],
-        candidate["work_type"],
         candidate["work_experience"],
+        candidate["work_type"],
         candidate["work_schedule"],
     ),
     {

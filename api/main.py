@@ -9,6 +9,7 @@ from app.routers.user.router import router as User
 from app.routers.common.router import router as Common
 from app.routers.vacancies.router import router as Vacancies
 from app.routers.responses.router import router as Responses
+from app.routers.candidates.router import router as Candidates
 from app.settings import Settings
 
 ENCODERS_BY_TYPE[ObjectId] = lambda x: str(x)
@@ -33,3 +34,4 @@ app.include_router(User)
 app.include_router(Vacancies)
 app.include_router(Responses)
 app.include_router(Common)
+app.include_router(Candidates)
