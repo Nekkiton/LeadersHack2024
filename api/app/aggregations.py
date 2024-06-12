@@ -103,6 +103,7 @@ DETAILED_RESPONSES = [
     },
 ]
 
+
 def get_match_field_stage(
     vacancy_skills,
     vacancy_experience,
