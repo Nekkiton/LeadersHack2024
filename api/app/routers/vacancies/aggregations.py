@@ -51,9 +51,9 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
             }
         }
     },
-    #{
-    #    "$match": {"match": {"$gt": 50}}
-    #},
+    {
+        "$match": {"match": {"$gt": 50}}
+    },
     {
         "$sort": {"match": -1}
     },
