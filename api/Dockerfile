@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY . /code/
 
-EXPOSE 8080
+EXPOSE 8000
 
-CMD ["fastapi", "run", "main.py", "--port", "8080"]
-#CMD hypercorn --bind 0.0.0.0:8080 main:app
+CMD ["fastapi", "run", "main.py", "--port", "8000"]
+#CMD hypercorn --bind 0.0.0.0:8000 main:app

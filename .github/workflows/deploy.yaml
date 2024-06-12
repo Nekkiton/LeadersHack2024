@@ -65,7 +65,24 @@ jobs:
       runs-on: ubuntu-latest
 
       steps:
-      - name: connect and pull
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            infra/docker-compose.yaml
+          sparse-checkout-cone-mode: false
+
+      - name: copy file via ssh
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          source: "infra/docker-compose.yaml"
+          target: /home/backend-user
+          strip_components: 1
+
+      - name: pull and up new images
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -73,20 +90,12 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            docker pull ${{ inputs.image }}:latest
-            docker ps -q --filter "name=leaders_backend" | xargs -r docker stop
-            docker ps -aq --filter "name=leaders_backend" | xargs -r docker rm
-            docker run -d -t -i -e MONGO_HOST=${{ secrets.MONGO_HOST }} \
-              -e MONGO_USERNAME=${{ secrets.MONGO_USERNAME }} \
-              -e MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} \
-              -e MONGO_DATABASE=${{ secrets.MONGO_DATABASE }} \
-              -e MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }} \
-              -e JWT_PUBLIC_KEY_PATH='/cert/jwtRS256.key.pub' \
-              -e JWT_PRIVATE_KEY_PATH='/cert/jwtRS256.key' \
-              -e JWT_ALGORITHM='RS256' \
-              -e ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }} \
-              --net bridge \
-              --name leaders_backend \
-              --mount type=bind,source="$(pwd)"/cert,target=/cert,readonly \
-              -p 8080:8080 \
-              ${{ inputs.image }}:latest
+            export MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}
+            export MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }}
+            export JWT_PUBLIC_KEY_PATH='/cert/jwtRS256.key.pub'
+            export JWT_PRIVATE_KEY_PATH='/cert/jwtRS256.key'
+            export JWT_ALGORITHM='RS256'
+            export ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+
+            docker compose pull
+            docker compose up -d

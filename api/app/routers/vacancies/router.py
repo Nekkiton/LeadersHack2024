@@ -1,13 +1,15 @@
-import math
 from typing import List, Optional
 from fastapi import APIRouter, Query
 from pymongo import DeleteMany, InsertOne, UpdateOne
 
 from app.schemas import OID
 from app.utils import get_now
+from app.exceptions import NOT_FOUND
 from app.literals import Skills, VacancyStatus, WorkScopes
 from app.oauth import RequiredCandidateID, RequiredRecruiterID
-from app.database import Stages, Vacancies, DetailedVacancies
+from app.routers.vacancies.aggregations import SEARCH_BY_CANDIDATE
+from app.database import Stages, Users, Vacancies, DetailedVacancies
+
 
 from .exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
 from .schemas import PaginationVacanciesCandidateResponse, VacancyPost, VacancyResponse, PaginationVacanciesResponse, VacancyUpdate
@@ -93,11 +95,11 @@ async def get_candidate_vacancies(
         query["scope"] = {"$in": scopes}
     if skills is not None:
         query["skills"] = {"$in": skills}
-    return {
-        "total_pages": DetailedVacancies.count_documents(query) // limit,
-        "page": page,
-        "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
-    }
+    candidate = Users.find_one({"_id": candidate_id})
+    vacancies = list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE(query, candidate, page, limit)))
+    if not len(vacancies):
+        raise NOT_FOUND
+    return vacancies[0]
 
 
 @router.post(

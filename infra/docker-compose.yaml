@@ -1,0 +1,82 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v2.11.4
+    command:
+      - --api
+      - --providers.docker
+      - --entrypoints.web.address=:80
+      - --entrypoints.traefikapi.address=:8080
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      - --certificatesresolvers.myresolver.acme.email=nekkiton@yandex.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+    ports:
+      # The HTTP port
+      - 80:80
+      # The HTTPS port
+      - 443:443
+      # The Traefik Dashboard & API port
+      - 8080:8080
+    restart: unless-stopped
+    volumes:
+      # Traefik can listen to the Docker events
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # acme.json should be created on host instance
+      - "./acme.json:/letsencrypt/acme.json"
+    networks:
+      - front_network
+    labels:
+      # Traefik Dashboard HTTP with BasicAuth
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`leaders-gb.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.traefik.entrypoints=traefikapi"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$thqnb0v6$$NjBeqsAEsxkuQVXWGoxp11" # admin admin_pass
+
+  mongo:
+    container_name: mongo
+    image: mongodb/mongodb-community-server:latest
+    restart: unless-stopped
+    volumes:
+      - data-vol:/data/db
+    ports:
+      - 27017:27017 # TODO: remove later to aoid access to db
+    networks:
+      - back_network
+
+  leaders_backend:
+    container_name: leaders_backend
+    image: leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest
+    restart: unless-stopped
+    volumes:
+      - ./cert:/cert:ro
+    networks:
+      - back_network
+      - front_network
+    depends_on:
+      - mongo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leaders_backend.rule=Host(`leaders-gb.ru`)"
+      - "traefik.http.routers.leaders_backend.entrypoints=websecure"
+      - "traefik.http.routers.leaders_backend.tls=true"
+      - "traefik.http.routers.leaders_backend.tls.certresolver=myresolver"
+      - "traefik.http.services.leaders_backend.loadbalancer.server.port=8000"
+    environment:
+    - MONGO_DATABASE=${MONGO_DATABASE}
+    - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
+    - JWT_PUBLIC_KEY_PATH=${JWT_PUBLIC_KEY_PATH}
+    - JWT_PRIVATE_KEY_PATH=${JWT_PRIVATE_KEY_PATH}
+    - JWT_ALGORITHM=${JWT_ALGORITHM}
+    - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+
+networks:
+  back_network:
+  front_network:
+
+volumes:
+  data-vol:
