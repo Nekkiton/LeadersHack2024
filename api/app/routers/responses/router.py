@@ -1,13 +1,13 @@
 from fastapi import APIRouter
+from pymongo import ReturnDocument
 
 from app.literals import Role
 from app.exceptions import NOT_FOUND
-from app.routers.responses.schemas import Response, ResponsesVacanciesGet
+from app.routers.responses.schemas import CandidateResponseAnswer, RecruiterResponseAnswer, Response, ResponsesVacanciesGet
 from app.schemas import OID
 from app.utils import get_now
 from app.database import DetailedResponses, Responses, Stages
-from app.oauth import RequiredCandidateID
-
+from app.oauth import RequiredCandidateID, RequiredRecruiterID
 
 router = APIRouter(tags=["Отклики"], prefix="/responses")
 
@@ -52,7 +52,7 @@ async def create_response(
 
 @router.get(
     "/candidate/",
-    name="Получить вакансии кандидата",
+    name="Получить отклики кандидата",
     response_model=ResponsesVacanciesGet,
 )
 async def get_candidate_responses(
@@ -73,3 +73,111 @@ async def get_candidate_responses(
         "items": items
     }
     
+
+@router.post(
+    "/candidate/{response_id}",
+    name="Ответить на отклик для соискателя",
+    response_model=Response
+)
+async def answer_candidate_response(
+    candidate_id: RequiredCandidateID,
+    response_id: OID,
+    payload: CandidateResponseAnswer
+):
+    # todo Проверка, находится ли возвращаемое время во временных слотах рекрутера
+    now = get_now()
+    response = Responses.find_one({"_id": response_id, "candidate_id": candidate_id})
+    if response is None:
+        raise NOT_FOUND
+    if payload.status == "reject":
+        status = payload.status
+        message = {
+            "type": "result",
+            "sender_role": "candidate",
+            "text": payload.message,
+            "created_at": now,
+            "stage_id": response["stage_id"]
+        }
+    else:
+        if response["status"] != "waiting_for_candidate":
+            raise NOT_FOUND
+        status = "waiting_for_recruiter"
+        message = {
+            "type": "candidate_answer",
+            "sender_role": "candidate",
+            "text": payload.message,
+            "created_at": now,
+            "stage_id": response["stage_id"],
+            "meet_on": payload.meet_on,
+            "meet_url": "https://www.google.com",
+            "meet_at": payload.meet_at,
+        }
+    return Responses.find_one_and_update(
+        {
+            "_id": response_id
+        },
+        {
+            "$set": {"status": status},
+            "$push": {"messages": message}
+        },
+        return_document=ReturnDocument.AFTER
+    )
+
+
+@router.post(
+    "/recruiter/{response_id}",
+    name="Ответить на отклик для рекрутера",
+    response_model=Response
+)
+async def asnwer_recruiter_response(
+    recruiter_id: RequiredRecruiterID,
+    response_id: OID,
+    payload: RecruiterResponseAnswer,
+):
+    now = get_now()
+    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id})
+    if response is None:
+        raise NOT_FOUND
+    if payload.status == "reject":
+        stage_id = response["stage_id"]
+        status = payload.status
+        message = {
+            "type": "result",
+            "sender_role": "recruiter",
+            "text": payload.message,
+            "created_at": now,
+            "stage_id": stage_id
+        }
+    else:
+        curr_stage = Stages.find_one({"_id": response["stage_id"]}, {"position": 1})
+        next_stage = Stages.find_one({"position": {"$gt": curr_stage["position"]}, "vacancy_id": response["vacancy"]["_id"]}, {"_id": 1})
+        if next_stage is not None:
+            stage_id = next_stage["_id"]
+            status = "waiting_for_candidate"
+            message = {
+                "type": "next_stage_request",
+                "sender_role": "recruiter",
+                "text": payload.message,
+                "created_at": now,
+                "stage_id": stage_id
+            }
+        else:
+            stage_id = response["stage_id"]
+            status = "approve"
+            message = {
+                "type": "next_stage_request",
+                "sender_role": "recruiter",
+                "text": payload.message,
+                "created_at": now,
+                "stage_id": stage_id
+            }
+    return Responses.find_one_and_update(
+        {
+            "_id": response_id
+        },
+        {
+            "$set": {"status": status, "stage_id": stage_id},
+            "$push": {"messages": message}
+        },
+        return_document=ReturnDocument.AFTER
+    )

@@ -73,7 +73,6 @@ def create_access_token(user_id: str | ObjectId, response: Response) -> None:
         max_age=Settings.ACCESS_TOKEN_EXPIRES_IN,
         secure=True,
         httponly=True,
-        samesite="lax"
     )
 
 
@@ -94,7 +93,6 @@ def create_refresh_token(user_id: str | ObjectId, response: Response) -> None:
         max_age=Settings.REFRESH_TOKEN_EXPIRES_IN,
         secure=True,
         httponly=True,
-        samesite="lax"
     )
 
 
@@ -103,13 +101,11 @@ def delete_tokens(response: Response):
         key="access",
         secure=True,
         httponly=True,
-        samesite="lax"
         )
     response.delete_cookie(
         key="refresh",
         secure=True,
         httponly=True,
-        samesite="lax"
         )
 
 
