@@ -50,3 +50,8 @@ class CandidateResponseAnswer(BaseModel):
         elif self.status == "reject" and self.message is None:
             raise ValueError("Если статус reject, необходим message")
         return self
+
+
+class RecruiterResponseAnswer(BaseModel):
+    status: Literal["approve", "reject"]
+    message: str
