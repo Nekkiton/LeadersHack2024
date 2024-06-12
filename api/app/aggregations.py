@@ -102,3 +102,63 @@ DETAILED_RESPONSES = [
         }
     },
 ]
+
+def get_match_field_stage(
+    vacancy_skills,
+    vacancy_experience,
+    vacancy_type,
+    vacancy_schedule,
+    candidate_skills,
+    candidate_experience,
+    candidate_type,
+    candidate_schedule
+) -> dict:
+    return {
+        "$addFields": {
+            "match": {
+                "$function": {
+                    "body": """
+                    function(
+                        skills, 
+                        work_experience, 
+                        work_type, 
+                        work_schedule,
+                        candidateSkills,
+                        candidateWorkType,
+                        candidateWorkExperience,
+                        candidateWorkSchedule,
+                        ) {
+                        total = skills.length + 3;
+                        matched = 0;
+                        for (let [key, value] of Object.entries(skills)) {
+                            if (candidateSkills.includes(value)) {
+                                matched += 1;
+                            }
+                        }
+                        if (candidateWorkType == work_type) {
+                            matched += 1;
+                        } 
+                        if (candidateWorkExperience == work_experience) {
+                            matched += 1;
+                        }
+                        if (candidateWorkSchedule == work_schedule) {
+                            matched += 1;
+                        }
+                        return Math.round((matched / total) * 100)
+                    }
+                    """,
+                    "args": [
+                        vacancy_skills,
+                        vacancy_experience,
+                        vacancy_type,
+                        vacancy_schedule,
+                        candidate_skills,
+                        candidate_type,
+                        candidate_experience,
+                        candidate_schedule
+                    ],
+                    "lang": "js",
+                }
+            }
+        }
+    }
