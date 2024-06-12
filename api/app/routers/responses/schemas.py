@@ -28,17 +28,13 @@ class Response(BaseModel):
     messages: List[ResponseMessageItem]
 
 
-class ResponseVacancyGet(Response):
-    vacancy: VacancyGet
-
-
-class ResponseVacancyMatchGet(Response):
+class ResponseGet(Response):
     vacancy: VacancyGet
     match: int
 
 
-class ResponsesVacanciesGet(Pagination):
-    items: List[ResponseVacancyGet]
+class ResponsesGet(Pagination):
+    items: List[ResponseGet]
 
 
 class CandidateResponseAnswer(BaseModel):

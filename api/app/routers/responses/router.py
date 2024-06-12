@@ -1,13 +1,15 @@
+from typing import Optional
 from fastapi import APIRouter
 from pymongo import ReturnDocument
 
 from app.literals import Role
 from app.exceptions import NOT_FOUND
-from app.routers.responses.schemas import CandidateResponseAnswer, RecruiterResponseAnswer, Response, ResponsesVacanciesGet
 from app.schemas import OID
 from app.utils import get_now
 from app.database import DetailedResponses, Responses, Stages
 from app.oauth import RequiredCandidateID, RequiredRecruiterID
+
+from .schemas import CandidateResponseAnswer, RecruiterResponseAnswer, Response, ResponsesGet
 
 router = APIRouter(tags=["Отклики"], prefix="/responses")
 
@@ -53,7 +55,7 @@ async def create_response(
 @router.get(
     "/candidate/",
     name="Получить отклики кандидата",
-    response_model=ResponsesVacanciesGet,
+    response_model=ResponsesGet,
 )
 async def get_candidate_responses(
     candidate_id: RequiredCandidateID,
@@ -122,6 +124,31 @@ async def answer_candidate_response(
         },
         return_document=ReturnDocument.AFTER
     )
+
+
+@router.get(
+    "/recruiter/",
+    name="Получить отклики для рекрутера",
+    response_model=ResponsesGet
+)
+async def get_recruiter_responses(
+    recruiter_id: RequiredRecruiterID,
+    page: int = 0,
+    limit: int = 25,
+    vacancy_id: Optional[OID] = None
+):
+    query = {
+        "vacancy.recruiter_id": recruiter_id, 
+    }
+    if vacancy_id:
+        query["vacancy_id"] = vacancy_id
+    total_pages = DetailedResponses.count_documents(query) // limit
+    items = DetailedResponses.find(query).skip(page * limit).limit(limit)
+    return {
+        "total_pages": total_pages,
+        "page": page,
+        "items": items
+    }
 
 
 @router.post(

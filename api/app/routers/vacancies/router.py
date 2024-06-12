@@ -4,7 +4,6 @@ from pymongo import DeleteMany, InsertOne, UpdateOne
 
 from app.schemas import OID
 from app.utils import get_now
-from app.exceptions import NOT_FOUND
 from app.literals import Skills, VacancyStatus, WorkScopes
 from app.oauth import RequiredCandidateID, RequiredRecruiterID
 from app.routers.vacancies.aggregations import SEARCH_BY_CANDIDATE
