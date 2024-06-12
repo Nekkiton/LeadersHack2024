@@ -27,8 +27,9 @@ export interface Response extends BaseEntity {
     created_at: string
     type: ResponseMessageType
     text: string
-    meet_date?: string | null
-    meet_link?: string | null
+    meet_at?: string | null
+    meet_url?: string | null
+    meet_on?: string | null
     sender_role: Role
     stage_id: BaseEntityPkType
   }[]

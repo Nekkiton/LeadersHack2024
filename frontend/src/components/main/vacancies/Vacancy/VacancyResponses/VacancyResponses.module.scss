@@ -36,3 +36,28 @@
   top: 24px;
   width: 23%;
 }
+
+.sidebarBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebarSeparator {
+  height: 1px;
+  background: $gray-5;
+}
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebarItemMainTitle {
+  @include heading-7;
+}
+
+.sidebarItemValue {
+  color: $gray-4;
+}

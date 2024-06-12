@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>{Site.name}</title>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         {process.env.NEXT_PUBLIC_API_URL.startsWith('https') && (
           <meta
             http-equiv="Content-Security-Policy"

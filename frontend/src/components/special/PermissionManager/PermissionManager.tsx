@@ -44,7 +44,7 @@ export default function PermissionManager({ permission, children }: Props) {
         }[user.value.role]
       )
     }
-  }, [user.status, router.pathname])
+  }, [(user as any).value, router.pathname])
 
   const loader = (
     <div className={styles.loading}>

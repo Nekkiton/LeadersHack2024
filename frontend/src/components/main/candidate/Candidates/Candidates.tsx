@@ -23,13 +23,13 @@ export default function Candidates() {
   const [page, setPage] = useState(0)
   const [candidatesExist, setCandidatesExist] = useState<null | boolean>(null)
 
-  const candidates = useCandidates({ ...transformFilters(filters), page })
+  const candidates = useCandidates({ ...transformFilters(filters, page) })
 
   useEffect(() => {
     if (candidatesExist === null && candidates.status === 'success') {
       setCandidatesExist(!!candidates.value.items.length)
     }
-  }, [candidates, candidatesExist])
+  }, [(candidates as any).value, candidatesExist])
 
   return (
     <div className={styles.container}>

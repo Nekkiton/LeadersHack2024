@@ -1,3 +1,4 @@
+import { Site } from '@/config/site'
 import { GetCandidatesParams } from '@/types/entities/candidate'
 
 export interface FiltersFormData {
@@ -7,10 +8,14 @@ export interface FiltersFormData {
 }
 
 export const transformFilters = (
-  data: FiltersFormData
+  data: FiltersFormData,
+  page: number
 ): GetCandidatesParams => {
   return {
     ...data,
-    query: data.query ?? undefined,
+    fio: data.query ?? undefined,
+    experience: data.work_experiences,
+    page,
+    limit: Site.cardsPerPage,
   }
 }
