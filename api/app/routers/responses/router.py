@@ -58,7 +58,7 @@ async def create_response(
 async def get_candidate_responses(
     candidate_id: RequiredCandidateID,
     page: int = 0,
-    limit: int = 0,
+    limit: int = 25,
     inviter: Role = "candidate",
 ):
     query = {
