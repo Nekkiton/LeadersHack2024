@@ -98,7 +98,11 @@ async def get_candidate_vacancies(
     candidate = Users.find_one({"_id": candidate_id})
     vacancies = list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE(query, candidate, page, limit)))
     if not len(vacancies):
-        raise NOT_FOUND
+        return {
+            "total_pages": 0,
+            "page": 0,
+            "items": []
+        }
     return vacancies[0]
 
 
