@@ -35,6 +35,10 @@
   position: sticky;
   top: 24px;
   width: 23%;
+
+  &.hidden {
+    opacity: 0;
+  }
 }
 
 .sidebarBlock {

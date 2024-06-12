@@ -3,6 +3,7 @@ import { Vacancy } from '@/types/entities/vacancy'
 import { Role } from '@/types/entities/user'
 import { useCurRecruiterResponses } from '@/api/responses'
 import { Site } from '@/config/site'
+import classNames from 'classnames'
 import RemoteData from '@/components/special/RemoteData'
 import ResponseCard from '@/components/base/responses/ResponseCard'
 import Pagination from '@/components/ui/Pagination'
@@ -49,7 +50,11 @@ export default function VacancyResponses({ vacancy }: Props) {
               loadPage={(val) => setPage(val)}
             />
           </div>
-          <div className={styles.sidebar}>
+          <div
+            className={classNames(styles.sidebar, {
+              [styles.hidden]: !data.items.length,
+            })}
+          >
             {/* TODO: data from api */}
             <div className={styles.sidebarBlock}>
               <h6>Соответствие вакансии</h6>

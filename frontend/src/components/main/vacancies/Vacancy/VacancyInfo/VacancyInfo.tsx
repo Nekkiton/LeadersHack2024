@@ -64,6 +64,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
                 </Button>
                 {vacancy.status === VacancyStatus.Active && (
                   <Button
+                    className={styles.transparentBtn}
                     type="secondary"
                     href={Routes.recruiterEditVacancy(vacancy._id)}
                   >
