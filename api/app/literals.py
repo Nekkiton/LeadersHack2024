@@ -1,6 +1,11 @@
 from typing import Literal
 
 
+Role = Literal[
+    "recruiter", 
+    "candidate"
+]
+
 VacancyStatus = Literal[
     "active",
     "closed"
@@ -373,4 +378,19 @@ Skills = Literal[
     "Ориентация на результат",
     "Навыки адаптации",
     "Умение работать в многозадачном режиме",
+]
+
+ResponseStatus = Literal[
+    "waiting_for_candidate",
+    "waiting_for_recruiter",
+    "approved",
+    "rejected"
+]
+
+ResponseMessageType = Literal[
+    "candidate_request",
+    "recruiter_request",
+    "next_stage_request",
+    "candidate_answer",
+    "result"
 ]

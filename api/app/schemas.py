@@ -1,12 +1,10 @@
 from bson import ObjectId
 from datetime import datetime
-from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
+from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes, Role
 from pydantic_core import core_schema
-from typing import Any, List, Literal, Optional
+from typing import Any, List, Optional
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_extra_types.phone_numbers import PhoneNumber
-
-Role = Literal["recruiter", "candidate"]
 
 
 class OID(str):
