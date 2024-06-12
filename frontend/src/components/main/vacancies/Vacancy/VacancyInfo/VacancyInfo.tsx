@@ -1,10 +1,15 @@
 import { useState } from 'react'
 import { Role } from '@/types/entities/user'
-import { Vacancy, VacancyStatuses } from '@/types/entities/vacancy'
+import {
+  Vacancy,
+  VacancyStatus,
+  VacancyStatuses,
+} from '@/types/entities/vacancy'
 import { getUserName } from '@/lib/get-user-name'
 import { Site } from '@/config/site'
 import { getVacancySalary } from '@/lib/get-vacancy-salary'
 import { useCurCandidateVacancyResponse } from '@/api/candidates'
+import { useToasts } from '@/lib/use-toasts'
 import classNames from 'classnames'
 import moment from 'moment'
 import Button from '@/components/ui/Button'
@@ -15,6 +20,7 @@ import RadialProgressBar from '@/components/ui/RadialProgressBar'
 import RespondToVacancyModal from '@/components/base/vacancies/RespondToVacancyModal'
 import VacancyInfoCandidateResponse from './VacancyInfoCandidateResponse'
 import styles from './VacancyInfo.module.scss'
+import { Routes } from '@/config/routes'
 
 interface Props {
   vacancy: Vacancy
@@ -22,6 +28,8 @@ interface Props {
 }
 
 export default function VacancyInfo({ vacancy, role }: Props) {
+  const toasts = useToasts()
+
   const [isDescriptionShowed, setIsDescriptionShowed] = useState(
     role === Role.Recruiter ? false : true
   )
@@ -37,10 +45,10 @@ export default function VacancyInfo({ vacancy, role }: Props) {
         <div className={styles.header}>
           <div className={styles.headerTitleContainer}>
             <h1>{vacancy?.title}</h1>
-            {role === Role.Candidate && (
+            {role === Role.Candidate && vacancy.match !== undefined && (
               <div className={styles.headerMatchPercent}>
-                <RadialProgressBar value={67} />
-                <span>Подходит на 67%</span>
+                <RadialProgressBar value={vacancy.match} />
+                <span>Подходит на {vacancy.match}%</span>
               </div>
             )}
           </div>
@@ -48,14 +56,24 @@ export default function VacancyInfo({ vacancy, role }: Props) {
             {/* TODO: actions */}
             {role === Role.Recruiter && (
               <>
-                <Button type="text" onClick={() => alert('coming soon')}>
+                <Button
+                  type="text"
+                  onClick={() =>
+                    toasts.info({ content: 'Функционал в разработке' })
+                  }
+                >
                   <Icon icon="copy" />
                   <span>Создать копию</span>
                 </Button>
-                <Button type="secondary" onClick={() => alert('coming soon')}>
-                  <Icon icon="pen" />
-                  <span>Редактировать</span>
-                </Button>
+                {vacancy.status === VacancyStatus.Active && (
+                  <Button
+                    type="secondary"
+                    href={Routes.recruiterEditVacancy(vacancy._id)}
+                  >
+                    <Icon icon="pen" />
+                    <span>Редактировать</span>
+                  </Button>
+                )}
               </>
             )}
             {candidateResponse.status === 'success' &&

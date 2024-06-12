@@ -8,6 +8,7 @@ export const Routes = {
 
   recruiterVacancies: '/recruiter/vacancies',
   recruiterVacancy: (pk: string) => `/recruiter/vacancies/${pk}`,
+  recruiterEditVacancy: (pk: string) => `/recruiter/vacancies/${pk}/edit`,
   recruiterCandidates: '/recruiter/candidates',
   recruiterCandidate: (pk: string) => `/recruiter/candidates/${pk}`,
   recruiterNews: '/recruiter/news',

@@ -98,7 +98,8 @@ export default function KeywordsInput({
             {items
               ?.filter(
                 (item) =>
-                  item.value.includes(query) && !value.includes(item.key)
+                  item.value.toLowerCase().includes(query.toLowerCase()) &&
+                  !value.includes(item.key)
               )
               .map((item) => (
                 <div

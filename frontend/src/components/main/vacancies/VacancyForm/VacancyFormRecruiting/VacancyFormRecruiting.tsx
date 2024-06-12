@@ -102,48 +102,46 @@ export default function VacancyFormRecruiting() {
                 </BaseButton>
               </div>
             </div>
-            <AppearTransition orientation="v" gap>
-              {!hiddenStageIds.includes(stage.id) && (
-                <div className={styles.stageBody}>
-                  <Controller
-                    control={control}
-                    name={`stages.${idx}.auto_interview`}
-                    render={({ field, fieldState }) => (
-                      <Checkbox {...field} error={fieldState.error}>
-                        <p>
-                          Назначать онлайн интервью при положительном ответе
-                        </p>
-                        <Icon icon="question" />
-                      </Checkbox>
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name={`stages.${idx}.approve_template`}
-                    rules={{ required: true }}
-                    render={({ field, fieldState }) => (
-                      <Textarea
-                        {...field}
-                        error={fieldState.error}
-                        label="Шаблон приглашения на следующий этап"
-                      />
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name={`stages.${idx}.reject_template`}
-                    rules={{ required: true }}
-                    render={({ field, fieldState }) => (
-                      <Textarea
-                        {...field}
-                        error={fieldState.error}
-                        label="Шаблон отказа"
-                      />
-                    )}
-                  />
-                </div>
-              )}
-            </AppearTransition>
+            {/* <AppearTransition orientation="v" gap> */}
+            {!hiddenStageIds.includes(stage.id) && (
+              <div className={styles.stageBody}>
+                <Controller
+                  control={control}
+                  name={`stages.${idx}.auto_interview`}
+                  render={({ field, fieldState }) => (
+                    <Checkbox {...field} error={fieldState.error}>
+                      <p>Назначать онлайн интервью при положительном ответе</p>
+                      <Icon icon="question" />
+                    </Checkbox>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`stages.${idx}.approve_template`}
+                  rules={{ required: true }}
+                  render={({ field, fieldState }) => (
+                    <Textarea
+                      {...field}
+                      error={fieldState.error}
+                      label="Шаблон приглашения на следующий этап"
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`stages.${idx}.reject_template`}
+                  rules={{ required: true }}
+                  render={({ field, fieldState }) => (
+                    <Textarea
+                      {...field}
+                      error={fieldState.error}
+                      label="Шаблон отказа"
+                    />
+                  )}
+                />
+              </div>
+            )}
+            {/* </AppearTransition> */}
           </div>
         ))}
         <Button

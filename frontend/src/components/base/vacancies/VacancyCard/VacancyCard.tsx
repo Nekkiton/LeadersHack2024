@@ -21,10 +21,10 @@ export default function VacancyCard({ className, vacancy, role }: Props) {
         <div className={styles.headerInfo}>
           <p>От {moment(`${vacancy.created_at}Z`).format('DD MMMM YYYY')}</p>
           {role === Role.Recruiter && <VacancyStatus status={vacancy.status} />}
-          {role === Role.Candidate && (
+          {role === Role.Candidate && vacancy.match !== undefined && (
             <div className={styles.headerMatchPercent}>
-              <RadialProgressBar value={67} />
-              <span>Подходит на 67%</span>
+              <RadialProgressBar value={vacancy.match} />
+              <span>Подходит на {vacancy.match}%</span>
             </div>
           )}
         </div>

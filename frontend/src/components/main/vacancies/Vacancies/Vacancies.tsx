@@ -31,7 +31,7 @@ export default function Vacancies({ role }: Props) {
   >({
     defaultValues: {
       query: null,
-      work_scopes: [],
+      scopes: [],
       statuses: [],
       skills: [],
     },

@@ -9,14 +9,14 @@ import { WorkScope } from '@/types/entities/work-scope'
 
 export interface CandidateFiltersFormData {
   query: string | null
-  work_scopes: WorkScope[]
+  scopes: WorkScope[]
   skills: Skill[]
 }
 
 export interface RecruiterFiltersFormData {
   query: string | null
   statuses?: VacancyStatus[]
-  work_scopes?: WorkScope[]
+  scopes?: WorkScope[]
 }
 
 export const transformCandidateFilters = (

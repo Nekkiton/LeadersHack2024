@@ -22,6 +22,7 @@ interface Props {
   }
 }
 
+// TODO: something's defenately wrong with default data
 export default function VacancyForm({ backLink, editId }: Props) {
   const router = useRouter()
   const user = useCurUser()
@@ -41,14 +42,21 @@ export default function VacancyForm({ backLink, editId }: Props) {
     },
   ]
 
-  const methods = useForm<FormData>({ defaultValues: getInitialData() })
-  const { handleSubmit, reset } = methods
+  const vacancy = useVacancy(editId!, {
+    enabled: !!editId,
+  })
 
-  const vacancy = useVacancy(editId!, { enabled: !!editId })
+  const methods = useForm<FormData>({
+    defaultValues: getInitialData(
+      vacancy.status === 'success' ? vacancy.value : undefined // TODO
+    ),
+  })
+  const { handleSubmit, reset, watch } = methods
+  console.log(watch().stages)
 
   useEffect(() => {
     if (vacancy.status === 'success') {
-      reset(getInitialData(vacancy.value))
+      reset(getInitialData(vacancy.value)) // TODO
     }
   }, [vacancy.status])
 
@@ -78,7 +86,7 @@ export default function VacancyForm({ backLink, editId }: Props) {
   })
 
   useEffect(() => {
-    if (user.status === 'success' && user.value) {
+    if (user.status === 'success' && user.value && !editId) {
       reset({
         stages: Site.recruitingDefaultStages.map((i) => ({
           ...i,

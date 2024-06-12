@@ -262,6 +262,9 @@ export const Api = {
       vacancies: (params?: GetRecruiterVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/vacancies/for-recruiters', {
           params,
+          data: {
+            statuses: params?.statuses,
+          },
         }).then((res) => res.data),
     },
   },
@@ -328,8 +331,9 @@ export const Api = {
         })),
     create: (data: CreateVacancyData) => Axios.post('/vacancies', data),
     update: ({ pk, ...data }: CreateVacancyData & { pk: string }) =>
-      Axios.post(`/vacancies/${pk}`, data),
-    close: (pk: string) => Axios.post(`/vacancies/${pk}/close`),
+      Axios.put(`/vacancies/${pk}`, data),
+    close: (pk: string) =>
+      Axios.patch(`/vacancies/${pk}/status?status=${VacancyStatus.Closed}`),
     respond: ({ pk, ...data }: RespondToVacancyData & { pk: string }) =>
       Axios.post(`/vacancies/${pk}/respond`, data),
   },
