@@ -32,6 +32,11 @@ class ResponseVacancyGet(Response):
     vacancy: VacancyGet
 
 
+class ResponseVacancyMatchGet(Response):
+    vacancy: VacancyGet
+    match: int
+
+
 class ResponsesVacanciesGet(Pagination):
     items: List[ResponseVacancyGet]
 
@@ -43,7 +48,6 @@ class CandidateResponseAnswer(BaseModel):
     meet_on: Optional[Literal["Zoom", "GoogleMeet", "Telemost"]] = None
 
     @model_validator(mode="after")
-    @classmethod
     def check_fields_by_status(self) -> Self:
         if self.status == "approve" and (self.meet_at is None or self.meet_on is None):
             raise ValueError("Если статус approve, необходимы meet_at и meet_on")
