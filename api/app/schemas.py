@@ -103,3 +103,9 @@ class RecruiterResponse(RecruiterPost, UserResponse):
     Возвращаемые данные для рекрутера
     """
     pass
+
+
+class Pagination(BaseModel):
+    total_pages: int
+    page: int
+    items: List[Any]

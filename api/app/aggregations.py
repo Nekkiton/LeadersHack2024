@@ -28,3 +28,17 @@ DETAILED_VACANCIES = [
         }
     }
 ]
+
+DETAILED_RESPONSES = [
+    {
+        "$lookup": {
+            "from": "vacancies.detailed",
+            "localField": "vacancy_id",
+            "foreignField": "_id",
+            "as": "vacancy"
+        }
+    },
+    {
+        "$unwind": "$vacancy"
+    }
+]

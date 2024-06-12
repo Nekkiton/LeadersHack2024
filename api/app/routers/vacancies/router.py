@@ -12,7 +12,7 @@ from app.database import Stages, Users, Vacancies, DetailedVacancies
 
 
 from .exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
-from .schemas import PaginationVacanciesCandidateResponse, VacancyPost, VacancyResponse, PaginationVacanciesResponse, VacancyUpdate
+from .schemas import VacanciesCandidateGet, VacancyPost, VacancyGet, VacanciesGet, VacancyUpdate
 
 router = APIRouter(tags=["Вакансии"], prefix="/vacancies")
 
@@ -20,7 +20,7 @@ router = APIRouter(tags=["Вакансии"], prefix="/vacancies")
 @router.get(
     "/",
     name="Получить вакансии",
-    response_model=PaginationVacanciesResponse
+    response_model=VacanciesGet
 )
 async def get_vacancies(
     page: int = Query(0, title="Страница"),
@@ -43,7 +43,7 @@ async def get_vacancies(
 @router.get(
     "/for-recruiters",
     name="Вакансии рекрутера",
-    response_model=PaginationVacanciesResponse
+    response_model=VacanciesGet
 )
 async def get_recruiter_vacancies(
     recruiter_id: RequiredRecruiterID,
@@ -74,7 +74,7 @@ async def get_recruiter_vacancies(
 @router.get(
     "/for-candidates",
     name="Вакансии соискателя",
-    response_model=PaginationVacanciesCandidateResponse
+    response_model=VacanciesCandidateGet
 )
 async def get_candidate_vacancies(
     candidate_id: RequiredCandidateID,
@@ -105,7 +105,7 @@ async def get_candidate_vacancies(
 @router.post(
     "/",
     name="Создать вакансию",
-    response_model=VacancyResponse
+    response_model=VacancyGet
     )
 async def create_vacancy(
     user_id: RequiredRecruiterID,
@@ -137,7 +137,7 @@ async def create_vacancy(
 @router.put(
     "/{vacancy_id}",
     name="Обновить вакансию",
-    response_model=VacancyResponse
+    response_model=VacancyGet
     )
 async def update_vacancy(
     user_id: RequiredRecruiterID,
@@ -196,7 +196,7 @@ async def update_vacancy(
 @router.get(
     "/{vacancy_id}",
     name="Получить вакансию",
-    response_model=VacancyResponse,
+    response_model=VacancyGet,
     )
 async def get_vacancy(vacancy_id: OID):
     return DetailedVacancies.find_one({"_id": vacancy_id})
@@ -205,7 +205,7 @@ async def get_vacancy(vacancy_id: OID):
 @router.patch(
     "/{vacancy_id}/status",
     name="Обновить статус вакансии",
-    response_model=VacancyResponse
+    response_model=VacancyGet
     )
 async def update_vacancy_status(
     user_id: RequiredRecruiterID,
