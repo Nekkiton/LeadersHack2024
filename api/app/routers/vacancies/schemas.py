@@ -52,7 +52,7 @@ class VacancyGet(VacancyUpdate):
 
 
 class VacancyCandidateGet(VacancyGet):
-    match: float = 50
+    match: int
 
 
 class VacanciesGet(Pagination):
