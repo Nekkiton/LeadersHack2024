@@ -37,6 +37,10 @@ import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
 import { TempNews } from './_news-temp'
+import {
+  GetCandidateResponsesParams,
+  Response,
+} from '@/types/entities/response'
 
 const workHistory1: WorkHistory = {
   job_title: 'FullStack разработчик',
@@ -287,16 +291,10 @@ export const Api = {
       updateProfile: (data: UpdateCandidateData) =>
         Axios.put('/user/candidate', data),
       updateProfileFromFile: (data: any) => Axios.post('/candidates/me/', data), // TODO: data type
-      responses: () =>
-        Axios.get<{
-          responses: ResponseStage[][]
-          invites: ResponseStage[][]
-        }>(`/candidates/me/responses`)
-          .then((res) => res.data)
-          .catch(() => ({
-            responses: [[responseStage1], [responseStage1, responseStage2]],
-            invites: [[responseStage1], [responseStage1, responseStage2]],
-          })),
+      responses: (params?: GetCandidateResponsesParams) =>
+        Axios.get<Paginated<Response[]>>(`/responses/candidate`, {
+          params,
+        }).then((res) => res.data),
       vacancies: (params?: GetCandidateVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/vacancies/for-candidates', {
           params,
@@ -334,8 +332,8 @@ export const Api = {
       Axios.put(`/vacancies/${pk}`, data),
     close: (pk: string) =>
       Axios.patch(`/vacancies/${pk}/status?status=${VacancyStatus.Closed}`),
-    respond: ({ pk, ...data }: RespondToVacancyData & { pk: string }) =>
-      Axios.post(`/vacancies/${pk}/respond`, data),
+    respond: (data: RespondToVacancyData) =>
+      Axios.post(`/responses/candidate`, {}, { params: data }),
   },
 
   news: {
