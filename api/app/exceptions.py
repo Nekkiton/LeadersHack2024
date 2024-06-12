@@ -8,7 +8,7 @@ UNATHORIZED = HTTPException(
 
 NOT_FOUND = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND, 
-    detail="Объект не найден",
+    detail="По запросу ничего не найдено",
     )
 
 ONLY_CANDIDATE = HTTPException(
