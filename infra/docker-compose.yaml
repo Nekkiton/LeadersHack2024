@@ -55,7 +55,7 @@ services:
       - mongo
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.leaders_backend.rule=Host(`leaders-gb.ru`) && (PathPrefix(`/api`)"
+      - "traefik.http.routers.leaders_backend.rule=Host(`leaders-gb.ru`) && PathPrefix(`/api`)"
       - "traefik.http.routers.leaders_backend.entrypoints=websecure"
       - "traefik.http.routers.leaders_backend.tls=true"
       - "traefik.http.routers.leaders_backend.tls.certresolver=myresolver"
