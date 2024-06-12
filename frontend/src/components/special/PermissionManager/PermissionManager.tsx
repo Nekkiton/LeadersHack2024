@@ -19,11 +19,11 @@ export default function PermissionManager({ permission, children }: Props) {
 
   const user = useCurUser({ enabled: !!permission })
 
-  const { mutate: refreshAuth } = useRefreshAuth({ handleError: false })
+  // const { mutate: refreshAuth } = useRefreshAuth({ handleError: false })
 
-  useEffect(() => {
-    refreshAuth(0)
-  }, [])
+  // useEffect(() => {
+  //   refreshAuth(0)
+  // }, [])
 
   useEffect(() => {
     if (

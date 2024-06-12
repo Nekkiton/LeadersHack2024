@@ -9,9 +9,7 @@ import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Select from '@/components/ui/Select'
 import Input from '@/components/ui/Input'
-import Image from '@/components/ui/Image'
 import VacancyStatus from '@/components/base/vacancies/VacancyStatus'
-import userImg from '@/assets/images/user.png'
 import styles from './VacanciesFilters.module.scss'
 
 interface Props {
@@ -64,7 +62,7 @@ export default function VacanciesFilters({ role }: Props) {
       )}
       <Controller
         control={control}
-        name="work_scopes"
+        name="scopes"
         render={({ field }) => (
           <Select
             {...field}

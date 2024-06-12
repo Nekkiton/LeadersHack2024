@@ -43,12 +43,14 @@ export interface Vacancy extends BaseEntity {
   scope: WorkScope
   // stages: string[] // TODO
   stages?: Stage[]
+  match?: number
 }
 
 export interface GetVacanciesParams {
   page?: number
   limit?: number
   scope?: WorkScope
+  status?: VacancyStatus
 }
 
 export interface GetCandidateVacanciesParams {
@@ -64,7 +66,7 @@ export interface GetRecruiterVacanciesParams {
   limit?: number
   query?: string
   statuses?: VacancyStatus[]
-  work_scopes?: WorkScope[]
+  scopes?: WorkScope[]
 }
 
 export interface CreateVacancyData {
