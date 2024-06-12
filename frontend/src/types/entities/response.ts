@@ -40,6 +40,12 @@ export interface GetCandidateResponsesParams {
   inviter?: 'recruiter' | 'candidate'
 }
 
+export interface GetRecruiterResponsesParams {
+  page?: number
+  limit?: number
+  vacancy_id: string
+}
+
 export interface CurCandidateAnswerToResponseData {
   status: 'approve' | 'reject'
   message: string | null

@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button'
 interface Props extends ModalStateProps {
   stage: Stage
   response: Response
+  lastStage?: boolean
 }
 
 interface FormData {
@@ -18,6 +19,7 @@ interface FormData {
 export default function KeepRecruitingModal({
   stage,
   response,
+  lastStage: isLastPage,
   ...stateProps
 }: Props) {
   const { control, handleSubmit } = useForm<FormData>({
@@ -42,7 +44,11 @@ export default function KeepRecruitingModal({
   return (
     <Modal
       {...stateProps}
-      header="Отправить приглашение на следующий этап"
+      header={
+        isLastPage
+          ? 'Отправить приглашение в команду'
+          : 'Отправить приглашение на следующий этап'
+      }
       width={624}
       onSubmit={onSubmit}
       footer={

@@ -41,6 +41,7 @@ import {
   CurCandidateAnswerToResponseData,
   CurRecruiterAnswerToResponseData,
   GetCandidateResponsesParams,
+  GetRecruiterResponsesParams,
   Response,
 } from '@/types/entities/response'
 
@@ -250,28 +251,28 @@ export const Api = {
       Axios.post('/auth/reset-password/', data),
   },
 
-  // done
   users: {
     me: () =>
       Axios.get<User | BaseUser>('/user')
         .then((res) => res.data)
-        // .catch(() => candidate as User),
-        // .catch(() => recruiter as User),
         .catch(() => null),
   },
 
-  // TODO
   recruiters: {
     me: {
       updateProfile: (data: UpdateRecruiterData) =>
         Axios.put('/user/recruiter', data),
+
       vacancies: (params?: GetRecruiterVacanciesParams) =>
         Axios.get<Paginated<Vacancy[]>>('/vacancies/for-recruiters', {
           params,
-          data: {
-            statuses: params?.statuses,
-          },
         }).then((res) => res.data),
+
+      responses: (params: GetRecruiterResponsesParams) =>
+        Axios.get<Paginated<Response[]>>(`/responses/recruiter`, {
+          params,
+        }).then((res) => res.data),
+
       answerToResponse: ({
         pk,
         ...data
@@ -325,20 +326,7 @@ export const Api = {
       ),
     one: (pk: string) =>
       Axios.get<Vacancy>(`/vacancies/${pk}`).then((res) => res.data),
-    responses: (pk: string) =>
-      Axios.get<{
-        statistics: any
-        responses: ResponseStage[][] // [[responses of 1st candidate], [responses of 2nd candidate], ...]
-      }>(`/vacancies/${pk}/responses/`)
-        .then((res) => res.data)
-        .catch(() => ({
-          statistics: {},
-          responses: [
-            [responseStage1],
-            [responseStage1, responseStage2],
-            [responseStage1, responseStage2, responseStage3],
-          ],
-        })),
+
     create: (data: CreateVacancyData) => Axios.post('/vacancies', data),
     update: ({ pk, ...data }: CreateVacancyData & { pk: string }) =>
       Axios.put(`/vacancies/${pk}`, data),

@@ -1,17 +1,26 @@
+import { useState } from 'react'
 import { Vacancy } from '@/types/entities/vacancy'
-import { useVacancyResponses } from '@/api/vacancies'
 import { Role } from '@/types/entities/user'
+import { useCurRecruiterResponses } from '@/api/responses'
+import { Site } from '@/config/site'
 import RemoteData from '@/components/special/RemoteData'
 import ResponseCard from '@/components/base/responses/ResponseCard'
+import Pagination from '@/components/ui/Pagination'
+import Icon from '@/components/ui/Icon'
 import styles from './VacancyResponses.module.scss'
 
 interface Props {
   vacancy: Vacancy
-  role: Role
 }
 
-export default function VacancyResponses({ vacancy, role }: Props) {
-  const responses = useVacancyResponses(vacancy._id)
+export default function VacancyResponses({ vacancy }: Props) {
+  const [page, setPage] = useState(0)
+
+  const responses = useCurRecruiterResponses({
+    vacancy_id: vacancy._id,
+    page,
+    limit: Site.cardsPerPage,
+  })
 
   return (
     <RemoteData
@@ -19,15 +28,26 @@ export default function VacancyResponses({ vacancy, role }: Props) {
       renderSuccess={(data) => (
         <div className={styles.container}>
           <div className={styles.responses}>
-            {data.responses.map((responses) => (
-              <ResponseCard
-                key={responses[responses.length - 1]._id}
-                response={responses[responses.length - 1]}
-                responseStages={responses}
-                vacancy={vacancy}
-                role={role}
-              />
-            ))}
+            {data.items.length ? (
+              data.items.map((response) => (
+                <ResponseCard
+                  key={response._id}
+                  response={response}
+                  role={Role.Recruiter}
+                  vacancy={vacancy}
+                />
+              ))
+            ) : (
+              <div className={styles.nothing}>
+                <Icon className={styles.nothingIcon} icon="documentLoupe" />
+                <p>Откликов еще нет</p>
+              </div>
+            )}
+            <Pagination
+              page={data.page}
+              totalPages={data.total_pages}
+              loadPage={(val) => setPage(val)}
+            />
           </div>
           <div className={styles.sidebar}>coming soon</div>
         </div>

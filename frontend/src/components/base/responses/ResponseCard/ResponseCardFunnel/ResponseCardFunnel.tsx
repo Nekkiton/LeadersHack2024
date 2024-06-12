@@ -165,6 +165,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
           setIsShowed={setIsKeepRecruitingModalShowed}
           stage={curStage}
           response={response}
+          lastStage={!nextStage}
         />
       )}
 
