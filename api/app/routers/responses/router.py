@@ -15,6 +15,43 @@ router = APIRouter(tags=["Отклики"], prefix="/responses")
 
 
 @router.post(
+    "/recruiter/{candidate_id}",
+    name="Создать отклик от рекрутера",
+    response_model=Response,
+    )
+async def creare_response_from_recruiter(
+    recruiter_id: RequiredRecruiterID,
+    candidate_id: OID,
+    vacancy_id: OID,
+    message: str
+):
+    # todo: Проверка принадлежности vacancy_id recruiter_id
+    stage = list(Stages.find({"vacancy_id": vacancy_id}, sort={"position": 1}))[1]
+    stage_id = stage.get("_id")
+    insert_data = {
+        "status": "waiting_for_recruiter",
+        "vacancy_id": vacancy_id,
+        "candidate_id": candidate_id,
+        "stage_id": stage_id,
+        "inviter": "recruiter",
+        "messages": [
+            {
+                "type": "recruiter_request",
+                "sender_role": "recruiter",
+                "text": message,
+                "created_at": get_now(),
+                "stage_id": stage_id
+            }
+        ]
+    }
+    result = Responses.insert_one(insert_data)
+    return {
+        "_id": result.inserted_id,
+        **insert_data
+    }
+
+
+@router.post(
     "/candidate/",
     name="Создать отклик",
     response_model=Response
