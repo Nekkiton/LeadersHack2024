@@ -7,7 +7,7 @@ export default function CandidateProfilePassword() {
     <div className={styles.container}>
       <div className={styles.main}>
         <h3>Пароль</h3>
-        <p className={styles.mainHint}>Изменен 04.06.2024</p>
+        <p className={styles.mainHint}>Не менялся</p>
       </div>
       {/* TODO: action */}
       <Button type="text" onClick={() => alert('comming soong')}>
