@@ -23,9 +23,9 @@ services:
     env_file: 
       - path: ./api/.env.local
         required: true
-      - path: ./api/.env.prod
-        required: false
     restart: always
+    ports:
+      - 8000:8000
     networks:
       - front_network
       - back_network
@@ -42,11 +42,8 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
-    env_file: 
-      - path: ./frontend/.env.local
-        required: true
-      - path: ./frontend/.env.prod
-        required: false
+      args:
+         - NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
     restart: always
     networks:
       - front_network
