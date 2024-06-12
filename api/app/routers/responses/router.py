@@ -2,12 +2,11 @@ from fastapi import APIRouter
 
 from app.literals import Role
 from app.exceptions import NOT_FOUND
-from app.routers.responses.schemas import Response, ResponsesVacanciesGet
+from app.routers.responses.schemas import CandidateResponseAnswer, Response, ResponsesVacanciesGet
 from app.schemas import OID
 from app.utils import get_now
 from app.database import DetailedResponses, Responses, Stages
 from app.oauth import RequiredCandidateID
-
 
 router = APIRouter(tags=["Отклики"], prefix="/responses")
 
@@ -52,7 +51,7 @@ async def create_response(
 
 @router.get(
     "/candidate/",
-    name="Получить вакансии кандидата",
+    name="Получить отклики кандидата",
     response_model=ResponsesVacanciesGet,
 )
 async def get_candidate_responses(
@@ -73,3 +72,50 @@ async def get_candidate_responses(
         "items": items
     }
     
+
+@router.post(
+    "/candidate/{response_id}",
+    name="Ответить на отклик",
+    response_model=Response
+)
+async def answer_candidate_response(
+    candidate_id: RequiredCandidateID,
+    response_id: OID,
+    payload: CandidateResponseAnswer
+):
+    # todo Проверка, находится ли возвращаемое время во временных слотах рекрутера
+    now = get_now()
+    response = Responses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": "waiting_for_candidate"})
+    if response is None:
+        raise NOT_FOUND
+    if payload.status == "reject":
+        status = payload.status
+        message = {
+            "type": "result",
+            "sender_role": "candidate",
+            "text": payload.message,
+            "created_at": now,
+            "stage_id": response["stage_id"]
+        }
+    else:
+        status = 'waiting_for_recruiter'
+        message = {
+            "type": "candidate_answer",
+            "sender_role": "candidate",
+            "text": payload.message,
+            "created_at": now,
+            "stage_id": response["stage_id"],
+            "meet_on": payload.meet_on,
+            "meet_url": "https://www.google.com",
+            "meet_at": payload.meet_at,
+        }
+    Responses.update_one(
+        {
+            "_id": response_id
+        },
+        {
+            "$set": {"status": status},
+            "$push": {"messages": message}
+        }
+    )
+
