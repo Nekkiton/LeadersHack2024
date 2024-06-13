@@ -48,7 +48,7 @@ USERS_BY_FIO = lambda query, page, limit: [
                     "$name",
                     " ",
                     "$patronymic",
-                    " "
+                    " ",
                     "$surname",
                 ]
             }
