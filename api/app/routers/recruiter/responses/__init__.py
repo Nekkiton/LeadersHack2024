@@ -51,7 +51,7 @@ async def create_response(
         raise ONE_RESPONSE_FOR_ONE_VACACNY
     if not Vacancies.count_documents({"_id": vacancy_id, "recruiter_id": recruiter_id}):
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
-    stage = list(Stages.find({"vacancy_id": vacancy_id}, sort={"position": 1}))[1]
+    stage = list(Stages.find({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1}))[1]
     stage_id = stage.get("_id")
     insert_data = {
         "status": "waiting_for_candidate",
@@ -104,7 +104,7 @@ async def answer_response(
         }
     else:
         curr_stage = Stages.find_one({"_id": response["stage_id"]}, {"position": 1})
-        next_stage = Stages.find_one({"position": {"$gt": curr_stage["position"]}, "vacancy_id": response["vacancy"]["_id"]}, {"_id": 1})
+        next_stage = Stages.find_one({"position": {"$gt": curr_stage["position"]}, "status": "active", "vacancy_id": response["vacancy"]["_id"]}, {"_id": 1})
         if next_stage is not None:
             stage_id = next_stage["_id"]
             status = "waiting_for_candidate"

@@ -1,6 +1,6 @@
 from typing import List, Optional
 from fastapi import APIRouter, Query
-from pymongo import DeleteMany, InsertOne, UpdateOne
+from pymongo import DeleteMany, InsertOne, UpdateMany, UpdateOne
 
 from app.schemas import OID
 from app.utils import get_now
@@ -69,6 +69,7 @@ async def create_vacancy(
             {
                 **stage.model_dump(),
                 "vacancy_id": vacancy_result.inserted_id,
+                "status": "active",
                 "created_at": now,
                 "updated_at": now,
             }
@@ -106,11 +107,12 @@ async def update_vacancy(
     if not vacancy_result.modified_count:
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
     stage_ids = [stage.id for stage in payload.stages if stage.id is not None]
-    bulk_operations = [DeleteMany({"vacancy_id": vacancy_id, "_id": {"$nin": stage_ids}})]
+    bulk_operations = [UpdateMany({"vacancy_id": vacancy_id, "_id": {"$nin": stage_ids}}, {"$set": {"status": "archived"}})]
     for stage in payload.stages:
         stage_dump = {
             **stage.model_dump(),
             "updated_at": now,
+            "status": "active"
         }
         if stage.id is not None:
             opertaion = UpdateOne(
@@ -119,7 +121,7 @@ async def update_vacancy(
                     "vacancy_id": vacancy_id,
                 },
                 {
-                    "$set": stage_dump
+                    "$set": stage_dump,
                 }
             )
         else:

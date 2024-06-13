@@ -48,7 +48,7 @@ async def create_response(
 ):
     if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
         raise ONE_RESPONSE_FOR_ONE_VACACNY
-    stage = Stages.find_one({"vacancy_id": vacancy_id}, sort={"position": 1})
+    stage = Stages.find_one({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1})
     if stage is None:
         raise NOT_FOUND
     stage_id = stage.get("_id")
@@ -128,7 +128,7 @@ async def answer_response(
     else:
         if response["status"] != "waiting_for_candidate":
             raise NOT_FOUND
-        auto_interview = Stages.find_one({"_id": response["stage_id"]}, {"auto_intervew": 1})["auto_interview"]
+        auto_interview = Stages.find_one({"_id": response["stage_id"], "status": "active"}, {"auto_intervew": 1})["auto_interview"]
         status = "waiting_for_recruiter"
         if auto_interview:
             if payload.meet_on is None or payload.meet_at is None:

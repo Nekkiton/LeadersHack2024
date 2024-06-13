@@ -6,6 +6,11 @@ DETAILED_VACANCIES = [
             "foreignField": "vacancy_id",
             "pipeline": [
                 {
+                    "$match": {
+                        "status": "active"
+                    }
+                },
+                {
                     "$sort": {
                         "position": 1
                     }
