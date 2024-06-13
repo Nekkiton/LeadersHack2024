@@ -20,7 +20,7 @@ class ResponseMessageItem(BaseModel):
     meet_url: Optional[str] = None
 
 
-class Response(BaseModel, BaseGet):
+class Response(BaseGet):
     status: ResponseStatus
     vacancy_id: OID
     candidate_id: OID
