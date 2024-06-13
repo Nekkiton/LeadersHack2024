@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Response } from '@/types/entities/response'
 import { Vacancy } from '@/types/entities/vacancy'
@@ -22,7 +21,7 @@ interface Props extends ModalStateProps {
 interface FormData {
   date: Moment
   time: string
-  meet_on?: 'GoogleMeet' | 'Zoom' | 'Telemost'
+  meet_on: 'GoogleMeet' | 'Zoom' | 'Telemost'
 }
 
 export default function SetupInterviewModal({
@@ -42,8 +41,8 @@ export default function SetupInterviewModal({
         pk: response._id,
         status: 'approve',
         message: null,
-        meet_on: data.meet_on ?? null,
-        meet_at: meet_at?.toISOString(),
+        meet_on: data.meet_on,
+        meet_at: meet_at.toISOString(),
       },
       {
         onSettled: () => {
@@ -53,16 +52,11 @@ export default function SetupInterviewModal({
     )
   })
 
-  const isAutoIntervew = useMemo(() => {
-    const stage = vacancy.stages?.find((i) => i._id === response.stage_id)
-    return stage?.auto_interview
-  }, [vacancy, response])
-
   return (
     <Modal
       {...stateProps}
       header="Когда и где вам удобно провести интервью"
-      width={370}
+      width={403}
       onSubmit={onSubmit}
       footer={
         <>
@@ -122,26 +116,24 @@ export default function SetupInterviewModal({
           )}
         />
       </div>
-      {isAutoIntervew && (
-        <Controller
-          control={control}
-          name="meet_on"
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <Select
-              {...field}
-              error={fieldState.error}
-              label="Платформа для проведения интервью"
-              placeholder="Выберите из списка"
-              items={[
-                { key: 'GoogleMeet', value: 'GoogleMeet' },
-                { key: 'Zoom', value: 'Zoom' },
-                { key: 'Telemost', value: 'Telemost' },
-              ]}
-            />
-          )}
-        />
-      )}
+      <Controller
+        control={control}
+        name="meet_on"
+        rules={{ required: true }}
+        render={({ field, fieldState }) => (
+          <Select
+            {...field}
+            error={fieldState.error}
+            label="Платформа для проведения интервью"
+            placeholder="Выберите из списка"
+            items={[
+              { key: 'GoogleMeet', value: 'GoogleMeet' },
+              { key: 'Zoom', value: 'Zoom' },
+              { key: 'Telemost', value: 'Telemost' },
+            ]}
+          />
+        )}
+      />
     </Modal>
   )
 }

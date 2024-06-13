@@ -15,6 +15,7 @@ import KeepRecruitingModal from '@/components/base/candidates/KeepRecruitingModa
 import RejectRecruitingModal from '@/components/base/candidates/RejectRecruitingModal'
 import RejectVacancyModal from '@/components/base/vacancies/RejectVacancyModal'
 import SetupInterviewModal from '@/components/base/vacancies/SetupInterviewModal'
+import AcceptInvitationModal from '@/components/base/vacancies/AcceptInvitationModal'
 import styles from './ResponseCardFunnel.module.scss'
 
 interface Props {
@@ -32,6 +33,8 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
     useState(false)
   const [isSetupInterviewModalShowed, setIsSetupInterviewModalShowed] =
     useState(false)
+  const [isAcceptInvitationModalShowed, setIsAcceptInvitationModalShowed] =
+    useState(false)
 
   const [areAllMsgsShowed, setAreAllMsgsShowed] = useState(false)
 
@@ -45,6 +48,14 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
     )
     if (curStageIdx === -1 || curStageIdx === undefined) return null
     return vacancy.stages?.[curStageIdx + 1] ?? null
+  }, [vacancy, response])
+
+  const prevStage = useMemo(() => {
+    const curStageIdx = vacancy.stages?.findIndex(
+      (i) => i._id === response.stage_id
+    )
+    if (curStageIdx === -1 || curStageIdx === undefined) return null
+    return vacancy.stages?.[curStageIdx - 1] ?? null
   }, [vacancy, response])
 
   const renderMessageText = (message: Response['messages'][0]) => {
@@ -90,8 +101,14 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                         role === Role.Candidate
                           ? 'Ваш ответ'
                           : 'Ответ кандидата',
-                      [ResponseMessageType.RecruiterRequest]: `Приглашение на ${curStage?.title}`,
-                      [ResponseMessageType.NextStageRequest]: `Приглашение на ${curStage?.title}`,
+                      [ResponseMessageType.RecruiterRequest]: `Приглашение на ${
+                        vacancy.stages?.find((i) => i._id === message.stage_id)
+                          ?.title
+                      }`,
+                      [ResponseMessageType.NextStageRequest]: `Приглашение на ${
+                        vacancy.stages?.find((i) => i._id === message.stage_id)
+                          ?.title
+                      }`,
                       [ResponseMessageType.Result]:
                         response.status === ResponseStatus.Rejected
                           ? 'Отказ'
@@ -156,14 +173,22 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
             <div className={styles.block}>
               <p className={styles.blockTitle}>Ваши действия</p>
               <div className={classNames(styles.blockContent, styles.controls)}>
-                {response.status === ResponseStatus.WaitingForCandidate && (
-                  <Button
-                    type="text"
-                    onClick={() => setIsSetupInterviewModalShowed(true)}
-                  >
-                    Выбрать время для интервью
-                  </Button>
-                )}
+                {response.status === ResponseStatus.WaitingForCandidate &&
+                  (prevStage?.auto_interview ? (
+                    <Button
+                      type="text"
+                      onClick={() => setIsSetupInterviewModalShowed(true)}
+                    >
+                      Выбрать время для интервью
+                    </Button>
+                  ) : (
+                    <Button
+                      type="text"
+                      onClick={() => setIsAcceptInvitationModalShowed(true)}
+                    >
+                      Принять
+                    </Button>
+                  ))}
                 <Button
                   className={styles.controlsRejectBtn}
                   type="text"
@@ -209,6 +234,12 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
           vacancy={response.vacancy}
         />
       )}
+
+      <AcceptInvitationModal
+        isShowed={isAcceptInvitationModalShowed}
+        setIsShowed={setIsAcceptInvitationModalShowed}
+        response={response}
+      />
     </>
   )
 }
