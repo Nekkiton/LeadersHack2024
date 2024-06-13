@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter
 
 from app.utils import get_now
@@ -82,7 +83,7 @@ async def create_response(
 @router.get(
     "/by-vacancy",
     name="Получить отклик по вакансии",
-    response_model=ResponseGet
+    response_model=Optional[ResponseGet]
     )
 async def get_response(
     candidate_id: RequiredCandidateID,
@@ -94,7 +95,7 @@ async def get_response(
 @router.get(
     "/{response_id}",
     name="Получить отклик",
-    response_model=ResponseGet
+    response_model=Optional[ResponseGet]
 )
 async def get_response_by_id(
     candidate_id: RequiredCandidateID,
