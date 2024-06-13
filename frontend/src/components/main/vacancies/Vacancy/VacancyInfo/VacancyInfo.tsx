@@ -162,7 +162,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
                     <p className={styles.mainDescriptionCardBlockTitle}>
                       Задачи
                     </p>
-                    <p>{vacancy.responsabilities}</p>
+                    <p>{vacancy.responsibilities}</p>
                   </div>
                   <div
                     className={classNames(

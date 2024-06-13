@@ -22,7 +22,7 @@ export const VacancyStatuses: Record<
 export interface Vacancy extends BaseEntity {
   title: string
   description: string | null
-  responsabilities: string
+  responsibilities: string
   candidate_expectation: string
   additions: string | null
   conditions: string | null
@@ -71,7 +71,7 @@ export interface CreateVacancyData {
   title: string
   scope: WorkScope
   description: string | null
-  responsabilities: string
+  responsibilities: string
   candidate_expectation: string
   additions: string | null
   conditions: string | null

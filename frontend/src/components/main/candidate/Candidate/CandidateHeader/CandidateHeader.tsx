@@ -28,7 +28,7 @@ export default function CandidateHeader({ candidate }: Props) {
           <div className={styles.userInfo}>
             <h1>{getUserName(candidate, 'Name Surname')}</h1>
             <div className={styles.userInfoData}>
-              <p>{candidate.job_title}</p>
+              <p>{candidate.desired_position}</p>
               {candidate.birthday && (
                 <p>
                   {getUserAge(candidate.birthday)}, {candidate.city}

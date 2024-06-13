@@ -70,7 +70,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
         <div className={styles.block}>
           <h6>{getUserName(candidate, 'Name Surname')}</h6>
           <div className={styles.blockContent}>
-            <p className={styles.light}>{candidate.job_title}</p>
+            <p className={styles.light}>{candidate.desired_position}</p>
             {candidate.birthday && (
               <p className={styles.light}>
                 {getUserAge(candidate.birthday)}, {candidate.city}
@@ -91,7 +91,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
           <div className={styles.blockContent}>
             <p className={styles.light}>Последнее место работы</p>
             <p>
-              {lastWork.job_title}, {lastWork.company}
+              {lastWork.position}, {lastWork.company}
             </p>
             <p>{lastWorkDuration}</p>
           </div>

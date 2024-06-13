@@ -69,7 +69,7 @@ export default function VacancyFormInfo() {
       />
       <Controller
         control={control}
-        name="responsabilities"
+        name="responsibilities"
         rules={{ required: true }}
         render={({ field, fieldState }) => (
           <Textarea

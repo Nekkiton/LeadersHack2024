@@ -20,15 +20,15 @@ export interface FormData {
   telegram: string
   email: string
   skills: Skill[]
-  job_title: string
+  desired_position: string
   work_schedule: WorkSchedule
   work_type: WorkType
   work_experience: WorkExperience
   salary_expectation: number
   work_history: {
     company: string
-    job_title: string
-    responsabilites: string
+    position: string
+    responsibilities: string
     start_date: Moment
     end_date: Moment | null
   }[]

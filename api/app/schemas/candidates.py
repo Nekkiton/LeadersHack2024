@@ -9,10 +9,10 @@ from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, Wor
 
 class WorkHistoryItem(BaseModel):
     company: str
-    job_title: str
+    position: str
     start_date: datetime
     end_date: Optional[datetime] = None
-    responsabilites: str
+    responsibilities: str
 
 
 class CandidatePost(BaseModel):
@@ -27,7 +27,7 @@ class CandidatePost(BaseModel):
     telegram: str
     birthday: datetime
     city: str
-    job_title: str
+    desired_position: str
     education: Educations
     work_schedule: WorkSchedules
     work_type: WorkTypes
@@ -65,7 +65,7 @@ class CandidatePartial(BaseModel):
     telegram: Optional[str] = None
     birthday: Optional[datetime] = None
     city: Optional[str] = None
-    job_title: Optional[str] = None
+    desired_position: Optional[str] = None
     education: Optional[Educations] = None
     work_schedule: Optional[WorkSchedules] = None
     work_type: Optional[WorkTypes] = None
