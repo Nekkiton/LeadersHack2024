@@ -5,11 +5,10 @@ import {
   VacancyStatus,
   VacancyStatuses,
 } from '@/types/entities/vacancy'
-import { getUserName } from '@/lib/get-user-name'
 import { Site } from '@/config/site'
 import { getVacancySalary } from '@/lib/get-vacancy-salary'
 import { useCurCandidateVacancyResponse } from '@/api/candidates'
-import { useToasts } from '@/lib/use-toasts'
+import { Routes } from '@/config/routes'
 import classNames from 'classnames'
 import moment from 'moment'
 import Button from '@/components/ui/Button'
@@ -20,7 +19,6 @@ import RadialProgressBar from '@/components/ui/RadialProgressBar'
 import RespondToVacancyModal from '@/components/base/vacancies/RespondToVacancyModal'
 import VacancyInfoCandidateResponse from './VacancyInfoCandidateResponse'
 import styles from './VacancyInfo.module.scss'
-import { Routes } from '@/config/routes'
 
 interface Props {
   vacancy: Vacancy
@@ -28,8 +26,6 @@ interface Props {
 }
 
 export default function VacancyInfo({ vacancy, role }: Props) {
-  const toasts = useToasts()
-
   const [isDescriptionShowed, setIsDescriptionShowed] = useState(
     role === Role.Recruiter ? false : true
   )
@@ -58,15 +54,17 @@ export default function VacancyInfo({ vacancy, role }: Props) {
               <>
                 <Button
                   type="text"
-                  onClick={() =>
-                    toasts.info({ content: 'Функционал в разработке' })
-                  }
+                  href={{
+                    pathname: Routes.recruiterNewVacancy,
+                    query: { copyId: vacancy._id },
+                  }}
                 >
                   <Icon icon="copy" />
                   <span>Создать копию</span>
                 </Button>
                 {vacancy.status === VacancyStatus.Active && (
                   <Button
+                    className={styles.transparentBtn}
                     type="secondary"
                     href={Routes.recruiterEditVacancy(vacancy._id)}
                   >

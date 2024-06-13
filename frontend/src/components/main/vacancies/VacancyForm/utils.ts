@@ -1,3 +1,4 @@
+import { Site } from '@/config/site'
 import { CreateVacancyData, Vacancy } from '@/types/entities/vacancy'
 import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
@@ -43,5 +44,6 @@ export const getInitialData = (vacancy?: Vacancy): Partial<FormData> => {
     stages:
       vacancy?.stages?.map((i, idx) => ({ ...i, _isRequired: idx === 0 })) ??
       [],
+    conditions: vacancy ? vacancy.conditions : Site.defaultVacancyConditions,
   }
 }

@@ -283,14 +283,10 @@ export const Api = {
 
   candidates: {
     all: (params?: GetCandidatesParams) =>
-      Axios.get<Paginated<Candidate[]>>('/candidates/', { params })
-        .then((res) => res.data)
-        .catch(
-          () =>
-            ({ items: [candidate], page: 1, total_pages: 2 } as Paginated<
-              Candidate[]
-            >)
-        ),
+      Axios.get<Paginated<Candidate[]>>('/candidates', { params }).then(
+        (res) => res.data
+      ),
+
     one: (pk: string) =>
       Axios.get<Candidate>(`/candidates/${pk}`)
         .then((res) => res.data)

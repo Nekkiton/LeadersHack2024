@@ -3,6 +3,7 @@ import { Vacancy } from '@/types/entities/vacancy'
 import { Role } from '@/types/entities/user'
 import { useCurRecruiterResponses } from '@/api/responses'
 import { Site } from '@/config/site'
+import classNames from 'classnames'
 import RemoteData from '@/components/special/RemoteData'
 import ResponseCard from '@/components/base/responses/ResponseCard'
 import Pagination from '@/components/ui/Pagination'
@@ -49,7 +50,36 @@ export default function VacancyResponses({ vacancy }: Props) {
               loadPage={(val) => setPage(val)}
             />
           </div>
-          <div className={styles.sidebar}>coming soon</div>
+          <div
+            className={classNames(styles.sidebar, {
+              [styles.hidden]: !data.items.length,
+            })}
+          >
+            {/* TODO: data from api */}
+            <div className={styles.sidebarBlock}>
+              <h6>Соответствие вакансии</h6>
+              <div className={styles.sidebarItem}>
+                <span className={styles.sidebarItemMainTitle}>Не важно</span>
+                <span className={styles.sidebarItemValue}>7</span>
+              </div>
+              <div className={styles.sidebarItem}>
+                <span>от 30%</span>
+                <span className={styles.sidebarItemValue}>6</span>
+              </div>
+            </div>
+            <span className={styles.sidebarSeparator} />
+            <div className={styles.sidebarBlock}>
+              <h6>Воронка</h6>
+              <div className={styles.sidebarItem}>
+                <span className={styles.sidebarItemMainTitle}>Все</span>
+                <span className={styles.sidebarItemValue}>7</span>
+              </div>
+              <div className={styles.sidebarItem}>
+                <span>Неразобранные</span>
+                <span className={styles.sidebarItemValue}>4</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     />

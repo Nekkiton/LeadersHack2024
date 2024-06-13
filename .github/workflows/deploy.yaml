@@ -21,6 +21,7 @@ on:
 
 jobs:
   build-and-push:
+    name: Build and push containers to registry
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -60,8 +61,7 @@ jobs:
 
   deploy:
       needs: build-and-push
-      name: deploy backend
-      if: inputs.context == 'api'
+      name: Deploy containers
       runs-on: ubuntu-latest
 
       steps:

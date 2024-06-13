@@ -8,6 +8,7 @@ import {
 } from '@/types/entities/response'
 import moment from 'moment'
 import classNames from 'classnames'
+import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import AppearTransition from '@/components/ui/AppearTransition'
 import KeepRecruitingModal from '@/components/base/candidates/KeepRecruitingModal'
@@ -45,6 +46,22 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
     if (curStageIdx === -1 || curStageIdx === undefined) return null
     return vacancy.stages?.[curStageIdx + 1] ?? null
   }, [vacancy, response])
+
+  const renderMessageText = (message: Response['messages'][0]) => {
+    if (!message.meet_url) {
+      return message.text
+    }
+    const textParts = message.text.split(message.meet_url)
+    return (
+      <>
+        {textParts[0]}
+        <Link href={message.meet_url} target="_blank">
+          {message.meet_url}
+        </Link>
+        {textParts[1]}
+      </>
+    )
+  }
 
   return (
     <>
@@ -97,7 +114,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                             [Role.Recruiter]: 'Рекрутер',
                           }[message.sender_role]}
                     </p>
-                    <p>{message.text}</p>
+                    <p>{renderMessageText(message)}</p>
                     <p className={styles.messageDate}>
                       {moment(`${message.created_at}Z`).format(
                         'DD MMMM YYYY, HH:mm'

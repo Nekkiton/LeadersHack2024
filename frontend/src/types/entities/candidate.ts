@@ -28,10 +28,11 @@ export interface Candidate extends User {
 }
 
 export interface GetCandidatesParams {
-  query?: string
-  work_experiences?: string[]
-  skills?: string[]
   page?: number
+  limit?: number
+  fio?: string
+  experience?: string[]
+  skills?: string[]
 }
 
 export interface UpdateCandidateData {

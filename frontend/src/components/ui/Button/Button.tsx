@@ -1,5 +1,5 @@
 import { HTMLAttributeAnchorTarget, ReactNode } from 'react'
-import { Url } from 'url'
+import { UrlObject } from 'url'
 import classNames from 'classnames'
 import Link from 'next/link'
 import AppearTransition from '@/components/ui/AppearTransition'
@@ -11,7 +11,7 @@ interface Props extends Omit<BaseButtonProps, 'disabled'> {
   className?: string
   type?: 'primary' | 'secondary' | 'text'
   underline?: 'dashed' | 'solid'
-  href?: Url | string
+  href?: UrlObject | string
   target?: HTMLAttributeAnchorTarget
   fullWidth?: boolean
   loading?: boolean

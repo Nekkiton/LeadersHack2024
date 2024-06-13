@@ -16,6 +16,7 @@ import styles from './VacancyForm.module.scss'
 
 interface Props {
   editId?: string
+  copyId?: string
   backLink?: {
     url: string
     text: string
@@ -23,7 +24,7 @@ interface Props {
 }
 
 // TODO: something's defenately wrong with default data
-export default function VacancyForm({ backLink, editId }: Props) {
+export default function VacancyForm({ backLink, editId, copyId }: Props) {
   const router = useRouter()
   const user = useCurUser()
 
@@ -42,8 +43,8 @@ export default function VacancyForm({ backLink, editId }: Props) {
     },
   ]
 
-  const vacancy = useVacancy(editId!, {
-    enabled: !!editId,
+  const vacancy = useVacancy((editId ?? copyId)!, {
+    enabled: !!(editId ?? copyId),
   })
 
   const methods = useForm<FormData>({
@@ -86,7 +87,7 @@ export default function VacancyForm({ backLink, editId }: Props) {
   })
 
   useEffect(() => {
-    if (user.status === 'success' && user.value && !editId) {
+    if (user.status === 'success' && user.value && !editId && !copyId) {
       reset({
         stages: Site.recruitingDefaultStages.map((i) => ({
           ...i,
