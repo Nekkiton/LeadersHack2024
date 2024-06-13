@@ -20,4 +20,20 @@
   position: sticky;
   top: 24px;
   width: 23%;
+
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+.nothing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.nothingIcon {
+  width: 150px;
+  height: 150px;
 }

@@ -51,6 +51,7 @@ export const useRespondToVacancy = createUseMutation(Api.vacancies.respond, {
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
     { queryKey: ['candidates.me.responses'] },
+    { queryKey: ['candidates.me.vacancy-response'] },
   ],
   onSuccess: (_, { toasts }) => {
     toasts.info({ content: 'Отклик отправлен' })

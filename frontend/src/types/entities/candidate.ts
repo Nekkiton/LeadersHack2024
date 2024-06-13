@@ -1,5 +1,4 @@
 import { User, Role } from '@/types/entities/user'
-import { ResponseStage } from '@/types/entities/response-stage'
 import { UpdateWorkHistory, WorkHistory } from '@/types/entities/work-history'
 import { UpdateAttachment } from '@/types/entities/attachment'
 import { City } from '@/types/entities/city'
@@ -19,12 +18,9 @@ export interface Candidate extends User {
   work_type: WorkType
   work_experience: WorkExperience
   skills: Skill[]
-  // work_history: string[] // TODO
-  work_history?: WorkHistory[] // TODO
-  // responces: string[] // TODO
-  responses?: ResponseStage[]
-  vacancy_match?: number
+  work_history: WorkHistory[]
   salary_expectation: number
+  match?: number
 }
 
 export interface GetCandidatesParams {
@@ -33,6 +29,12 @@ export interface GetCandidatesParams {
   fio?: string
   experience?: string[]
   skills?: string[]
+}
+
+export interface GetVacancyCadidatesParams {
+  page?: number
+  limit?: number
+  vacancy_id: string
 }
 
 export interface UpdateCandidateData {
@@ -55,4 +57,10 @@ export interface UpdateCandidateData {
   work_history: UpdateWorkHistory[]
   site_notifications: boolean
   tg_notifications: boolean
+}
+
+export interface InviteCandidateData {
+  candidate_id: string
+  vacancy_id: string
+  message: string
 }

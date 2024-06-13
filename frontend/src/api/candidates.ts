@@ -9,6 +9,11 @@ export const useCandidates = createUseQuery(
 
 export const useCandidate = createUseQuery('candidates.one', Api.candidates.one)
 
+export const useCandidateResponses = createUseQuery(
+  'candidates.responses',
+  Api.candidates.responses
+)
+
 export const useCurCandidateResponses = createUseQuery(
   'candidates.me.responses',
   Api.candidates.me.responses
@@ -63,4 +68,9 @@ export const useCurCandidateAnswerToResponse = createUseMutation(
       }
     },
   }
+)
+
+export const useVacancyCandidates = createUseQuery(
+  'vacancies.candidates',
+  Api.vacancies.candidates
 )

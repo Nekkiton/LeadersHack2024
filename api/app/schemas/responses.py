@@ -28,6 +28,7 @@ class Response(BaseGet):
     inviter: Role
     comment: Optional[str] = None
     messages: List[ResponseMessageItem]
+    created_at: datetime
 
 
 class ResponseMinGet(Response):

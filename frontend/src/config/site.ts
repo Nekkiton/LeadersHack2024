@@ -7,7 +7,7 @@ export const Site = {
     creatingVacancies: '#',
     changingVacancyStatuses: '#',
   },
-  cardsPerPage: 1,
+  cardsPerPage: 20,
   recruitingDefaultRejectTemplate:
     'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',
   recruitingDefaultStages: [

@@ -1,6 +1,7 @@
 import { BaseEntity, BaseEntityPkType } from '@/types/entities/base-entity'
 import { Role } from '@/types/entities/user'
 import { Vacancy } from '@/types/entities/vacancy'
+import { Candidate } from '@/types/entities/candidate'
 
 export enum ResponseStatus {
   WaitingForRecruiter = 'waiting_for_recruiter',
@@ -20,9 +21,11 @@ export enum ResponseMessageType {
 export interface Response extends BaseEntity {
   status: ResponseStatus
   stage_id: string
-  // candidate_id: string // TODO
-  // vacancy_id: string // TODO
+  candidate?: Candidate
   vacancy?: Vacancy
+  match?: number
+  inviter: Role
+  comment: string | null
   messages: {
     created_at: string
     type: ResponseMessageType
@@ -57,4 +60,8 @@ export interface CurCandidateAnswerToResponseData {
 export interface CurRecruiterAnswerToResponseData {
   status: 'approve' | 'reject'
   message: string
+}
+
+export interface CommentResponseData {
+  comment: string
 }

@@ -49,7 +49,7 @@ async def create_response(
 ):
     if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
         raise ONE_RESPONSE_FOR_ONE_VACACNY
-    if not Vacancies.count_documents({"vacancy_id": vacancy_id, "status": "active"}):
+    if not Vacancies.count_documents({"_id": vacancy_id, "status": "active"}):
         raise VACANCY_NOT_ACTIVE
     stage = Stages.find_one({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1})
     if stage is None:
@@ -131,7 +131,7 @@ async def answer_response(
     else:
         if response["status"] != "waiting_for_candidate":
             raise NOT_FOUND
-        auto_interview = Stages.find_one({"_id": response["stage_id"], "status": "active"}, {"auto_intervew": 1})["auto_interview"]
+        auto_interview = Stages.find_one({"_id": response["stage_id"], "status": "active"}, {"auto_interview": 1})["auto_interview"]
         status = "waiting_for_recruiter"
         if auto_interview:
             if payload.meet_on is None or payload.meet_at is None:
@@ -175,5 +175,9 @@ async def get_response_schedule(
     candidate_id: RequiredCandidateID,
     response_id: OID,
 ):
+<<<<<<< HEAD
     # TODO
     return
+=======
+    return
+>>>>>>> 95098c63335c1978e7577edca4f28fa42d888723
