@@ -49,7 +49,6 @@ export default function VacancyInfo({ vacancy, role }: Props) {
             )}
           </div>
           <div className={styles.headerControls}>
-            {/* TODO: actions */}
             {role === Role.Recruiter && (
               <>
                 <Button
@@ -75,7 +74,7 @@ export default function VacancyInfo({ vacancy, role }: Props) {
               </>
             )}
             {candidateResponse.status === 'success' &&
-              !candidateResponse.value.length && (
+              !candidateResponse.value && (
                 <Button
                   type="primary"
                   onClick={() => setIsRespondModalShowed(true)}

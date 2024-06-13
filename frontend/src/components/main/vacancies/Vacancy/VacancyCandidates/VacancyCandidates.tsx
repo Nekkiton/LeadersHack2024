@@ -1,7 +1,12 @@
+import { useState } from 'react'
 import { Vacancy } from '@/types/entities/vacancy'
-import { useCandidates } from '@/api/candidates'
+import { useVacancyCandidates } from '@/api/candidates'
+import { Site } from '@/config/site'
+import classNames from 'classnames'
+import Pagination from '@/components/ui/Pagination'
 import RemoteData from '@/components/special/RemoteData'
 import CandidateCard from '@/components/base/candidates/CandidateCard'
+import Icon from '@/components/ui/Icon'
 import styles from './VacancyCandidates.module.scss'
 
 interface Props {
@@ -9,7 +14,13 @@ interface Props {
 }
 
 export default function VacancyCandidates({ vacancy }: Props) {
-  const candidates = useCandidates()
+  const [page, setPage] = useState(0)
+
+  const candidates = useVacancyCandidates({
+    vacancy_id: vacancy._id,
+    page,
+    limit: Site.cardsPerPage,
+  })
 
   return (
     <RemoteData
@@ -17,12 +28,34 @@ export default function VacancyCandidates({ vacancy }: Props) {
       renderSuccess={(candidates) => (
         <div className={styles.container}>
           <div className={styles.candidates}>
-            {/* TODO: deal with pagination */}
-            {candidates.items.map((candidate) => (
-              <CandidateCard key={candidate._id} candidate={candidate} />
-            ))}
+            {candidates.items.length ? (
+              candidates.items.map((candidate) => (
+                <CandidateCard
+                  key={candidate._id}
+                  candidate={candidate}
+                  type="expandedTop"
+                  vacancy={vacancy}
+                />
+              ))
+            ) : (
+              <div className={styles.nothing}>
+                <Icon className={styles.nothingIcon} icon="documentLoupe" />
+                <p>Подходящих кандидатов в базе нет</p>
+              </div>
+            )}
+            <Pagination
+              page={candidates.page}
+              totalPages={candidates.total_pages}
+              loadPage={(val) => setPage(val)}
+            />
           </div>
-          <div className={styles.sidebar}>coming soong</div>
+          <div
+            className={classNames(styles.sidebar, {
+              [styles.hidden]: !candidates.items.length,
+            })}
+          >
+            coming soong
+          </div>
         </div>
       )}
     />
