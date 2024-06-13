@@ -24,6 +24,8 @@ export interface Response extends BaseEntity {
   candidate?: Candidate
   vacancy?: Vacancy
   match?: number
+  inviter: Role
+  comment: string | null
   messages: {
     created_at: string
     type: ResponseMessageType

@@ -87,6 +87,10 @@
   @include heading-7;
 }
 
+.workTasksTitle {
+  @include paragraph-3;
+}
+
 .workTasks {
   white-space: pre-wrap;
   text-wrap: pretty;
@@ -102,4 +106,34 @@
   position: sticky;
   top: 24px;
   width: 39%;
+}
+
+.sidebarResponse {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &:not(:last-child) {
+    position: relative;
+    margin-bottom: 8px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      bottom: -8px;
+      background: $gray-5;
+    }
+  }
+}
+
+.sidebarResponseDate {
+  @include paragraph-3;
+  color: $gray-3;
+}
+
+.sidebarResponseTitle {
+  @include heading-7;
 }

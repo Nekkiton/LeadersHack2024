@@ -98,10 +98,12 @@ export const Api = {
       }).then((res) => res.data),
 
     one: (pk: string) =>
-      Axios.get<Candidate>(`/candidates/${pk}`).then((res) => res.data),
+      Axios.get<Candidate>(`/recruiter/candidates/${pk}`).then(
+        (res) => res.data
+      ),
 
     responses: (pk: string) =>
-      Axios.get<Response[]>(`/candidates/${pk}/responses`).then(
+      Axios.get<Response[]>(`/recruiter/candidates/${pk}/history`).then(
         (res) => res.data
       ),
 

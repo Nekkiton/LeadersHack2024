@@ -1,14 +1,20 @@
 import { Candidate } from '@/types/entities/candidate'
+import { useCandidateResponses } from '@/api/candidates'
+import { Role } from '@/types/entities/user'
+import { ResponseStatus } from '@/types/entities/response'
+import moment from 'moment'
 import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
+import RemoteData from '@/components/special/RemoteData'
 import styles from './CandidateMain.module.scss'
-import moment from 'moment'
 
 interface Props {
   candidate: Candidate
 }
 
 export default function CandidateMain({ candidate }: Props) {
+  const responses = useCandidateResponses(candidate._id)
+
   return (
     <div className={styles.container}>
       <div className={styles.main}>
@@ -49,30 +55,30 @@ export default function CandidateMain({ candidate }: Props) {
         <div className={styles.cardsRow}>
           <div className={styles.card}>
             <p className={styles.cardTitle}>Образование</p>
-            <p>TODO</p>
+            <p>{candidate.education}</p>
           </div>
           <div className={styles.card}>
             <p className={styles.cardTitle}>График работы</p>
-            <p>TODO</p>
+            <p>{candidate.work_schedule}</p>
           </div>
           <div className={styles.card}>
             <p className={styles.cardTitle}>Формат работы</p>
-            <p>TODO</p>
+            <p>{candidate.work_type}</p>
           </div>
           <div className={styles.card}>
             <p className={styles.cardTitle}>Стаж работы</p>
-            <p>TODO</p>
+            <p>{candidate.work_experience}</p>
           </div>
         </div>
-        {!!candidate.work_history?.length && (
-          <div className={styles.card}>
-            <p className={styles.cardTitle}>Опыт работы</p>
-            {candidate.work_history.map((work, idx) => (
+        <div className={styles.card}>
+          <p className={styles.cardTitle}>Опыт работы</p>
+          {candidate.work_history.length ? (
+            candidate.work_history.map((work, idx) => (
               <div className={styles.work} key={idx}>
                 <p className={styles.workDate}>
-                  {moment(work.start_date).format('MMMM YYYY')} —{' '}
+                  {moment(`${work.start_date}Z`).format('MMMM YYYY')} —{' '}
                   {work.end_date
-                    ? moment(work.end_date).format('MMMM YYYY')
+                    ? moment(`${work.end_date}Z`).format('MMMM YYYY')
                     : 'по н.в.'}
                 </p>
                 <div className={styles.workJobContainer}>
@@ -80,17 +86,68 @@ export default function CandidateMain({ candidate }: Props) {
                   <p>{work.company}</p>
                 </div>
                 <div>
-                  <p>Задачи:</p>
+                  <p className={styles.workTasksTitle}>Задачи:</p>
                   <div className={styles.workTasks}>{work.responsabilites}</div>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <p>Не указан</p>
+          )}
+        </div>
       </div>
+
       <div className={styles.sidebar}>
         <h6>История откликов</h6>
-        coming soon
+        <RemoteData
+          data={responses}
+          renderSuccess={(responses) =>
+            responses.length ? (
+              responses.map((response) => (
+                <div className={styles.sidebarResponse} key={response._id}>
+                  <p className={styles.sidebarResponseDate}>
+                    {moment(`${response.created_at}Z`).format('DD MMMM YYYY')}
+                  </p>
+                  <p className={styles.sidebarResponseTitle}>
+                    {response.inviter === Role.Candidate
+                      ? 'Отклик'
+                      : 'Приглашение'}{' '}
+                    на вакансию «{response.vacancy?.title}»
+                  </p>
+                  {response.status === ResponseStatus.Approved && (
+                    <p>Принят на работу</p>
+                  )}
+                  {response.status === ResponseStatus.Rejected && (
+                    <p>
+                      Отказ на этапе «
+                      {
+                        response.vacancy?.stages?.find(
+                          (i) => i._id === response.stage_id
+                        )?.title
+                      }
+                      »
+                    </p>
+                  )}
+                  {response.status !== ResponseStatus.Approved &&
+                    response.status !== ResponseStatus.Rejected && (
+                      <p>
+                        В процессе на этапе «
+                        {
+                          response.vacancy?.stages?.find(
+                            (i) => i._id === response.stage_id
+                          )?.title
+                        }
+                        »
+                      </p>
+                    )}
+                  {response.comment && <p>Комменатрий: {response.comment}</p>}
+                </div>
+              ))
+            ) : (
+              <p>Откликов не было</p>
+            )
+          }
+        />
       </div>
     </div>
   )
