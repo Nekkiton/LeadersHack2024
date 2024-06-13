@@ -42,13 +42,18 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
 
 USERS_BY_FIO = lambda query, page, limit: [
     {
-        "$project": {
+        "$addFields": {
             "fio": {
                 "$concat": [
                     "$name",
                     " ",
-                    "$patronymic",
-                    " ",
+                    {
+                        "$cond": [
+                            {"$eq": ["$patronymic", None]},
+                            "",
+                          	{"$concat": ["$patronymic", " "]}
+                        ]
+                    },
                     "$surname",
                 ]
             }
