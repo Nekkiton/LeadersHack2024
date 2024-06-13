@@ -1,7 +1,7 @@
 from typing import Optional
 from fastapi import APIRouter
 
-from api.app.exceptions import NOT_FOUND
+from app.exceptions import NOT_FOUND
 from app.schemas import OID
 from app.utils import get_now
 from app.database import DetailedResponses, Responses, Stages
