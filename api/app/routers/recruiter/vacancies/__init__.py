@@ -7,7 +7,7 @@ from app.utils import get_now
 from app.oauth import RequiredRecruiterID
 from app.literals import VacancyStatus, WorkScopes
 from app.exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
-from app.database import DetailedVacancies, Stages, Vacancies
+from app.database import DetailedVacancies, Responses, Stages, Vacancies
 from app.schemas.vacancies import VacanciesGet, VacancyGet, VacancyPost, VacancyUpdate
 
 
@@ -161,4 +161,16 @@ async def update_vacancy_status(
     )
     if not update_result:
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
+    if status == "closed":
+        Responses.update_many(
+            {
+                "vacancy_id": vacancy_id,
+                "status": {"$nin": ["active", "rejected"]}
+            },
+            {
+                "$set": {
+                    "status": "rejected"
+                }
+            }
+        )
     return DetailedVacancies.find_one({"_id": vacancy_id})
