@@ -91,7 +91,6 @@ async def update_vacancy(
     vacancy_dump = {
         **payload.model_dump(exclude="stages"),
         "recruiter_id": user_id,
-        "created_at": now,
         "updated_at": now,
         "status": "active",
     }
