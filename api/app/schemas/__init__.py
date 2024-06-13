@@ -1,4 +1,5 @@
-from typing import Any, List
+from typing import Any, List, Optional
+from datetime import datetime
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_core import core_schema
@@ -57,3 +58,4 @@ class UserGet(BaseGet):
     """
     email: EmailStr
     role: Role
+    password_changed_at: Optional[datetime] = None

@@ -2,6 +2,7 @@ from fastapi import APIRouter, UploadFile
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
+from app.utils import get_now
 from app.database import Users
 from app.schemas import UserGet
 from app.schemas.candidates import CandidateGet, CandidatePost, CandidatePartial
@@ -33,7 +34,12 @@ async def update_self_password(user_id: RequiredUserID, payload: PasswordUpdate)
     user = Users.find_one({"_id": user_id}, {"password": 1})
     if not validate_password(payload.old_password, user["password"]):
         raise BAD_OLD_PASSWORD
-    Users.update_one({"_id": user_id}, {"$set": {"password": hash_password(payload.new_password)}})
+    Users.update_one({"_id": user_id}, {
+        "$set": {
+            "password": hash_password(payload.new_password),
+            "password_changed_at": get_now(),
+        },
+    })
 
 
 @router.put(
