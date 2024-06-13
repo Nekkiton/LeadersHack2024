@@ -3,11 +3,11 @@ from fastapi import APIRouter, Query
 
 from app.schemas import OID
 from app.exceptions import NOT_FOUND
-from app.database import DetailedResponses, Users, Vacancies
 from app.oauth import RequiredRecruiterID
 from app.literals import Skills, WorkExperiences
 from app.schemas.responses import ResponseMinGet
-from app.schemas.candidates import CandidateGet, CandidatesGet, CandidatesMatchGet
+from app.database import DetailedResponses, Users, Vacancies
+from app.schemas.candidates import CandidatesGet, CandidatesMatchGet
 
 from .aggregations import USERS_BY_FIO, USERS_MATCH_BY_VACANCY
 
