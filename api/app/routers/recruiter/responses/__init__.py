@@ -51,7 +51,6 @@ async def creare_response_from_recruiter(
         raise ONE_RESPONSE_FOR_ONE_VACACNY
     if not Vacancies.count_documents({"_id": vacancy_id, "recruiter_id": recruiter_id}):
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
-    # TODO: Проверка принадлежности vacancy_id recruiter_id
     stage = list(Stages.find({"vacancy_id": vacancy_id}, sort={"position": 1}))[1]
     stage_id = stage.get("_id")
     insert_data = {
