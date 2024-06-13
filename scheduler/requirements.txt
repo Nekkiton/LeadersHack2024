@@ -2,3 +2,4 @@ beautifulsoup4==4.12.3
 requests==2.32.3
 scheduler==0.8.5
 envclass==1.1.0
+pymongo==4.7.3
