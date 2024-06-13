@@ -49,7 +49,7 @@ async def create_response(
 ):
     if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
         raise ONE_RESPONSE_FOR_ONE_VACACNY
-    if not Vacancies.count_documents({"vacancy_id": vacancy_id, "status": "active"}):
+    if not Vacancies.count_documents({"_id": vacancy_id, "status": "active"}):
         raise VACANCY_NOT_ACTIVE
     stage = Stages.find_one({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1})
     if stage is None:
