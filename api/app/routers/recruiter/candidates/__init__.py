@@ -26,7 +26,7 @@ async def get_candidates_via_filters(
     limit: int = 25
 ):
     query = {
-        {"fio": {"$regex": fio, "$options": "i"}}
+        "fio": {"$regex": fio, "$options": "i"}
     }
     if experience is not None:
         query["experience"] = {"$in": experience}
