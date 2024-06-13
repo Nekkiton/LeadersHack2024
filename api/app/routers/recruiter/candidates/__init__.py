@@ -30,7 +30,7 @@ async def get_candidates_via_filters(
         "role": "candidate"
     }
     if experience is not None:
-        query["experience"] = {"$in": experience}
+        query["work_experience"] = {"$in": experience}
     if skills is not None:
         query["skills"] = {"$in": skills}
     result = list(Users.aggregate(USERS_BY_FIO(query, page, limit)))
