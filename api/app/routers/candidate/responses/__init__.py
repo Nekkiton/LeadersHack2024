@@ -6,7 +6,7 @@ from app.schemas import OID
 from app.literals import Role
 from app.oauth import RequiredCandidateID
 from app.database import DetailedResponses, Responses, Stages
-from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet
+from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 
 router = APIRouter(prefix="/responses")
 
@@ -73,6 +73,30 @@ async def create_response(
     }
 
 
+@router.get(
+    "/by-vacancy",
+    name="Получить отклик по вакансии",
+    response_model=ResponseGet
+    )
+async def get_response(
+    candidate_id: RequiredCandidateID,
+    vacancy_id: OID,
+):
+    return DetailedResponses.find_one({"vacancy_id": vacancy_id, "candidate_id": candidate_id})
+
+
+@router.get(
+    "/{response_id}",
+    name="Получить отклик",
+    response_model=ResponseGet
+)
+async def get_response_by_id(
+    candidate_id: RequiredCandidateID,
+    response_id: OID
+):
+    return DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id})
+
+
 @router.post(
     "/{response_id}",
     name="Ответить на отклик",
@@ -83,7 +107,7 @@ async def answer_response(
     response_id: OID,
     payload: CandidateResponseAnswer
 ):
-    # todo Проверка, находится ли возвращаемое время во временных слотах рекрутера
+    # TODO Проверка, находится ли возвращаемое время во временных слотах рекрутера
     now = get_now()
     response = Responses.find_one({"_id": response_id, "candidate_id": candidate_id})
     if response is None:
