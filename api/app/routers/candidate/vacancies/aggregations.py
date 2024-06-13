@@ -45,3 +45,21 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         }
     }
 ]
+
+SEARCH_BY_ID = lambda vacancy_id, candidate: [
+    {
+        "$match": {
+            "vacancy_id": vacancy_id
+        },
+    },
+    get_match_field_stage(
+        "$skills",
+        "$work_experience", 
+        "$work_type", 
+        "$work_schedule",
+        candidate["skills"],
+        candidate["work_experience"],
+        candidate["work_type"],
+        candidate["work_schedule"],
+    ),
+]

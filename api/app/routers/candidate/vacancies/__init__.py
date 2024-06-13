@@ -1,12 +1,14 @@
 from typing import List, Optional
 from fastapi import APIRouter, Query
 
+from app.schemas import OID
+from app.exceptions import NOT_FOUND
 from app.oauth import RequiredCandidateID
 from app.literals import Skills, WorkScopes
 from app.database import DetailedVacancies, Users
-from app.schemas.vacancies import VacanciesCandidateGet
+from app.schemas.vacancies import VacanciesCandidateGet, VacancyCandidateGet
 
-from .aggregations import SEARCH_BY_CANDIDATE
+from .aggregations import SEARCH_BY_CANDIDATE, SEARCH_BY_ID
 
 router = APIRouter(prefix="/vacancies")
 
@@ -43,4 +45,20 @@ async def get_vacancies(
             "page": 0,
             "items": []
         }
+    return vacancies[0]
+
+
+@router.get(
+    "/{vacancy_id}",
+    name="Получить вакансию по _id вне зависимости от match",
+    response_model=VacancyCandidateGet
+)
+async def get_vacancy_by_id(
+    candidate_id: RequiredCandidateID,
+    vacancy_id: OID,
+):
+    candidate = Users.find_one({"_id": candidate_id})
+    vacancies = DetailedVacancies.aggregate(SEARCH_BY_ID(vacancy_id, candidate))
+    if not len(vacancies):
+        raise NOT_FOUND
     return vacancies[0]
