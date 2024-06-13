@@ -26,16 +26,16 @@ export default function CandidateProfileFromFile() {
     const reader = new FileReader()
     reader.onload = () => {
       setIsModalShowed(true)
-      updateProfile(
-        {
-          file: reader.result as string,
-        },
-        {
-          onSettled: () => {
-            setIsModalShowed(false)
-          },
-        }
-      )
+      // updateProfile(
+      //   {
+      //     file: reader.result as string,
+      //   },
+      //   {
+      //     onSettled: () => {
+      //       setIsModalShowed(false)
+      //     },
+      //   }
+      // )
     }
     reader.readAsDataURL(file)
   }
