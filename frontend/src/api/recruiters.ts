@@ -48,3 +48,13 @@ export const useCurRecruiterInviteCandidate = createUseMutation(
     },
   }
 )
+
+export const useCurRecruiterCommentResponse = createUseMutation(
+  Api.recruiters.me.commentResponse,
+  {
+    invalidateQueriesFn: () => [{ queryKey: ['candidates.responses'] }],
+    onSuccess: (_, { toasts }) => {
+      toasts.info({ content: 'Комментарий сохранен' })
+    },
+  }
+)

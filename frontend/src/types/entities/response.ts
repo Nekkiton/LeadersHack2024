@@ -61,3 +61,7 @@ export interface CurRecruiterAnswerToResponseData {
   status: 'approve' | 'reject'
   message: string
 }
+
+export interface CommentResponseData {
+  comment: string
+}

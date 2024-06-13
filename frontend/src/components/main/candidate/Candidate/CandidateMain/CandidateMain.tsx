@@ -140,7 +140,11 @@ export default function CandidateMain({ candidate }: Props) {
                         »
                       </p>
                     )}
-                  {response.comment && <p>Комменатрий: {response.comment}</p>}
+                  {response.comment && (
+                    <div className={styles.sidebarResponseComment}>
+                      Комменатрий: {response.comment}
+                    </div>
+                  )}
                 </div>
               ))
             ) : (

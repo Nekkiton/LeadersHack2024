@@ -137,3 +137,8 @@
 .sidebarResponseTitle {
   @include heading-7;
 }
+
+.sidebarResponseComment {
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}

@@ -14,6 +14,7 @@ import CandidateCardInfo from '@/components/base/candidates/CandidateCardInfo'
 import VacancyCardInfo from '@/components/base/vacancies/VacancyCardInfo'
 import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
+import ResponseCardComment from './ResponseCardComment'
 import styles from './ResponseCard.module.scss'
 
 interface Props {
@@ -105,7 +106,8 @@ export default function ResponseCard({
       {activeKey === 'funnel' && (
         <ResponseCardFunnel response={response} vacancy={vacancy} role={role} />
       )}
-      {activeKey !== 'funnel' && 'coming soon'}
+      {activeKey === 'responsesHistory' && 'coming soon'}
+      {activeKey === 'comments' && <ResponseCardComment response={response} />}
     </div>
   )
 }

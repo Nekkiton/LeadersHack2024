@@ -34,6 +34,7 @@ import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
 import { TempNews } from './_news-temp'
 import {
+  CommentResponseData,
   CurCandidateAnswerToResponseData,
   CurRecruiterAnswerToResponseData,
   GetCandidateResponsesParams,
@@ -88,6 +89,16 @@ export const Api = {
         ...data
       }: CurRecruiterAnswerToResponseData & { pk: string }) =>
         Axios.post(`/recruiter/responses/${pk}`, data),
+
+      commentResponse: ({
+        pk,
+        ...data
+      }: CommentResponseData & { pk: string }) =>
+        Axios.post(
+          `/recruiter/responses/${pk}/commentary`,
+          {},
+          { params: data }
+        ),
     },
   },
 
