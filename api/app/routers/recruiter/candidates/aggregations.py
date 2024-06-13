@@ -12,9 +12,6 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
         "$work_schedule",
     ),
     {
-        "$match": {"match": {"$gt": 50}}
-    },
-    {
         "$sort": {"match": -1}
     },
     {
