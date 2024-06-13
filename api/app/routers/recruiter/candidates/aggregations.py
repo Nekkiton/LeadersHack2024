@@ -1,6 +1,11 @@
 from app.aggregations import get_match_field_stage
 
 USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
+    {
+        "$match": {
+            "role": "candidate"
+        }
+    },
     get_match_field_stage(
         vacancy["skills"],
         vacancy["work_experience"],

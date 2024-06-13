@@ -6,7 +6,7 @@ from app.exceptions import NOT_FOUND
 from app.database import Users, Vacancies
 from app.oauth import RequiredRecruiterID
 from app.literals import Skills, WorkExperiences
-from app.schemas.candidates import CandidatesGet, CandidatesMatchGet
+from app.schemas.candidates import CandidateGet, CandidatesGet, CandidatesMatchGet
 
 from .aggregations import USERS_BY_FIO, USERS_MATCH_BY_VACANCY
 
@@ -26,7 +26,8 @@ async def get_candidates_via_filters(
     limit: int = 25
 ):
     query = {
-        "fio": {"$regex": fio, "$options": "i"}
+        "fio": {"$regex": fio, "$options": "i"},
+        "role": "candidate"
     }
     if experience is not None:
         query["experience"] = {"$in": experience}
@@ -39,7 +40,7 @@ async def get_candidates_via_filters(
             "page": 0,
             "items": []
         }
-    return result
+    return result[0]
 
 
 @router.get(
@@ -63,4 +64,29 @@ async def get_candidates_via_vacancy(
             "page": 0,
             "items": []
         }
-    return result
+    return result[0]
+
+
+@router.get(
+    "/{candidate_id}",
+    name="Получить кандидата (с комментарием)",
+    response_model=CandidateGet
+)
+async def get_candidate(
+    recruiter_id: RequiredRecruiterID,
+    candidate_id: OID,
+):
+    return
+
+
+@router.get(
+    "/{candidate_id}",
+    name="Создать комментарий для кандидата",
+    response_model=CandidateGet
+)
+async def get_candidate(
+    recruiter_id: RequiredRecruiterID,
+    candidate_id: OID,
+    comment: str
+):
+    return
