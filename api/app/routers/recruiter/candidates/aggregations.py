@@ -53,8 +53,13 @@ USERS_BY_FIO = lambda query, page, limit: [
                     "$surname",
                     " "
                     "$name",
-                    " ", 
-                    "$patronymic"
+                    {
+                        "$cond": [
+                            {"$eq": ["$patronymic", None]},
+                            "",
+                          	{"$concat": [" ", "$patronymic"]}
+                        ]
+                    },
                 ]
             }
         }
