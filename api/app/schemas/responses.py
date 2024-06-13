@@ -30,6 +30,11 @@ class Response(BaseModel):
     messages: List[ResponseMessageItem]
 
 
+class ResponseMinGet(Response):
+    vacancy: VacancyGet
+    match: int
+
+
 class ResponseGet(Response):
     vacancy: VacancyGet
     candidate: CandidateGet

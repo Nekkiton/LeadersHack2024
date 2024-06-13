@@ -3,9 +3,10 @@ from fastapi import APIRouter, Query
 
 from app.schemas import OID
 from app.exceptions import NOT_FOUND
-from app.database import Users, Vacancies
+from app.database import DetailedResponses, Users, Vacancies
 from app.oauth import RequiredRecruiterID
 from app.literals import Skills, WorkExperiences
+from app.schemas.responses import ResponseMinGet
 from app.schemas.candidates import CandidateGet, CandidatesGet, CandidatesMatchGet
 
 from .aggregations import USERS_BY_FIO, USERS_MATCH_BY_VACANCY
@@ -90,3 +91,14 @@ async def get_candidate(
     comment: str
 ):
     return
+
+
+@router.get(
+    "/{candidate_id}/history",
+    name="История откликов кандидата",
+    response_model=List[ResponseMinGet]
+)
+async def get_candidate_history(
+    candidate_id: OID,
+):
+    return list(DetailedResponses.find({"candidate_id": candidate_id}))
