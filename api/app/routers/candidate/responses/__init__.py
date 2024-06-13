@@ -1,10 +1,11 @@
 from fastapi import APIRouter
 
-from app.exceptions import NOT_FOUND
 from app.utils import get_now
 from app.schemas import OID
 from app.literals import Role
+from app.exceptions import NOT_FOUND
 from app.oauth import RequiredCandidateID
+from .exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
 from app.database import DetailedResponses, Responses, Stages
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 
@@ -45,7 +46,8 @@ async def create_response(
     vacancy_id: OID,
     message: str
 ):
-    # todo Проверка один отклик от кандидата на вакансию
+    if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
+        raise ONE_RESPONSE_FOR_ONE_VACACNY
     stage = Stages.find_one({"vacancy_id": vacancy_id}, sort={"position": 1})
     if stage is None:
         raise NOT_FOUND
