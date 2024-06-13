@@ -30,14 +30,3 @@ class RecruiterGet(RecruiterPost, UserGet):
     Возвращаемые данные для рекрутера
     """
     pass
-
-
-class RecruiterPartial(BaseModel):
-    email: Optional[str] = None
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    patronymic: Optional[str] = None
-    phone: Optional[PhoneNumber] = None
-    telegram: Optional[str] = None
-    interview_per_day: Optional[int] = None
-    interview_slots: Optional[List[InterviewSlotItem]] = None

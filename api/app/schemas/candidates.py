@@ -54,3 +54,22 @@ class CandidateMatch(CandidateGet):
 
 class CandidatesMatchGet(Pagination):
     items: List[CandidateMatch]
+
+
+class CandidatePartial(BaseModel):
+    email: Optional[str] = None
+    name: Optional[str] = None
+    surname: Optional[str] = None
+    patronymic: Optional[str] = None
+    phone: Optional[PhoneNumber] = None
+    telegram: Optional[str] = None
+    birthday: Optional[datetime] = None
+    city: Optional[str] = None
+    job_title: Optional[str] = None
+    education: Optional[Educations] = None
+    work_schedule: Optional[WorkSchedules] = None
+    work_type: Optional[WorkTypes] = None
+    work_experience: Optional[WorkExperiences] = None
+    work_history: Optional[List[WorkHistoryItem]] = None
+    salary_expectation: Optional[float] = None
+    skills: Optional[List[Skills]] = None
