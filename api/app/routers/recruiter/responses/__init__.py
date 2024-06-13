@@ -51,7 +51,7 @@ async def creare_response_from_recruiter(
     stage = list(Stages.find({"vacancy_id": vacancy_id}, sort={"position": 1}))[1]
     stage_id = stage.get("_id")
     insert_data = {
-        "status": "waiting_for_recruiter",
+        "status": "waiting_for_candidate",
         "vacancy_id": vacancy_id,
         "candidate_id": candidate_id,
         "stage_id": stage_id,
