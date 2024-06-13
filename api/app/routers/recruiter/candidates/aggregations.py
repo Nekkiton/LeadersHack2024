@@ -51,7 +51,7 @@ USERS_BY_FIO = lambda query, page, limit: [
             "fio": {
                 "$concat": [
                     "$surname",
-                    " "
+                    " ",
                     "$name",
                     {
                         "$cond": [
