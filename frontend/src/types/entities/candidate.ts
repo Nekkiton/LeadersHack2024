@@ -1,5 +1,4 @@
 import { User, Role } from '@/types/entities/user'
-import { ResponseStage } from '@/types/entities/response-stage'
 import { UpdateWorkHistory, WorkHistory } from '@/types/entities/work-history'
 import { UpdateAttachment } from '@/types/entities/attachment'
 import { City } from '@/types/entities/city'
@@ -20,7 +19,6 @@ export interface Candidate extends User {
   work_experience: WorkExperience
   skills: Skill[]
   work_history: WorkHistory[]
-  responses?: ResponseStage[]
   salary_expectation: number
   match?: number
 }

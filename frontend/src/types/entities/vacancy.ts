@@ -1,6 +1,4 @@
 import { BaseEntity } from '@/types/entities/base-entity'
-import { Recruiter } from '@/types/entities/recruiter'
-import { ResponseStage } from '@/types/entities/response-stage'
 import { Stage, UpdateStage } from '@/types/entities/stage'
 import { WorkScope } from '@/types/entities/work-scope'
 import { Skill } from '@/types/entities/skill'
