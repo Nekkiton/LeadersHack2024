@@ -50,16 +50,16 @@ USERS_BY_FIO = lambda query, page, limit: [
         "$addFields": {
             "fio": {
                 "$concat": [
+                    "$surname",
+                    " "
                     "$name",
-                    " ",
                     {
                         "$cond": [
                             {"$eq": ["$patronymic", None]},
                             "",
-                          	{"$concat": ["$patronymic", " "]}
+                          	{"$concat": [" ", "$patronymic"]}
                         ]
                     },
-                    "$surname",
                 ]
             }
         }
