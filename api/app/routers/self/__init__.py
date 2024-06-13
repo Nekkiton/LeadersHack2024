@@ -3,22 +3,22 @@ from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.database import Users
-from app.oauth import RequiredCandidateID, RequiredUserID, RequiredRecruiterID
+from app.schemas import UserGet
+from app.schemas.candidates import CandidateGet, CandidatePost
+from app.schemas.recruiters import RecruiterGet, RecruiterPost
 from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED
 from app.utils import get_now, hash_password, validate_password
-from app.schemas import CandidateResponse, CandidatePost, UserResponse, \
-                        RecruiterResponse, RecruiterPost
+from app.oauth import RequiredCandidateID, RequiredUserID, RequiredRecruiterID
 
 from .schemas import PasswordUpdate
 
-router = APIRouter(tags=["Пользователь"], prefix="/user")
-
+router = APIRouter(tags=["Пользователь"], prefix="/self")
 
 
 @router.get(
     "/",
     name="Получить себя",
-    response_model=CandidateResponse | RecruiterResponse | UserResponse
+    response_model=CandidateGet | RecruiterGet | UserGet
 )
 async def get_self(user_id: RequiredUserID):
     return Users.find_one({"_id": user_id})
@@ -40,7 +40,7 @@ async def update_self_password(user_id: RequiredUserID, payload: PasswordUpdate)
     "/candidate",
     name="Заполнить соискателя",
     description="В случае, если пользователь уже заполнен, обновляет данные",
-    response_model=CandidateResponse
+    response_model=CandidateGet
     )
 async def fill_as_candidate(
     user_id: RequiredCandidateID,
@@ -69,7 +69,7 @@ async def fill_as_candidate(
     "/recruiter",
     name="Заполнить рекрутера",
     description="В случае, если пользователь уже заполнен, обновляет данные",
-    response_model=RecruiterResponse,
+    response_model=RecruiterGet,
     )
 async def fill_as_recruiter(
     user_id: RequiredRecruiterID,

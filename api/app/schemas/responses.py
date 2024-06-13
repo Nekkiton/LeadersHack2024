@@ -2,9 +2,10 @@ from datetime import datetime
 from typing import List, Literal, Optional, Self
 from pydantic import BaseModel, Field, model_validator
 
-from app.schemas import OID, Pagination
-from app.routers.vacancies.schemas import VacancyGet
 from app.literals import ResponseMessageType, ResponseStatus, Role
+
+from . import OID, Pagination
+from .vacancies import VacancyGet
 
 
 class ResponseMessageItem(BaseModel):

@@ -4,12 +4,12 @@ from datetime import datetime
 from fastapi.encoders import ENCODERS_BY_TYPE
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers.auth.router import router as Authentication
-from app.routers.user.router import router as User
-from app.routers.common.router import router as Common
-from app.routers.vacancies.router import router as Vacancies
-from app.routers.responses.router import router as Responses
-from app.routers.candidates.router import router as Candidates
+from app.routers.auth import router as Auth
+from app.routers.self import router as Self
+from app.routers.public import router as Public
+from app.routers.candidate import router as Candidate
+from app.routers.recruiter import router as Recruiter
+
 from app.settings import Settings
 
 ENCODERS_BY_TYPE[ObjectId] = lambda x: str(x)
@@ -29,9 +29,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(Authentication)
-app.include_router(User)
-app.include_router(Vacancies)
-app.include_router(Responses)
-app.include_router(Common)
-app.include_router(Candidates)
+app.include_router(Auth)
+app.include_router(Self)
+app.include_router(Public)
+app.include_router(Candidate)
+app.include_router(Recruiter)

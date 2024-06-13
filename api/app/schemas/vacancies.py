@@ -1,8 +1,8 @@
-from typing import Any, List, Optional
+from typing import List, Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
 
-from app.schemas import OID, Pagination
+from app.schemas import OID, BaseGet, Pagination
 from app.literals import Skills, VacancyStatus, WorkScopes, WorkTypes, WorkSchedules, WorkExperiences
 
 
@@ -14,8 +14,8 @@ class StageItem(BaseModel):
     position: int
 
 
-class StageItemGet(StageItem):
-    id: OID = Field(alias="_id")
+class StageItemGet(StageItem, BaseGet):
+    pass
 
 
 class StageItemUpdate(StageItem):
@@ -43,8 +43,7 @@ class VacancyUpdate(VacancyPost):
     stages: List[StageItemUpdate]
 
 
-class VacancyGet(VacancyUpdate):
-    id: OID = Field(alias="_id")
+class VacancyGet(VacancyUpdate, BaseGet):
     status: VacancyStatus
     responses: int
     stages: List[StageItemGet]

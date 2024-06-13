@@ -3,18 +3,18 @@ from fastapi import APIRouter, Query
 
 from app.schemas import OID
 from app.exceptions import NOT_FOUND
-from app.oauth import RequiredRecruiterID
 from app.database import Users, Vacancies
+from app.oauth import RequiredRecruiterID
 from app.literals import Skills, WorkExperiences
-from app.routers.candidates.schemas import CandidatesGet, CandidatesMatchGet
-from app.routers.candidates.aggregations import USERS_BY_FIO, USERS_MATCH_BY_VACANCY
+from app.schemas.candidates import CandidatesGet, CandidatesMatchGet
 
-router = APIRouter(tags=["Кандидаты для рекутера"], prefix="/candidates")
+from .aggregations import USERS_BY_FIO, USERS_MATCH_BY_VACANCY
 
+router = APIRouter(prefix="/candidates")
 
 @router.get(
     "/",
-    name="Получить всех кандидатов для рекрутера",
+    name="Получить всех соискателей",
     response_model=CandidatesGet
     )
 async def get_candidates_via_filters(

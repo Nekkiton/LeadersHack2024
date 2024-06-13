@@ -9,7 +9,8 @@ from app.utils import get_now
 from app.database import Users
 from app.exceptions import EMAIL_ALREADY_USED
 from app.utils import validate_password, hash_password
-from app.schemas import CandidateResponse, UserResponse
+from app.schemas import UserGet
+from app.schemas.candidates import CandidateGet
 from app.oauth import create_access_token, create_tokens, require_refresh, delete_tokens
 
 from .exceptions import INCORRECT_EMAIL_OR_PASSWORD, INVALID_TOKEN
@@ -22,7 +23,7 @@ router = APIRouter(tags=["Аутентификация"])
     "/login",
     name="Вход",
     description="Возвращает рекрутера или соискателя в зависимости от роли",
-    response_model=CandidateResponse | UserResponse
+    response_model=CandidateGet | UserGet
     )
 async def login(payload: LoginRequest, response: Response):
     user = Users.find_one({"email": payload.email})
@@ -36,7 +37,7 @@ async def login(payload: LoginRequest, response: Response):
     "/registration",
     name="Регистрация",
     description="После регистрации пользователь автоматически входит в аккаунт",
-    response_model=UserResponse
+    response_model=UserGet
     )
 async def registration(payload: RegisterRequest,  response: Response):
     payload.password = hash_password(payload.password)
@@ -87,7 +88,7 @@ async def forgot_password(payload: ForgotPasswordRequest):
     "/reset-password",
     name="Восстановить пароль",
     description="После восстановления пароля пользователь автоматически входит в аккаунт",
-    response_model=CandidateResponse | UserResponse
+    response_model=CandidateGet | UserGet
     )
 async def reset_password(
     payload: ResetPasswordRequest, 
