@@ -55,3 +55,13 @@ REQUIRED_PARAMS_MISSING = lambda params: HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail=f"Необходимые параметры отсутствуют: {", ".join(params)}"
     )
+
+VACANCY_NOT_ACTIVE = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="Вакансия не активна"
+    )
+
+RESPONSE_NOT_ACTIVE_OR_NOT_FOUND = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="Открытый отклик по запросу не найден"
+    )

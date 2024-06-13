@@ -6,7 +6,7 @@ from app.utils import get_now
 from app.oauth import RequiredRecruiterID
 from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import RecruiterResponseAnswer, Response, ResponsesGet
-from app.exceptions import NOT_FOUND, ONE_RESPONSE_FOR_ONE_VACACNY, VACANCY_DOESNT_BELONG_TO_RECRUIT
+from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_DOESNT_BELONG_TO_RECRUIT
 
 router = APIRouter(prefix="/responses")
 
@@ -49,7 +49,7 @@ async def create_response(
 ):
     if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
         raise ONE_RESPONSE_FOR_ONE_VACACNY
-    if not Vacancies.count_documents({"_id": vacancy_id, "recruiter_id": recruiter_id}):
+    if not Vacancies.count_documents({"_id": vacancy_id, "recruiter_id": recruiter_id, "status": "active"}):
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
     stage = list(Stages.find({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1}))[1]
     stage_id = stage.get("_id")
@@ -89,9 +89,9 @@ async def answer_response(
     payload: RecruiterResponseAnswer,
 ):
     now = get_now()
-    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id})
+    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id, "status": {"$nin": ["approved", "rejected"]}})
     if response is None:
-        raise NOT_FOUND
+        raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
     if payload.status == "reject":
         stage_id = response["stage_id"]
         status = 'rejected'
@@ -147,9 +147,9 @@ async def leave_response_comment(
     response_id: OID,
     comment: str
 ):
-    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id})
-    if not response:
-        raise VACANCY_DOESNT_BELONG_TO_RECRUIT
+    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id, "status": {"$nin": ["approved", "rejected"]}})
+    if response is None:
+        raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
     Responses.update_one(
         {
             "response_id": response_id,

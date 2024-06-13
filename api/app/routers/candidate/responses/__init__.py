@@ -3,10 +3,10 @@ from fastapi import APIRouter
 from app.utils import get_now
 from app.schemas import OID
 from app.literals import Role
-from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING
+from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, VACANCY_NOT_ACTIVE
 from app.oauth import RequiredCandidateID
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
-from app.database import DetailedResponses, Responses, Stages
+from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 
 router = APIRouter(prefix="/responses")
@@ -48,6 +48,8 @@ async def create_response(
 ):
     if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
         raise ONE_RESPONSE_FOR_ONE_VACACNY
+    if not Vacancies.count_documents({"vacancy_id": vacancy_id, "status": "active"}):
+        raise VACANCY_NOT_ACTIVE
     stage = Stages.find_one({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1})
     if stage is None:
         raise NOT_FOUND
