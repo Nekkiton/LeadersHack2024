@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.utils import get_now
 from app.schemas import OID
 from app.literals import Role
-from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, VACANCY_NOT_ACTIVE
+from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
 from app.oauth import RequiredCandidateID
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
 from app.database import DetailedResponses, Responses, Stages, Vacancies
@@ -115,9 +115,9 @@ async def answer_response(
 ):
     # TODO Проверка, находится ли возвращаемое время во временных слотах рекрутера
     now = get_now()
-    response = Responses.find_one({"_id": response_id, "candidate_id": candidate_id})
+    response = DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": {"$nin": ["approved", "rejected"]}})
     if response is None:
-        raise NOT_FOUND
+        raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
     if payload.status == "reject":
         status = 'rejected'
         message = {
