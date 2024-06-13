@@ -32,7 +32,14 @@ async def get_candidates_via_filters(
         query["experience"] = {"$in": experience}
     if skills is not None:
         query["skills"] = {"$in": skills}
-    return list(Users.aggregate(USERS_BY_FIO(query, page, limit)))
+    result = list(Users.aggregate(USERS_BY_FIO(query, page, limit)))
+    if not len(result):
+        return {
+            "total_pages": 0,
+            "page": 0,
+            "items": []
+        }
+    return result
 
 
 @router.get(
@@ -49,4 +56,11 @@ async def get_candidates_via_vacancy(
     vacancy = Vacancies.find_one({"_id": vacancy_id, "recruiter_id": recruiter_id})
     if vacancy is None:
         raise NOT_FOUND
-    return list(Users.aggregate(USERS_MATCH_BY_VACANCY(vacancy, page, limit)))
+    result = list(Users.aggregate(USERS_MATCH_BY_VACANCY(vacancy, page, limit)))
+    if not len(result):
+        return {
+            "total_pages": 0,
+            "page": 0,
+            "items": []
+        }
+    return result
