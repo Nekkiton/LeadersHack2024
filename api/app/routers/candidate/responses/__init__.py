@@ -1,5 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter
+from datetime import timedelta
 
 from app.utils import get_now
 from app.schemas import OID
@@ -131,16 +132,19 @@ async def answer_response(
     else:
         if response["status"] != "waiting_for_candidate":
             raise NOT_FOUND
-        auto_interview = Stages.find_one({"_id": response["stage_id"], "status": "active"}, {"auto_interview": 1})["auto_interview"]
+        # TODO: we should check auto_interview in prev response
+        # auto_interview = Stages.find_one({"_id": response["stage_id"], "status": "active"}, {"auto_interview": 1})["auto_interview"]
         status = "waiting_for_recruiter"
-        if auto_interview:
+        # if auto_interview:
+        if payload.meet_on and payload.meet_at:
             if payload.meet_on is None or payload.meet_at is None:
                 raise REQUIRED_PARAMS_MISSING(["meet_on", "meet_at"])
             url = "https://www.google.com"
             message = {
                 "type": "candidate_answer",
                 "sender_role": "candidate",
-                "text": f"Интервью назначено на {payload.meet_at.strftime("%d.%m %H:%M")}. Ссылка на интервью: {url}",
+                # TODO: deal with timezone
+                "text": f"Интервью назначено на {(payload.meet_at + timedelta(hours=3)).strftime("%d.%m %H:%M")}. Ссылка на интервью: {url}",
                 "created_at": now,
                 "stage_id": response["stage_id"],
                 "meet_on": payload.meet_on,
@@ -175,9 +179,5 @@ async def get_response_schedule(
     candidate_id: RequiredCandidateID,
     response_id: OID,
 ):
-<<<<<<< HEAD
     # TODO
     return
-=======
-    return
->>>>>>> 95098c63335c1978e7577edca4f28fa42d888723
