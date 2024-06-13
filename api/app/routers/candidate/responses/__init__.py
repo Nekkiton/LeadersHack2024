@@ -162,3 +162,14 @@ async def answer_response(
         },
         return_document=True
     )
+
+
+@router.get(
+    "/{response_id}/schedule",
+    name="Расписание по отклику",
+    )
+async def get_response_schedule(
+    candidate_id: RequiredCandidateID,
+    response_id: OID,
+):
+    return
