@@ -39,7 +39,9 @@ export default function CandidateProfile() {
         <CandidateProfileBaseInfo />
         <CandidateProfileWorks />
         <CandidateProfileNotifications />
-        <CandidateProfilePassword />
+        {user.status === 'success' && user.value && (
+          <CandidateProfilePassword user={user.value} />
+        )}
         <Button type="primary" htmlType="submit" loading={status === 'pending'}>
           Сохранить изменения
         </Button>

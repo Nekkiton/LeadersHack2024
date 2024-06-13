@@ -10,6 +10,7 @@ export interface BaseUser {
   email: string
   role: Role
   name: undefined
+  password_changed_at: string | null
 }
 
 export interface User extends BaseEntity {
@@ -22,4 +23,5 @@ export interface User extends BaseEntity {
   photo?: Attachment | null
   role: Role
   notifications: string[] // TODO
+  password_changed_at: string | null
 }

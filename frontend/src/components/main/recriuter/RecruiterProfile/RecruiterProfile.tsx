@@ -36,7 +36,9 @@ export default function RecruiterProfile() {
         <RecruiterProfileBaseInfo />
         <RecruiterProfileNotifications />
         <RecruiterProfileCalendar />
-        <RecruiterProfilePassword />
+        {user.status === 'success' && user.value && (
+          <RecruiterProfilePassword user={user.value} />
+        )}
         <Button type="primary" htmlType="submit" loading={status === 'pending'}>
           Сохранить изменения
         </Button>
