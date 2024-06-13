@@ -71,8 +71,10 @@ export default function CandidateCard({
                 >
                   Открыть резюме
                 </Button>
-                {/* TODO: actions */}
-                <Button type="text" onClick={() => alert('coming soon')}>
+                <Button
+                  type="text"
+                  onClick={() => setIsInviteModalShowed(true)}
+                >
                   Пригласить на вакансию
                 </Button>
               </div>
@@ -81,14 +83,12 @@ export default function CandidateCard({
         )}
       </div>
 
-      {vacancy && (
-        <InviteCandidateModal
-          isShowed={isInviteModalShowed}
-          setIsShowed={setIsInviteModalShowed}
-          vacancy={vacancy}
-          candidate={candidate}
-        />
-      )}
+      <InviteCandidateModal
+        isShowed={isInviteModalShowed}
+        setIsShowed={setIsInviteModalShowed}
+        vacancy={vacancy}
+        candidate={candidate}
+      />
     </>
   )
 }
