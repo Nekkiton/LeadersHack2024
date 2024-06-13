@@ -6,10 +6,9 @@ from app.schemas import OID
 from app.utils import get_now
 from app.oauth import RequiredRecruiterID
 from app.literals import VacancyStatus, WorkScopes
+from app.exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
 from app.database import DetailedVacancies, Stages, Vacancies
 from app.schemas.vacancies import VacanciesGet, VacancyGet, VacancyPost, VacancyUpdate
-
-from .exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
 
 
 router = APIRouter(prefix="/vacancies")

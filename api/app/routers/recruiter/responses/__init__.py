@@ -1,12 +1,12 @@
 from typing import Optional
 from fastapi import APIRouter
 
-from app.exceptions import NOT_FOUND
 from app.schemas import OID
 from app.utils import get_now
-from app.database import DetailedResponses, Responses, Stages
 from app.oauth import RequiredRecruiterID
+from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import RecruiterResponseAnswer, Response, ResponsesGet
+from app.exceptions import NOT_FOUND, ONE_RESPONSE_FOR_ONE_VACACNY, VACANCY_DOESNT_BELONG_TO_RECRUIT
 
 router = APIRouter(prefix="/responses")
 
@@ -47,6 +47,10 @@ async def creare_response_from_recruiter(
     vacancy_id: OID,
     message: str
 ):
+    if Responses.count_documents({"vacancy_id": vacancy_id, "candidate_id": candidate_id}):
+        raise ONE_RESPONSE_FOR_ONE_VACACNY
+    if not Vacancies.count_documents({"_id": vacancy_id, "recruiter_id": recruiter_id}):
+        raise VACANCY_DOESNT_BELONG_TO_RECRUIT
     # TODO: Проверка принадлежности vacancy_id recruiter_id
     stage = list(Stages.find({"vacancy_id": vacancy_id}, sort={"position": 1}))[1]
     stage_id = stage.get("_id")

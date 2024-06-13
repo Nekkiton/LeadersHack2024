@@ -5,7 +5,7 @@ from app.schemas import OID
 from app.literals import Role
 from app.exceptions import NOT_FOUND
 from app.oauth import RequiredCandidateID
-from .exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
+from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
 from app.database import DetailedResponses, Responses, Stages
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 
