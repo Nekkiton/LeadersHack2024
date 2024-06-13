@@ -46,9 +46,7 @@ class CandidateResponseAnswer(BaseModel):
 
     @model_validator(mode="after")
     def check_fields_by_status(self) -> Self:
-        if self.status == "approve" and (self.meet_at is None or self.meet_on is None):
-            raise ValueError("Если статус approve, необходимы meet_at и meet_on")
-        elif self.status == "reject" and self.message is None:
+        if self.status == "reject" and self.message is None:
             raise ValueError("Если статус reject, необходим message")
         return self
 

@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.utils import get_now
 from app.schemas import OID
 from app.literals import Role
-from app.exceptions import NOT_FOUND
+from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING
 from app.oauth import RequiredCandidateID
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
 from app.database import DetailedResponses, Responses, Stages
@@ -126,18 +126,30 @@ async def answer_response(
     else:
         if response["status"] != "waiting_for_candidate":
             raise NOT_FOUND
-        url = "https://www.google.com"
+        auto_interview = Stages.find_one({"_id": response["stage_id"]}, {"auto_intervew": 1})["auto_interview"]
         status = "waiting_for_recruiter"
-        message = {
-            "type": "candidate_answer",
-            "sender_role": "candidate",
-            "text": f"Интервью назначено на {payload.meet_at.strftime("%d.%m %H:%M")}. Ссылка на интервью: {url}",
-            "created_at": now,
-            "stage_id": response["stage_id"],
-            "meet_on": payload.meet_on,
-            "meet_url": url,
-            "meet_at": payload.meet_at,
-        }
+        if auto_interview:
+            if payload.meet_on is None or payload.meet_at is None:
+                raise REQUIRED_PARAMS_MISSING(["meet_on", "meet_at"])
+            url = "https://www.google.com"
+            message = {
+                "type": "candidate_answer",
+                "sender_role": "candidate",
+                "text": f"Интервью назначено на {payload.meet_at.strftime("%d.%m %H:%M")}. Ссылка на интервью: {url}",
+                "created_at": now,
+                "stage_id": response["stage_id"],
+                "meet_on": payload.meet_on,
+                "meet_url": url,
+                "meet_at": payload.meet_at,
+            }
+        else:
+            message = {
+                "type": "candidate_answer",
+                "sender_role": "candidate",
+                "text": f"Приглашение принято",
+                "created_at": now,
+                "stage_id": response["stage_id"],
+            }
     return Responses.find_one_and_update(
         {
             "_id": response_id
