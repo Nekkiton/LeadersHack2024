@@ -66,7 +66,9 @@ async def create_response(
                 "created_at": get_now(),
                 "stage_id": stage_id
             }
-        ]
+        ],
+        "created_at": get_now(),
+        "updated_at": get_now()
     }
     result = Responses.insert_one(insert_data)
     return {
@@ -155,7 +157,7 @@ async def answer_response(
             "_id": response_id
         },
         {
-            "$set": {"status": status},
+            "$set": {"status": status, "updated_at": get_now()},
             "$push": {"messages": message}
         },
         return_document=True
