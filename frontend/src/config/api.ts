@@ -87,7 +87,7 @@ export const Api = {
         pk,
         ...data
       }: CurRecruiterAnswerToResponseData & { pk: string }) =>
-        Axios.post(`/responses/recruiter/${pk}`, data),
+        Axios.post(`/recruiter/responses/${pk}`, data),
     },
   },
 

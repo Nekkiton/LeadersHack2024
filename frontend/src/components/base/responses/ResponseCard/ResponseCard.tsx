@@ -1,7 +1,12 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Routes } from '@/config/routes'
 import { Vacancy } from '@/types/entities/vacancy'
 import { Role } from '@/types/entities/user'
+import {
+  Response,
+  ResponseMessageType,
+  ResponseStatus,
+} from '@/types/entities/response'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import RadialProgressBar from '@/components/ui/RadialProgressBar'
@@ -10,7 +15,6 @@ import VacancyCardInfo from '@/components/base/vacancies/VacancyCardInfo'
 import TabsLine from '@/components/ui/TabsLine'
 import ResponseCardFunnel from './ResponseCardFunnel'
 import styles from './ResponseCard.module.scss'
-import { Response } from '@/types/entities/response'
 
 interface Props {
   className?: string
@@ -29,11 +33,28 @@ export default function ResponseCard({
     'funnel' | 'responsesHistory' | 'comments'
   >('funnel')
 
+  const stageTitle = useMemo(() => {
+    if (response.status === ResponseStatus.Approved) {
+      return 'Принят'
+    } else if (response.status === ResponseStatus.Rejected) {
+      return 'Отказ'
+    } else if (
+      response.messages[response.messages.length - 1].type ===
+      ResponseMessageType.CandidateRequest
+    ) {
+      return 'Неразобранный'
+    }
+    const stage = vacancy.stages?.find(
+      (i) => i._id === response.messages[response.messages.length - 1].stage_id
+    )
+    return stage?.title ?? 'В процессе'
+  }, [response, vacancy])
+
   return (
     <div className={classNames(className, styles.container)}>
       <div className={styles.header}>
         <div className={styles.headerInfo}>
-          <span className={styles.headerTag}>TODO</span>
+          <span className={styles.headerTag}>{stageTitle}</span>
           {response.match !== undefined && (
             <div className={styles.headerMathPercent}>
               <RadialProgressBar value={response.match} />
