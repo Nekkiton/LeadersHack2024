@@ -9,7 +9,7 @@ export interface FormData {
   title: string
   scope: WorkScope
   description: string | null
-  responsabilities: string
+  responsibilities: string
   candidate_expectation: string
   additions: string | null
   conditions: string | null

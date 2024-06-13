@@ -82,12 +82,12 @@ export default function CandidateMain({ candidate }: Props) {
                     : 'по н.в.'}
                 </p>
                 <div className={styles.workJobContainer}>
-                  <p className={styles.workJobName}>{work.job_title},</p>
+                  <p className={styles.workJobName}>{work.position},</p>
                   <p>{work.company}</p>
                 </div>
                 <div>
                   <p className={styles.workTasksTitle}>Задачи:</p>
-                  <div className={styles.workTasks}>{work.responsabilites}</div>
+                  <div className={styles.workTasks}>{work.responsibilities}</div>
                 </div>
               </div>
             ))

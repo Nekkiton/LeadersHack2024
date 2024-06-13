@@ -26,7 +26,7 @@ class VacancyPost(BaseModel):
     title: str
     scope: WorkScopes
     description: Optional[str] = None
-    responsabilities: str
+    responsibilities: str
     candidate_expectation: str
     additions: Optional[str] = None
     conditions: Optional[str] = None

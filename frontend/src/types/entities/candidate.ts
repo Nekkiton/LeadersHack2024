@@ -12,7 +12,7 @@ export interface Candidate extends User {
   role: Role.Candidate
   city: City
   birthday: string
-  job_title: string
+  desired_position: string
   education: Education
   work_schedule: WorkSchedule
   work_type: WorkType
@@ -49,7 +49,7 @@ export interface UpdateCandidateData {
   telegram: string
   email: string
   skills: Skill[]
-  job_title: string
+  desired_position: string
   work_schedule: WorkSchedule
   work_type: WorkType
   work_experience: WorkExperience

@@ -31,8 +31,8 @@ export default function CandidateProfileWorks() {
           onClick={() =>
             addWork({
               company: '',
-              job_title: '',
-              responsabilites: '',
+              position: '',
+              responsibilities: '',
               start_date: undefined as any,
               end_date: null,
             })
@@ -89,7 +89,7 @@ export default function CandidateProfileWorks() {
           <div className={styles.workFieldsRow}>
             <Controller
               control={control}
-              name={`work_history.${idx}.job_title`}
+              name={`work_history.${idx}.position`}
               rules={{ required: true }}
               render={({ field, fieldState }) => (
                 <Textarea
@@ -116,7 +116,7 @@ export default function CandidateProfileWorks() {
           </div>
           <Controller
             control={control}
-            name={`work_history.${idx}.responsabilites`}
+            name={`work_history.${idx}.responsibilities`}
             rules={{ required: true }}
             render={({ field, fieldState }) => (
               <Textarea

@@ -202,7 +202,7 @@ export default function RecruiterProfileBaseInfo() {
           />
           <Controller
             control={control}
-            name="job_title"
+            name="desired_position"
             rules={{ required: true }}
             render={({ field, fieldState }) => (
               <Input
