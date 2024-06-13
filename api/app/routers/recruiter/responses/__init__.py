@@ -147,7 +147,7 @@ async def leave_response_comment(
     response_id: OID,
     comment: str
 ):
-    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id}})
+    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id})
     if response is None:
         raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
     Responses.update_one(
