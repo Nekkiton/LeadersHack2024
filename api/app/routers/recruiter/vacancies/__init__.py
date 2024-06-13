@@ -152,7 +152,8 @@ async def update_vacancy_status(
         },
         {
             "$set": { 
-                "status": status
+                "status": status,
+                "updated_at": get_now()
             }
         }
     )
