@@ -47,8 +47,6 @@ export const Api = {
     login: (data: LoginData) =>
       Axios.post<User | BaseUser>('/login', data).then((res) => res.data),
 
-    refresh: () => Axios.post('/refresh'),
-
     register: (data: RegisterData) => Axios.post('/registration', data),
 
     logout: () => Axios.post('/logout'),

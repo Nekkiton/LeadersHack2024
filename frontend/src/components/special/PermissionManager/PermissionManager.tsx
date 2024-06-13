@@ -4,7 +4,6 @@ import { useCurUser } from '@/api/users'
 import { Role } from '@/types/entities/user'
 import { Routes } from '@/config/routes'
 import { useToasts } from '@/lib/use-toasts'
-import { useRefreshAuth } from '@/api/auth'
 import Spinner from '@/components/ui/Spinner'
 import styles from './PermissionManager.module.scss'
 
@@ -18,14 +17,6 @@ export default function PermissionManager({ permission, children }: Props) {
   const toasts = useToasts()
 
   const user = useCurUser({ enabled: !!permission })
-
-  const { mutate: refreshAuth } = useRefreshAuth({ handleError: false })
-
-  useEffect(() => {
-    setInterval(() => {
-      refreshAuth(0)
-    }, 1000 * 60 * 13)
-  }, [])
 
   useEffect(() => {
     if (
