@@ -37,13 +37,19 @@ export default function ResponseCard({
       <div className={styles.header}>
         <div className={styles.headerInfo}>
           <span className={styles.headerTag}>TODO</span>
-          <div className={styles.headerMathPercent}>
-            <RadialProgressBar value={55} />
-            {role === Role.Recruiter && <span>55% соответствия</span>}
-            {role === Role.Candidate && <span>Подходит на 55%</span>}
-          </div>
+          {response.match !== undefined && (
+            <div className={styles.headerMathPercent}>
+              <RadialProgressBar value={response.match} />
+              {role === Role.Recruiter && (
+                <span>{response.match}% соответствия</span>
+              )}
+              {role === Role.Candidate && (
+                <span>Подходит на {response.match}%</span>
+              )}
+            </div>
+          )}
         </div>
-        {/* {role === Role.Recruiter && response.candidate && (
+        {role === Role.Recruiter && response.candidate && (
           <Button
             type="secondary"
             href={Routes.recruiterCandidate(response.candidate._id)}
@@ -51,7 +57,7 @@ export default function ResponseCard({
           >
             Открыть резюме
           </Button>
-        )} */}
+        )}
         {role === Role.Candidate && (
           <Button
             type="secondary"
@@ -62,9 +68,9 @@ export default function ResponseCard({
           </Button>
         )}
       </div>
-      {/* {role === Role.Recruiter && response.candidate && (
+      {role === Role.Recruiter && response.candidate && (
         <CandidateCardInfo candidate={response.candidate} />
-      )} */}
+      )}
       {role === Role.Candidate && <VacancyCardInfo vacancy={vacancy} />}
       <span className={styles.separator} />
       {role === Role.Recruiter && (

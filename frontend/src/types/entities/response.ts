@@ -23,6 +23,7 @@ export interface Response extends BaseEntity {
   stage_id: string
   candidate?: Candidate
   vacancy?: Vacancy
+  match?: number
   messages: {
     created_at: string
     type: ResponseMessageType
