@@ -46,3 +46,10 @@ export const useLogout = createUseMutation(Api.auth.logout, {
     router.push(Routes.home)
   },
 })
+
+export const useChangePassword = createUseMutation(Api.auth.changePassword, {
+  invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Пароль изменен' })
+  },
+})

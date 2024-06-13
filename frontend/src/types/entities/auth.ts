@@ -15,3 +15,8 @@ export interface ForgotPasswordData {
 export interface ResetPasswordData {
   password: string
 }
+
+export interface ChangePasswordData {
+  old_password: string
+  new_password: string
+}
