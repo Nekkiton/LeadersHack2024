@@ -16,7 +16,7 @@ router = APIRouter(prefix="/responses")
     name="Получить отклики на мои вакансии",
     response_model=ResponsesGet
 )
-async def get_recruiter_responses(
+async def get_responses(
     recruiter_id: RequiredRecruiterID,
     page: int = 0,
     limit: int = 25,
@@ -41,7 +41,7 @@ async def get_recruiter_responses(
     name="Создать отклик",
     response_model=Response,
     )
-async def creare_response_from_recruiter(
+async def create_response(
     recruiter_id: RequiredRecruiterID,
     candidate_id: OID,
     vacancy_id: OID,
@@ -81,7 +81,7 @@ async def creare_response_from_recruiter(
     name="Ответить на отклик",
     response_model=Response
 )
-async def asnwer_recruiter_response(
+async def answer_response(
     recruiter_id: RequiredRecruiterID,
     response_id: OID,
     payload: RecruiterResponseAnswer,
@@ -133,3 +133,34 @@ async def asnwer_recruiter_response(
         },
         return_document=True
     )
+
+
+@router.post(
+    "/{response_id}/commentary",
+    name="Оставить комментарий по отклику",
+    response_model=Response
+)
+async def leave_response_comment(
+    recruiter_id: RequiredRecruiterID,
+    response_id: OID,
+    comment: str
+):
+    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id})
+    if not response:
+        raise VACANCY_DOESNT_BELONG_TO_RECRUIT
+    Responses.update_one(
+        {
+            "response_id": response_id,
+        },
+        {
+            "$set": {
+                "comment": comment,
+                "updated_at": get_now()
+            }
+        }
+    )
+    return {
+        **response,
+        "comment": comment,
+        "updated_at": get_now()
+    } 

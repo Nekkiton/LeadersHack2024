@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, model_validator
 from app.schemas.candidates import CandidateGet
 from app.literals import ResponseMessageType, ResponseStatus, Role
 
-from . import OID, Pagination
+from . import OID, BaseGet, Pagination
 from .vacancies import VacancyGet
 
 
@@ -20,13 +20,13 @@ class ResponseMessageItem(BaseModel):
     meet_url: Optional[str] = None
 
 
-class Response(BaseModel):
-    id: OID = Field(alias="_id")
+class Response(BaseModel, BaseGet):
     status: ResponseStatus
     vacancy_id: OID
     candidate_id: OID
     stage_id: OID
     inviter: Role
+    comment: Optional[str] = None
     messages: List[ResponseMessageItem]
 
 
