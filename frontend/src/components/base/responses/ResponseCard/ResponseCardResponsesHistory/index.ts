@@ -1,0 +1,3 @@
+import ResponseCardResponsesHistory from './ResponseCardResponsesHistory'
+
+export default ResponseCardResponsesHistory

@@ -1,0 +1,63 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.response {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  &:not(:last-child) {
+    position: relative;
+    margin-bottom: 8px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      bottom: -8px;
+      background: $gray-5;
+    }
+  }
+}
+
+.responseDate {
+  @include paragraph-3;
+
+  flex-shrink: 0;
+  width: 13%;
+  color: $gray-3;
+}
+
+.responseTitle {
+  flex-grow: 1;
+}
+
+.responseSeparator {
+  flex-shrink: 0;
+  margin-top: 19px;
+  width: 9%;
+  border-bottom: 1px dashed $gray-4;
+}
+
+.responseResult {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 4px;
+  width: 42%;
+}
+
+.responseComment {
+  @include paragraph-3;
+
+  color: $gray-3;
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
