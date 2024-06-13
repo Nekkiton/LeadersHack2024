@@ -165,11 +165,19 @@ async def update_vacancy_status(
         Responses.update_many(
             {
                 "vacancy_id": vacancy_id,
-                "status": {"$nin": ["active", "rejected"]}
+                "status": {"$nin": ["approved", "rejected"]}
             },
             {
                 "$set": {
                     "status": "rejected"
+                },
+                "$push": {
+                    "messages": {
+                        "sender_role": "recruiter",
+                        "type": "result",
+                        "text": "Вакансия закрылась",
+                        "timestamp": get_now()
+                    }
                 }
             }
         )
