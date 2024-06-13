@@ -1,11 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, UploadFile
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.database import Users
 from app.schemas import UserGet
 from app.schemas.candidates import CandidateGet, CandidatePost
-from app.schemas.recruiters import RecruiterGet, RecruiterPost
+from app.schemas.recruiters import RecruiterGet, RecruiterPost, RecruiterPartial
 from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED
 from app.utils import get_now, hash_password, validate_password
 from app.oauth import RequiredCandidateID, RequiredUserID, RequiredRecruiterID
@@ -92,3 +92,16 @@ async def fill_as_recruiter(
     except DuplicateKeyError:
         raise EMAIL_ALREADY_USED
     return user
+
+
+@router.post(
+    "/recruiter/via-file",
+    name="Получить данные рекрутера из файла",
+    response_model=RecruiterPartial | None
+)
+async def analyse_recruiter_file(
+    user_id: RequiredRecruiterID,
+    file: UploadFile
+):
+    print(file.filename)
+    return None
