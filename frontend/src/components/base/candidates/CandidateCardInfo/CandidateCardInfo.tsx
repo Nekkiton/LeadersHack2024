@@ -1,7 +1,9 @@
+import { useMemo } from 'react'
 import { Candidate } from '@/types/entities/candidate'
 import { getUserName } from '@/lib/get-user-name'
 import { getUserAge } from '@/lib/get-user-age'
 import classNames from 'classnames'
+import moment from 'moment'
 import Link from 'next/link'
 import Image from '@/components/ui/Image'
 import Icon from '@/components/ui/Icon'
@@ -14,6 +16,48 @@ interface Props {
 }
 
 export default function CandidateCardInfo({ className, candidate }: Props) {
+  const workExperience = useMemo(() => {
+    if (!candidate.work_history.length) return 'не указан'
+    const duration = moment.duration(
+      candidate.work_history.reduce(
+        (prev, cur) =>
+          prev +
+          moment(cur.end_date ? `${cur.end_date}Z` : undefined).diff(
+            moment(`${cur.start_date}Z`),
+            'months'
+          ),
+        0
+      ),
+      'months'
+    )
+    if (!duration.months()) {
+      return 'меньше месяца'
+    } else {
+      return duration.humanize()
+    }
+  }, [candidate])
+
+  const lastWork = useMemo(
+    () => candidate.work_history[candidate.work_history.length - 1] ?? null,
+    [candidate]
+  )
+
+  const lastWorkDuration = useMemo(() => {
+    if (!lastWork) return
+    const duration = moment.duration(
+      moment(lastWork.end_date ? `${lastWork.end_date}Z` : undefined).diff(
+        moment(`${lastWork.start_date}Z`),
+        'months'
+      ),
+      'months'
+    )
+    if (!duration.months()) {
+      return 'меньше месяца'
+    } else {
+      return duration.humanize()
+    }
+  }, [lastWork])
+
   return (
     <div className={classNames(styles.container, className)}>
       <div className={styles.userImgContainer}>
@@ -32,20 +76,26 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
                 {getUserAge(candidate.birthday)}, {candidate.city}
               </p>
             )}
-            <p className={styles.light}>TODO</p>
+            <p className={styles.light}>
+              З/п от {candidate.salary_expectation} ₽
+            </p>
           </div>
         </div>
       </div>
       <div className={styles.block}>
         <div className={styles.blockTitleContainer}>
           <h6>Опыт работы</h6>
-          <span>2 ujlf 1 vesx</span>
+          <span>{workExperience}</span>
         </div>
-        <div className={styles.blockContent}>
-          <p className={styles.light}>Последнее место работы</p>
-          <p>TODO</p>
-          <p>TODO</p>
-        </div>
+        {lastWork && (
+          <div className={styles.blockContent}>
+            <p className={styles.light}>Последнее место работы</p>
+            <p>
+              {lastWork.job_title}, {lastWork.company}
+            </p>
+            <p>{lastWorkDuration}</p>
+          </div>
+        )}
       </div>
       <div className={styles.block}>
         <h6>Контакты</h6>

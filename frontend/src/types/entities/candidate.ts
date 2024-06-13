@@ -19,7 +19,7 @@ export interface Candidate extends User {
   work_type: WorkType
   work_experience: WorkExperience
   skills: Skill[]
-  work_history?: WorkHistory[]
+  work_history: WorkHistory[]
   responses?: ResponseStage[]
   salary_expectation: number
   match?: number

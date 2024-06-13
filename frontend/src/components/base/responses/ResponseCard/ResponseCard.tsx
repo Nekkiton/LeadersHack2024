@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ResponseStage } from '@/types/entities/response-stage'
 import { Routes } from '@/config/routes'
 import { Vacancy } from '@/types/entities/vacancy'
 import { Role } from '@/types/entities/user'
@@ -16,7 +15,6 @@ import { Response } from '@/types/entities/response'
 interface Props {
   className?: string
   response: Response
-  // responseStages?: ResponseStage[]
   vacancy: Vacancy
   role: Role
 }
@@ -24,7 +22,6 @@ interface Props {
 export default function ResponseCard({
   className,
   response,
-  // responseStages,
   vacancy,
   role,
 }: Props) {
