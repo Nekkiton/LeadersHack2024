@@ -69,31 +69,6 @@ async def get_candidates_via_vacancy(
 
 
 @router.get(
-    "/{candidate_id}",
-    name="Получить кандидата (с комментарием)",
-    response_model=CandidateGet
-)
-async def get_candidate(
-    recruiter_id: RequiredRecruiterID,
-    candidate_id: OID,
-):
-    return
-
-
-@router.get(
-    "/{candidate_id}",
-    name="Создать комментарий для кандидата",
-    response_model=CandidateGet
-)
-async def get_candidate(
-    recruiter_id: RequiredRecruiterID,
-    candidate_id: OID,
-    comment: str
-):
-    return
-
-
-@router.get(
     "/{candidate_id}/history",
     name="История откликов кандидата",
     response_model=List[ResponseMinGet]
