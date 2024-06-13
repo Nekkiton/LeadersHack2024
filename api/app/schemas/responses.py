@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Literal, Optional, Self
 from pydantic import BaseModel, Field, model_validator
 
+from app.schemas.candidates import CandidateGet
 from app.literals import ResponseMessageType, ResponseStatus, Role
 
 from . import OID, Pagination
@@ -31,6 +32,7 @@ class Response(BaseModel):
 
 class ResponseGet(Response):
     vacancy: VacancyGet
+    candidate: CandidateGet
     match: int
 
 
