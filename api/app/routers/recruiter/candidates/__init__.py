@@ -7,7 +7,7 @@ from app.oauth import RequiredRecruiterID
 from app.literals import Skills, WorkExperiences
 from app.schemas.responses import ResponseMinGet
 from app.database import DetailedResponses, Users, Vacancies
-from app.schemas.candidates import CandidatesGet, CandidatesMatchGet
+from app.schemas.candidates import CandidatesGet, CandidatesMatchGet, CandidateGet
 
 from .aggregations import USERS_BY_FIO, USERS_MATCH_BY_VACANCY
 
@@ -66,6 +66,18 @@ async def get_candidates_via_vacancy(
             "items": []
         }
     return result[0]
+
+
+@router.get(
+    "/{candidate_id}",
+    name="Получить кандидата",
+    response_model=CandidateGet
+)
+async def get_candidate(
+    recruiter_id: RequiredRecruiterID,
+    candidate_id: OID
+):
+    return Users.find_one({"_id": candidate_id, "role": "candidate"})
 
 
 @router.get(
