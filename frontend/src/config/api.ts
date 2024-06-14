@@ -79,7 +79,11 @@ export const Api = {
         }).then((res) => res.data),
 
       responses: (params: GetRecruiterResponsesParams) =>
-        Axios.get<Paginated<Response[]>>(`/recruiter/responses`, {
+        Axios.get<
+          Paginated<Response[]> & {
+            match: Record<'all' | 'gte50' | 'gte70' | 'gte90', number>
+          }
+        >(`/recruiter/responses`, {
           params,
         }).then((res) => res.data),
 
@@ -181,7 +185,11 @@ export const Api = {
       Axios.post(`/candidate/responses`, {}, { params: data }),
 
     candidates: (params: GetVacancyCadidatesParams) =>
-      Axios.get<Paginated<Candidate[]>>('/recruiter/candidates/by-vacancy', {
+      Axios.get<
+        Paginated<Candidate[]> & {
+          match: Record<'all' | 'gte50' | 'gte70' | 'gte90', number>
+        }
+      >('/recruiter/candidates/by-vacancy', {
         params,
       }).then((res) => res.data),
   },

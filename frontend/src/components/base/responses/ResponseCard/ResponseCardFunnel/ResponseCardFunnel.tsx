@@ -88,10 +88,12 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
             </Button>
           )}
         </AppearTransition>
-        {response.messages.map((message, idx) => (
-          <AppearTransition key={idx} orientation="v" gap>
-            {(areAllMsgsShowed || idx > response.messages.length - 3) && (
-              <div className={styles.block}>
+        {response.messages.map(
+          (message, idx) =>
+            // <AppearTransition key={idx} orientation="v" gap>
+            // {
+            (areAllMsgsShowed || idx > response.messages.length - 3) && (
+              <div className={styles.block} key={idx}>
                 <p className={styles.blockTitle}>
                   {
                     {
@@ -140,9 +142,10 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                   </div>
                 </div>
               </div>
-            )}
-          </AppearTransition>
-        ))}
+            )
+          // }
+          // </AppearTransition>
+        )}
         {role === Role.Recruiter &&
           (response.status === ResponseStatus.WaitingForCandidate ||
             response.status === ResponseStatus.WaitingForRecruiter) && (

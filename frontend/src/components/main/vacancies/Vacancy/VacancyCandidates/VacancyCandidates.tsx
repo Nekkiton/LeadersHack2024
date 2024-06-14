@@ -54,7 +54,31 @@ export default function VacancyCandidates({ vacancy }: Props) {
               [styles.hidden]: !candidates.items.length,
             })}
           >
-            coming soong
+            <h6>Соответствие вакансии</h6>
+            <div className={styles.sidebarItem}>
+              <span className={styles.sidebarItemMainTitle}>Не важно</span>
+              <span className={styles.sidebarItemValue}>
+                {candidates.match.all}
+              </span>
+            </div>
+            <div className={styles.sidebarItem}>
+              <span>от 50%</span>
+              <span className={styles.sidebarItemValue}>
+                {candidates.match.gte50}
+              </span>
+            </div>
+            <div className={styles.sidebarItem}>
+              <span>от 70%</span>
+              <span className={styles.sidebarItemValue}>
+                {candidates.match.gte70}
+              </span>
+            </div>
+            <div className={styles.sidebarItem}>
+              <span>от 90%</span>
+              <span className={styles.sidebarItemValue}>
+                {candidates.match.gte90}
+              </span>
+            </div>
           </div>
         </div>
       )}
