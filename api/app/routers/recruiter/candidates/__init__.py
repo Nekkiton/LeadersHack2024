@@ -28,7 +28,8 @@ async def get_candidates_via_filters(
 ):
     query = {
         "fio": {"$regex": fio, "$options": "i"},
-        "role": "candidate"
+        "role": "candidate",
+        "filled": True
     }
     if experience is not None:
         query["work_experience"] = {"$in": experience}
@@ -80,10 +81,10 @@ async def get_candidates_via_vacancy(
     response_model=CandidateGet
 )
 async def get_candidate(
-    recruiter_id: RequiredRecruiterID,
+    _: RequiredRecruiterID,
     candidate_id: OID
 ):
-    return Users.find_one({"_id": candidate_id, "role": "candidate"})
+    return Users.find_one({"_id": candidate_id, "role": "candidate", "filled": True})
 
 
 @router.get(
@@ -92,6 +93,7 @@ async def get_candidate(
     response_model=List[ResponseMinGet]
 )
 async def get_candidate_history(
+    _: RequiredRecruiterID,
     candidate_id: OID,
 ):
-    return list(DetailedResponses.find({"candidate_id": candidate_id}))
+    return list(DetailedResponses.find({"candidate_id": candidate_id, "filled": True}))
