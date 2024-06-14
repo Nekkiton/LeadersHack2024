@@ -51,9 +51,9 @@ VACANCY_DOESNT_BELONG_TO_RECRUIT = HTTPException(
     detail="Вакансия не существует или не принадлежит рекрутеру"
     )
 
-REQUIRED_PARAMS_MISSING = lambda params: HTTPException(
+REQUIRED_PARAMS_MISSING = lambda param: HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
-    detail=f"Необходимые параметры отсутствуют: {", ".join(params)}"
+    detail=f"Необходимые параметры отсутствуют: {param}"
     )
 
 VACANCY_NOT_ACTIVE = HTTPException(
@@ -64,4 +64,9 @@ VACANCY_NOT_ACTIVE = HTTPException(
 RESPONSE_NOT_ACTIVE_OR_NOT_FOUND = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail="Открытый отклик по запросу не найден"
+    )
+
+NOT_ADDED_YET = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="В разработке"
     )
