@@ -11,7 +11,7 @@ Extract information from current file. Provide valid JSON output.
 '''
 
 VACANCY_PROMPT = '''
-Extract information from current file. Provide valid JSON output.
+Extract information from next JSON string: %(json)s.
 
 Учитывай что исходные поля НЕЛЬЗЯ менять.
 
