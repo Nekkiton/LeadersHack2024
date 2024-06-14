@@ -59,3 +59,10 @@ class UserGet(BaseGet):
     email: EmailStr
     role: Role
     password_changed_at: Optional[datetime] = None
+
+
+class MatchItem(BaseGet):
+    all: int = 0
+    gte50: int = 0
+    gte70: int = 0
+    gte90: int = 0
