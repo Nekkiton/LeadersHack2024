@@ -17,10 +17,10 @@ PAGINATED_MATCH_RESPONSES = lambda vacancy_id, page, limit: [
         {
             "$project": {
                 "match": {
-                    "gte0": {"$first": "$0.c"},
+                    "all": {"$first": "$0.c"},
                     "gte50": {"$first": "$5.c"},
                     "gte70": {"$first": "$7.c"},
-                    "90": {"$first": "$9.c"},
+                    "gte90": {"$first": "$9.c"},
                 },
                 "total_pages": {
                     "$trunc": [{
