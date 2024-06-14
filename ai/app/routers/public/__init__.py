@@ -29,6 +29,7 @@ async def process_vacanсy(vacancy: VacancyPartial):
     json_vacancy['work_schedule'] = json_vacancy['work_schedule'] if json_vacancy['work_schedule'] in get_args(WorkSchedules) else "5/2"
     json_vacancy['work_type'] = json_vacancy['work_type'] if json_vacancy['work_type'] in get_args(WorkTypes) else "Удаленно"
     json_vacancy['work_experience'] = json_vacancy['work_experience'] if json_vacancy['work_experience'] in get_args(WorkExperiences) else "Нет опыта"
-    json_vacancy['skills'] = [skill for skill in json_vacancy['skills'] if skill in get_args(Skills)]
+    if json_vacancy['skills'] is not None:
+        json_vacancy['skills'] = [skill for skill in json_vacancy['skills'] if skill in get_args(Skills)]
 
     return json_vacancy

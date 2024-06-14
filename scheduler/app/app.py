@@ -10,9 +10,15 @@ def run() -> None:
     Инициализация планировщика
     """
     schedule = Scheduler()
-    schedule.daily(
-        timing=time(hour=0, minute=0),
-        handle=parse_vacancies_from_rntgroup
+    # schedule.daily(
+    #     timing=time(hour=11, minute=00),
+    #     handle=parse_vacancies_from_rntgroup,
+
+    #     )
+    schedule.hourly(
+        timing=time(minute=20, second=0),
+        handle=parse_vacancies_from_rntgroup,
+
         )
     logging.info("Планировщик запущен")
     while True:
