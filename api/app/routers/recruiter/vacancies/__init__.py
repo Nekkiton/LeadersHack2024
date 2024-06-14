@@ -177,7 +177,7 @@ async def update_vacancy_status(
                         "sender_role": "recruiter",
                         "type": "result",
                         "text": "Вакансия закрылась",
-                        "timestamp": get_now()
+                        "created_at": get_now(),
                     }
                 }
             }
