@@ -1,18 +1,21 @@
-import { ChangeEventHandler, useRef, useState } from 'react'
-import { useCurCandidateUpdateProfileFromFile } from '@/api/candidates'
+import { ChangeEventHandler, useRef } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useCurCandidateAnalyzeCV } from '@/api/candidates'
+import { useToasts } from '@/lib/use-toasts'
+import { getDefaultData } from '../utils'
 import Button from '@/components/ui/Button'
 import CandidateRecognitionModal from '@/components/base/candidates/CandidateRecognitionModal'
 import styles from './CandidateProfileFromFile.module.scss'
 
 export default function CandidateProfileFromFile() {
-  const FORMATS = ['doc', 'docx', 'pdf']
+  const FORMATS = ['jpg', 'jpeg', 'png', 'doc', 'docx', 'pdf']
+
+  const toasts = useToasts()
+  const { reset } = useFormContext()
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const { mutate: updateProfile, status } =
-    useCurCandidateUpdateProfileFromFile()
-
-  const [isModalShowed, setIsModalShowed] = useState(false)
+  const { mutate, status } = useCurCandidateAnalyzeCV()
 
   const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0]
@@ -23,21 +26,15 @@ export default function CandidateProfileFromFile() {
     const format = file.name.split('.').pop()
     if (!format || !FORMATS.includes(format)) return
 
-    const reader = new FileReader()
-    reader.onload = () => {
-      setIsModalShowed(true)
-      // updateProfile(
-      //   {
-      //     file: reader.result as string,
-      //   },
-      //   {
-      //     onSettled: () => {
-      //       setIsModalShowed(false)
-      //     },
-      //   }
-      // )
-    }
-    reader.readAsDataURL(file)
+    mutate(
+      { file },
+      {
+        onSuccess: (data) => {
+          reset(getDefaultData(data))
+          toasts.info({ content: 'Проверьте и сохрание данные' })
+        },
+      }
+    )
   }
 
   return (
@@ -64,8 +61,8 @@ export default function CandidateProfileFromFile() {
       </div>
 
       <CandidateRecognitionModal
-        isShowed={isModalShowed}
-        setIsShowed={setIsModalShowed}
+        isShowed={status === 'pending'}
+        setIsShowed={() => {}}
       />
     </>
   )

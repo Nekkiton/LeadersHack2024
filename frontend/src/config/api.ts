@@ -128,8 +128,12 @@ export const Api = {
       updateProfile: (data: UpdateCandidateData) =>
         Axios.put('/self/candidate', data),
 
-      updateProfileFromFile: (data: UpdateCandidateData) =>
-        Axios.post('/candidates/me/', data),
+      analyzeCV: (data: any) =>
+        Axios.post('/self/candidate/via-file', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then((res) => res.data), // TODO data type
 
       responses: (params?: GetCandidateResponsesParams) =>
         Axios.get<Paginated<Response[]>>(`/candidate/responses`, {

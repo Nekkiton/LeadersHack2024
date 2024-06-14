@@ -50,8 +50,8 @@ export const useCurCandidateUpdateProfile = createUseMutation(
   }
 )
 
-export const useCurCandidateUpdateProfileFromFile = createUseMutation(
-  Api.candidates.me.updateProfileFromFile
+export const useCurCandidateAnalyzeCV = createUseMutation(
+  Api.candidates.me.analyzeCV
 )
 
 export const useCurCandidateAnswerToResponse = createUseMutation(

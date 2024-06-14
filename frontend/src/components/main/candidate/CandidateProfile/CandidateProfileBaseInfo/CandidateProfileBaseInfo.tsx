@@ -29,7 +29,11 @@ export default function RecruiterProfileBaseInfo() {
         control={control}
         name="photo"
         render={({ field, fieldState }) => (
-          <AvatarUpload {...field} error={fieldState.error} />
+          <AvatarUpload
+            {...field}
+            className={styles.avatarUpload}
+            error={fieldState.error}
+          />
         )}
       />
       <div className={styles.main}>

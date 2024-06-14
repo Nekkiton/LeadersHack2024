@@ -28,3 +28,7 @@
 .mainBlockHalfField {
   width: calc(50% - 8px);
 }
+
+.avatarUpload {
+  flex-shrink: 0;
+}

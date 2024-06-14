@@ -50,18 +50,22 @@ export const transformData = (data: FormData): UpdateCandidateData => {
 }
 
 export const getDefaultData = (
-  user?: Candidate | BaseUser
+  user?: Partial<Candidate | BaseUser>
 ): Partial<FormData> => {
   return {
     ...(user ?? {}),
-    birthday: user?.name ? moment(`${user.birthday}Z`) : undefined,
+    birthday:
+      user?.name && user.birthday ? moment(`${user.birthday}Z`) : undefined,
     patronymic: (user?.name ? user.patronymic : null) ?? null,
-    phone: user?.name ? getUserPhone(user) : undefined,
+    phone:
+      user?.name && user.phone ? getUserPhone(user as Candidate) : undefined,
     work_history:
       (user?.name
         ? user?.work_history?.map((i) => ({
             ...i,
-            start_date: moment(`${i.start_date}Z`),
+            start_date: i.start_date
+              ? moment(`${i.start_date}Z`)
+              : (undefined as any),
             end_date: i.end_date ? moment(`${i.end_date}Z`) : null,
           }))
         : undefined) ?? [],

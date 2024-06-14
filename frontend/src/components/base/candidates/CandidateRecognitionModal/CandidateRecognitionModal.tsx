@@ -14,12 +14,12 @@ export default function CandidateRecognitionModal(stateProps: ModalStateProps) {
           <h3>Идет распознавание</h3>
         </div>
       }
-      footer={
-        // TODO: cancel
-        <Button type="secondary" onClick={() => stateProps.setIsShowed(false)}>
-          Отмена
-        </Button>
-      }
+      // footer={
+      //   // TODO: cancel
+      //   <Button type="secondary" onClick={() => stateProps.setIsShowed(false)}>
+      //     Отмена
+      //   </Button>
+      // }
       width={397}
     >
       <p>Вычленяем информацию из вашего резюме. Не закрывайте страницу</p>
