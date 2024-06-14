@@ -61,7 +61,7 @@ class UserGet(BaseGet):
     password_changed_at: Optional[datetime] = None
 
 
-class MatchItem(BaseGet):
+class MatchItem(BaseModel):
     all: int = 0
     gte50: int = 0
     gte70: int = 0
