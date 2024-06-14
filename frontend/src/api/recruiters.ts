@@ -4,6 +4,7 @@ import { createUseMutation } from '@/lib/create-use-mutation'
 export const useCurRecruiterUpdateProfile = createUseMutation(
   Api.recruiters.me.updateProfile,
   {
+    invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
     onError: ([error], { setError, toasts }) => {
       if (setError) {
         const detail = (error.response?.data as any).detail
