@@ -43,8 +43,9 @@ export const useCurCandidateUpdateProfile = createUseMutation(
         return true
       }
     },
-    onSuccess: ([], { toasts }) => {
+    onSuccess: ([], { toasts, queryClient }) => {
       toasts.info({ content: 'Профиль обновлен' })
+      queryClient.removeQueries({ queryKey: ['candidates.me.vacancies'] })
     },
   }
 )

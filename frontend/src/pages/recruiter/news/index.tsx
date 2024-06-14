@@ -1,9 +1,10 @@
 import { Role } from '@/types/entities/user'
 import { Page } from '@/types/page'
 import SidebarMenuLayout from '@/components/layouts/SidebarMenuLayout'
+import News from '@/components/main/news/News'
 
 export default function RecruiterNewsPage() {
-  return <div>coming soon</div>
+  return <News />
 }
 
 ;(RecruiterNewsPage as Page).layout = SidebarMenuLayout

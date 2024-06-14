@@ -14,7 +14,7 @@ class ResponseMessageItem(BaseModel):
     sender_role: Role
     text: str
     created_at: datetime
-    stage_id: OID
+    stage_id: Optional[OID] = None
     meet_at: Optional[datetime] = None
     meet_on: Optional[str] = None
     meet_url: Optional[str] = None

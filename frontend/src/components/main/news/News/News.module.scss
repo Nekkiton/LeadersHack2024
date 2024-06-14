@@ -1,0 +1,13 @@
+.nothing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-grow: 1;
+}
+
+.nothingIcon {
+  width: 150px;
+  height: 150px;
+}

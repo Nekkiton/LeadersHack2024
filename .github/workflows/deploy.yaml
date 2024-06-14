@@ -41,6 +41,7 @@ jobs:
             export JWT_ALGORITHM='RS256'
             export ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
             export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            export TELEMOST_API=${{ secrets.TELEMOST_API }}
 
             docker compose pull
             docker compose up -d

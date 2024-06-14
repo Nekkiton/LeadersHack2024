@@ -26,8 +26,9 @@ export const useCreateVacancy = createUseMutation(Api.vacancies.create, {
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
   ],
-  onSuccess: (_, { toasts }) => {
+  onSuccess: (_, { toasts, queryClient }) => {
     toasts.info({ content: 'Вакансия создана' })
+    queryClient.removeQueries({ queryKey: ['recruiters.me.vacancies'] })
   },
 })
 
@@ -45,6 +46,7 @@ export const useCloseVacancy = createUseMutation(Api.vacancies.close, {
   invalidateQueriesFn: () => [
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
+    { queryKey: ['recruiters.me.responses'] },
   ],
   onSuccess: (_, { toasts }) => {
     toasts.info({ content: 'Вакансия закрыта' })
