@@ -8,7 +8,7 @@ import CandidateRecognitionModal from '@/components/base/candidates/CandidateRec
 import styles from './CandidateProfileFromFile.module.scss'
 
 export default function CandidateProfileFromFile() {
-  const FORMATS = ['docx', 'pdf', 'jpg', 'jpeg', 'png']
+  const FORMATS = ['docx', 'pdf']
 
   const toasts = useToasts()
   const { reset } = useFormContext()
