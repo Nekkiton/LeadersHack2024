@@ -26,8 +26,9 @@ export const useCreateVacancy = createUseMutation(Api.vacancies.create, {
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
   ],
-  onSuccess: (_, { toasts }) => {
+  onSuccess: (_, { toasts, queryClient }) => {
     toasts.info({ content: 'Вакансия создана' })
+    queryClient.removeQueries({ queryKey: ['recruiters.me.vacancies'] })
   },
 })
 
