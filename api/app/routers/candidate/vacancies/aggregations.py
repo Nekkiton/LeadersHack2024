@@ -33,7 +33,7 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         "$project": {
             "page": {"$toInt": page},
             "total_pages": {
-                "$trunc": 
+                "$ceil": 
                 [{
                     "$divide": [
                         "$total_pages.count",
@@ -49,7 +49,7 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
 SEARCH_BY_ID = lambda vacancy_id, candidate: [
     {
         "$match": {
-            "vacancy_id": vacancy_id
+            "_id": vacancy_id
         },
     },
     get_match_field_stage(

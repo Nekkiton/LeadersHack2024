@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Role } from '@/types/entities/user'
-import { useVacancy } from '@/api/vacancies'
+import { useCurCandidateVacancy, useVacancy } from '@/api/vacancies'
 import RemoteData from '@/components/special/RemoteData'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
@@ -20,7 +20,15 @@ interface Props {
 }
 
 export default function Vacancy({ id, backLink, role }: Props) {
-  const vacancy = useVacancy(id)
+  const publicVacancy = useVacancy(id, { enabled: role !== Role.Candidate })
+  const candidateVacancy = useCurCandidateVacancy(id, {
+    enabled: role === Role.Candidate,
+  })
+
+  const vacancy = useMemo(
+    () => (role === Role.Candidate ? candidateVacancy : publicVacancy),
+    [(candidateVacancy as any).value, (publicVacancy as any).value, role]
+  )
 
   const [activeKey, setActiveKey] = useState<'responses' | 'candidates'>(
     'responses'

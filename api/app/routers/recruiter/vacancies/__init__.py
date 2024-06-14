@@ -1,3 +1,4 @@
+import math
 from typing import List, Optional
 from fastapi import APIRouter, Query
 from pymongo import DeleteMany, InsertOne, UpdateMany, UpdateOne
@@ -39,7 +40,7 @@ async def get_recruiter_vacancies(
     if scopes is not None:
         query["scope"] = {"$in": scopes}
     return {
-        "total_pages": DetailedVacancies.count_documents(query) // limit,
+        "total_pages": math.ceil(DetailedVacancies.count_documents(query) / limit),
         "page": page,
         "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
     }

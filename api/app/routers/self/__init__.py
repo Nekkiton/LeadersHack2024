@@ -19,7 +19,7 @@ router = APIRouter(tags=["Пользователь"], prefix="/self")
 @router.get(
     "/",
     name="Получить себя",
-    response_model=CandidateGet | RecruiterGet | UserGet
+    response_model=CandidateGet | RecruiterGet | UserGet | None
 )
 async def get_self(user_id: RequiredUserID):
     return Users.find_one({"_id": user_id})
