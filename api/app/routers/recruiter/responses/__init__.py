@@ -1,4 +1,3 @@
-import math
 from typing import Optional
 from fastapi import APIRouter
 
@@ -8,6 +7,8 @@ from app.oauth import RequiredRecruiterID
 from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import RecruiterResponseAnswer, Response, ResponsesGet
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_DOESNT_BELONG_TO_RECRUIT
+
+from .aggregations import PAGINATED_MATCH_RESPONSES
 
 router = APIRouter(prefix="/responses")
 
@@ -28,13 +29,17 @@ async def get_responses(
     }
     if vacancy_id:
         query["vacancy_id"] = vacancy_id
-    total_pages = math.ceil(DetailedResponses.count_documents(query) / limit)
-    items = DetailedResponses.find(query).skip(page * limit).limit(limit)
-    return {
-        "total_pages": total_pages,
-        "page": page,
-        "items": items
-    }
+    result = list(DetailedResponses.aggregate(PAGINATED_MATCH_RESPONSES(page, limit)))
+    if not len(result):
+        return {
+            "match": {
+                "all": 0,
+                "gte50": 0,
+                "gte70": 0,
+                "gte90": 0,
+            }
+        }
+    return result[0]
 
 
 @router.post(
