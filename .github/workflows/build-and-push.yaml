@@ -1,0 +1,104 @@
+name: 'Project deploy'
+
+on:
+  workflow_call:
+    inputs:
+      context:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+      image:
+        required: true
+        type: string
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+
+
+jobs:
+  build-and-push:
+    name: Build and push containers to registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.image }}
+          tags: |
+            type=raw,value=release-{{date 'YYYYMMDD-HHmm'}}-{{sha}}
+            type=raw,value=latest
+      - name: Login to docker registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: leaders.cr.cloud.ru
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.dockerfile }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"
+
+      - name: Clean up
+        run: |
+          docker rmi $DOCKER_METADATA_OUTPUT_TAGS
+          docker builder prune -f
+
+  deploy:
+      needs: build-and-push
+      name: Deploy containers
+      runs-on: ubuntu-latest
+
+      steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            infra/docker-compose.yaml
+          sparse-checkout-cone-mode: false
+
+      - name: copy file via ssh
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          source: "infra/docker-compose.yaml"
+          target: /home/backend-user
+          strip_components: 1
+
+      - name: pull and up new images
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            export MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}
+            export MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }}
+            export JWT_PUBLIC_KEY_PATH='/cert/jwtRS256.key.pub'
+            export JWT_PRIVATE_KEY_PATH='/cert/jwtRS256.key'
+            export JWT_ALGORITHM='RS256'
+            export ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+
+            docker compose pull
+            docker compose up -d
+
+            docker image prune -a -f

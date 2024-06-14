@@ -35,31 +35,40 @@ jobs:
     if: needs.files-changed.outputs.frontend == 'true'
     uses: ./.github/workflows/build-frontend.yaml
 
-  deploy-frontend:
+  build-and-push-frontend:
+    name: Build and push frontend
     needs: build-frontend
-    uses: ./.github/workflows/deploy.yaml
+    uses: ./.github/workflows/build-and-push.yaml
     with:
       dockerfile: frontend/Dockerfile
       context: frontend
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/frontend
     secrets: inherit
 
-  deploy-backend:
+  build-and-push-backend:
+    name: Build and push backend
     needs: files-changed
     if: needs.files-changed.outputs.backend == 'true' || needs.files-changed.outputs.infra == 'true'
-    uses: ./.github/workflows/deploy.yaml
+    uses: ./.github/workflows/build-and-push.yaml
     with:
       dockerfile: api/Dockerfile
       context: api
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/backend
     secrets: inherit
 
-  deploy-ai:
+  build-and-push-ai:
+    name: Build and push AI
     needs: files-changed
     if: needs.files-changed.outputs.ai == 'true'
-    uses: ./.github/workflows/deploy.yaml
+    uses: ./.github/workflows/build-and-push.yaml
     with:
       dockerfile: ai/Dockerfile
       context: ai
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/ai-worker
+    secrets: inherit
+
+  deploy-all:
+    name: Deploy app
+    needs: [build-and-push-ai, build-and-push-backend, build-and-push-frontend]
+    uses: ./.github/workflows/deploy.yaml
     secrets: inherit
