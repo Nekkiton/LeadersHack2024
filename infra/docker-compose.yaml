@@ -51,6 +51,8 @@ services:
     restart: unless-stopped
     environment:
     - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - 4000:4000 # TODO: remove later to avoid direct access
 
   leaders_backend:
     container_name: leaders_backend
