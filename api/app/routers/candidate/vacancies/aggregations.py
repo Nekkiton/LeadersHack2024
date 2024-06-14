@@ -9,10 +9,10 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         "$work_experience", 
         "$work_type", 
         "$work_schedule",
-        candidate["skills"],
-        candidate["work_experience"],
-        candidate["work_type"],
-        candidate["work_schedule"],
+        candidate.get("skills", []),
+        candidate.get("work_experience", ""),
+        candidate.get("work_type", ""),
+        candidate.get("work_schedule", ""),
     ),
     {
         "$match": {"match": {"$gt": 50}}
@@ -57,9 +57,9 @@ SEARCH_BY_ID = lambda vacancy_id, candidate: [
         "$work_experience", 
         "$work_type", 
         "$work_schedule",
-        candidate["skills"],
-        candidate["work_experience"],
-        candidate["work_type"],
-        candidate["work_schedule"],
+        candidate.get("skills", []),
+        candidate.get("work_experience", ""),
+        candidate.get("work_type", ""),
+        candidate.get("work_schedule", ""),
     ),
 ]
