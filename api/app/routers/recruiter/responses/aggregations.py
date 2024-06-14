@@ -25,7 +25,7 @@ PAGINATED_MATCH_RESPONSES = lambda vacancy_id, page, limit: [
                 "total_pages": {
                     "$trunc": [{
                         "$divide": [
-                            "$match.0",
+                            {"$first": "$0.c"},
                             limit
                         ]
                     }]
