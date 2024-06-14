@@ -14,3 +14,5 @@ class Settings(EnvClass):
     ALLOWED_ORIGINS: str
 
     TELEMOST_API: str
+
+    AI_URL: str = 'http://localhost:4000'

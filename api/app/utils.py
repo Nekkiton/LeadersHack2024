@@ -1,10 +1,12 @@
 from datetime import datetime, timezone
-from typing import Literal
-from requests import get
+from fastapi import UploadFile
+from typing import Literal, get_args
+from requests import get, post
 import bcrypt
 
 from app.settings import Settings
-from app.exceptions import NOT_ADDED_YET
+from app.exceptions import NOT_ADDED_YET, FAILED_CV_ANALYSIS
+from app.literals import Educations, WorkTypes, WorkExperiences, WorkSchedules, Skills
 
 
 def get_now() -> datetime:
@@ -44,3 +46,57 @@ def get_meet_url(platform: Literal["telemost", "googlemeet", "zoom"], date: date
             raise NOT_ADDED_YET
         case "zoom":
             raise NOT_ADDED_YET
+
+
+async def analyze_candidate_cv(file: UploadFile):
+    def parse_date(val: str | None, format: str):
+        if not val: return None
+        try:
+            return datetime.strptime(val, format)
+        except ValueError:
+            return
+
+    files = {'file': (file.filename, await file.read(), file.content_type)}
+    res = post(
+        url=f'{Settings.AI_URL}/public/parse-cv',
+        files=files,
+    )
+
+    if res.status_code != 200:
+        raise FAILED_CV_ANALYSIS
+
+    try:
+        data = res.json()
+
+        skills = []
+        for i in data.get("skills", []):
+            if i in get_args(Skills) and len(skills) <= 9:
+                skills.append(i)
+
+        work_history = []
+        for i in data.get('work_history', []):
+            work_history.append({
+                **i,
+                "start_date": parse_date(i.get("start_date"), "%m.%Y"),
+                "end_date": parse_date(i.get("end_date"), "%m.%Y"),
+            })
+
+        salary_expectation = None
+        try:
+            salary_expectation = int(data.get('salary_expectation'))
+        except:
+            pass
+            
+        return {
+            **data,
+            "birthday": parse_date(data.get("birthday"), "%d.%m.%Y"),
+            "education": data["education"] if data.get("education") in get_args(Educations) else None,
+            "work_schedule": data["work_schedule"] if data.get("work_schedule") in get_args(WorkSchedules) else None,
+            "work_type": data["work_type"] if data.get("work_type") in get_args(WorkTypes) else None,
+            "work_experience": data["work_experience"] if data.get("work_experience") in get_args(WorkExperiences) else None,
+            "work_history": work_history,
+            "skills": skills,
+            "salary_expectation": salary_expectation,
+        }
+    except:
+        raise FAILED_CV_ANALYSIS

@@ -57,20 +57,28 @@ class CandidatesMatchGet(Pagination):
     items: List[CandidateMatch]
 
 
+class WorkHistoryItemPartial(BaseModel):
+    company: Optional[str] = None
+    position: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    responsibilities: Optional[str] = None
+
+
 class CandidatePartial(BaseModel):
     email: Optional[str] = None
     name: Optional[str] = None
     surname: Optional[str] = None
     patronymic: Optional[str] = None
-    phone: Optional[PhoneNumber] = None
+    phone: Optional[str] = None
     telegram: Optional[str] = None
     birthday: Optional[datetime] = None
     city: Optional[str] = None
     desired_position: Optional[str] = None
     education: Optional[Educations] = None
-    work_schedule: Optional[WorkSchedules] = None
-    work_type: Optional[WorkTypes] = None
+    work_schedule: Optional[WorkSchedules] = "5/2"
+    work_type: Optional[WorkTypes] = "Удаленно"
     work_experience: Optional[WorkExperiences] = None
-    work_history: Optional[List[WorkHistoryItem]] = None
+    work_history: List[WorkHistoryItemPartial] = []
     salary_expectation: Optional[float] = None
-    skills: Optional[List[Skills]] = None
+    skills: List[Skills] = []
