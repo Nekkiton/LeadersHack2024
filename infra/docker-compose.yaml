@@ -76,7 +76,8 @@ services:
     - JWT_PRIVATE_KEY_PATH=${JWT_PRIVATE_KEY_PATH}
     - JWT_ALGORITHM=${JWT_ALGORITHM}
     - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-    - TELEMOST_API-${TELEMOST_API}
+    - TELEMOST_API=${TELEMOST_API}
+    - AI_URL=${AI_URL}
 
   leaders_frontend:
     container_name: leaders_frontend

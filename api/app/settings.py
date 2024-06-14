@@ -15,4 +15,4 @@ class Settings(EnvClass):
 
     TELEMOST_API: str
 
-    AI_URL: str = 'http://localhost:4000'
+    AI_URL: str
