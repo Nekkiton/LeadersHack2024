@@ -60,7 +60,7 @@ async def get_candidates_via_vacancy(
     if vacancy is None:
         raise NOT_FOUND
     result = list(Users.aggregate(USERS_MATCH_BY_VACANCY(vacancy, page, limit)))
-    if not len(result):
+    if not len(result) or not result[0]['items']:
         return {
             "match": {
                 "all": 0,
