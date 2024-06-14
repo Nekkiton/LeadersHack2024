@@ -6,7 +6,7 @@ from app.utils import get_now
 from app.oauth import RecruiterId
 from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import RecruiterResponseAnswer, Response, ResponsesGet
-from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_DOESNT_BELONG_TO_RECRUIT
+from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_DOESNT_BELONG_TO_RECRUIT, NOT_ENOUGH_STAGES
 
 from .aggregations import PAGINATED_MATCH_RESPONSES
 
@@ -60,8 +60,10 @@ async def create_response(
         raise ONE_RESPONSE_FOR_ONE_VACACNY
     if not Vacancies.count_documents({"_id": vacancy_id, "recruiter_id": recruiter_id, "status": "active"}):
         raise VACANCY_DOESNT_BELONG_TO_RECRUIT
-    stage = list(Stages.find({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1}))[1]
-    stage_id = stage.get("_id")
+    stages = list(Stages.find({"vacancy_id": vacancy_id, "status": "active"}, sort={"position": 1}))
+    if len(stages) < 2:
+        raise NOT_ENOUGH_STAGES
+    stage_id = stages[1].get("_id")
     insert_data = {
         "status": "waiting_for_candidate",
         "vacancy_id": vacancy_id,
@@ -161,7 +163,7 @@ async def leave_response_comment(
         raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
     Responses.update_one(
         {
-            "response_id": response_id,
+            "_id": response_id,
         },
         {
             "$set": {

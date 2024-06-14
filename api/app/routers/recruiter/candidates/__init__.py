@@ -96,4 +96,4 @@ async def get_candidate_history(
     _: RecruiterId,
     candidate_id: OID,
 ):
-    return list(DetailedResponses.find({"candidate_id": candidate_id, "filled": True}))
+    return list(DetailedResponses.find({"candidate_id": candidate_id, "candidate.filled": True }))

@@ -70,3 +70,8 @@ NOT_ADDED_YET = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail="В разработке"
     )
+
+NOT_ENOUGH_STAGES = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='В вакансии недостаточно этапов'
+)
