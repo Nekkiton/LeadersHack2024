@@ -77,17 +77,17 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
   return (
     <>
       <div className={styles.container}>
-        <AppearTransition orientation="v" gap>
-          {response.messages.length > 2 && !areAllMsgsShowed && (
-            <Button
-              className={styles.centerEl}
-              type="text"
-              onClick={() => setAreAllMsgsShowed(true)}
-            >
-              Показать все этапы
-            </Button>
-          )}
-        </AppearTransition>
+        {/* <AppearTransition orientation="v" gap> */}
+        {response.messages.length > 2 && !areAllMsgsShowed && (
+          <Button
+            className={styles.centerEl}
+            type="text"
+            onClick={() => setAreAllMsgsShowed(true)}
+          >
+            Показать все этапы
+          </Button>
+        )}
+        {/* </AppearTransition> */}
         {response.messages.map(
           (message, idx) =>
             // <AppearTransition key={idx} orientation="v" gap>
