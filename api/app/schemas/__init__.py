@@ -40,9 +40,9 @@ class Pagination(BaseModel):
     """
     Любой эндпоинт с пагинацией должен выглядеть так
     """
-    total_pages: int
-    page: int
-    items: List[Any]
+    total_pages: int = 0
+    page: int = 0
+    items: List[Any] = []
 
 
 class BaseGet(BaseModel):
