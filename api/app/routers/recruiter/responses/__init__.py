@@ -29,7 +29,7 @@ async def get_responses(
     }
     if vacancy_id:
         query["vacancy_id"] = vacancy_id
-    result = list(DetailedResponses.aggregate(PAGINATED_MATCH_RESPONSES(page, limit)))
+    result = list(DetailedResponses.aggregate(PAGINATED_MATCH_RESPONSES(vacancy_id, page, limit)))
     if not len(result):
         return {
             "match": {
