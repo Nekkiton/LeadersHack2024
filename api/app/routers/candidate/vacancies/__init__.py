@@ -58,7 +58,7 @@ async def get_vacancy_by_id(
     vacancy_id: OID,
 ):
     candidate = Users.find_one({"_id": candidate_id})
-    vacancies = DetailedVacancies.aggregate(SEARCH_BY_ID(vacancy_id, candidate))
+    vacancies = list(DetailedVacancies.aggregate(SEARCH_BY_ID(vacancy_id, candidate)))
     if not len(vacancies):
         raise NOT_FOUND
     return vacancies[0]
