@@ -35,7 +35,7 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
             "5": [{"$match": {"match": {"$gte": 50}}}, {"$count": "c"}],
             "7": [{"$match": {"match": {"$gte": 75}}}, {"$count": "c"}],
             "9": [{"$match": {"match": {"$gte": 90}}}, {"$count": "c"}],
-            "items": []
+            "items": [{"$skip": page * limit}, {"$limit": limit}]
         }
     },
     {
@@ -50,7 +50,7 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
                 "$trunc": [{
                     "$divide": [
                         {"$first": "$0.c"},
-                        2
+                        limit
                     ]
                 }]
             },
