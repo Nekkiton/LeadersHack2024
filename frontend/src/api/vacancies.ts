@@ -16,6 +16,11 @@ export const useCurRecruiterVacancies = createUseQuery(
 
 export const useVacancy = createUseQuery('vacancies.one', Api.vacancies.one)
 
+export const useCurCandidateVacancy = createUseQuery(
+  'candidates.me.vacancy',
+  Api.candidates.me.vacancy
+)
+
 export const useCreateVacancy = createUseMutation(Api.vacancies.create, {
   invalidateQueriesFn: () => [
     { queryKey: ['vacancies.all'] },

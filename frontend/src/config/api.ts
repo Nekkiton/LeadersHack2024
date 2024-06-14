@@ -137,6 +137,11 @@ export const Api = {
           params,
         }).then((res) => res.data),
 
+      vacancy: (pk: string) =>
+        Axios.get<Vacancy>(`/candidate/vacancies/${pk}`).then(
+          (res) => res.data
+        ),
+
       vacancyResponse: (pk: string) =>
         Axios.get<Response | null>(`/candidate/responses/by-vacancy`, {
           params: {
