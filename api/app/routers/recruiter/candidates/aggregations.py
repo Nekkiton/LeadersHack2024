@@ -21,26 +21,40 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
     },
     {
         "$facet": {
-            "total_pages": [{"$count": "count"}],
-            "items": [{"$skip": page * limit}, {"$limit": limit}]
+            "0": [{"$count": "c"}],
+            "3": [{"$match": {"match": {"$gte": 30}}}, {"$count": "c"}],
+            "5": [{"$match": {"match": {"$gte": 50}}}, {"$count": "c"}],
+            "7": [{"$match": {"match": {"$gte": 75}}}, {"$count": "c"}],
+            "9": [{"$match": {"match": {"$gte": 90}}}, {"$count": "c"}],
+            "items": []
         }
     },
     {
-        "$unwind": "$total_pages"
+        "$facet": {
+            "0": [{"$count": "c"}],
+            "5": [{"$match": {"match": {"$gte": 50}}}, {"$count": "c"}],
+            "7": [{"$match": {"match": {"$gte": 75}}}, {"$count": "c"}],
+            "9": [{"$match": {"match": {"$gte": 90}}}, {"$count": "c"}],
+            "items": []
+        }
     },
     {
         "$project": {
-            "page": {"$toInt": page},
+            "match": {
+                "all": {"$first": "$0.c"},
+                "gte50": {"$first": "$5.c"},
+                "gte70": {"$first": "$7.c"},
+                "gte90": {"$first": "$9.c"},
+            },
             "total_pages": {
-                "$trunc": 
-                [{
+                "$trunc": [{
                     "$divide": [
-                        "$total_pages.count",
-                        limit
+                        {"$first": "$0.c"},
+                        2
                     ]
                 }]
             },
-            "items": "$items",
+            "items": 1,
         }
     }
 ]

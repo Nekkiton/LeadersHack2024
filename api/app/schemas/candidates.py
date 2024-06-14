@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from . import Pagination, UserGet
+from . import Pagination, UserGet, MatchItem
 from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
 
 
@@ -53,6 +53,7 @@ class CandidateMatch(CandidateGet):
 
 
 class CandidatesMatchGet(Pagination):
+    match: Optional[MatchItem] = None
     items: List[CandidateMatch]
 
 
