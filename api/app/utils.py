@@ -5,6 +5,7 @@ from requests import get, post
 import bcrypt
 
 from app.settings import Settings
+from app.schemas.candidates import CandidatePartial
 from app.exceptions import NOT_ADDED_YET, FAILED_CV_ANALYSIS
 from app.literals import Educations, WorkTypes, WorkExperiences, WorkSchedules, Skills
 
@@ -48,7 +49,7 @@ def get_meet_url(platform: Literal["telemost", "googlemeet", "zoom"], date: date
             raise NOT_ADDED_YET
 
 
-async def analyze_candidate_cv(file: UploadFile):
+async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial:
     def parse_date(val: str | None, format: str):
         if not val: return None
         try:
@@ -91,8 +92,8 @@ async def analyze_candidate_cv(file: UploadFile):
             **data,
             "birthday": parse_date(data.get("birthday"), "%d.%m.%Y"),
             "education": data["education"] if data.get("education") in get_args(Educations) else None,
-            "work_schedule": data["work_schedule"] if data.get("work_schedule") in get_args(WorkSchedules) else None,
-            "work_type": data["work_type"] if data.get("work_type") in get_args(WorkTypes) else None,
+            "work_schedule": data["work_schedule"] if data.get("work_schedule") in get_args(WorkSchedules) else "5/2",
+            "work_type": data["work_type"] if data.get("work_type") in get_args(WorkTypes) else "Удаленно",
             "work_experience": data["work_experience"] if data.get("work_experience") in get_args(WorkExperiences) else None,
             "work_history": work_history,
             "skills": skills,
