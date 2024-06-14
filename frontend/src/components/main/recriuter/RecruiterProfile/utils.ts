@@ -1,3 +1,4 @@
+import { getUserPhone } from '@/lib/get-user-phone'
 import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import { BaseUser } from '@/types/entities/user'
 import moment, { Moment } from 'moment'
@@ -35,12 +36,14 @@ export const getDefaultData = (
 ): Partial<FormData> => {
   return {
     ...(user ?? {}),
-    interview_slots: user?.name
-      ? user.interview_slots?.map((i) => ({
-          ...i,
-          start_time: moment(`${i.start_time}Z`),
-          end_time: moment(`${i.end_time}Z`),
-        }))
-      : [],
+    phone: user?.name ? getUserPhone(user) : undefined,
+    interview_slots:
+      (user?.name
+        ? user.interview_slots?.map((i) => ({
+            ...i,
+            start_time: moment(`${i.start_time}Z`),
+            end_time: moment(`${i.end_time}Z`),
+          }))
+        : []) ?? [],
   }
 }

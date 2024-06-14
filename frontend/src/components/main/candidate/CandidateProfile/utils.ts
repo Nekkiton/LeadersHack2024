@@ -1,3 +1,4 @@
+import { getUserPhone } from '@/lib/get-user-phone'
 import { UpdateAttachment } from '@/types/entities/attachment'
 import { Candidate, UpdateCandidateData } from '@/types/entities/candidate'
 import { Education } from '@/types/entities/education'
@@ -55,6 +56,7 @@ export const getDefaultData = (
     ...(user ?? {}),
     birthday: user?.name ? moment(`${user.birthday}Z`) : undefined,
     patronymic: (user?.name ? user.patronymic : null) ?? null,
+    phone: user?.name ? getUserPhone(user) : undefined,
     work_history:
       (user?.name
         ? user?.work_history?.map((i) => ({

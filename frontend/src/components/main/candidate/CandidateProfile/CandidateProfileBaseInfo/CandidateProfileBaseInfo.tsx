@@ -145,7 +145,7 @@ export default function RecruiterProfileBaseInfo() {
                 className={styles.mainBlockHalfField}
                 error={fieldState.error}
                 label="Телефон"
-                placeholder="+7 (___) ___-__-__"
+                placeholder="+7 ___ ___ __ __"
               />
             )}
           />

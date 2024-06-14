@@ -2,6 +2,7 @@ import { Candidate } from '@/types/entities/candidate'
 import { useCandidateResponses } from '@/api/candidates'
 import { Role } from '@/types/entities/user'
 import { ResponseStatus } from '@/types/entities/response'
+import { getUserPhone } from '@/lib/get-user-phone'
 import moment from 'moment'
 import Link from 'next/link'
 import Icon from '@/components/ui/Icon'
@@ -23,10 +24,10 @@ export default function CandidateMain({ candidate }: Props) {
             <p className={styles.cardTitle}>Контакты</p>
             <Link
               className={styles.fieldWithIcon}
-              href={`tel:${candidate.phone}`}
+              href={`tel:${getUserPhone(candidate)}`}
             >
               <Icon icon="phone" />
-              <span>{candidate.phone}</span>
+              <span>{getUserPhone(candidate)}</span>
             </Link>
             <Link
               className={styles.fieldWithIcon}
@@ -87,7 +88,9 @@ export default function CandidateMain({ candidate }: Props) {
                 </div>
                 <div>
                   <p className={styles.workTasksTitle}>Задачи:</p>
-                  <div className={styles.workTasks}>{work.responsibilities}</div>
+                  <div className={styles.workTasks}>
+                    {work.responsibilities}
+                  </div>
                 </div>
               </div>
             ))

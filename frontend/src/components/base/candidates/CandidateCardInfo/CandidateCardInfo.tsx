@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Candidate } from '@/types/entities/candidate'
 import { getUserName } from '@/lib/get-user-name'
 import { getUserAge } from '@/lib/get-user-age'
+import { getUserPhone } from '@/lib/get-user-phone'
 import classNames from 'classnames'
 import moment from 'moment'
 import Link from 'next/link'
@@ -100,7 +101,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
       <div className={styles.block}>
         <h6>Контакты</h6>
         <div className={styles.blockContent}>
-          <p>{candidate.phone}</p>
+          <p>{getUserPhone(candidate)}</p>
           <Link
             className={styles.email}
             href={`mailto:${candidate.email}`}
