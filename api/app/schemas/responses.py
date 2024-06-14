@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, model_validator
 from app.schemas.candidates import CandidateGet
 from app.literals import ResponseMessageType, ResponseStatus, Role
 
-from . import OID, BaseGet, Pagination
+from . import OID, BaseGet, MatchItem, Pagination
 from .vacancies import VacancyGet
 
 
@@ -43,6 +43,7 @@ class ResponseGet(Response):
 
 
 class ResponsesGet(Pagination):
+    match: Optional[MatchItem] = None
     items: List[ResponseGet]
 
 
