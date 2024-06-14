@@ -30,6 +30,7 @@ PAGINATED_MATCH_RESPONSES = lambda vacancy_id, page, limit: [
                         ]
                     }]
                 },
+                "page": {"$toInt": page},
                 "items": 1,
             }
         }

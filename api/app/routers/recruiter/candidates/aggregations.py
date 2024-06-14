@@ -49,6 +49,7 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
                     ]
                 }]
             },
+            "page": {"$toInt": page},
             "items": 1,
         }
     }
