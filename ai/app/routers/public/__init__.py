@@ -19,7 +19,7 @@ async def analyse_candidate_cv(file: UploadFile):
 
 
 @router.post(
-    "/process-vacanсy",
+    "/process-vacancy",
     name="Преобразовать данные вакансии",
 )
 async def process_vacanсy(vacancy: VacancyPartial):
