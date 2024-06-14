@@ -13,3 +13,4 @@ class Settings(EnvClass):
 
     ALLOWED_ORIGINS: str
 
+    TELEMOST_API: str
