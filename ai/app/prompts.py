@@ -1,9 +1,9 @@
 CV_PARSE_PROMPT = '''
 Extract information from current file. Provide valid JSON output.
 
-Учитывай что поле work_experience надо вычислить на основе истории работы кандидата. Поле work_experience должно содержать одно из значений ["Нет опыта","от 1 до 3 лет","от 3 до 6 лет","от 6 лет"].
+Учитывай что поле work_experience надо вычислить на основе истории работы кандидата. Поле work_experience должно содержать одно из значений %(work_experiences)s.
 
-Учитывай что поле education.degree должно быть одним из следующих значений: ["Среднее","Среднее специальное","Неоконченное высшее","Высшее"].
+Учитывай что поле education.degree должно быть одним из следующих значений: %(degrees)s.
 
 Учитывай что поле birthday должно быть преобразованно в формат "dd.mm.yyyy".
 
@@ -11,6 +11,22 @@ Extract information from current file. Provide valid JSON output.
 '''
 
 VACANCY_PROMPT = '''
+Extract information from current file. Provide valid JSON output.
+
+Учитывай что исходные поля НЕЛЬЗЯ менять.
+
+Заполни поле scope на основе полей title и description. Поле scope должно содержать одно из значений %(scopes)s.
+
+Заполни поле work_type на основе полей title и description. Поле work_type должно содержать одно из значений %(work_types)s.
+Если в вакансии не указан город, то поле work_type должно содержать значение "Удаленно".
+
+Заполни поле work_schedule на основе полей title и description. Поле work_schedule должно содержать одно из значений %(work_schedules)s. Если не удается определить график работы по описанию, то поле work_schedule должно содержать значение "5/2".
+
+Поле work_experience должно содержать одно из значений %(work_experiences)s.
+
+Заполни поле skills на основе всей вакансии. Поле skills должно содержать список из значений %(skills)s.
+
+В качестве ответа пришли только JSON.
 '''
 
 CV_EXAMPLE_JSON = {
@@ -53,3 +69,26 @@ CV_EXAMPLE_JSON = {
       "UX-исследования"
     ]
   }
+
+
+VACANCY_EXAMPLE_JSON = {
+  "_id": {
+    "$oid": "666c93e8e22511aa197a3351"
+  },
+  "title": "Java-разработчик",
+  "description": "Приглашаем в команду Java-разработчиков уровня Middle, Senior и Team Lead.\r\nМы реализуем проекты в перспективных областях: производство, телекоммуникации, интернет-магазины, финансы, страхование, ритейл, ИТ.",
+  "responsibilities": "Java 11 – 17 (иногда Kotlin)\nSpring Boot / Cloud / MVC\nPostgreSQL\nKafka\nRabbitMQ\nDocker\nKubernetes\nМикросервисная архитектура",
+  "candidate_expectation": "Знания и опыт работы с Kotlin",
+  "additions": None,
+  "conditions": "Официальное оформление\nСоциальный пакет\nГибкий график работы\nПрофессиональное развитие\nПоддержка инициатив\nРабочее оборудование",
+  "source": {
+    "company": "RNTGroup",
+    "url": "https://www.rntgroup.com/career/vacancies/java-developer/"
+  },
+  "status": "active",
+  "scope": "",
+  "work_type": "",
+  "work_schedule": "",
+  "work_experience": "",
+  "skills": ["", ""]
+}

@@ -45,14 +45,15 @@ services:
     #ports:
     #  - 27017:27017 # TODO: remove later to avoid access to db
 
-  ai:
-    container_name: ai
-    image: leaders.cr.cloud.ru/leaders-hack-2024-gb/ai-worker:latest
-    restart: unless-stopped
-    environment:
-    - OPENAI_API_KEY=${OPENAI_API_KEY}
-    ports:
-      - 4000:4000 # TODO: remove later to avoid direct access
+  # DOESN"T WORK FROM RUSSIAN IP's, SO DISABLE IT HERE
+  # ai:
+  #   container_name: ai
+  #   image: leaders.cr.cloud.ru/leaders-hack-2024-gb/ai-worker:latest
+  #   restart: unless-stopped
+  #   environment:
+  #   - OPENAI_API_KEY=${OPENAI_API_KEY}
+  #   ports:
+  #     - 4000:4000 # TODO: remove later to avoid direct access
 
   leaders_backend:
     container_name: leaders_backend
