@@ -8,7 +8,7 @@ import CandidateRecognitionModal from '@/components/base/candidates/CandidateRec
 import styles from './CandidateProfileFromFile.module.scss'
 
 export default function CandidateProfileFromFile() {
-  const FORMATS = ['jpg', 'jpeg', 'png', 'doc', 'docx', 'pdf']
+  const FORMATS = ['docx', 'pdf', 'jpg', 'jpeg', 'png']
 
   const toasts = useToasts()
   const { reset } = useFormContext()
@@ -24,7 +24,14 @@ export default function CandidateProfileFromFile() {
     e.target.value = ''
 
     const format = file.name.split('.').pop()
-    if (!format || !FORMATS.includes(format)) return
+    if (!format || !FORMATS.includes(format)) {
+      toasts.error({
+        content: `Формат файла не поддерживается. Используйте файлы ${FORMATS.map(
+          (i) => '.' + i
+        ).join(', ')}`,
+      })
+      return
+    }
 
     mutate(
       { file },
