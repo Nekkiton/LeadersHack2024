@@ -45,6 +45,7 @@ export const useCloseVacancy = createUseMutation(Api.vacancies.close, {
   invalidateQueriesFn: () => [
     { queryKey: ['vacancies.all'] },
     { queryKey: ['vacancies.one'] },
+    { queryKey: ['recruiters.me.responses'] },
   ],
   onSuccess: (_, { toasts }) => {
     toasts.info({ content: 'Вакансия закрыта' })
