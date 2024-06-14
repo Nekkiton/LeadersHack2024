@@ -7,7 +7,7 @@ from app.utils import get_now
 from app.schemas import OID
 from app.literals import Role
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
-from app.oauth import CandidateId
+from app.oauth import FilledCandidateId
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
 from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/responses")
     response_model=ResponsesGet,
 )
 async def get_responses(
-    candidate_id: CandidateId,
+    candidate_id: FilledCandidateId,
     page: int = 0,
     limit: int = 25,
     inviter: Role = "candidate",
@@ -45,7 +45,7 @@ async def get_responses(
     response_model=Response
     )
 async def create_response(
-    candidate_id: CandidateId,
+    candidate_id: FilledCandidateId,
     vacancy_id: OID,
     message: str
 ):
@@ -88,7 +88,7 @@ async def create_response(
     response_model=Optional[ResponseGet]
     )
 async def get_response(
-    candidate_id: CandidateId,
+    candidate_id: FilledCandidateId,
     vacancy_id: OID,
 ):
     return DetailedResponses.find_one({"vacancy_id": vacancy_id, "candidate_id": candidate_id})
@@ -100,7 +100,7 @@ async def get_response(
     response_model=Optional[ResponseGet]
 )
 async def get_response_by_id(
-    candidate_id: CandidateId,
+    candidate_id: FilledCandidateId,
     response_id: OID
 ):
     return DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id})
@@ -112,7 +112,7 @@ async def get_response_by_id(
     response_model=Response
 )
 async def answer_response(
-    candidate_id: CandidateId,
+    candidate_id: FilledCandidateId,
     response_id: OID,
     payload: CandidateResponseAnswer
 ):
@@ -177,7 +177,7 @@ async def answer_response(
     name="Расписание по отклику",
     )
 async def get_response_schedule(
-    candidate_id: CandidateId,
+    candidate_id: FilledCandidateId,
     response_id: OID,
 ):
     # TODO
