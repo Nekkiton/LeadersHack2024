@@ -55,6 +55,17 @@ services:
   #   ports:
   #     - 4000:4000 # TODO: remove later to avoid direct access
 
+  scheduler:
+    container_name: scheduler
+    image: leaders.cr.cloud.ru/leaders-hack-2024-gb/scheduler:latest
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+    - MONGO_DATABASE=${MONGO_DATABASE}
+    - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
+    - AI_URL=${AI_URL}
+
   leaders_backend:
     container_name: leaders_backend
     image: leaders.cr.cloud.ru/leaders-hack-2024-gb/backend:latest

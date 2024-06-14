@@ -13,6 +13,7 @@ jobs:
       frontend: ${{ steps.changes.outputs.frontend }}
       infra: ${{ steps.changes.outputs.infra }}
       ai: ${{ steps.changes.outputs.ai }}
+      scheduler: ${{ steps.changes.outputs.scheduler }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +30,8 @@ jobs:
               - 'infra/**'
             ai:
               - 'ai/**'
+            scheduler:
+              - 'scheduler/**'
 
   build-frontend:
     needs: files-changed
@@ -67,9 +70,20 @@ jobs:
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/ai-worker
     secrets: inherit
 
+  build-and-push-scheduler:
+    name: Scheduler
+    needs: files-changed
+    if: needs.files-changed.outputs.scheduler == 'true'
+    uses: ./.github/workflows/build-and-push.yaml
+    with:
+      dockerfile: scheduler/Dockerfile
+      context: scheduler
+      image: leaders.cr.cloud.ru/leaders-hack-2024-gb/scheduler
+    secrets: inherit
+
   deploy-all:
     name: Deploy app
-    needs: [build-and-push-ai, build-and-push-backend, build-and-push-frontend]
+    needs: [build-and-push-ai, build-and-push-backend, build-and-push-frontend, build-and-push-scheduler]
     if:  ${{ always() && !failure() && !cancelled() }}
     uses: ./.github/workflows/deploy.yaml
     secrets: inherit
