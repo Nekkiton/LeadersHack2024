@@ -36,7 +36,7 @@ jobs:
     uses: ./.github/workflows/build-frontend.yaml
 
   build-and-push-frontend:
-    name: Build and push frontend
+    name: Frontend
     needs: build-frontend
     uses: ./.github/workflows/build-and-push.yaml
     with:
@@ -46,7 +46,7 @@ jobs:
     secrets: inherit
 
   build-and-push-backend:
-    name: Build and push backend
+    name: Backend
     needs: files-changed
     if: needs.files-changed.outputs.backend == 'true' || needs.files-changed.outputs.infra == 'true'
     uses: ./.github/workflows/build-and-push.yaml
@@ -57,7 +57,7 @@ jobs:
     secrets: inherit
 
   build-and-push-ai:
-    name: Build and push AI
+    name: AI
     needs: files-changed
     if: needs.files-changed.outputs.ai == 'true'
     uses: ./.github/workflows/build-and-push.yaml
