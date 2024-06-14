@@ -55,19 +55,35 @@ export default function VacancyResponses({ vacancy }: Props) {
               [styles.hidden]: !data.items.length,
             })}
           >
-            {/* TODO: data from api */}
             <div className={styles.sidebarBlock}>
               <h6>Соответствие вакансии</h6>
               <div className={styles.sidebarItem}>
                 <span className={styles.sidebarItemMainTitle}>Не важно</span>
-                <span className={styles.sidebarItemValue}>7</span>
+                <span className={styles.sidebarItemValue}>
+                  {data.match.all}
+                </span>
               </div>
               <div className={styles.sidebarItem}>
-                <span>от 30%</span>
-                <span className={styles.sidebarItemValue}>6</span>
+                <span>от 50%</span>
+                <span className={styles.sidebarItemValue}>
+                  {data.match.gte50}
+                </span>
+              </div>
+              <div className={styles.sidebarItem}>
+                <span>от 70%</span>
+                <span className={styles.sidebarItemValue}>
+                  {data.match.gte70}
+                </span>
+              </div>
+              <div className={styles.sidebarItem}>
+                <span>от 90%</span>
+                <span className={styles.sidebarItemValue}>
+                  {data.match.gte90}
+                </span>
               </div>
             </div>
-            <span className={styles.sidebarSeparator} />
+            {/* TODO */}
+            {/* <span className={styles.sidebarSeparator} />
             <div className={styles.sidebarBlock}>
               <h6>Воронка</h6>
               <div className={styles.sidebarItem}>
@@ -78,7 +94,7 @@ export default function VacancyResponses({ vacancy }: Props) {
                 <span>Неразобранные</span>
                 <span className={styles.sidebarItemValue}>4</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       )}

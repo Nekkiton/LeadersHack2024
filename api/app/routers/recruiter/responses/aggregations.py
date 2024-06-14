@@ -20,7 +20,7 @@ PAGINATED_MATCH_RESPONSES = lambda query, page, limit: [
                 "gte90": {"$first": "$9.c"}
             },
             "total_pages": {
-                "$trunc": [{
+                "$ceil": [{
                     "$divide": [
                         {"$first": "$0.c"},
                         limit
