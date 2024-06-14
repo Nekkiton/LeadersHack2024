@@ -2,8 +2,10 @@ FROM python:3.12.3
 
 WORKDIR /code
 
-COPY . /code
+COPY ./requirements.txt /code/requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-CMD python main.py
+COPY . /code/
+
+CMD ["python", "main.py"]

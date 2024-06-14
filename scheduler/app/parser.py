@@ -30,18 +30,29 @@ def parse_vacancies_from_rntgroup() -> None:
             vacancy = BeautifulSoup(get(url).text, "html.parser")
             title = vacancy.find(name="h1", attrs={"class": "block-title-text"}).getText(strip=True)
             content_blocks = vacancy.find(attrs={"id": "blocks_wrapper"}).find_all(recursive=False)[1:-1]
+
             description_and_tasks = content_blocks[0].find(name="div", attrs={"class": "block-subtitle"})
             description_and_tasks = description_and_tasks.getText(separator="|||", strip=True).split("|||")
             description = description_and_tasks[0]
-            tasks = description_and_tasks[2:]
-            requirements = content_blocks[-2].getText(separator="|||", strip=True).split("|||")[1:]
+            responsibilities = description_and_tasks[2:]
+            
             conditions_raw = content_blocks[-1].find_all(name="div", attrs={"class": "service-name block-el-title"})
             conditions = [condition.getText(strip=True) for condition in conditions_raw]
+
+            candidate_expectation = additions = None
+            blocks_count = len(content_blocks)
+            if blocks_count > 2:
+                candidate_expectation = content_blocks[1].getText(separator="|||", strip=True).split("|||")[1:]
+
+                if blocks_count >= 4:
+                    additions = content_blocks[2].getText(separator="|||", strip=True).split("|||")[1:]
+
             new_vacancies[url] = {
                 "title": title,
                 "description": description,
-                "tasks": tasks,
-                "requirements": requirements,
+                "responsibilities": responsibilities,
+                "candidate_expectation": candidate_expectation,
+                "additions": additions,
                 "conditions": conditions,
                 "source": {
                     "company": "RNTGroup",

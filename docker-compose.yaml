@@ -10,8 +10,6 @@ services:
       - 27017:27017 # to open db for localhost
     volumes:
       - data-vol:/data/db
-    networks:
-      - back_network
 
   backend:
     container_name: backend
@@ -24,9 +22,6 @@ services:
     restart: always
     ports:
       - 8000:8000
-    networks:
-      - front_network
-      - back_network
     depends_on:
       - mongo
     develop:
@@ -43,8 +38,6 @@ services:
       args:
          - NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
     restart: always
-    networks:
-      - front_network
     ports:
       - 80:3000
       - 443:3000
@@ -65,8 +58,6 @@ services:
       - path: ./ai/.env.local
         required: true
     restart: always
-    networks:
-      - front_network
     ports:
       - 4000:4000
     develop:
@@ -75,9 +66,22 @@ services:
           path: ./ai
           target: /app
 
-networks:
-  front_network:
-  back_network:
+  scheduler:
+    container_name: scheduler
+    build:
+      context: scheduler
+      dockerfile: Dockerfile
+    env_file: 
+      - path: ./scheduler/.env.local
+        required: true
+    restart: always
+    depends_on:
+      - mongo
+    develop:
+      watch:
+        - action: sync
+          path: ./scheduler
+          target: /app
 
 volumes:
   data-vol:

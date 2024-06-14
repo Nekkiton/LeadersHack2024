@@ -13,7 +13,7 @@ client = OpenAI(
 
 cv_assistant = client.beta.assistants.create(
   name="CV Parse Assistant",
-  instructions="You are assistant of it recrutier. You have to get information from file with candidates CVs and parse it correctly.",
+  instructions="You are assistant of it recruiter. You have to get information from file with candidates CVs and parse it correctly.",
   model="gpt-4o",
   tools=[{"type": "file_search"}],
 )

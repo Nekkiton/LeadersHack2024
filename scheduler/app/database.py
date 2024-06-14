@@ -2,13 +2,9 @@ import logging
 from app.settings import Settings
 import pymongo
 
-mongo_client = pymongo.MongoClient(
-    host=Settings.MONGO_HOST,
-    username=Settings.MONGO_USERNAME,
-    password=Settings.MONGO_PASSWORD
-    )
+mongo_client = pymongo.MongoClient(Settings.MONGO_CONNECTION_STRING)
 mongo_db = mongo_client[Settings.MONGO_DATABASE]
 
-Vacancies = mongo_db.get_collection("vacancies")
+Vacancies = mongo_db.get_collection("unparsed_vacancies")
 
 logging.info("Подключение к MongoDB установлено")
