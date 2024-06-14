@@ -2,6 +2,7 @@ from app.database import Vacancies
 from bs4 import BeautifulSoup
 from requests import get
 import logging
+import re
 
 
 def parse_vacancies_from_rntgroup() -> None:
@@ -40,12 +41,21 @@ def parse_vacancies_from_rntgroup() -> None:
             conditions = [condition.getText(strip=True) for condition in conditions_raw]
 
             candidate_expectation = additions = None
-            blocks_count = len(content_blocks)
-            if blocks_count > 2:
-                candidate_expectation = content_blocks[1].getText(separator="|||", strip=True).split("|||")[1:]
 
-                if blocks_count >= 4:
-                    additions = content_blocks[2].getText(separator="|||", strip=True).split("|||")[1:]
+            for next_content_block in content_blocks[1:-1]:
+                find_responsibilities = next_content_block.find(string=re.compile("Задачи",flags=re.IGNORECASE))
+                find_candidate_expectation = next_content_block.find(string=re.compile("навыки|знания",flags=re.IGNORECASE))
+                find_additions = next_content_block.find(string=re.compile("Будет плюсом",flags=re.IGNORECASE))
+                
+                extracted_info = next_content_block.getText(separator="|||", strip=True).split("|||")[1:]
+                if find_responsibilities is not None:
+                    responsibilities = extracted_info
+                elif find_candidate_expectation is not None:
+                    candidate_expectation = extracted_info
+                elif find_additions is not None or additions is None:
+                    additions = extracted_info
+                else:
+                    additions += extracted_info
 
             new_vacancies[url] = {
                 "title": title,
