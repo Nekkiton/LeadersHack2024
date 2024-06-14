@@ -1,6 +1,10 @@
 from datetime import datetime, timezone
 from typing import Literal
+from requests import get
 import bcrypt
+
+from app.settings import Settings
+from app.exceptions import NOT_ADDED_YET
 
 
 def get_now() -> datetime:
@@ -27,8 +31,16 @@ def validate_password(password: str, hashed_password: str) -> bool:
 def get_meet_url(platform: Literal["telemost", "googlemeet", "zoom"], date: datetime) -> str:
     match platform:
         case "telemost":
-            return ""
+            response = get(
+                url="https://cloud-api.yandex.net/v1/telemost-api/conferences",
+                headers={"Authorization": "OAuth " + Settings.TELEMOST_API},
+                json={"access_level": "PUBLIC",}
+            )
+            if response.status_code != 200:
+                print(response.status_code, response.content.decode("utf-8"))
+                return "Не удалось создать"
+            return response.json().get("join_url", "Не удалось создать")
         case "googlemeet":
-            return ""
+            raise NOT_ADDED_YET
         case "zoom":
-            return ""
+            raise NOT_ADDED_YET

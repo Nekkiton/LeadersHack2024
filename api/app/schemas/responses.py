@@ -51,7 +51,7 @@ class CandidateResponseAnswer(BaseModel):
     status: Literal["approve", "reject"]
     message: Optional[str] = None
     meet_at: Optional[datetime] = None
-    meet_on: Optional[Literal["Zoom", "GoogleMeet", "Telemost"]] = None
+    meet_on: Optional[Literal["zoom", "googlemeet", "telemost"]] = None
 
     @model_validator(mode="after")
     def check_fields_by_status(self) -> Self:

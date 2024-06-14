@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import APIRouter
 from datetime import timedelta
 
-from app.utils import get_now
+from app.utils import get_meet_url, get_now
 from app.schemas import OID
 from app.literals import Role
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
@@ -133,14 +133,22 @@ async def answer_response(
     else:
         if response["status"] != "waiting_for_candidate":
             raise NOT_FOUND
-        # TODO: we should check auto_interview in prev response
-        # auto_interview = Stages.find_one({"_id": response["stage_id"], "status": "active"}, {"auto_interview": 1})["auto_interview"]
+        curr_stage = Stages.find_one({"_id": response["stage_id"]}, {"position": 1})
+        prev_stage = Stages.find_one({
+                "position": {"$lt": curr_stage["position"]}, 
+                "vacancy_id": response["vacancy_id"],
+                "status": "active"
+            },
+            sort={"position": -1}
+            )        
+        auto_interview = prev_stage["auto_interview"]
         status = "waiting_for_recruiter"
-        # if auto_interview:
-        if payload.meet_on and payload.meet_at:
-            if payload.meet_on is None or payload.meet_at is None:
-                raise REQUIRED_PARAMS_MISSING(["meet_on", "meet_at"])
-            url = "https://www.google.com"
+        if auto_interview:
+            if payload.meet_on is None:
+                raise REQUIRED_PARAMS_MISSING("meet_on")
+            if payload.meet_at is None:
+                raise REQUIRED_PARAMS_MISSING("meet_at")
+            url = get_meet_url(payload.meet_on, payload.meet_at)
             message = {
                 "type": "candidate_answer",
                 "sender_role": "candidate",
