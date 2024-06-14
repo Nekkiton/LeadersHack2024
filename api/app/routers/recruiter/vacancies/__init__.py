@@ -5,7 +5,7 @@ from pymongo import DeleteMany, InsertOne, UpdateMany, UpdateOne
 
 from app.schemas import OID
 from app.utils import get_now
-from app.oauth import RequiredRecruiterID
+from app.oauth import RecruiterId
 from app.literals import VacancyStatus, WorkScopes
 from app.exceptions import VACANCY_DOESNT_BELONG_TO_RECRUIT
 from app.database import DetailedVacancies, Responses, Stages, Vacancies
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/vacancies")
     response_model=VacanciesGet
 )
 async def get_recruiter_vacancies(
-    recruiter_id: RequiredRecruiterID,
+    recruiter_id: RecruiterId,
     page: int = Query(0, title="Страница"),
     limit: int = Query(25, title="Элементов на странице"),
     query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
@@ -52,7 +52,7 @@ async def get_recruiter_vacancies(
     response_model=VacancyGet
     )
 async def create_vacancy(
-    user_id: RequiredRecruiterID,
+    user_id: RecruiterId,
     payload: VacancyPost
     ):
     now = get_now()
@@ -85,7 +85,7 @@ async def create_vacancy(
     response_model=VacancyGet
     )
 async def update_vacancy(
-    user_id: RequiredRecruiterID,
+    user_id: RecruiterId,
     vacancy_id: OID,
     payload: VacancyUpdate
     ):
@@ -144,7 +144,7 @@ async def update_vacancy(
     response_model=VacancyGet
     )
 async def update_vacancy_status(
-    user_id: RequiredRecruiterID,
+    user_id: RecruiterId,
     vacancy_id: OID,
     status: VacancyStatus
     ):

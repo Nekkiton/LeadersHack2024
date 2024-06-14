@@ -3,7 +3,7 @@ from fastapi import APIRouter, Query
 
 from app.schemas import OID
 from app.exceptions import NOT_FOUND
-from app.oauth import RequiredRecruiterID
+from app.oauth import RecruiterId
 from app.literals import Skills, WorkExperiences
 from app.schemas.responses import ResponseMinGet
 from app.database import DetailedResponses, Users, Vacancies
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/candidates")
     response_model=CandidatesGet
     )
 async def get_candidates_via_filters(
-    _: RequiredRecruiterID,
+    _: RecruiterId,
     fio: str = "",
     experience: Optional[List[WorkExperiences]] = Query(None, alias="experience[]"),
     skills: Optional[List[Skills]] = Query(None, alias="skills[]"),
@@ -51,7 +51,7 @@ async def get_candidates_via_filters(
     response_model=CandidatesMatchGet
 )
 async def get_candidates_via_vacancy(
-    recruiter_id: RequiredRecruiterID,
+    recruiter_id: RecruiterId,
     vacancy_id: OID,
     page: int = 0,
     limit: int = 25,
@@ -81,7 +81,7 @@ async def get_candidates_via_vacancy(
     response_model=CandidateGet
 )
 async def get_candidate(
-    _: RequiredRecruiterID,
+    _: RecruiterId,
     candidate_id: OID
 ):
     return Users.find_one({"_id": candidate_id, "role": "candidate", "filled": True})
@@ -93,7 +93,7 @@ async def get_candidate(
     response_model=List[ResponseMinGet]
 )
 async def get_candidate_history(
-    _: RequiredRecruiterID,
+    _: RecruiterId,
     candidate_id: OID,
 ):
     return list(DetailedResponses.find({"candidate_id": candidate_id, "filled": True}))

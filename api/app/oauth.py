@@ -113,27 +113,27 @@ def delete_tokens(response: Response):
         )
 
 
-RequiredUserID = Annotated[ObjectId, Depends(require_user)]
+UserId = Annotated[ObjectId, Depends(require_user)]
 
 
-def require_candidate(user_id: RequiredUserID) -> ObjectId:
+def require_candidate(user_id: UserId) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "candidate"}):
         raise ONLY_CANDIDATE
     return user_id
 
 
-def require_filled_candidate(user_id: RequiredUserID) -> ObjectId:
+def require_filled_candidate(user_id: UserId) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "candidate", "filled": True}):
         raise FILL_CANDIDATE
     return user_id
 
 
-def require_recruiter(user_id: RequiredUserID) -> ObjectId:
+def require_recruiter(user_id: UserId) -> ObjectId:
     if not Users.count_documents({"_id": user_id, "role": "recruiter"}):
         raise ONLY_RECRUITER
     return user_id
 
 
-RequiredCandidateID = Annotated[ObjectId, Depends(require_candidate)]
-RequiredRecruiterID = Annotated[ObjectId, Depends(require_recruiter)]
-RequiredFilledCandidateID = Annotated[ObjectId, Depends(require_filled_candidate)]
+CandidateId = Annotated[ObjectId, Depends(require_candidate)]
+RecruiterId = Annotated[ObjectId, Depends(require_recruiter)]
+FilledCandidateId = Annotated[ObjectId, Depends(require_filled_candidate)]

@@ -3,7 +3,7 @@ from fastapi import APIRouter, Query
 
 from app.schemas import OID
 from app.exceptions import NOT_FOUND
-from app.oauth import RequiredCandidateID
+from app.oauth import CandidateId
 from app.literals import Skills, WorkScopes
 from app.database import DetailedVacancies, Users
 from app.schemas.vacancies import VacanciesCandidateGet, VacancyCandidateGet
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/vacancies")
     response_model=VacanciesCandidateGet
 )
 async def get_vacancies(
-    candidate_id: RequiredCandidateID,
+    candidate_id: CandidateId,
     page: int = Query(0, title="Страница"),
     limit: int = Query(25, title="Элементов на странице"),
     query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
@@ -54,7 +54,7 @@ async def get_vacancies(
     response_model=VacancyCandidateGet
 )
 async def get_vacancy_by_id(
-    candidate_id: RequiredCandidateID,
+    candidate_id: CandidateId,
     vacancy_id: OID,
 ):
     candidate = Users.find_one({"_id": candidate_id})

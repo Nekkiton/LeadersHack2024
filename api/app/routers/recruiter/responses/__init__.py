@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from app.schemas import OID
 from app.utils import get_now
-from app.oauth import RequiredRecruiterID
+from app.oauth import RecruiterId
 from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import RecruiterResponseAnswer, Response, ResponsesGet
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_DOESNT_BELONG_TO_RECRUIT
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/responses")
     response_model=ResponsesGet
 )
 async def get_responses(
-    recruiter_id: RequiredRecruiterID,
+    recruiter_id: RecruiterId,
     page: int = 0,
     limit: int = 25,
     vacancy_id: Optional[OID] = None
@@ -51,7 +51,7 @@ async def get_responses(
     response_model=Response,
     )
 async def create_response(
-    recruiter_id: RequiredRecruiterID,
+    recruiter_id: RecruiterId,
     candidate_id: OID,
     vacancy_id: OID,
     message: str
@@ -93,7 +93,7 @@ async def create_response(
     response_model=Response
 )
 async def answer_response(
-    recruiter_id: RequiredRecruiterID,
+    recruiter_id: RecruiterId,
     response_id: OID,
     payload: RecruiterResponseAnswer,
 ):
@@ -152,7 +152,7 @@ async def answer_response(
     response_model=Response
 )
 async def leave_response_comment(
-    recruiter_id: RequiredRecruiterID,
+    recruiter_id: RecruiterId,
     response_id: OID,
     comment: str
 ):

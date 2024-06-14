@@ -9,7 +9,7 @@ from app.schemas.candidates import CandidateGet, CandidatePost, CandidatePartial
 from app.schemas.recruiters import RecruiterGet, RecruiterPost
 from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED
 from app.utils import get_now, hash_password, validate_password
-from app.oauth import RequiredCandidateID, RequiredUserID, RequiredRecruiterID
+from app.oauth import CandidateId, UserId, RecruiterId
 
 from .schemas import PasswordUpdate
 
@@ -21,7 +21,7 @@ router = APIRouter(tags=["Пользователь"], prefix="/self")
     name="Получить себя",
     response_model=CandidateGet | RecruiterGet | UserGet | None
 )
-async def get_self(user_id: RequiredUserID):
+async def get_self(user_id: UserId):
     return Users.find_one({"_id": user_id})
 
 
@@ -30,7 +30,7 @@ async def get_self(user_id: RequiredUserID):
     name="Обновить пароль",
     status_code=200
 )
-async def update_self_password(user_id: RequiredUserID, payload: PasswordUpdate):
+async def update_self_password(user_id: UserId, payload: PasswordUpdate):
     user = Users.find_one({"_id": user_id}, {"password": 1})
     if not validate_password(payload.old_password, user["password"]):
         raise BAD_OLD_PASSWORD
@@ -49,7 +49,7 @@ async def update_self_password(user_id: RequiredUserID, payload: PasswordUpdate)
     response_model=CandidateGet
     )
 async def fill_as_candidate(
-    user_id: RequiredCandidateID,
+    user_id: CandidateId,
     payload: CandidatePost
     ):
     try:
@@ -77,7 +77,7 @@ async def fill_as_candidate(
     response_model=CandidatePartial | None
 )
 async def analyse_candidate_cv(
-    user_id: RequiredCandidateID,
+    user_id: CandidateId,
     file: UploadFile
 ):
     print(file.filename)
@@ -91,7 +91,7 @@ async def analyse_candidate_cv(
     response_model=RecruiterGet,
     )
 async def fill_as_recruiter(
-    user_id: RequiredRecruiterID,
+    user_id: RecruiterId,
     payload: RecruiterPost,
     ):
     try:
