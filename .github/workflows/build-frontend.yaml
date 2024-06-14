@@ -5,6 +5,7 @@ on:
 
 jobs:
   build-frontend:
+    name: Validation build
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -12,6 +12,7 @@ jobs:
       backend: ${{ steps.changes.outputs.backend }}
       frontend: ${{ steps.changes.outputs.frontend }}
       infra: ${{ steps.changes.outputs.infra }}
+      ai: ${{ steps.changes.outputs.ai }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,10 +27,12 @@ jobs:
               - 'frontend/**'
             infra:
               - 'infra/**'
+            ai:
+              - 'ai/**'
 
   build-frontend:
     needs: files-changed
-    if: needs.files-changed.outputs.frontend == 'true' || needs.files-changed.outputs.infra == 'true'
+    if: needs.files-changed.outputs.frontend == 'true'
     uses: ./.github/workflows/build-frontend.yaml
 
   deploy-frontend:
@@ -49,4 +52,14 @@ jobs:
       dockerfile: api/Dockerfile
       context: api
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/backend
+    secrets: inherit
+
+  deploy-ai:
+    needs: files-changed
+    if: needs.files-changed.outputs.ai == 'true'
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      dockerfile: ai/Dockerfile
+      context: ai
+      image: leaders.cr.cloud.ru/leaders-hack-2024-gb/ai-worker
     secrets: inherit

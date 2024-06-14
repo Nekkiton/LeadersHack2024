@@ -96,6 +96,7 @@ jobs:
             export JWT_PRIVATE_KEY_PATH='/cert/jwtRS256.key'
             export JWT_ALGORITHM='RS256'
             export ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
 
             docker compose pull
             docker compose up -d

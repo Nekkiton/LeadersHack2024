@@ -6,8 +6,6 @@ services:
     env_file: 
       - path: ./api/.env.local
         required: true
-      - path: ./api/.env.prod
-        required: false
     ports:
       - 27017:27017 # to open db for localhost
     volumes:
@@ -56,6 +54,25 @@ services:
       watch:
         - action: sync
           path: ./frontend
+          target: /app
+
+  ai:
+    container_name: ai
+    build:
+      context: ai
+      dockerfile: Dockerfile
+    env_file: 
+      - path: ./ai/.env.local
+        required: true
+    restart: always
+    networks:
+      - front_network
+    ports:
+      - 4000:4000
+    develop:
+      watch:
+        - action: sync
+          path: ./ai
           target: /app
 
 networks:

@@ -76,7 +76,7 @@ async def fill_as_candidate(
     name="Получить данные соискателя из файла",
     response_model=CandidatePartial | None
 )
-async def analyse_recruiter_file(
+async def analyse_candidate_cv(
     user_id: RequiredCandidateID,
     file: UploadFile
 ):
