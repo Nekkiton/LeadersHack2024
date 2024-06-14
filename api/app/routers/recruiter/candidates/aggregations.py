@@ -1,6 +1,6 @@
 from app.aggregations import get_match_field_stage
 
-USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
+USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit, match: [
     {
         "$match": {
             "role": "candidate"
@@ -20,13 +20,8 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
         "$sort": {"match": -1}
     },
     {
-        "$facet": {
-            "0": [{"$count": "c"}],
-            "3": [{"$match": {"match": {"$gte": 30}}}, {"$count": "c"}],
-            "5": [{"$match": {"match": {"$gte": 50}}}, {"$count": "c"}],
-            "7": [{"$match": {"match": {"$gte": 75}}}, {"$count": "c"}],
-            "9": [{"$match": {"match": {"$gte": 90}}}, {"$count": "c"}],
-            "items": []
+        "$match": {
+            "match": {"$gte": match}
         }
     },
     {
