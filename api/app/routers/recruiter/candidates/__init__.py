@@ -54,7 +54,6 @@ async def get_candidates_via_vacancy(
     vacancy_id: OID,
     page: int = 0,
     limit: int = 25,
-    match: int = 40,
 ):
     vacancy = Vacancies.find_one({"_id": vacancy_id, "recruiter_id": recruiter_id})
     if vacancy is None:
@@ -62,6 +61,12 @@ async def get_candidates_via_vacancy(
     result = list(Users.aggregate(USERS_MATCH_BY_VACANCY(vacancy, page, limit, match)))
     if not len(result):
         return {
+            "match": {
+                "all": 0,
+                "gte50": 0,
+                "gte70": 0,
+                "gte90": 0,
+            },
             "total_pages": 0,
             "page": 0,
             "items": []

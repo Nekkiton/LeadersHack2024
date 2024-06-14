@@ -21,7 +21,7 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit, match: [
     },
     {
         "$match": {
-            "match": {"$gte": match}
+            "match": {"$gte": 40}
         }
     },
     {

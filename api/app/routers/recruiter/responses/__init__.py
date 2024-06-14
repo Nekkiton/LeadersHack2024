@@ -37,7 +37,10 @@ async def get_responses(
                 "gte50": 0,
                 "gte70": 0,
                 "gte90": 0,
-            }
+            },
+            "total_pages": 0,
+            "page": 0,
+            "items": []
         }
     return result[0]
 
