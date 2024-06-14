@@ -2,7 +2,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Candidate } from '@/types/entities/candidate'
 import { Vacancy } from '@/types/entities/vacancy'
 import { useCurRecruiterInviteCandidate } from '@/api/recruiters'
-import { useVacancies } from '@/api/vacancies'
+import { useCurRecruiterVacancies } from '@/api/vacancies'
 import Modal, { ModalStateProps } from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
@@ -46,7 +46,10 @@ export default function InviteCandidateModal({
     )
   })
 
-  const vacancies = useVacancies({ limit: 9999 }, { enabled: !vacancy })
+  const vacancies = useCurRecruiterVacancies(
+    { limit: 9999 },
+    { enabled: !vacancy }
+  )
 
   return (
     <Modal
