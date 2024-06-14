@@ -1,3 +1,4 @@
+import math
 from typing import Optional
 from fastapi import APIRouter, Query
 
@@ -26,7 +27,7 @@ async def get_vacancies(
     if status is not None:
         query['status'] = status
     return {
-        "total_pages": DetailedVacancies.count_documents(query) // limit,
+        "total_pages": math.ceil(DetailedVacancies.count_documents(query) / limit),
         "page": page,
         "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
     }

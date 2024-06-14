@@ -1,3 +1,4 @@
+import math
 from typing import Optional
 from fastapi import APIRouter
 
@@ -27,7 +28,7 @@ async def get_responses(
     }
     if vacancy_id:
         query["vacancy_id"] = vacancy_id
-    total_pages = DetailedResponses.count_documents(query) // limit
+    total_pages = math.ceil(DetailedResponses.count_documents(query) / limit)
     items = DetailedResponses.find(query).skip(page * limit).limit(limit)
     return {
         "total_pages": total_pages,

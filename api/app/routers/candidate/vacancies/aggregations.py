@@ -33,7 +33,7 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         "$project": {
             "page": {"$toInt": page},
             "total_pages": {
-                "$trunc": 
+                "$ceil": 
                 [{
                     "$divide": [
                         "$total_pages.count",

@@ -47,7 +47,7 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
                 "gte90": {"$first": "$9.c"},
             },
             "total_pages": {
-                "$trunc": [{
+                "$ceil": [{
                     "$divide": [
                         {"$first": "$0.c"},
                         2
@@ -94,7 +94,7 @@ USERS_BY_FIO = lambda query, page, limit: [
         "$project": {
             "page": {"$toInt": page},
             "total_pages": {
-                "$trunc": 
+                "$ceil": 
                 [{
                     "$divide": [
                         "$total_pages.count",
