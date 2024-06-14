@@ -70,5 +70,6 @@ jobs:
   deploy-all:
     name: Deploy app
     needs: [build-and-push-ai, build-and-push-backend, build-and-push-frontend]
+    if:  ${{ always() && !failure() && !cancelled() }}
     uses: ./.github/workflows/deploy.yaml
     secrets: inherit
