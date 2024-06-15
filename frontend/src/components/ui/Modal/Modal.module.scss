@@ -36,6 +36,10 @@
   .container:global(:is(.enter-done, .enter-active, .appear-active)) & {
     transform: none;
   }
+
+  > * {
+    flex-shrink: 0;
+  }
 }
 
 .modalHeader {
