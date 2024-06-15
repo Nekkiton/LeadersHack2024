@@ -3,6 +3,7 @@ from typing import get_args
 from fastapi import APIRouter, UploadFile
 from app.ai import parse_cv, process_vacancy
 from app.schemas.vacancies import VacancyPartial
+from app.schemas.candidates import CandidatePartial
 from app.literals import WorkSchedules, WorkExperiences, WorkTypes, WorkScopes, Skills
 
 router = APIRouter(tags=["Публичное"], prefix="/public")
@@ -10,6 +11,7 @@ router = APIRouter(tags=["Публичное"], prefix="/public")
 @router.post(
     "/parse-cv",
     name="Преобразовать данные из файла с резюме",
+    description="Извлекает данные из файла с резюме и добавляет поля на основе полученной информации"
 )
 async def analyse_candidate_cv(file: UploadFile):
     cv = parse_cv(file)
@@ -21,6 +23,7 @@ async def analyse_candidate_cv(file: UploadFile):
 @router.post(
     "/process-vacancy",
     name="Преобразовать данные вакансии",
+    description="Извлекает данные из описания вакансии. Основываясь на полученных данных, добавляет теги и описание к вакансии",
 )
 async def process_vacanсy(vacancy: VacancyPartial):
     vacancy = process_vacancy(vacancy)
