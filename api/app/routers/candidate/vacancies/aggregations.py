@@ -15,7 +15,7 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         candidate.get("work_schedule", ""),
     ),
     {
-        "$match": {"match": {"$gt": 50}}
+        "$match": {"match": {"$gte": 50}}
     },
     {
         "$sort": {"match": -1}
