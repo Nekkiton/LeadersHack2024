@@ -1,0 +1,8 @@
+from pymongo import MongoClient
+
+from app.settings import Settings
+
+mongo_db = MongoClient(Settings.MONGO_CONNECTION_STRING).get_database(Settings.MONGO_DATABASE)
+
+Tasks = mongo_db.get_collection("tasks")
+Notifications = mongo_db.get_collection("notifications")
