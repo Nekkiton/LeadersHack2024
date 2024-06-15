@@ -21,7 +21,7 @@ async def proccess_notification(
     content: str, 
     user_id: ObjectId, 
     ):
-    user = Users.find_one({"_id": user_id, "preferences.email": True}, {"email": 1})
+    user = Users.find_one({"_id": user_id, "preferences.email_notify": True}, {"email": 1})
     if user is not None:
         send_mail(receiver=user["email"], subject=title, content=content)
     create_app_notification(title, content, user_id)

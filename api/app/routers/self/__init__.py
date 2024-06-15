@@ -11,7 +11,7 @@ from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED, FAILED_CV_ANALY
 from app.utils import get_now, hash_password, validate_password, analyze_candidate_cv
 from app.oauth import CandidateId, UserId, RecruiterId
 
-from .schemas import PasswordUpdate
+from .schemas import PasswordUpdate, Preferences
 from .notifications import router as Notifications
 
 router = APIRouter(tags=["Пользователь"], prefix="/self")
@@ -114,3 +114,15 @@ async def fill_as_recruiter(
     except DuplicateKeyError:
         raise EMAIL_ALREADY_USED
     return user
+
+
+@router.put(
+    "/preferences",
+    name="Обновить настройки пользователя",
+    response_model=CandidateGet | RecruiterGet | UserGet | None
+    )
+async def update_preferences(
+    user_id: UserId,
+    payload: Preferences,
+    ):
+    return Users.find_one_and_update({"_id": user_id}, {"$set": {"preferences": payload.model_dump()}}, return_document=True)
