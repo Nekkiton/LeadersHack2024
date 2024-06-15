@@ -39,7 +39,7 @@ export default function SidebarMenuLayout({ children }: Props) {
         disabled: user.status === 'success' && !user.value?.name,
       },
       {
-        name: 'Нвовости',
+        name: 'Новости',
         url: Routes.recruiterNews,
         icon: <Icon icon="fileFilled" />,
         disabled: user.status === 'success' && !user.value?.name,

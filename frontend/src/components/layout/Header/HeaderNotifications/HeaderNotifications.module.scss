@@ -1,12 +1,85 @@
 @import '@/assets/css/config';
 
+.referenceIconContainer {
+  &.marked {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: 1px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $orange;
+    }
+  }
+}
+
 .popover {
   border: none;
+  width: 400px;
+  right: -100px;
 }
 
 .notificationsContainer {
   @include card;
-  width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notifications {
+  display: flex;
+  flex-direction: column;
+  gap: 16;
+  max-height: 430px;
+}
+
+.notification {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &:not(:last-child) {
+    position: relative;
+    margin-bottom: 16px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: $gray-5;
+    }
+  }
+}
+
+.notificationHeader {
+  @include caption-1;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $gray-3;
+}
+
+.notificationHeaderMark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $orange;
+}
+
+.notificationText {
+  @include paragraph-3;
+
+  white-space: pre-wrap;
+  text-wrap: pretty;
 }
 
 @include tablet {

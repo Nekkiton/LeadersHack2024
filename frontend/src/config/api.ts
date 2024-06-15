@@ -42,6 +42,7 @@ import {
   GetRecruiterResponsesParams,
   Response,
 } from '@/types/entities/response'
+import { Notification } from '@/types/entities/notification'
 
 export const Api = {
   auth: {
@@ -203,6 +204,11 @@ export const Api = {
       >('/recruiter/candidates/by-vacancy', {
         params,
       }).then((res) => res.data),
+  },
+
+  notifications: {
+    all: () =>
+      Axios.get<Notification[]>('/self/notifications').then((res) => res.data),
   },
 
   news: {
