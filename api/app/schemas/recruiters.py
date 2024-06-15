@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
@@ -21,8 +21,8 @@ class RecruiterPost(BaseModel):
     patronymic: Optional[str] = None
     phone: PhoneNumber
     telegram: str
-    interview_per_day: int
-    interview_slots: List[InterviewSlotItem]
+    interview_per_day: int = Field(gt=0)
+    interview_slots: List[InterviewSlotItem] = Field(min_length=1)
 
 
 class RecruiterGet(RecruiterPost, UserGet):
