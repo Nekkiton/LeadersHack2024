@@ -218,7 +218,7 @@ async def get_response_schedule(
         day += timedelta(days=1)
         print("СМОТРЕТЬ ЗДЕСЬ: ", str(day.date()))
         scheduled = scheduled_zip.get(str(day.date()))
-        day_slots = slots
+        day_slots = slots.copy()
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
                 continue
