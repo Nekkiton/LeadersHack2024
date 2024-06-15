@@ -4,7 +4,6 @@ from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_core import core_schema
 
-from api.app.routers.self.schemas import Preferences
 from app.literals import Role
 
 
