@@ -4,14 +4,14 @@ from pymongo.errors import DuplicateKeyError
 
 from app.utils import get_now
 from app.database import Users
-from app.schemas import UserGet
+from app.schemas import UserGet, Preferences
 from app.schemas.candidates import CandidateGet, CandidatePost, CandidatePartial
 from app.schemas.recruiters import RecruiterGet, RecruiterPost
 from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED, FAILED_CV_ANALYSIS
 from app.utils import get_now, hash_password, validate_password, analyze_candidate_cv
 from app.oauth import CandidateId, UserId, RecruiterId
 
-from .schemas import PasswordUpdate, Preferences
+from .schemas import PasswordUpdate
 from .notifications import router as Notifications
 
 router = APIRouter(tags=["Пользователь"], prefix="/self")

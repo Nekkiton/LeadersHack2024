@@ -4,6 +4,7 @@ from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_core import core_schema
 
+from api.app.routers.self.schemas import Preferences
 from app.literals import Role
 
 
@@ -52,12 +53,17 @@ class BaseGet(BaseModel):
     id: OID = Field(alias="_id")
 
 
+class Preferences(BaseModel):
+    email_notify: bool = False
+
+
 class UserGet(BaseGet):
     """
     Минимальные возвращаемые данные по пользователю
     """
     email: EmailStr
     role: Role
+    preferences: Optional[Preferences] = None
     password_changed_at: Optional[datetime] = None
 
 
