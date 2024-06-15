@@ -195,7 +195,7 @@ async def get_response_schedule(
     ):
     # Возвращаем отклики рекрутера на час позже реального времени, 
     # чтобы ограничить возможность назначать интервью слишком рано
-    start = datetime.now(tz=timezone.utc) + timedelta(hours=1)
+    start = get_now() + timedelta(hours=1)
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
@@ -212,6 +212,7 @@ async def get_response_schedule(
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
+    # TODO day_of_year может сломаться, если разница между start и end больше года
     day = (start - timedelta(days=1)).date()
     result = []
     while day <= end.date():
