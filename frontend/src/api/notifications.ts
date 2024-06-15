@@ -4,7 +4,10 @@ import { createUseQuery } from '@/lib/create-use-query'
 
 export const useCurUserNotifications = createUseQuery(
   'notifications.all',
-  Api.notifications.all
+  Api.notifications.all,
+  {
+    refetchInterval: 1000 * 60 * 5,
+  }
 )
 
 export const useCurUserReadNotifications = createUseMutation(

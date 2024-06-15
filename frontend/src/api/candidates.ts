@@ -60,6 +60,7 @@ export const useCurCandidateAnswerToResponse = createUseMutation(
     invalidateQueriesFn: () => [
       { queryKey: ['candidates.me.responses'] },
       { queryKey: ['candidates.me.vacancy-response'] },
+      { queryKey: ['notifications.all'] },
     ],
     onSuccess: ([_, { status }], { toasts }) => {
       if (status === 'approve') {
