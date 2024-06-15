@@ -43,7 +43,9 @@ async def find_vacancies_via_cv(file: UploadFile):
     candidate = await analyze_candidate_cv(file)
     if not candidate:
         return []
-    return DetailedVacancies.find().limit(3) # TODO
+    return DetailedVacancies.find().limit(3)
+    # TODO: return 3 best vacancies for candidate with match percent
+    # candidate fields can be None (or [])!
 
 
 @router.get(
