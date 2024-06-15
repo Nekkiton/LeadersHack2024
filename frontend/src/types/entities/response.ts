@@ -65,3 +65,7 @@ export interface CurRecruiterAnswerToResponseData {
 export interface CommentResponseData {
   comment: string
 }
+
+export interface GetResponseScheduleParams {
+  end: string
+}

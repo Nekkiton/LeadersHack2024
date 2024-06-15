@@ -8,8 +8,7 @@ import {
 export interface Recruiter extends User {
   role: Role.Recruiter
   interview_per_day: number
-  // interview_slots: string[] // TODO
-  interview_slots?: InterviewSlot[] // TODO
+  interview_slots?: InterviewSlot[]
 }
 
 export interface UpdateRecruiterData {
