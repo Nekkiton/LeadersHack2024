@@ -92,6 +92,7 @@ def schedule_meeting(
     candidate_id: ObjectId, 
     platform: str,
     at: datetime,
+    vacancy_title: str
     ):
     Tasks.insert_one(
         {
@@ -111,7 +112,7 @@ def schedule_meeting(
         schedule_notification(
             _id,
             title="Запланирована встреча",
-            content=f"В {(at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}",
+            content=f"Встреча по вакансии «{vacancy_title}» назначена на {(at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}. Ссылка появится в уведомлении за 30 минут до интервью",
             )
 
 

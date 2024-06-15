@@ -1,3 +1,4 @@
+import pymongo
 from typing import List
 from fastapi import APIRouter
 
@@ -17,7 +18,7 @@ router = APIRouter(prefix="/notifications")
 async def get_notifications(
     user_id: UserId
     ):
-    return list(Notifications.find({"user_id": user_id}))
+    return list(Notifications.find({"user_id": user_id}).sort('created_at', pymongo.DESCENDING))
 
 
 @router.post(
