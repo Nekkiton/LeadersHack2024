@@ -1,6 +1,6 @@
 import math
 from typing import Optional
-from datetime import timedelta
+from datetime import datetime, timedelta
 from fastapi import APIRouter
 
 from app.utils import get_now, schedule_meeting
@@ -8,9 +8,11 @@ from app.schemas import OID
 from app.literals import Role
 from app.oauth import FilledCandidateId
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
-from app.database import DetailedResponses, Responses, Stages, Vacancies
+from app.database import DetailedResponses, Responses, Stages, Tasks, Users, Vacancies
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
+
+from .aggregations import DAYS_WITH_MAX_INTERVIEWS
 
 router = APIRouter(prefix="/responses")
 
@@ -187,8 +189,38 @@ async def answer_response(
     name="Расписание по отклику",
     )
 async def get_response_schedule(
-    candidate_id: FilledCandidateId,
+    _: FilledCandidateId,
     response_id: OID,
+    start: datetime,
+    end: datetime
 ):
-    # TODO
-    return
+    response = DetailedResponses.find_one({"_id": response_id})
+    recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
+    max_interviews = recruiter["interviews_per_day"]
+    slots = []
+    for slot in recruiter["interview_slots"]:
+        start_time = slot["start_time"].time()
+        end_time = slot["end_time"].time()
+        slot = start_time
+        while slot <= end_time:
+            slots.append(slot)
+            slot += timedelta(minutes=30)
+    scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
+    scheduled_zip = {}
+    if scheduled:
+        scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
+    day = start.date()
+    while day <= end.date():
+        day_of_year = day.timetuple().tm_yday
+        scheduled = scheduled_zip.get(day_of_year)
+        day_slots = slots
+        if scheduled:
+            if scheduled["interviews"] >= max_interviews:
+                continue
+            for slot in scheduled["slots"]:
+                day_slots.remove(slot.time())
+        yield {
+            "day": day,
+            "slots": day_slots
+        }
+        day += timedelta(days=1)
