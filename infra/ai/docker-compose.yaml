@@ -30,7 +30,7 @@ services:
     labels:
       # Traefik Dashboard HTTP with BasicAuth
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`leaders-gb.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.traefik.rule=Host(`ai.leaders-gb.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       - "traefik.http.routers.traefik.entrypoints=traefik"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=auth"

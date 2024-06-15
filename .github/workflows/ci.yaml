@@ -86,6 +86,4 @@ jobs:
     needs: [build-and-push-ai, build-and-push-backend, build-and-push-frontend, build-and-push-scheduler]
     if:  ${{ always() && !failure() && !cancelled() }} || needs.files-changed.outputs.infra == 'true'
     uses: ./.github/workflows/deploy.yaml
-    with:
-      deploy_ai: true
     secrets: inherit

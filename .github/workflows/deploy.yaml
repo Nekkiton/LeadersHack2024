@@ -2,10 +2,6 @@ name: 'Project deploy'
 
 on:
   workflow_call:
-    inputs:
-      deploy_ai:
-        required: true
-        type: boolean
 
 jobs:
   deploy:
@@ -55,7 +51,6 @@ jobs:
             docker image prune -a -f
 
       - name: (AI) copy file via ssh
-        if: ${{ github.event.inputs.deploy_ai }}
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST_AI }}
@@ -67,7 +62,6 @@ jobs:
           strip_components: 2
 
       - name: (AI) pull and up new images
-        if: ${{ github.event.inputs.deploy_ai }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST_AI }}
