@@ -3,14 +3,14 @@ from typing import Optional
 from fastapi import APIRouter
 from datetime import timedelta
 
-from app.utils import get_meet_url, get_now
+from app.utils import get_now, schedule_meeting
 from app.schemas import OID
 from app.literals import Role
-from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
 from app.oauth import FilledCandidateId
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
 from app.database import DetailedResponses, Responses, Stages, Vacancies
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
+from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
 
 router = APIRouter(prefix="/responses")
 
@@ -144,21 +144,22 @@ async def answer_response(
         auto_interview = prev_stage["auto_interview"]
         status = "waiting_for_recruiter"
         if auto_interview:
-            if payload.meet_on is None:
-                raise REQUIRED_PARAMS_MISSING("meet_on")
-            if payload.meet_at is None:
-                raise REQUIRED_PARAMS_MISSING("meet_at")
-            url = get_meet_url(payload.meet_on, payload.meet_at)
+            if payload.meet_on is None or payload.meet_at is None:
+                raise REQUIRED_PARAMS_MISSING("meet_on, meet_at")
+            schedule_meeting(
+                response["_id"],
+                response["vacancy"]["recruiter_id"],
+                response["candidate_id"],
+                payload.meet_on, 
+                payload.meet_at
+                )
             message = {
                 "type": "candidate_answer",
                 "sender_role": "candidate",
-                # TODO: deal with timezone
-                "text": f"Интервью назначено на {(payload.meet_at + timedelta(hours=3)).strftime("%d.%m %H:%M")}. Ссылка на интервью: {url}",
+                # TODO: deal with timezone not only Moscow
+                "text": f"Интервью назначено на {(payload.meet_at).strftime("%d.%m %H:%M")}.",
                 "created_at": now,
                 "stage_id": response["stage_id"],
-                "meet_on": payload.meet_on,
-                "meet_url": url,
-                "meet_at": payload.meet_at,
             }
         else:
             message = {
