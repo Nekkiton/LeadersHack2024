@@ -16,8 +16,9 @@ export interface FormData {
     start_time: Moment
     end_time: Moment
   }[]
-  site_notifications: boolean // TODO
-  tg_notifications: boolean // TODO
+  preferences: {
+    email_notify: boolean
+  }
 }
 
 export const transformData = (data: FormData): UpdateRecruiterData => {
@@ -49,5 +50,8 @@ export const getDefaultData = (
         end_time: moment().hours(18).minutes(0),
       },
     ],
+    preferences: (user?.name ? user.preferences : null) ?? {
+      email_notify: false,
+    },
   }
 }

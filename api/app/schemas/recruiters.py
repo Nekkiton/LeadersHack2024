@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from app.schemas import UserGet
+from app.schemas import UserGet, Preferences
 
 
 class InterviewSlotItem(BaseModel):
@@ -23,6 +23,7 @@ class RecruiterPost(BaseModel):
     telegram: str
     interview_per_day: int = Field(gt=0)
     interview_slots: List[InterviewSlotItem] = Field(min_length=1)
+    preferences: Preferences
 
 
 class RecruiterGet(RecruiterPost, UserGet):
