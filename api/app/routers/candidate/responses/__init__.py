@@ -199,7 +199,7 @@ async def get_response_schedule(
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    slots = {}
+    slots = set()
     for slot in recruiter["interview_slots"]:
         start_time = slot["start_time"]
         end_time = slot["end_time"]
