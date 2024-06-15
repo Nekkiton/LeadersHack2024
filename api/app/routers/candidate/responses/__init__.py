@@ -1,6 +1,6 @@
 import math
 from typing import Optional
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, time
 from fastapi import APIRouter
 
 from app.utils import get_now, schedule_meeting
@@ -206,7 +206,8 @@ async def get_response_schedule(
         slot = start_time
         while slot <= end_time:
             slots.append(slot)
-            slot += timedelta(minutes=30)
+            slot = datetime.combine(start, slot) + timedelta(minutes=30)
+            slot = slot.time()
     scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
     scheduled_zip = {}
     if scheduled:
@@ -226,5 +227,6 @@ async def get_response_schedule(
             "day": day,
             "slots": day_slots
         })
-        day += timedelta(days=1)
+        day = datetime.combine(day, time(0, 0, 0)) + timedelta(days=1)
+        day = day.day
     return result
