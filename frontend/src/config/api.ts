@@ -209,6 +209,7 @@ export const Api = {
   notifications: {
     all: () =>
       Axios.get<Notification[]>('/self/notifications').then((res) => res.data),
+    read: () => Axios.post('/self/notifications/read'),
   },
 
   news: {

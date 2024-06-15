@@ -1,5 +1,8 @@
-import { useMemo } from 'react'
-import { useCurUserNotifications } from '@/api/notifications'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  useCurUserNotifications,
+  useCurUserReadNotifications,
+} from '@/api/notifications'
 import moment from 'moment'
 import WithPopover from '@/components/ui/WithPopover'
 import Icon from '@/components/ui/Icon'
@@ -8,7 +11,10 @@ import styles from './HeaderNotifications.module.scss'
 import classNames from 'classnames'
 
 export default function HeaderNotifications() {
+  const [isActive, setIsActive] = useState(false)
+
   const notifications = useCurUserNotifications()
+  const { mutate } = useCurUserReadNotifications()
 
   const newNotificationsCount = useMemo(() => {
     if (notifications.status === 'success') {
@@ -19,6 +25,12 @@ export default function HeaderNotifications() {
     }
     return 0
   }, [notifications.status])
+
+  useEffect(() => {
+    if (!isActive && newNotificationsCount) {
+      mutate(0)
+    }
+  }, [isActive])
 
   return (
     <WithPopover
@@ -68,6 +80,8 @@ export default function HeaderNotifications() {
           />
         </div>
       }
+      isActive={isActive}
+      setIsActive={setIsActive}
     />
   )
 }
