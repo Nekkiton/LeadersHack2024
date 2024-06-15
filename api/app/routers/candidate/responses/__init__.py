@@ -221,7 +221,7 @@ async def get_response_schedule(
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
                 continue
-            day_slots.difference_update(scheduled["slots"])
+            day_slots.difference_update(set(scheduled["slots"]))
         result.append({
             "day": day.date(),
             "slots": day_slots
