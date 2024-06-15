@@ -204,7 +204,7 @@ async def get_response_schedule(
         start_time = slot["start_time"].time()
         end_time = slot["end_time"].time()
         slot = start_time
-        while slot <= end_time:
+        while slot < end_time:
             slots.append(slot)
             slot = datetime.combine(start, slot) + timedelta(minutes=30)
             slot = slot.time()
