@@ -6,7 +6,7 @@ class Settings(EnvClass):
     MONGO_DATABASE: str
 
     EMAIL_HOST: str = "smtp.yandex.ru"
-    EMAIL_PORT: str = "465"
+    EMAIL_PORT: int = 465
     EMAIL_USER: str
     EMAIL_PASS: str
 

@@ -23,7 +23,7 @@ async def proccess_notification(
     ):
     user = Users.find_one({"_id": user_id, "preferences.email_notify": True}, {"email": 1})
     if user is not None:
-        send_mail(receiver=user["email"], subject=title, content=content)
+        send_mail(receiver=user["email"], subject=title, text=content)
     create_app_notification(title, content, user_id)
 
 
@@ -226,6 +226,6 @@ def proccess_rntgroup() -> None:
         {
             "type": "rntgroup",
             "status": "pending",
-            "execute_at": datetime.now(tz=timezone.utc) + timedelta(minutes=10)
+            "execute_at": datetime.now(tz=timezone.utc) + timedelta(hours=24)
         }
     )
