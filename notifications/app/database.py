@@ -6,3 +6,5 @@ mongo_db = MongoClient(Settings.MONGO_CONNECTION_STRING).get_database(Settings.M
 
 Tasks = mongo_db.get_collection("tasks")
 Notifications = mongo_db.get_collection("notifications")
+Users = mongo_db.get_collection("users")
+DetailedResponses = mongo_db.get_collection("responses.detailed")
