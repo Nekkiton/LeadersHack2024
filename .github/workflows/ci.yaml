@@ -51,7 +51,7 @@ jobs:
   build-and-push-backend:
     name: Backend
     needs: files-changed
-    if: needs.files-changed.outputs.backend == 'true' || needs.files-changed.outputs.infra == 'true'
+    if: needs.files-changed.outputs.backend == 'true'
     uses: ./.github/workflows/build-and-push.yaml
     with:
       dockerfile: api/Dockerfile
@@ -84,6 +84,6 @@ jobs:
   deploy-all:
     name: Deploy app
     needs: [build-and-push-ai, build-and-push-backend, build-and-push-frontend, build-and-push-scheduler]
-    if:  ${{ always() && !failure() && !cancelled() }}
+    if:  ${{ always() && !failure() && !cancelled() }} || needs.files-changed.outputs.infra == 'true'
     uses: ./.github/workflows/deploy.yaml
     secrets: inherit
