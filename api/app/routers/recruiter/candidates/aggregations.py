@@ -79,6 +79,9 @@ USERS_BY_FIO = lambda query, page, limit: [
         "$match": query
     },
     {
+        "$sort": {"created_at": -1},
+    },
+    {
         "$facet": {
             "total_pages": [{"$count": "count"}],
             "items": [{"$skip": page * limit}, {"$limit": limit}]

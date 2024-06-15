@@ -25,7 +25,7 @@ async def get_candidates_via_filters(
     skills: Optional[List[Skills]] = Query(None, alias="skills[]"),
     page: int = 0,
     limit: int = 25
-):
+    ):
     query = {
         "fio": {"$regex": fio, "$options": "i"},
         "role": "candidate",
