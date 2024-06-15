@@ -1,12 +1,13 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from typing import get_args
 from fastapi import UploadFile
-from typing import Literal, get_args
+from bson import ObjectId
 from requests import post
 import bcrypt
 
 from app.settings import Settings
 from app.schemas.candidates import CandidatePartial
-from app.exceptions import NOT_ADDED_YET
+from app.database import Tasks
 from app.literals import Educations, WorkTypes, WorkExperiences, WorkSchedules, Skills
 
 
@@ -29,24 +30,6 @@ def validate_password(password: str, hashed_password: str) -> bool:
     Сверяет обычный пароль с хэшированным
     """
     return bcrypt.checkpw(password.encode(), hashed_password.encode())
-
-
-def get_meet_url(platform: Literal["telemost", "googlemeet", "zoom"], date: datetime) -> str:
-    match platform:
-        case "telemost":
-            response = post(
-                url="https://cloud-api.yandex.net/v1/telemost-api/conferences",
-                headers={"Authorization": "OAuth " + Settings.TELEMOST_API},
-                json={"access_level": "PUBLIC",}
-            )
-            if response.status_code != 200:
-                print(response.status_code, response.content.decode("utf-8"))
-                return "Не удалось создать"
-            return response.json().get("join_url", "Не удалось создать")
-        case "googlemeet":
-            raise NOT_ADDED_YET
-        case "zoom":
-            raise NOT_ADDED_YET
 
 
 async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial | None:
@@ -101,3 +84,52 @@ async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial | None:
         }
     except:
         return None
+
+
+def schedule_meeting(
+    response_id: ObjectId,
+    recruiter_id: ObjectId, 
+    candidate_id: ObjectId, 
+    platform: str,
+    at: datetime,
+    ):
+    Tasks.insert_one(
+        {
+            "type": "meeting",
+            "body": {
+                "response_id": response_id,
+                "recruiter_id": recruiter_id,
+                "candidate_id": candidate_id,
+                "platform": platform,
+            },
+            "execute_at": at - timedelta(minutes=30),
+        }
+    )
+    for _id in [recruiter_id, candidate_id]:
+        schedule_notification(
+            _id,
+            title="Запланирована встреча",
+            content=f"В {at}",
+            )
+
+
+def schedule_notification(
+    user_id: ObjectId,
+    title: str,
+    content: str,
+    execute_at: datetime = datetime.min()
+    ):
+    """
+    Создание уведомления
+    """
+    Tasks.insert_one(
+        {
+            "type": "notification",
+            "body": {
+                "user_id": user_id,
+                "title": title,
+                "content": content,
+            },
+            "exceute_at": execute_at
+        }
+    )
