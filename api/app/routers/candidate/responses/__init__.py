@@ -214,7 +214,7 @@ async def get_response_schedule(
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
     day = start - timedelta(days=1)
     result = []
-    while day <= end:
+    while day < end:
         day += timedelta(days=1)
         print("СМОТРЕТЬ ЗДЕСЬ: ", str(day.date()))
         scheduled = scheduled_zip.get(str(day.date()))
