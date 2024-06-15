@@ -34,13 +34,15 @@
 .notifications {
   display: flex;
   flex-direction: column;
-  gap: 16;
-  max-height: 430px;
+  gap: 16px;
+  max-height: 400px;
+  overflow: auto;
 }
 
 .notification {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   gap: 8px;
 
   &:not(:last-child) {

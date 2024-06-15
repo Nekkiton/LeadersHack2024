@@ -7,6 +7,6 @@ export enum NotificationType {
 
 export interface Notification extends BaseEntity {
   title: string
-  message: string
+  content: string
   is_read: boolean
 }
