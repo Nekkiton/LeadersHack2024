@@ -198,7 +198,7 @@ async def get_response_schedule(
     start = datetime.now(tz=timezone.utc) + timedelta(hours=1)
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
-    max_interviews = recruiter["interviews_per_day"]
+    max_interviews = recruiter["interview_per_day"]
     slots = []
     for slot in recruiter["interview_slots"]:
         start_time = slot["start_time"].time()
