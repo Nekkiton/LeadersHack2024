@@ -1,6 +1,6 @@
 import math
 from typing import Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter
 
 from app.utils import get_now, schedule_meeting
@@ -190,9 +190,11 @@ async def answer_response(
 async def get_response_schedule(
     _: FilledCandidateId,
     response_id: OID,
-    start: datetime,
     end: datetime
-):
+    ):
+    # Возвращаем отклики рекрутера на час позже реального времени, 
+    # чтобы ограничить возможность назначать интервью слишком рано
+    start = datetime.now(tz=timezone.utc) + timedelta(hours=1)
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interviews_per_day"]
@@ -204,12 +206,12 @@ async def get_response_schedule(
         while slot <= end_time:
             slots.append(slot)
             slot += timedelta(minutes=30)
-    scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
+    scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, to))
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
     day = start.date()
-    while day <= end.date():
+    while day <= to.date():
         day_of_year = day.timetuple().tm_yday
         scheduled = scheduled_zip.get(day_of_year)
         day_slots = slots
