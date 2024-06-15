@@ -7,7 +7,7 @@ from app.utils import get_now, schedule_meeting
 from app.schemas import OID
 from app.literals import Role
 from app.oauth import FilledCandidateId
-from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY
+from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, TIMESLOT_ALREADY_OCCUPIED
 from app.database import DetailedResponses, Responses, Stages, Tasks, Users, Vacancies
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
@@ -123,6 +123,9 @@ async def answer_response(
     response = DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": {"$nin": ["approved", "rejected"]}})
     if response is None:
         raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
+    recruiter_id = response["vacancy"]["recruiter_id"]
+    if Tasks.count_documents({"$or": [{"body.recruiter_id": recruiter_id}, {"body.candidate_id": candidate_id}], "meet_at": payload.meet_at}):
+        raise TIMESLOT_ALREADY_OCCUPIED
     if payload.status == "reject":
         status = 'rejected'
         message = {
@@ -150,7 +153,7 @@ async def answer_response(
                 raise REQUIRED_PARAMS_MISSING("meet_on, meet_at")
             schedule_meeting(
                 response["_id"],
-                response["vacancy"]["recruiter_id"],
+                recruiter_id,
                 response["candidate_id"],
                 payload.meet_on, 
                 payload.meet_at,
