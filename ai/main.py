@@ -9,12 +9,12 @@ ENCODERS_BY_TYPE[datetime] = lambda x: x.isoformat()
 
 app = FastAPI(
     title="LeadersHack2024 AI API",
-    version="1.0.0",
+    version="1.0.1",
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["ai.leaders-gb.ru", "leaders-gb.ru"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
