@@ -54,6 +54,7 @@ class BaseGet(BaseModel):
 
 class Preferences(BaseModel):
     email_notify: bool = False
+    timezone: str = "+03:00"
 
 
 class UserGet(BaseGet):

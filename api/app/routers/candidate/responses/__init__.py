@@ -196,7 +196,7 @@ async def get_response_schedule(
     _: FilledCandidateId,
     response_id: OID,
     end: datetime,
-    tz: str = "+03:00"
+    tz: str | int = "+03:00"
     ):
     # Возвращаем отклики рекрутера на час позже реального времени, 
     # чтобы ограничить возможность назначать интервью слишком рано
@@ -204,6 +204,7 @@ async def get_response_schedule(
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
+    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "+03:00")
     slots = set()
     for slot in recruiter["interview_slots"]:
         start_time = slot["start_time"]
@@ -219,7 +220,7 @@ async def get_response_schedule(
     result = []
     while day <= end:
         day += timedelta(days=1)
-        scheduled = scheduled_zip.get(str(day.date()))
+        scheduled = scheduled_zip.get(str(day.astimezone(tz=tz).date()))
         day_slots = slots.copy()
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
