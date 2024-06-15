@@ -199,13 +199,13 @@ async def get_response_schedule(
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    slots = set()
+    slots = []
     for slot in recruiter["interview_slots"]:
         start_time = slot["start_time"].time()
         end_time = slot["end_time"].time()
         slot = start_time
         while slot < end_time:
-            slots.add(slot)
+            slots.append(slot)
             slot = datetime.combine(start, slot) + timedelta(minutes=30)
             slot = slot.time()
     scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
@@ -221,7 +221,8 @@ async def get_response_schedule(
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
                 continue
-            day_slots.difference_update(scheduled["slots"])
+            for slot in scheduled["slots"]:
+                day_slots.remove(slot.time())
         result.append({
             "day": day.date(),
             "slots": day_slots
