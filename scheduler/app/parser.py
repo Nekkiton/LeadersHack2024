@@ -76,7 +76,8 @@ def parse_vacancies_from_rntgroup() -> None:
                     "company": "RNTGroup",
                     "url": url
                 },
-                "status": "active"
+                "status": "active",
+                "created_at": datetime.now()
             }
     result = Vacancies.insert_many(new_vacancies.values())
     logging.info("Добавлено новых вакансий: ", len(result.inserted_ids))
