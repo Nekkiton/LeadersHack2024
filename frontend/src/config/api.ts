@@ -40,6 +40,7 @@ import {
   CurRecruiterAnswerToResponseData,
   GetCandidateResponsesParams,
   GetRecruiterResponsesParams,
+  GetResponseScheduleParams,
   Response,
 } from '@/types/entities/response'
 import { Notification } from '@/types/entities/notification'
@@ -67,6 +68,14 @@ export const Api = {
       Axios.get<User | BaseUser>('/self')
         .then((res) => res.data)
         .catch(() => null),
+  },
+
+  responses: {
+    schedule: ({ pk, ...params }: GetResponseScheduleParams & { pk: string }) =>
+      Axios.get<[{ day: string; slots: string[] }]>(
+        `/candidate/responses/${pk}/schedule`,
+        { params }
+      ).then((res) => res.data),
   },
 
   recruiters: {

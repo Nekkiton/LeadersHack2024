@@ -58,7 +58,7 @@ class CandidateResponseAnswer(BaseModel):
     def check_fields_by_status(self) -> Self:
         if self.status == "reject" and self.message is None:
             raise ValueError("Если статус reject, необходим message")
-        if self.meet_on is not None and self.meet_on < get_now() + timedelta(hours=1):
+        if self.meet_at is not None and self.meet_at < get_now() + timedelta(hours=1):
             raise ValueError("Назначить интервью можно минимум за час до его проведения")
         return self
 

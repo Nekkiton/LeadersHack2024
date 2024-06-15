@@ -20,6 +20,7 @@ interface Props {
   clearable?: boolean
   value?: Moment | null
   onChange?: (val: Moment | null) => void
+  minutes?: number[]
 }
 
 export default function TimePicker({
@@ -31,6 +32,7 @@ export default function TimePicker({
   clearable: isClearable,
   value: baseValue,
   onChange: baseOnChange,
+  minutes,
 }: Props) {
   // TODO: ref - for react hook form
   // TODO: accessibility, semantic
@@ -49,16 +51,24 @@ export default function TimePicker({
   })
 
   useEffect(() => {
+    if (minutes?.length && value && !minutes.includes(value.minutes())) {
+      value.minutes(minutes[0])
+    }
+  }, [value])
+
+  useEffect(() => {
     if (value) {
       hoursRef.current
         ?.querySelectorAll(`.${styles.item}`)
         [value.hour()].scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-      minutesRef.current
-        ?.querySelectorAll(`.${styles.item}`)
-        [value.minute()].scrollIntoView({
-          block: 'nearest',
-          behavior: 'smooth',
-        })
+      if (!minutes) {
+        minutesRef.current
+          ?.querySelectorAll(`.${styles.item}`)
+          [value.minute()].scrollIntoView({
+            block: 'nearest',
+            behavior: 'smooth',
+          })
+      }
     }
   }, [value])
 
@@ -134,17 +144,33 @@ export default function TimePicker({
               ))}
             </div>
             <div className={styles.items} ref={minutesRef}>
-              {Array.from({ length: 60 }).map((_, i) => (
-                <span
-                  className={classNames(styles.item, {
-                    [styles.active]: value?.minute() === i,
-                  })}
-                  key={i}
-                  onClick={() => setValue(moment(value ?? undefined).minute(i))}
-                >
-                  {i}
-                </span>
-              ))}
+              {minutes
+                ? minutes.map((i) => (
+                    <span
+                      className={classNames(styles.item, {
+                        [styles.active]: value?.minute() === i,
+                      })}
+                      key={i}
+                      onClick={() =>
+                        setValue(moment(value ?? undefined).minute(i))
+                      }
+                    >
+                      {i}
+                    </span>
+                  ))
+                : Array.from({ length: 60 }).map((_, i) => (
+                    <span
+                      className={classNames(styles.item, {
+                        [styles.active]: value?.minute() === i,
+                      })}
+                      key={i}
+                      onClick={() =>
+                        setValue(moment(value ?? undefined).minute(i))
+                      }
+                    >
+                      {i}
+                    </span>
+                  ))}
             </div>
           </>
         }

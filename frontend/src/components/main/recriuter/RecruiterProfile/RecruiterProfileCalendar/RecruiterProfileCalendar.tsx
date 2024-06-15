@@ -51,7 +51,12 @@ export default function RecruiterProfileCalendar() {
               name={`interview_slots.${idx}.start_time`}
               rules={{ required: true }}
               render={({ field, fieldState }) => (
-                <TimePicker {...field} error={fieldState.error} label="с" />
+                <TimePicker
+                  {...field}
+                  error={fieldState.error}
+                  label="с"
+                  minutes={[0, 30]}
+                />
               )}
             />
             <Controller
@@ -59,12 +64,18 @@ export default function RecruiterProfileCalendar() {
               name={`interview_slots.${idx}.end_time`}
               rules={{ required: true }}
               render={({ field, fieldState }) => (
-                <TimePicker {...field} error={fieldState.error} label="до" />
+                <TimePicker
+                  {...field}
+                  error={fieldState.error}
+                  label="до"
+                  minutes={[0, 30]}
+                />
               )}
             />
             <BaseButton
               className={styles.scheduleItemRemoveBtn}
               onClick={() => removeSchedule(idx)}
+              disabled={schedule.length <= 1}
               hoverable
             >
               <Icon className={styles.scheduleItemRemoveIcon} icon="times" />
@@ -74,7 +85,10 @@ export default function RecruiterProfileCalendar() {
         <Button
           type="text"
           onClick={() =>
-            addSchedule({ start_time: moment(), end_time: moment() })
+            addSchedule({
+              start_time: moment().minutes(0),
+              end_time: moment().minutes(0),
+            })
           }
         >
           <Icon icon="plus" />
