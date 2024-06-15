@@ -3,10 +3,59 @@ import json
 import logging
 import re
 from bson import json_util
+from datetime import datetime, timezone
 
-from app.database import Vacancies
+from app.database import Vacancies, Stages, Users
 from app.settings import Settings
 from bs4 import BeautifulSoup
+
+recruitingDefaultStages = [
+    {
+      "title": 'Неразобранные отклики',
+      "auto_interview": "true",
+      "approve_template":
+        'Добрый день! Меня зовут RECRUITER_NAME, я HR-менеджер RNT Group.\nМы ознакомились с вашей вакансий и готовы пригласить вас на интервью-знакомство. Выберите удобную дату и время ниже.\nБуду ждать обратной связи!',
+      "reject_template":
+        'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',
+      "position": 0,
+    },
+    {
+      "title": 'Первичное интервью',
+      "auto_interview": "true",
+      "approve_template":
+        'Добрый день.\nМы готовы пригласить вас на следующий этап. На встрече вы пообщаетесь с нашим лидом по поводу вашего опыта. Будьте готовы к лайфкоддингу. Он будет проходить в онлайн-редакторе, на компьютер устанавливать ничего не придется. Назначьте, пожалуйста, время, в которое вам будет удобно созвониться.\nУдачи на интервью!',
+      "reject_template":
+        'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',
+      "position": 1,
+    },
+    {
+      "title": 'Техническое интервью',
+      "auto_interview": "true",
+      "approve_template":
+        'Добрый день.\nМы готовы пригласить вас на следующий этап — интервью с членами команды, с которыми вы, возможно, будете работать. Вы сможете познакомиться и задать друг другу интересующие вопросы. Назначьте, пожалуйста, время, в которое вам будет удобно созвониться.\nУдачи на интервью!',
+      "reject_template":
+        'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',
+      "position": 2,
+    },
+    {
+      "title": 'Интервью с командой',
+      "auto_interview": "true",
+      "approve_template":
+        'Добрый день.\nМы готовы предложить вам оффер :) Назначьте, пожалуйста, время, в которое вам будет удобно созвониться.\nУдачи на интервью!',
+      "reject_template":
+        'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',
+      "position": 3,
+    },
+    {
+      "title": 'Интервью для оффера',
+      "auto_interview": "true",
+      "approve_template":
+        'Добро пожаловать в команду!\nМы рады, что вы выбрали нашу компанию :)',
+      "reject_template":
+        'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',
+      "position": 4,
+    },
+]
 
 def parse_vacancies_from_rntgroup() -> None:
     """
@@ -20,6 +69,7 @@ def parse_vacancies_from_rntgroup() -> None:
             f"Запрос вернул {response.status_code} "
             f"с содержанием {response.text}"
         )
+    recruiter_id = Users.find_one({"role": "recruiter"})["_id"]
     existing_vacancies = {vacancy["url"] for vacancy in Vacancies.find({"source.company": "RNTGroup"}, {"url": "$source.url"})}
     pages = BeautifulSoup(response.text, "html.parser").find(attrs={"data-id": "8935"})
     pages = pages.findChild(name="div", attrs={"class": "maxwidth-theme"}).findAll(recursive=False)[2:]
@@ -77,7 +127,9 @@ def parse_vacancies_from_rntgroup() -> None:
                     "url": url
                 },
                 "status": "active",
-                "created_at": datetime.now()
+                "created_at": datetime.now(tz=timezone.utc),
+                "updated_at": datetime.now(tz=timezone.utc),
+                "recruiter_id": recruiter_id,
             }
     result = Vacancies.insert_many(new_vacancies.values())
     logging.info("Добавлено новых вакансий: ", len(result.inserted_ids))
@@ -101,12 +153,9 @@ def parse_vacancies_from_rntgroup() -> None:
             )
 
             if response.status_code != 200:
-                logging.warning(
-                    f"Проблема в обработке вакансии через AI API. "
+                raise Exception(f"Проблема в обработке вакансии через AI API."
                     f"Запрос вернул {response.status_code} "
-                    f"с содержанием {response.text}"
-                )
-                continue
+                    f"с содержанием {response.text}")
 
             updated_vacancy = res.json()
 
@@ -122,13 +171,37 @@ def parse_vacancies_from_rntgroup() -> None:
                     "work_schedule": updated_vacancy["work_schedule"],
                     "work_experience": updated_vacancy["work_experience"],
                     "skills": updated_vacancy["skills"],
+                    "updated_at": datetime.now(tz=timezone.utc)
                 }
             }
             )
+
+            cur_vacancy_id = Vacancies.find_one({"source.company": "RNTGroup", "source.url": url})["_id"]
+
+            # add hack with stages here
+            stages_dumps = []
+            for stage in recruitingDefaultStages:
+                stages_dumps.append(
+                    {
+                        **stage,
+                        "vacancy_id": cur_vacancy_id,
+                        "status": "active",
+                        "created_at": datetime.now(tz=timezone.utc),
+                        "updated_at": datetime.now(tz=timezone.utc),
+                    }
+                )
+            Stages.insert_many(stages_dumps)
 
         except Exception as ex:
             logging.warning(
                 f"Проблема в обработке обновленной вакансии. "
                 f"Ошибка: {ex} "
             )
-            raise ex
+            #raise ex
+            # add hack here to avoid non-filled vacancies
+            result = Vacancies.delete_one(
+            {
+                "source.company": "RNTGroup", 
+                "source.url": url
+            }
+            )
