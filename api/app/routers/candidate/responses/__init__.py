@@ -222,7 +222,6 @@ async def get_response_schedule(
             day_slots.difference_update(set(scheduled["slots"]))
         result.append({
             "day": day.date(),
-            "slots": day_slots
+            "slots": sorted(list(day_slots))
         })
-    print(result)
     return result
