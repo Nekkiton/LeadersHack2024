@@ -12,9 +12,10 @@ from app.utils import get_now, hash_password, validate_password, analyze_candida
 from app.oauth import CandidateId, UserId, RecruiterId
 
 from .schemas import PasswordUpdate
+from .notifications import router as Notifications
 
 router = APIRouter(tags=["Пользователь"], prefix="/self")
-
+router.include_router(Notifications)
 
 @router.get(
     "/",
