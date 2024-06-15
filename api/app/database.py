@@ -13,6 +13,7 @@ Stages = mongo_db.get_collection("stages")
 Responses = mongo_db.get_collection("responses")
 UsersCommentaries = mongo_db.get_collection("users.commentaries")
 Tasks = mongo_db.get_collection("tasks")
+Notifications = mongo_db.get_collection("notifications")
 
 # Временно, пока параметры View могут меняться, при каждом запуске бэкенда он будет дропаться и пересоздаваться
 mongo_db.drop_collection("vacancies.detailed")
