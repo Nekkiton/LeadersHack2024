@@ -22,6 +22,5 @@ export interface User extends BaseEntity {
   telegram: string
   photo?: Attachment | null
   role: Role
-  notifications: string[] // TODO
   password_changed_at: string | null
 }

@@ -6,14 +6,7 @@ export enum NotificationType {
 }
 
 export interface Notification extends BaseEntity {
-  user_id: string
-  type: NotificationType
-  isActive: boolean
-  messages: string[] // TODO
-}
-
-export interface NotificationMessage extends BaseEntity {
-  date: string
+  title: string
   message: string
-  message_id: string
+  is_read: boolean
 }
