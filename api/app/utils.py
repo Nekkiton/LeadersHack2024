@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, MINYEAR
 from typing import get_args
 from fastapi import UploadFile
 from bson import ObjectId
@@ -117,7 +117,7 @@ def schedule_notification(
     user_id: ObjectId,
     title: str,
     content: str,
-    execute_at: datetime = datetime.min()
+    execute_at: datetime = datetime(year=MINYEAR, month=1, day=1)
     ):
     """
     Создание уведомления
