@@ -4,25 +4,21 @@ import { createUseMutation } from '@/lib/create-use-mutation'
 import { Role } from '@/types/entities/user'
 
 export const useLogin = createUseMutation(Api.auth.login, {
-  invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
-  onSuccess: ([user], { router }) => {
-    setTimeout(() => {
-      router.push(
-        {
-          [Role.Recruiter]: Routes.recruiterVacancies,
-          [Role.Candidate]: Routes.candidateVacancies,
-        }[user.role]
-      )
-    }, 100)
+  onSuccess: ([user], { router, queryClient }) => {
+    queryClient.removeQueries({ queryKey: ['users.me'] })
+    router.push(
+      {
+        [Role.Recruiter]: Routes.recruiterVacancies,
+        [Role.Candidate]: Routes.candidateVacancies,
+      }[user.role]
+    )
   },
 })
 
 export const useRegister = createUseMutation(Api.auth.register, {
-  invalidateQueriesFn: () => [{ queryKey: ['users.me'] }],
-  onSuccess: ([], { router }) => {
-    setTimeout(() => {
-      router.push(Routes.candidateProfile)
-    }, 100)
+  onSuccess: ([], { router, queryClient }) => {
+    queryClient.removeQueries({ queryKey: ['users.me'] })
+    router.push(Routes.candidateProfile)
   },
 })
 
