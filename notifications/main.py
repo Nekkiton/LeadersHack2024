@@ -1,12 +1,26 @@
 import asyncio
 from asyncio.log import logger
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from app import proccessers
 from app.database import Tasks
 
 
 async def main():
+    Tasks.update_one(
+        {
+            "type": "rntgroup",
+            "status": "pending"
+        }, 
+        {
+            "$set": {
+                "type": "rntgroup",
+                "execute_at": datetime.now(tz=timezone.utc) + timedelta(minutes=10),
+                "status": "pending"
+            }
+        },
+        upsert=True
+    )
     while True:
         pending = list(Tasks.find({"execute_at": {"$lte": datetime.now(tz=timezone.utc)}, "status": "pending"}))
         for task in pending:

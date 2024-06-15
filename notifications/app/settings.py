@@ -12,3 +12,4 @@ class Settings(EnvClass):
     EMAIL_PASS: str
 
     TELEMOST_API: str
+    AI_URL: str
