@@ -204,7 +204,7 @@ async def get_response_schedule(
         start_time = slot["start_time"].time()
         end_time = slot["end_time"].time()
         slot = start_time
-        while slot <= end_time:
+        while slot < end_time:
             slots.append(slot)
             slot = datetime.combine(start, slot) + timedelta(minutes=30)
             slot = slot.time()
@@ -214,7 +214,7 @@ async def get_response_schedule(
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
     day = start - timedelta(days=1)
     result = []
-    while day < end:
+    while day <= end:
         day += timedelta(days=1)
         print("СМОТРЕТЬ ЗДЕСЬ: ", str(day.date()))
         scheduled = scheduled_zip.get(str(day.date()))
