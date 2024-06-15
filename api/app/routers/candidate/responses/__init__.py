@@ -199,14 +199,13 @@ async def get_response_schedule(
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    slots = []
+    slots = {}
     for slot in recruiter["interview_slots"]:
         start_time = slot["start_time"]
         end_time = slot["end_time"]
-        slot = start_time
-        while slot < end_time:
-            slots.append(slot.time())
-            slot += timedelta(minutes=30)
+        while start_time < end_time:
+            slots.add(start_time.time())
+            start_time += timedelta(minutes=30)
     scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
     scheduled_zip = {}
     if scheduled:
