@@ -12,7 +12,7 @@ from app.database import DetailedResponses, Responses, Stages, Tasks, Users, Vac
 from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
 
-from .aggregations import DAYS_WITH_MAX_INTERVIEWS
+from .aggregations import DAYS_WITH_INTERVIEWS
 
 router = APIRouter(prefix="/responses")
 
@@ -195,7 +195,8 @@ async def answer_response(
 async def get_response_schedule(
     _: FilledCandidateId,
     response_id: OID,
-    end: datetime
+    end: datetime,
+    tz: str = "+03:00"
     ):
     # Возвращаем отклики рекрутера на час позже реального времени, 
     # чтобы ограничить возможность назначать интервью слишком рано
@@ -210,7 +211,7 @@ async def get_response_schedule(
         while start_time < end_time:
             slots.add(start_time.time())
             start_time += timedelta(minutes=30)
-    scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
+    scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, tz))
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
