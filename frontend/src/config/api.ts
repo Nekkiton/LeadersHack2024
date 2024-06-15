@@ -171,6 +171,13 @@ export const Api = {
         (res) => res.data
       ),
 
+    findViaCV: (data: any) =>
+      Axios.post<Vacancy[]>('/public/vacancies/via-cv', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((res) => res.data, data), // TODO: data type
+
     one: (pk: string) =>
       Axios.get<Vacancy>(`/public/vacancies/${pk}`).then((res) => res.data),
 

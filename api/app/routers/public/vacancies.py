@@ -1,8 +1,9 @@
 import math
 from typing import Optional
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, UploadFile
 
 from app.schemas import OID
+from app.utils import analyze_candidate_cv
 from app.database import DetailedVacancies
 from app.literals import VacancyStatus, WorkScopes
 from app.schemas.vacancies import VacanciesGet, VacancyGet
@@ -31,6 +32,18 @@ async def get_vacancies(
         "page": page,
         "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
     }
+
+
+@router.post(
+    "/via-cv",
+    name="Получить вакансии, подходящие резюме",
+    response_model=list[VacancyGet]
+)
+async def find_vacancies_via_cv(file: UploadFile):
+    candidate = await analyze_candidate_cv(file)
+    if not candidate:
+        return []
+    return DetailedVacancies.find().limit(3) # TODO
 
 
 @router.get(

@@ -1,12 +1,12 @@
 from datetime import datetime, timezone
 from fastapi import UploadFile
 from typing import Literal, get_args
-from requests import get, post
+from requests import post
 import bcrypt
 
 from app.settings import Settings
 from app.schemas.candidates import CandidatePartial
-from app.exceptions import NOT_ADDED_YET, FAILED_CV_ANALYSIS
+from app.exceptions import NOT_ADDED_YET
 from app.literals import Educations, WorkTypes, WorkExperiences, WorkSchedules, Skills
 
 
@@ -34,7 +34,7 @@ def validate_password(password: str, hashed_password: str) -> bool:
 def get_meet_url(platform: Literal["telemost", "googlemeet", "zoom"], date: datetime) -> str:
     match platform:
         case "telemost":
-            response = get(
+            response = post(
                 url="https://cloud-api.yandex.net/v1/telemost-api/conferences",
                 headers={"Authorization": "OAuth " + Settings.TELEMOST_API},
                 json={"access_level": "PUBLIC",}
@@ -49,7 +49,7 @@ def get_meet_url(platform: Literal["telemost", "googlemeet", "zoom"], date: date
             raise NOT_ADDED_YET
 
 
-async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial:
+async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial | None:
     def parse_date(val: str | None, format: str):
         if not val: return None
         try:
@@ -64,7 +64,7 @@ async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial:
     )
 
     if res.status_code != 200:
-        raise FAILED_CV_ANALYSIS
+        return None
 
     try:
         data = res.json()
@@ -100,4 +100,4 @@ async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial:
             "salary_expectation": salary_expectation,
         }
     except:
-        raise FAILED_CV_ANALYSIS
+        return None

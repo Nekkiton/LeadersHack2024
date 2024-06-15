@@ -42,3 +42,74 @@
 .img {
   width: 110%;
 }
+
+.loader {
+  @include card;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.loaderIcon {
+  width: 48px;
+  height: 48px;
+}
+
+.loaderText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.loaderHint {
+  color: $gray-3;
+}
+
+.result {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.resultMain {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.resultNothing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  gap: 16px;
+}
+
+.resultNothingIcon {
+  width: 150px;
+  height: 150px;
+}
+
+.resultVacancies {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 16px;
+}
+
+.resultVacancy {
+  border: 1px solid $gray-5;
+}
+
+.resultSidebar {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 4px;
+  width: 22%;
+  background: $gray-6;
+}

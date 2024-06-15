@@ -14,6 +14,8 @@ export const useCurRecruiterVacancies = createUseQuery(
   Api.recruiters.me.vacancies
 )
 
+export const useFindVacanciesViaCV = createUseMutation(Api.vacancies.findViaCV)
+
 export const useVacancy = createUseQuery('vacancies.one', Api.vacancies.one)
 
 export const useCurCandidateVacancy = createUseQuery(

@@ -7,7 +7,7 @@ from app.database import Users
 from app.schemas import UserGet
 from app.schemas.candidates import CandidateGet, CandidatePost, CandidatePartial
 from app.schemas.recruiters import RecruiterGet, RecruiterPost
-from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED
+from app.exceptions import BAD_OLD_PASSWORD, EMAIL_ALREADY_USED, FAILED_CV_ANALYSIS
 from app.utils import get_now, hash_password, validate_password, analyze_candidate_cv
 from app.oauth import CandidateId, UserId, RecruiterId
 
@@ -80,7 +80,10 @@ async def analyse_candidate_cv(
     user_id: CandidateId,
     file: UploadFile
 ):
-    return await analyze_candidate_cv(file)
+    result = await analyze_candidate_cv(file)
+    if not result:
+        raise FAILED_CV_ANALYSIS
+    return result
 
 
 @router.put(
