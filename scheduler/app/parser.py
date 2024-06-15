@@ -75,6 +75,7 @@ def parse_vacancies_from_rntgroup() -> None:
     pages = pages.findChild(name="div", attrs={"class": "maxwidth-theme"}).findAll(recursive=False)[2:]
     new_vacancies = {}
     still_existing_vacancies = []
+
     for cards in pages:
         for card in cards.find_all(recursive=False):
             url = card.find(name="a").attrs.get("href")
@@ -82,8 +83,9 @@ def parse_vacancies_from_rntgroup() -> None:
                 url = "https://www.rntgroup.com" + url
             if url in new_vacancies:
                 continue
-            if url in existing_vacancies and url not in still_existing_vacancies:
-                still_existing_vacancies.append(url)
+            if url in existing_vacancies:
+                if url not in still_existing_vacancies:
+                  still_existing_vacancies.append(url)
                 continue
 
             vacancy = BeautifulSoup(get(url).text, "html.parser")
@@ -131,18 +133,22 @@ def parse_vacancies_from_rntgroup() -> None:
                 "updated_at": datetime.now(tz=timezone.utc),
                 "recruiter_id": recruiter_id,
             }
-    result = Vacancies.insert_many(new_vacancies.values())
-    logging.info("Добавлено новых вакансий: ", len(result.inserted_ids))
-    result = Vacancies.update_many(
-        {
-            "source.company": "RNTGroup", 
-            "source.url": {"$nin": list(new_vacancies.keys()) + list(still_existing_vacancies)}
-        }, 
-        {
-            "$set": { "status": "closed" }
-        }
-        )
-    logging.info("Устарело вакансий: ", result.modified_count)
+
+    if new_vacancies:
+      result = Vacancies.insert_many(new_vacancies.values())
+      logging.info("Добавлено новых вакансий: ", len(result.inserted_ids))
+    not_for_update_urls = list(new_vacancies.keys()) + list(still_existing_vacancies)
+    if len(not_for_update_urls) > 0:
+      result = Vacancies.update_many(
+          {
+              "source.company": "RNTGroup", 
+              "source.url": {"$nin": not_for_update_urls}
+          }, 
+          {
+              "$set": { "status": "closed" }
+          }
+          )
+      logging.info("Устарело вакансий: ", result.modified_count)
 
     # logic for updating new vacancies
     for url in new_vacancies:
