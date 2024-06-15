@@ -1,7 +1,6 @@
 import math
 from typing import Optional
 from fastapi import APIRouter
-from datetime import timedelta
 
 from app.utils import get_now, schedule_meeting
 from app.schemas import OID
