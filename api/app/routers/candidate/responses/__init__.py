@@ -228,5 +228,5 @@ async def get_response_schedule(
             "slots": day_slots
         })
         day = datetime.combine(day, time(0, 0, 0)) + timedelta(days=1)
-        day = day.day
+        day = day.date()
     return result
