@@ -2,6 +2,10 @@ name: 'Project deploy'
 
 on:
   workflow_call:
+    inputs:
+      deploy_ai:
+        required: true
+        type: boolean
 
 jobs:
   deploy:
@@ -13,6 +17,7 @@ jobs:
         with:
           sparse-checkout: |
             infra/docker-compose.yaml
+            infra/ai/docker-compose.yaml
           sparse-checkout-cone-mode: false
 
       - name: copy file via ssh
@@ -43,6 +48,34 @@ jobs:
             export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             export TELEMOST_API=${{ secrets.TELEMOST_API }}
             export AI_URL=${{ secrets.AI_URL }}
+
+            docker compose pull
+            docker compose up -d
+
+            docker image prune -a -f
+
+      - name: (AI) copy file via ssh
+        if: ${{ inputs.deploy_ai }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST_AI }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          source: "infra/ai/docker-compose.yaml"
+          target: /home/backend-user
+          strip_components: 2
+
+      - name: (AI) pull and up new images
+        if: ${{ inputs.deploy_ai }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST_AI }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
 
             docker compose pull
             docker compose up -d

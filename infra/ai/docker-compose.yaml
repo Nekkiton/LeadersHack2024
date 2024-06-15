@@ -1,0 +1,51 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v2.11.4
+    command:
+      - --api
+      - --providers.docker
+      - --entrypoints.web.address=:80
+      - --entrypoints.traefik.address=:8080
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      - --certificatesresolvers.myresolver.acme.email=nekkiton@ya.ru
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      - --log.level=DEBUG
+    ports:
+      # The HTTP port
+      - 80:80
+      # The HTTPS port
+      - 443:443
+      # The Traefik Dashboard & API port
+      - 8080:8080
+    restart: unless-stopped
+    volumes:
+      # Traefik can listen to the Docker events
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # acme.json should be created on host instance
+      - "./acme.json:/letsencrypt/acme.json"
+    labels:
+      # Traefik Dashboard HTTP with BasicAuth
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`leaders-gb.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.traefik.entrypoints=traefik"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$thqnb0v6$$NjBeqsAEsxkuQVXWGoxp11" # admin admin_pass
+
+  ai:
+    container_name: ai
+    image: leaders.cr.cloud.ru/leaders-hack-2024-gb/ai-worker:latest
+    restart: unless-stopped
+    environment:
+    - OPENAI_API_KEY=${OPENAI_API_KEY}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leaders_backend.rule=Host(`ai.leaders-gb.ru`)"
+      - "traefik.http.routers.leaders_backend.entrypoints=websecure"
+      - "traefik.http.routers.leaders_backend.tls=true"
+      - "traefik.http.routers.leaders_backend.tls.certresolver=myresolver"
+      - "traefik.http.services.leaders_backend.loadbalancer.server.port=4000"

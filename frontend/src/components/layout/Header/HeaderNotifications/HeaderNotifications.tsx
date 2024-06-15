@@ -19,12 +19,12 @@ export default function HeaderNotifications() {
   const newNotificationsCount = useMemo(() => {
     if (notifications.status === 'success') {
       return notifications.value.reduce(
-        (prev, cur) => (cur.is_read ? prev + 1 : prev),
+        (prev, cur) => (cur.is_read ? prev : prev + 1),
         0
       )
     }
     return 0
-  }, [notifications.status])
+  }, [(notifications as any).value])
 
   useEffect(() => {
     if (!isActive && newNotificationsCount) {
@@ -70,7 +70,7 @@ export default function HeaderNotifications() {
                         </span>
                       </div>
                       <p className={styles.notificationText}>
-                        {notification.title}. {notification.message}
+                        {notification.title}. {notification.content}
                       </p>
                     </div>
                   ))}

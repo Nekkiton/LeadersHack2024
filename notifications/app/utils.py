@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from bson import ObjectId
 
 from app.database import Notifications
@@ -12,5 +13,6 @@ def create_app_notification(
         {
             **locals(),
             "is_read": False,
+            "created_at": datetime.now(tz=timezone.utc)
         }
     )   
