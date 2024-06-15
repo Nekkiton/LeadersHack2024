@@ -3,6 +3,9 @@ PAGINATED_MATCH_RESPONSES = lambda query, page, limit: [
         "$match": query
     },
     {
+        "$sort": {"updated_at": -1}
+    },
+    {
         "$facet": {
             "0": [{"$count": "c"}],
             "5": [{"$match": {"match": {"$gte": 50}}}, {"$count": "c"}],

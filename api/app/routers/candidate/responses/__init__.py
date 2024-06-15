@@ -1,6 +1,6 @@
 import math
 from typing import Optional
-from datetime import datetime, timedelta, timezone, time
+from datetime import datetime, timedelta
 from fastapi import APIRouter
 
 from app.utils import get_now, schedule_meeting
@@ -33,7 +33,7 @@ async def get_responses(
         "inviter": inviter
     }
     total_pages = math.ceil(DetailedResponses.count_documents(query) / limit)
-    items = DetailedResponses.find(query).skip(page * limit).limit(limit)
+    items = DetailedResponses.find(query, sort={"updated_at": -1}).skip(page * limit).limit(limit)
     return {
         "total_pages": total_pages,
         "page": page,
