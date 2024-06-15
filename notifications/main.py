@@ -8,7 +8,7 @@ from app.database import Tasks
 
 async def main():
     while True:
-        pending = list(Tasks.find({"execute_at": {"$lte": datetime.now(tz=timezone.utc)}}))
+        pending = list(Tasks.find({"execute_at": {"$lte": datetime.now(tz=timezone.utc)}, "status": "pending"}))
         for task in pending:
             task_type = task.get("type")
             kwargs = task.get("body", {})
@@ -17,8 +17,10 @@ async def main():
                 continue
             try:
                 asyncio.create_task(proccesser(**kwargs))
+                Tasks.update_one({"_id": pending["_id"]}, {"$set": {"status": "success"}})
             except Exception as e:
                 logger.error(f"Task of type {task_type} with kwargs {kwargs} raised exception: {e}")
+                Tasks.update_one({"_id": pending["_id"]}, {"$set": {"status": "fail"}})
         asyncio.sleep(60)
 
 
