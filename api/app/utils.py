@@ -1,4 +1,4 @@
-from datetime import datetime, time, timedelta, timezone, MINYEAR
+from datetime import date, datetime, timedelta, timezone, MINYEAR
 from typing import List, get_args
 from fastapi import UploadFile
 from bson import ObjectId
