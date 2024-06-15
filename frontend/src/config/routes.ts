@@ -19,4 +19,6 @@ export const Routes = {
   candidateVacancy: (pk: string) => `/candidate/vacancies/${pk}`,
   candidateProfile: '/candidate/profile',
   candidateResponses: '/candidate/responses',
+
+  vacancy: (pk: string) => `/vacancies/${pk}`,
 }

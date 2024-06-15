@@ -6,6 +6,7 @@ import { Routes } from '@/config/routes'
 import { Site } from '@/config/site'
 import { VacancyStatus } from '@/types/entities/vacancy'
 import classNames from 'classnames'
+import Link from 'next/link'
 import BaseButton from '@/components/ui/BaseButton'
 import RemoteData from '@/components/special/RemoteData'
 import VacancyCard from '@/components/base/vacancies/VacancyCard'
@@ -63,7 +64,9 @@ export default function HomeVacancies() {
               <>
                 {!vacancies.items.length && <p>Ничего нет</p>}
                 {vacancies.items.map((vacancy) => (
-                  <VacancyCard key={vacancy._id} vacancy={vacancy} />
+                  <Link key={vacancy._id} href={Routes.vacancy(vacancy._id)}>
+                    <VacancyCard vacancy={vacancy} />
+                  </Link>
                 ))}
                 <Pagination
                   className={styles.vacanciesPagination}

@@ -9,6 +9,8 @@ import { Site } from '@/config/site'
 import { getVacancySalary } from '@/lib/get-vacancy-salary'
 import { useCurCandidateVacancyResponse } from '@/api/candidates'
 import { Routes } from '@/config/routes'
+import { useRouter } from 'next/router'
+import { useCurUser } from '@/api/users'
 import classNames from 'classnames'
 import moment from 'moment'
 import Button from '@/components/ui/Button'
@@ -26,6 +28,8 @@ interface Props {
 }
 
 export default function VacancyInfo({ vacancy, role }: Props) {
+  const router = useRouter()
+
   const [isDescriptionShowed, setIsDescriptionShowed] = useState(
     role === Role.Recruiter ? false : true
   )
@@ -34,6 +38,16 @@ export default function VacancyInfo({ vacancy, role }: Props) {
   const candidateResponse = useCurCandidateVacancyResponse(vacancy._id, {
     enabled: role === Role.Candidate,
   })
+
+  const user = useCurUser()
+
+  const respondToVacancy = () => {
+    if (user.status === 'success' && user.value?.role === Role.Candidate) {
+      setIsRespondModalShowed(true)
+    } else {
+      router.push(Routes.login)
+    }
+  }
 
   return (
     <>
@@ -73,15 +87,13 @@ export default function VacancyInfo({ vacancy, role }: Props) {
                 )}
               </>
             )}
-            {candidateResponse.status === 'success' &&
-              !candidateResponse.value && (
-                <Button
-                  type="primary"
-                  onClick={() => setIsRespondModalShowed(true)}
-                >
-                  Откликнуться
-                </Button>
-              )}
+            {(!role ||
+              (candidateResponse.status === 'success' &&
+                !candidateResponse.value)) && (
+              <Button type="primary" onClick={respondToVacancy}>
+                Откликнуться
+              </Button>
+            )}
           </div>
         </div>
 
@@ -238,13 +250,11 @@ export default function VacancyInfo({ vacancy, role }: Props) {
         </div>
       </div>
 
-      {role === Role.Candidate && (
-        <RespondToVacancyModal
-          isShowed={isRespondModalShowed}
-          setIsShowed={setIsRespondModalShowed}
-          vacancy={vacancy}
-        />
-      )}
+      <RespondToVacancyModal
+        isShowed={isRespondModalShowed}
+        setIsShowed={setIsRespondModalShowed}
+        vacancy={vacancy}
+      />
     </>
   )
 }
