@@ -8,6 +8,8 @@ from app.database import DetailedVacancies
 from app.literals import VacancyStatus, WorkScopes
 from app.schemas.vacancies import VacanciesGet, VacancyGet
 
+from .aggregations import SEARCH_BY_CANDIDATE_CV
+
 router = APIRouter(prefix="/vacancies")
 
 
@@ -43,9 +45,7 @@ async def find_vacancies_via_cv(file: UploadFile):
     candidate = await analyze_candidate_cv(file)
     if not candidate:
         return []
-    return DetailedVacancies.find().limit(3)
-    # TODO: return 3 best vacancies for candidate with match percent
-    # candidate fields can be None (or [])!
+    return list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE_CV(candidate.model_dump(exclude_none=True, exclude_unset=True))))
 
 
 @router.get(

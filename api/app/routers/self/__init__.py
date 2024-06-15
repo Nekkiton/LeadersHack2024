@@ -78,7 +78,7 @@ async def fill_as_candidate(
     response_model=CandidatePartial
 )
 async def analyse_candidate_cv(
-    user_id: CandidateId,
+    _: CandidateId,
     file: UploadFile
 ):
     result = await analyze_candidate_cv(file)
