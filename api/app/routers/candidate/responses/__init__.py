@@ -201,13 +201,12 @@ async def get_response_schedule(
     max_interviews = recruiter["interview_per_day"]
     slots = []
     for slot in recruiter["interview_slots"]:
-        start_time = slot["start_time"].time()
-        end_time = slot["end_time"].time()
+        start_time = slot["start_time"]
+        end_time = slot["end_time"]
         slot = start_time
         while slot < end_time:
-            slots.append(slot)
-            slot = datetime.combine(start, slot) + timedelta(minutes=30)
-            slot = slot.time()
+            slots.append(slot.time())
+            slot += timedelta(minutes=30)
     scheduled = Tasks.aggregate(DAYS_WITH_MAX_INTERVIEWS(recruiter["_id"], start, end))
     scheduled_zip = {}
     if scheduled:
@@ -226,4 +225,5 @@ async def get_response_schedule(
             "day": day.date(),
             "slots": day_slots
         })
+    print(result)
     return result
