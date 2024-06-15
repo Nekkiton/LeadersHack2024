@@ -1,5 +1,5 @@
 import math
-from typing import Optional
+from typing import List, Optional
 from datetime import datetime, timedelta
 from fastapi import APIRouter
 
@@ -187,6 +187,7 @@ async def answer_response(
 @router.get(
     "/{response_id}/schedule",
     name="Расписание по отклику",
+    response_model=List[datetime]
     )
 async def get_response_schedule(
     _: FilledCandidateId,
@@ -220,8 +221,5 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             day_slots.difference_update(set(scheduled["slots"]))
-        result.append({
-            "day": day.date(),
-            "slots": day_slots
-        })
+        result += list(day_slots)
     return result
