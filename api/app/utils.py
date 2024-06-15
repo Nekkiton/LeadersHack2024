@@ -1,12 +1,15 @@
 from datetime import datetime, timezone
-from fastapi import UploadFile
 from typing import Literal, get_args
+from fastapi import UploadFile
+from bson import ObjectId
+from pydantic import EmailStr
 from requests import post
 import bcrypt
 
 from app.settings import Settings
-from app.schemas.candidates import CandidatePartial
 from app.exceptions import NOT_ADDED_YET
+from app.schemas.candidates import CandidatePartial
+from notifications.app.database import Notifications, Tasks
 from app.literals import Educations, WorkTypes, WorkExperiences, WorkSchedules, Skills
 
 
@@ -101,3 +104,50 @@ async def analyze_candidate_cv(file: UploadFile) -> CandidatePartial | None:
         }
     except:
         return None
+
+
+def schedule_meeting(
+    response_id: ObjectId,
+    recruiter_id: ObjectId, 
+    candidate_id: ObjectId, 
+    at: datetime,
+    ):
+    Tasks.insert_one(
+        {
+            "type": "meeting",
+            "body": {
+                "response_id": response_id,
+                "recruiter_id": recruiter_id,
+                "candidate_id": candidate_id,
+            },
+            "execute_at": at,
+        }
+    )
+    for _id in [recruiter_id, candidate_id]:
+        schedule_notification(
+            _id,
+            title="Запланирована встреча",
+            content=f"В {at}",
+            )
+
+
+def schedule_notification(
+    user_id: ObjectId,
+    title: str,
+    content: str,
+    execute_at: datetime = datetime.min()
+    ):
+    """
+    Создание уведомления
+    """
+    Tasks.insert_one(
+        {
+            "type": "notification",
+            "body": {
+                "user_id": user_id,
+                "title": title,
+                "content": content,
+            },
+            "exceute_at": execute_at
+        }
+    )
