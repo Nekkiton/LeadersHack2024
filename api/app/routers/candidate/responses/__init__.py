@@ -196,7 +196,6 @@ async def get_response_schedule(
     _: FilledCandidateId,
     response_id: OID,
     end: datetime,
-    tz: str | int = "+03"
     ):
     # Возвращаем отклики рекрутера на час позже реального времени, 
     # чтобы ограничить возможность назначать интервью слишком рано
@@ -212,7 +211,7 @@ async def get_response_schedule(
         while start_time < end_time:
             slots.add(start_time.time())
             start_time += timedelta(minutes=30)
-    scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, tz))
+    scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, recruiter_tz))
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
@@ -220,7 +219,7 @@ async def get_response_schedule(
     result = []
     while day <= end:
         day += timedelta(days=1)
-        scheduled = scheduled_zip.get(str(day.astimezone(tz=timezone(int(tz))).date()))
+        scheduled = scheduled_zip.get(str(day.astimezone(tz=timezone(timedelta(hours=int(recruiter_tz)))).date()))
         day_slots = slots.copy()
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
