@@ -31,7 +31,7 @@ jobs:
             ai:
               - 'ai/**'
             scheduler:
-              - 'scheduler/**'
+              - 'notifications/**'
 
   build-frontend:
     needs: files-changed

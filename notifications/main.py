@@ -21,6 +21,7 @@ async def main():
         },
         upsert=True
     )
+
     while True:
         pending = list(Tasks.find({"execute_at": {"$lte": datetime.now(tz=timezone.utc)}, "status": "pending"}))
         for task in pending:
