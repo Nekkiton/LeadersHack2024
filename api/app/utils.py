@@ -100,7 +100,7 @@ def schedule_meeting(
                 "response_id": response_id,
                 "recruiter_id": recruiter_id,
                 "candidate_id": candidate_id,
-                "platform": platform,
+                "platform": platform
             },
             "execute_at": at - timedelta(minutes=30),
         }
