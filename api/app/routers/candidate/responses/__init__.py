@@ -216,15 +216,16 @@ async def get_response_schedule(
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
-    day = start - timedelta(days=1)
+    start = start.astimezone(tz=recruiter_tzinfo) - timedelta(days=1)
+    end = end.astimezone(tz=recruiter_tzinfo)
     result = []
-    while day <= end:
-        day += timedelta(days=1)
-        scheduled = scheduled_zip.get(str(day.astimezone(tz=recruiter_tzinfo).date()))
+    while start <= end:
+        start += timedelta(days=1)
+        scheduled = scheduled_zip.get(str(start.date()))
         day_slots = slots.copy()
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
                 continue
             day_slots.difference_update(set(scheduled["slots"]))
-        result += [datetime.combine(day, slot) for slot in day_slots]
+        result += [datetime.combine(start, slot) for slot in day_slots]
     return result
