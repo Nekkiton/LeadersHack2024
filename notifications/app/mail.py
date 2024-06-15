@@ -11,3 +11,11 @@ Sender = EmailSender(
     cls_smtp=SMTP_SSL,
     use_starttls=False
 )
+
+
+def send_mail(receiver: str, subject: str, text: str):
+    Sender.send(
+        receivers=receiver,
+        subject=subject,
+        text=text,
+    )

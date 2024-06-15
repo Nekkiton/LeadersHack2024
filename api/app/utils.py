@@ -103,6 +103,7 @@ def schedule_meeting(
                 "platform": platform
             },
             "execute_at": at - timedelta(minutes=30),
+            "status": "pending"
         }
     )
     for _id in [recruiter_id, candidate_id]:
@@ -130,6 +131,7 @@ def schedule_notification(
                 "title": title,
                 "content": content,
             },
-            "exceute_at": execute_at
+            "exceute_at": execute_at,
+            "status": "pending"
         }
     )
