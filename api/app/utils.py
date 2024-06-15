@@ -132,31 +132,7 @@ def schedule_notification(
                 "title": title,
                 "content": content,
             },
-            "exceute_at": execute_at,
+            "execute_at": execute_at,
             "status": "pending"
         }
     )
-
-
-def get_available_timeslots(recruiter_id: ObjectId, at: datetime | date) -> List[datetime]:
-    """
-    Возвращает список доступных слотов рекрутера в конкретную дату
-    """
-    if isinstance(at, datetime):
-        at = at.date()
-    recruiter = Users.find_one({"_id": recruiter_id, "role": "recruiter"})
-    slots = []
-    for slot in recruiter["interview_slots"]:
-        start_time = slot["start_time"].time()
-        end_time = slot["end_time"].time()
-        slot = start_time
-        while slot < end_time:
-            slots.append(slot)
-            slot += timedelta(minutes=30)
-    datetimes = []
-    for slot in slots:
-        datetimes.append(datetime.combine(at, slot))
-    scheduled = Tasks.find({"type": "meeting", "meet_at": {"$in": datetimes}}, {"meet_at"})
-    for schedule in list(scheduled):
-        datetimes.remove(schedule["meet_at"])
-    return datetimes
