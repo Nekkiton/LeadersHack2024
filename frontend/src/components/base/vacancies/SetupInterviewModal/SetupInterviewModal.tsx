@@ -21,7 +21,7 @@ interface Props extends ModalStateProps {
 interface FormData {
   date: Moment
   time: string
-  meet_on: 'GoogleMeet' | 'Zoom' | 'Telemost'
+  meet_on: 'googlemeet' | 'zoom' | 'telemost'
 }
 
 export default function SetupInterviewModal({
@@ -119,7 +119,13 @@ export default function SetupInterviewModal({
       <Controller
         control={control}
         name="meet_on"
-        rules={{ required: true }}
+        rules={{
+          required: true,
+          validate: (val) =>
+            val && val !== 'telemost'
+              ? 'На данные момент поддерживается только Telemost'
+              : true,
+        }}
         render={({ field, fieldState }) => (
           <Select
             {...field}
@@ -127,9 +133,9 @@ export default function SetupInterviewModal({
             label="Платформа для проведения интервью"
             placeholder="Выберите из списка"
             items={[
-              { key: 'GoogleMeet', value: 'GoogleMeet' },
-              { key: 'Zoom', value: 'Zoom' },
-              { key: 'Telemost', value: 'Telemost' },
+              { key: 'telemost', value: 'Telemost' },
+              { key: 'googlemeet', value: 'GoogleMeet' },
+              { key: 'zoom', value: 'Zoom' },
             ]}
           />
         )}

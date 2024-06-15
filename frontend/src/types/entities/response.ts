@@ -54,7 +54,7 @@ export interface CurCandidateAnswerToResponseData {
   status: 'approve' | 'reject'
   message: string | null
   meet_at: string | null
-  meet_on: 'Zoom' | 'GoogleMeet' | 'Telemost' | null
+  meet_on: 'zoom' | 'googlemeet' | 'telemost' | null
 }
 
 export interface CurRecruiterAnswerToResponseData {
