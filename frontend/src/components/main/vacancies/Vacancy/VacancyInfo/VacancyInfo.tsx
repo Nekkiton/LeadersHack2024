@@ -233,14 +233,6 @@ export default function VacancyInfo({ vacancy, role }: Props) {
                 ]}
                 activeKey={vacancy.status}
               />
-              <Button
-                type="text"
-                href={Site.links.changingVacancyStatuses}
-                target="_blank"
-              >
-                <span>Подробнее о смене статусов</span>
-                <Icon icon="linkExternal" />
-              </Button>
             </div>
           )}
 
