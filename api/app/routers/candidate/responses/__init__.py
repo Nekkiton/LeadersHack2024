@@ -212,13 +212,12 @@ async def get_response_schedule(
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
-    # TODO day_of_year может сломаться, если разница между start и end больше года
-    day = (start - timedelta(days=1)).date()
+    day = start - timedelta(days=1)
     result = []
-    while day <= end.date():
-        day = (datetime.combine(day, time(0, 0, 0)) + timedelta(days=1)).date()
-        day_of_year = day.timetuple().tm_yday
-        scheduled = scheduled_zip.get(day_of_year)
+    while day <= end:
+        day += timedelta(days=1)
+        print("СМОТРЕТЬ ЗДЕСЬ: ", str(day.date()))
+        scheduled = scheduled_zip.get(str(day.date()))
         day_slots = slots
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
@@ -226,7 +225,7 @@ async def get_response_schedule(
             for slot in scheduled["slots"]:
                 day_slots.remove(slot.time())
         result.append({
-            "day": day,
+            "day": day.date(),
             "slots": day_slots
         })
     return result

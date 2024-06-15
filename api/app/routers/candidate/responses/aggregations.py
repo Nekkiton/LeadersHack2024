@@ -8,7 +8,7 @@ DAYS_WITH_MAX_INTERVIEWS = lambda recruiter_id, start_date, end_date: [
     },
     {
         "$group": {
-            "_id": {"$dayOfYear": "$meet_at"},
+            "_id": {"$dateToString": {"format": "%Y-%m-%d", "date": "$meet_at"}},
             "interviews": {"$sum": 1},
             "slots": {"$push": "$meet_at"}
         }
