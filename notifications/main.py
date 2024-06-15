@@ -17,12 +17,12 @@ async def main():
                 continue
             try:
                 asyncio.create_task(proccesser(**kwargs))
-                Tasks.update_one({"_id": pending["_id"]}, {"$set": {"status": "success"}})
+                Tasks.update_one({"_id": task["_id"]}, {"$set": {"status": "success"}})
             except Exception as e:
                 logger.error(f"Task of type {task_type} with kwargs {kwargs} raised exception: {e}")
-                Tasks.update_one({"_id": pending["_id"]}, {"$set": {"status": "fail"}})
-        asyncio.sleep(60)
+                Tasks.update_one({"_id": task["_id"]}, {"$set": {"status": "fail"}})
+        await asyncio.sleep(5)
 
 
 if __name__ == "__main__":
-    asyncio.run(main)
+    asyncio.run(main())
