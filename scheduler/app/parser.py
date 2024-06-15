@@ -101,12 +101,9 @@ def parse_vacancies_from_rntgroup() -> None:
             )
 
             if response.status_code != 200:
-                logging.warning(
-                    f"Проблема в обработке вакансии через AI API. "
+                raise Exception(f"Проблема в обработке вакансии через AI API."
                     f"Запрос вернул {response.status_code} "
-                    f"с содержанием {response.text}"
-                )
-                continue
+                    f"с содержанием {response.text}")
 
             updated_vacancy = res.json()
 
@@ -131,4 +128,11 @@ def parse_vacancies_from_rntgroup() -> None:
                 f"Проблема в обработке обновленной вакансии. "
                 f"Ошибка: {ex} "
             )
-            raise ex
+            #raise ex
+            # add hack here to avoid non-filled vacancies
+            result = Vacancies.delete_one(
+            {
+                "source.company": "RNTGroup", 
+                "source.url": url
+            }
+            )
