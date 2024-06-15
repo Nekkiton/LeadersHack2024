@@ -212,6 +212,7 @@ async def get_response_schedule(
             slots.add(start_time.time())
             start_time += timedelta(minutes=30)
     scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, recruiter_tz))
+    print(scheduled, recruiter_tz)
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
@@ -220,6 +221,7 @@ async def get_response_schedule(
     while day <= end:
         day += timedelta(days=1)
         scheduled = scheduled_zip.get(str(day.astimezone(tz=timezone(timedelta(hours=int(recruiter_tz)))).date()))
+        print(scheduled, day)
         day_slots = slots.copy()
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
