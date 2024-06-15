@@ -1,13 +1,13 @@
-from datetime import datetime, timedelta, timezone, MINYEAR
-from typing import get_args
+from datetime import datetime, time, timedelta, timezone, MINYEAR
+from typing import List, get_args
 from fastapi import UploadFile
 from bson import ObjectId
 from requests import post
 import bcrypt
 
 from app.settings import Settings
+from app.database import Tasks, Users
 from app.schemas.candidates import CandidatePartial
-from app.database import Tasks
 from app.literals import Educations, WorkTypes, WorkExperiences, WorkSchedules, Skills
 
 
@@ -102,6 +102,7 @@ def schedule_meeting(
                 "candidate_id": candidate_id,
                 "platform": platform
             },
+            "meet_at": at,  
             "execute_at": at - timedelta(minutes=30),
             "status": "pending"
         }
@@ -135,3 +136,27 @@ def schedule_notification(
             "status": "pending"
         }
     )
+
+
+def get_available_timeslots(recruiter_id: ObjectId, at: datetime | date) -> List[datetime]:
+    """
+    Возвращает список доступных слотов рекрутера в конкретную дату
+    """
+    if isinstance(at, datetime):
+        at = at.date()
+    recruiter = Users.find_one({"_id": recruiter_id, "role": "recruiter"})
+    slots = []
+    for slot in recruiter["interview_slots"]:
+        start_time = slot["start_time"].time()
+        end_time = slot["end_time"].time()
+        slot = start_time
+        while slot < end_time:
+            slots.append(slot)
+            slot += timedelta(minutes=30)
+    datetimes = []
+    for slot in slots:
+        datetimes.append(datetime.combine(at, slot))
+    scheduled = Tasks.find({"type": "meeting", "meet_at": {"$in": datetimes}}, {"meet_at"})
+    for schedule in list(scheduled):
+        datetimes.remove(schedule["meet_at"])
+    return datetimes
