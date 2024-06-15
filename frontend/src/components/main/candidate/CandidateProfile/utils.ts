@@ -33,8 +33,9 @@ export interface FormData {
     start_date: Moment
     end_date: Moment | null
   }[]
-  site_notifications: boolean // TODO
-  tg_notifications: boolean // TODO
+  preferences: {
+    email_notify: boolean
+  }
 }
 
 export const transformData = (data: FormData): UpdateCandidateData => {
@@ -69,5 +70,8 @@ export const getDefaultData = (
             end_date: i.end_date ? moment(`${i.end_date}Z`) : null,
           }))
         : undefined) ?? [],
+    preferences: (user?.name ? user.preferences : null) ?? {
+      email_notify: false,
+    },
   }
 }

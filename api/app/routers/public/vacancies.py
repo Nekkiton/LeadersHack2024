@@ -45,7 +45,7 @@ async def find_vacancies_via_cv(file: UploadFile):
     candidate = await analyze_candidate_cv(file)
     if not candidate:
         return []
-    return list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE_CV(candidate.model_dump(exclude_none=True, exclude_unset=True))))
+    return list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE_CV(candidate)))
 
 
 @router.get(

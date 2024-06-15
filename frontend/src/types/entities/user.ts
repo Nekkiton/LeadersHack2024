@@ -23,4 +23,8 @@ export interface User extends BaseEntity {
   photo?: Attachment | null
   role: Role
   password_changed_at: string | null
+  preferences: {
+    email_notify: boolean
+    timezone: string
+  } | null
 }

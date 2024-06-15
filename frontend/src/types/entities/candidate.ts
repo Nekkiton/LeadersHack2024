@@ -55,8 +55,9 @@ export interface UpdateCandidateData {
   work_experience: WorkExperience
   salary_expectation: number
   work_history: UpdateWorkHistory[]
-  site_notifications: boolean
-  tg_notifications: boolean
+  preferences: {
+    email_notify: boolean
+  }
 }
 
 export interface InviteCandidateData {

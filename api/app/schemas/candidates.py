@@ -4,6 +4,7 @@ from typing import List, Optional
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from . import Pagination, UserGet, MatchItem
+from app.schemas import Preferences
 from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
 
 
@@ -35,6 +36,7 @@ class CandidatePost(BaseModel):
     work_history: List[WorkHistoryItem]
     salary_expectation: float
     skills: List[Skills]
+    preferences: Preferences
 
 
 class CandidateGet(CandidatePost, UserGet):

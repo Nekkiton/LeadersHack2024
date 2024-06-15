@@ -21,6 +21,7 @@ export interface UpdateRecruiterData {
   email: string
   interview_per_day: number
   interview_slots: UpdateInterviewSlot[]
-  site_notifications: boolean
-  tg_notifications: boolean
+  preferences: {
+    email_notify: boolean
+  }
 }

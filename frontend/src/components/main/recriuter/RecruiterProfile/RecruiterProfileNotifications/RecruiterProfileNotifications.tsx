@@ -15,21 +15,13 @@ export default function RecruiterProfileNotifications() {
         </p>
       </div>
       <div className={styles.fields}>
+        {/* <Checkbox value>На сайте</Checkbox> */}
         <Controller
           control={control}
-          name="site_notifications"
+          name="preferences.email_notify"
           render={({ field, fieldState }) => (
             <Checkbox {...field} error={fieldState.error}>
-              На сайте
-            </Checkbox>
-          )}
-        />
-        <Controller
-          control={control}
-          name="tg_notifications"
-          render={({ field, fieldState }) => (
-            <Checkbox {...field} error={fieldState.error}>
-              В telegram
+              На эл. почту
             </Checkbox>
           )}
         />
