@@ -1,5 +1,6 @@
 import math
 from typing import Optional
+from datetime import timedelta
 from fastapi import APIRouter
 
 from app.utils import get_now, schedule_meeting
@@ -156,7 +157,7 @@ async def answer_response(
                 "type": "candidate_answer",
                 "sender_role": "candidate",
                 # TODO: deal with timezone not only Moscow
-                "text": f"Интервью назначено на {(payload.meet_at).strftime("%d.%m %H:%M")}.",
+                "text": f"Интервью назначено на {(payload.meet_at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}.",
                 "created_at": now,
                 "stage_id": response["stage_id"],
             }

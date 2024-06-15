@@ -109,7 +109,7 @@ def schedule_meeting(
         schedule_notification(
             _id,
             title="Запланирована встреча",
-            content=f"В {at}",
+            content=f"В {(at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}",
             )
 
 
