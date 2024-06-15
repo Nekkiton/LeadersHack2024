@@ -30,7 +30,7 @@ async def get_vacancies(
     return {
         "total_pages": math.ceil(DetailedVacancies.count_documents(query) / limit),
         "page": page,
-        "items": DetailedVacancies.find(query).limit(limit).skip(page * limit)
+        "items": DetailedVacancies.find(query, sort={"created_at": -1}).limit(limit).skip(page * limit)
     }
 
 
