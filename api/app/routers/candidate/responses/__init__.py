@@ -153,7 +153,8 @@ async def answer_response(
                 response["vacancy"]["recruiter_id"],
                 response["candidate_id"],
                 payload.meet_on, 
-                payload.meet_at
+                payload.meet_at,
+                response["vacancy"]["title"]
                 )
             message = {
                 "type": "candidate_answer",
