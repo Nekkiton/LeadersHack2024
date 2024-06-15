@@ -131,8 +131,8 @@ export default function SetupInterviewModal({
               <div className={styles.timePickerOptions}>
                 <RemoteData
                   data={schedule}
-                  renderSuccess={(schedule) =>
-                    schedule
+                  renderSuccess={(schedule) => {
+                    const children = schedule
                       .filter((i) =>
                         moment(i.day).isSame(
                           selectedDate.clone().startOf('day')
@@ -155,7 +155,9 @@ export default function SetupInterviewModal({
                           </BaseButton>
                         ))
                       )
-                  }
+                    if (children.length) return children
+                    return <p>В выбранный день нет свободного времени</p>
+                  }}
                 />
               </div>
             </ControlContainer>
