@@ -32,6 +32,10 @@ export default function VacancyForm({ backLink, editId, copyId }: Props) {
   const [isCloseVacancyModalShowed, setIsCloseVacancyModalShowed] =
     useState(false)
 
+  const vacancy = useVacancy((editId ?? copyId)!, {
+    enabled: !!(editId ?? copyId),
+  })
+
   const steps = [
     {
       name: 'Информация о вакансии',
@@ -39,13 +43,17 @@ export default function VacancyForm({ backLink, editId, copyId }: Props) {
     },
     {
       name: 'Воронка найма',
-      content: <VacancyFormRecruiting />,
+      content: (
+        <VacancyFormRecruiting
+          disabled={
+            !!editId &&
+            vacancy.status === 'success' &&
+            !!vacancy.value.responses
+          }
+        />
+      ),
     },
   ]
-
-  const vacancy = useVacancy((editId ?? copyId)!, {
-    enabled: !!(editId ?? copyId),
-  })
 
   const methods = useForm<FormData>({
     defaultValues: getInitialData(

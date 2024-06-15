@@ -11,7 +11,11 @@ import Checkbox from '@/components/ui/Checkbox'
 import Textarea from '@/components/ui/Textarea'
 import styles from './VacancyFormRecruiting.module.scss'
 
-export default function VacancyFormRecruiting() {
+interface Props {
+  disabled?: boolean
+}
+
+export default function VacancyFormRecruiting({ disabled }: Props) {
   const { control } = useFormContext<FormData>()
 
   const {
@@ -53,7 +57,9 @@ export default function VacancyFormRecruiting() {
                 {!stage._isRequired && (
                   <BaseButton
                     onClick={() => moveStageUp(idx)}
-                    disabled={idx === 0 || stages[idx - 1]._isRequired}
+                    disabled={
+                      idx === 0 || stages[idx - 1]._isRequired || disabled
+                    }
                     hoverable
                   >
                     <Icon icon="chevronUp" />
@@ -63,7 +69,9 @@ export default function VacancyFormRecruiting() {
                   <BaseButton
                     onClick={() => moveStageDown(idx)}
                     disabled={
-                      idx === stages.length - 1 || stages[idx + 1]._isRequired
+                      idx === stages.length - 1 ||
+                      stages[idx + 1]._isRequired ||
+                      disabled
                     }
                     hoverable
                   >
@@ -90,7 +98,11 @@ export default function VacancyFormRecruiting() {
               </div>
               <div className={styles.stageHeaderControls}>
                 {!stage._isRequired && (
-                  <BaseButton onClick={() => removeStage(idx)} hoverable>
+                  <BaseButton
+                    onClick={() => removeStage(idx)}
+                    disabled={disabled}
+                    hoverable
+                  >
                     <Icon
                       className={styles.stageHeaderRemoveIcon}
                       icon="trash"
@@ -156,6 +168,7 @@ export default function VacancyFormRecruiting() {
               _isRequired: false,
             })
           }
+          disabled={disabled}
         >
           <Icon icon="plus" />
           <span>Добавить этап</span>

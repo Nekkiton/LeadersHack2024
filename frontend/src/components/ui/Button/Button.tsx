@@ -7,7 +7,7 @@ import BaseButton, { BaseButtonProps } from '@/components/ui/BaseButton'
 import Spinner from '@/components/ui/Spinner'
 import styles from './Button.module.scss'
 
-interface Props extends Omit<BaseButtonProps, 'disabled'> {
+interface Props extends BaseButtonProps {
   className?: string
   type?: 'primary' | 'secondary' | 'text'
   underline?: 'dashed' | 'solid'
@@ -27,6 +27,7 @@ export default function Button({
   fullWidth,
   loading,
   children,
+  disabled,
   ...baseButtonProps
 }: Props) {
   if (href) {
@@ -60,7 +61,7 @@ export default function Button({
             [styles.full]: fullWidth,
           }
         )}
-        disabled={loading}
+        disabled={loading || disabled}
       >
         {children}
         <AppearTransition gap orientation="h">
