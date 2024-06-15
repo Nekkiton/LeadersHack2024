@@ -212,6 +212,7 @@ async def get_response_schedule(
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
     day = start.date()
+    result = []
     while day <= end.date():
         day_of_year = day.timetuple().tm_yday
         scheduled = scheduled_zip.get(day_of_year)
@@ -221,8 +222,9 @@ async def get_response_schedule(
                 continue
             for slot in scheduled["slots"]:
                 day_slots.remove(slot.time())
-        yield {
+        result.append({
             "day": day,
             "slots": day_slots
-        }
+        })
         day += timedelta(days=1)
+    return result
