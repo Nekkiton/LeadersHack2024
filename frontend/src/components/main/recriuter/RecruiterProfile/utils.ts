@@ -37,13 +37,17 @@ export const getDefaultData = (
   return {
     ...(user ?? {}),
     phone: user?.name ? getUserPhone(user) : undefined,
-    interview_slots:
-      (user?.name
-        ? user.interview_slots?.map((i) => ({
-            ...i,
-            start_time: moment(`${i.start_time}Z`),
-            end_time: moment(`${i.end_time}Z`),
-          }))
-        : []) ?? [],
+    interview_slots: (user?.name
+      ? user.interview_slots?.map((i) => ({
+          ...i,
+          start_time: moment(`${i.start_time}Z`),
+          end_time: moment(`${i.end_time}Z`),
+        }))
+      : undefined) ?? [
+      {
+        start_time: moment().hours(10).minutes(0),
+        end_time: moment().hours(18).minutes(0),
+      },
+    ],
   }
 }
