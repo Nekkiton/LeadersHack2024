@@ -15,6 +15,7 @@ interface Attachment {
   _id: string
   name: string
   size: number
+  data: string
 }
 
 type Value<IsMultiple> = IsMultiple extends true ? Attachment[] : Attachment
@@ -75,16 +76,34 @@ export default function FileUpload<IsMultiple extends boolean = false>({
 
     if (!files.length) return
 
+    const readFile = (file: File) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        if (isMulti) {
+          // TODO
+        } else {
+          setValue([
+            {
+              name: file.name,
+              size: file.size,
+              _id: generateId(),
+              data: reader.result as string,
+            },
+          ])
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+
     if (isMulti) {
-      setValue(
-        value.concat(
-          files.map((i) => ({ name: i.name, size: i.size, _id: generateId() }))
-        )
-      )
+      // TODO
+      // setValue(
+      //   value.concat(
+      //     files.map((i) => ({ name: i.name, size: i.size, _id: generateId() }))
+      //   )
+      // )
     } else {
-      setValue([
-        { name: files[0].name, size: files[0].size, _id: generateId() },
-      ])
+      readFile(files[0])
     }
   }
 

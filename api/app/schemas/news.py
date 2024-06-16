@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import Base64Str, BaseModel
+from pydantic import BaseModel
 from datetime import datetime
 
 from . import OID, BaseGet, Pagination
@@ -8,7 +8,7 @@ from . import OID, BaseGet, Pagination
 class NewsItemPost(BaseModel):
     title: str
     text: str
-    image: Base64Str
+    image: str
     publication_date: datetime
 
 

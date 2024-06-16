@@ -15,7 +15,7 @@ import {
 } from '@/types/entities/candidate'
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
-import { GetNewsParams, News } from '@/types/entities/news'
+import { GetNewsParams, News, UpdateNewsData } from '@/types/entities/news'
 import { Paginated } from '@/types/entities/paginated'
 import { UpdateRecruiterData } from '@/types/entities/recruiter'
 import { Skill } from '@/types/entities/skill'
@@ -236,6 +236,8 @@ export const Api = {
       Axios.get<News[]>('/news/daily')
         .then((res) => res.data)
         .catch((): News[] => TempNews),
+
+    create: (data: UpdateNewsData) => Axios.post('/recruiter/news', data),
   },
 
   workScopes: {
