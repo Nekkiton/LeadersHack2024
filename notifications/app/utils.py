@@ -34,7 +34,7 @@ def create_ics(at: datetime, duration: timedelta, name: str, org_email: str, org
         name=name,
         description=description,
         begin=at,
-        end=at+duration,
+        end=at + timedelta(minutes=duration),
         organizer=Organizer(
             email=org_email,
             common_name=org_name,
