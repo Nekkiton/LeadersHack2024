@@ -123,7 +123,9 @@ export default function VacancyFormRecruiting({ disabled }: Props) {
                   render={({ field, fieldState }) => (
                     <Checkbox {...field} error={fieldState.error}>
                       <p>Назначать онлайн интервью при положительном ответе</p>
-                      <Icon icon="question" />
+                      <div title="Поставьте галочку, если для этого этапа отбора нужно онлайн-интервью. Соискатель выберет удобное время исходя из ваших свободных слотов в календаре">
+                        <Icon icon="question" />
+                      </div>
                     </Checkbox>
                   )}
                 />
