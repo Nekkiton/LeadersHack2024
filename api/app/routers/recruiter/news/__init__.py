@@ -1,5 +1,4 @@
-from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 
 from app.schemas import OID
 from app.database import News
@@ -63,3 +62,16 @@ async def post_article(
     if not result:
         raise ARTICLE_NOT_BELONGS_TO_RECRUITER
     return result
+
+
+@router.delete(
+    "/{article_id}",
+    name="Удалить новость",
+    )
+async def delete_artile(
+    recruiter_id: RecruiterId,
+    article_id: OID,
+    ):
+    result = News.delete_one({"recruiter_id": recruiter_id, "_id": article_id})
+    if not result.deleted_count:
+        raise ARTICLE_NOT_BELONGS_TO_RECRUITER
