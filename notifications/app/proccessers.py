@@ -16,7 +16,8 @@ from .consts import recruitingDefaultStages
 async def proccess_notification(
     title: str, 
     content: str, 
-    user_id: ObjectId, 
+    user_id: ObjectId,
+    calendar_orgainzier: ObjectId | None = None,
     calendar_date: datetime | None = None,
     calendar_duration: int | None = None
     ):
@@ -24,8 +25,17 @@ async def proccess_notification(
     preferences = user.get("preferences", {})
     if preferences.get("email_notify", False):
         attachements = {}
-        if calendar_date is not None and calendar_duration is not None:
-            attachements = {"interview.ics": create_ics(calendar_date, calendar_duration, title)}
+        if calendar_date is not None and calendar_duration is not None and calendar_orgainzier is not None:
+            organizer = Users.find_one({"_id": calendar_orgainzier}, {"email": 1, "name": 1, "surname": 1})
+            ics_bytes = create_ics(
+                at=calendar_date,
+                duration=calendar_duration,
+                org_email=organizer["email"],
+                name=title,
+                org_name=f"{organizer["name"]} {organizer["surname"]}",
+                description=content
+            )
+            attachements = {"interview.ics": ics_bytes}
         send_mail(receiver=user["email"], subject=title, text=content, attachments=attachements)
     if preferences.get("site_notify", False):
         create_app_notification(title, content, user_id)
