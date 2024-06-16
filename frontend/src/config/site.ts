@@ -3,10 +3,6 @@ export const Site = {
   transition: {
     duration: 400,
   },
-  links: {
-    creatingVacancies: '#',
-    changingVacancyStatuses: '#',
-  },
   cardsPerPage: 8,
   recruitingDefaultRejectTemplate:
     'Здравствуйте!\nБольшое спасибо за интерес, проявленный к вакансии. К сожалению, в настоящий момент мы не готовы сделать вам предложение. Мы, возможно, вернемся к вашей кандидатуре, когда у нас возникнет такая потребность.',

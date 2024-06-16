@@ -40,6 +40,10 @@ export default function Vacancies({ role }: Props) {
   const filters = watch()
 
   const [page, setPage] = useState(0)
+  watch(() => {
+    setPage(0)
+  })
+
   const [vacanciesExist, setVacanciesExist] = useState<null | boolean>(null)
 
   const candidateVacancies = useCurCandidateVacancies(

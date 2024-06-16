@@ -165,14 +165,6 @@ export default function VacancyForm({ backLink, editId, copyId }: Props) {
               items={steps.map((step, idx) => ({ key: idx, value: step.name }))}
               activeKey={activeStepIdx}
             />
-            <Button
-              type="text"
-              href={Site.links.creatingVacancies}
-              target="_blank"
-            >
-              <span>Подробнее о создании вакансий</span>
-              <Icon icon="linkExternal" />
-            </Button>
           </div>
         </div>
       </div>

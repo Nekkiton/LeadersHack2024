@@ -21,6 +21,10 @@ export default function Candidates() {
   const filters = watch()
 
   const [page, setPage] = useState(0)
+  watch(() => {
+    setPage(0)
+  })
+
   const [candidatesExist, setCandidatesExist] = useState<null | boolean>(null)
 
   const candidates = useCandidates({ ...transformFilters(filters, page) })

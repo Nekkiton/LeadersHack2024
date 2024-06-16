@@ -25,6 +25,6 @@ export interface User extends BaseEntity {
   password_changed_at: string | null
   preferences: {
     email_notify: boolean
-    timezone: string
+    site_notify: boolean
   } | null
 }

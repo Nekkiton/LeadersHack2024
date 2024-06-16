@@ -1,23 +1,12 @@
-from datetime import datetime, MAXYEAR
-from pydantic import BaseModel, model_validator
+from datetime import datetime, MAXYEAR, timezone
 from typing import List, Optional, Self
+from pydantic import BaseModel, model_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from . import Pagination, UserGet, MatchItem
 from app.schemas import Preferences
 from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
 
-
-class CandidateValidators(BaseModel):
-    @model_validator()
-    def sort_work_history(self: Self) -> Self:
-        max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59)
-        if self.work_history is not None and len(self.work_history):
-            self.work_history = sorted(
-                self.work_history, 
-                lambda i: i.end_date if i.end_date is not None else max_datetime, 
-                reverse=True
-                ) 
+from . import Pagination, UserGet, MatchItem
 
 
 class WorkHistoryItem(BaseModel):
@@ -27,6 +16,17 @@ class WorkHistoryItem(BaseModel):
     end_date: Optional[datetime] = None
     responsibilities: str
 
+
+class CandidateValidators(BaseModel):
+    work_history: List[WorkHistoryItem]
+
+    @model_validator(mode="after")
+    def sort_work_history(self: Self) -> Self:
+        if self.work_history is not None and len(self.work_history):
+            max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59, tzinfo=timezone.utc)
+            self.work_history.sort(key=lambda item: item.end_date.astimezone(tz=timezone.utc) if item.end_date is not None else max_datetime, reverse=True)
+        return self
+            
 
 class CandidatePost(CandidateValidators):
     """

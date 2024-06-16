@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta
-from typing import List, Literal, Optional, Self
 from pydantic import BaseModel, model_validator
+from typing import List, Literal, Optional, Self
 
 from app.utils import get_now
 from app.schemas.candidates import CandidateGet
 from app.literals import ResponseMessageType, ResponseStatus, Role
 
-from . import OID, BaseGet, MatchItem, Pagination
 from .vacancies import VacancyGet
+from . import OID, BaseGet, MatchItem, Pagination
 
 
 class ResponseMessageItem(BaseModel):
@@ -55,7 +55,7 @@ class CandidateResponseAnswer(BaseModel):
     meet_on: Optional[Literal["zoom", "googlemeet", "telemost"]] = None
 
     @model_validator(mode="after")
-    def check_fields_by_status(self) -> Self:
+    def check_fields_by_status(self: Self) -> Self:
         if self.status == "reject" and self.message is None:
             raise ValueError("Если статус reject, необходим message")
         if self.meet_at is not None and self.meet_at < get_now() + timedelta(hours=1):

@@ -35,6 +35,7 @@ export interface FormData {
   }[]
   preferences: {
     email_notify: boolean
+    site_notify: boolean
   }
 }
 
@@ -72,6 +73,7 @@ export const getDefaultData = (
         : undefined) ?? [],
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
+      site_notify: false,
     },
   }
 }

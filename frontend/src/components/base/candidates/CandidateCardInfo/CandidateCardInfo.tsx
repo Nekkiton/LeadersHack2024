@@ -109,8 +109,11 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
           >
             {candidate.email}
           </Link>
-          {candidate.telegram && (
-            <Link href={`https://t.me/${candidate.telegram}`} target="_blank">
+          {candidate.telegram.trim() && (
+            <Link
+              href={`https://t.me/${candidate.telegram.trim()}`}
+              target="_blank"
+            >
               <Icon icon="telegram" />
             </Link>
           )}

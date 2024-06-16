@@ -6,7 +6,6 @@ from pydantic_core import core_schema
 
 from app.literals import Role
 
-
 class OID(str):
     """
     Pydantic реализация ObjectId

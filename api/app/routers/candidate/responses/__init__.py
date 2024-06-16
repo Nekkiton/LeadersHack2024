@@ -229,8 +229,7 @@ async def get_response_schedule(
     result = []
     while start <= end:
         start += timedelta(days=1)
-        if start.weekday == 6:
-            start += timedelta(days=1)
+        if start.weekday() >= 5:
             continue
         scheduled = scheduled_zip.get(str(start.date()))
         day_slots = slots.copy()
@@ -238,7 +237,8 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
-                day_slots.remove((slot + timedelta(hours=3)).time())
+                if (slot + timedelta(hours=3)).time() in day_slots:
+                    day_slots.remove((slot + timedelta(hours=3)).time())
             # day_slots.difference_update(set(scheduled["slots"]))
         result += [datetime.combine(start, slot) for slot in day_slots]
     # return result
