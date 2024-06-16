@@ -44,6 +44,8 @@ jobs:
             export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             export TELEMOST_API=${{ secrets.TELEMOST_API }}
             export AI_URL=${{ secrets.AI_URL }}
+            export EMAIL_USER=${{ secrets.EMAIL_USER }}
+            export EMAIL_PASS=${{ secrets.EMAIL_PASS }}
 
             docker compose pull
             docker compose up -d

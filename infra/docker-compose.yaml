@@ -55,6 +55,7 @@ services:
   #   ports:
   #     - 4000:4000 # TODO: remove later to avoid direct access
 
+  # Going to use all-in-one scheduler instead of mailer and parser
   scheduler:
     container_name: scheduler
     image: leaders.cr.cloud.ru/leaders-hack-2024-gb/scheduler:latest
@@ -65,6 +66,9 @@ services:
     - MONGO_DATABASE=${MONGO_DATABASE}
     - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
     - AI_URL=${AI_URL}
+    - TELEMOST_API=${TELEMOST_API}
+    - EMAIL_USER=${EMAIL_USER}
+    - EMAIL_PASS=${EMAIL_PASS}
 
   leaders_backend:
     container_name: leaders_backend
@@ -88,7 +92,6 @@ services:
     - JWT_PRIVATE_KEY_PATH=${JWT_PRIVATE_KEY_PATH}
     - JWT_ALGORITHM=${JWT_ALGORITHM}
     - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-    - TELEMOST_API=${TELEMOST_API}
     - AI_URL=${AI_URL}
 
   leaders_frontend:

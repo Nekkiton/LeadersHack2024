@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Response } from '@/types/entities/response'
 import { Vacancy } from '@/types/entities/vacancy'
@@ -77,6 +77,19 @@ export default function SetupInterviewModal({
     end: selectedDate.clone().endOf('month').toISOString(),
   })
 
+  const selectedDateSlots = useMemo(() => {
+    if (schedule.status !== 'success') return []
+    const dayStart = selectedDate.clone().startOf('day')
+    const dayEnd = selectedDate.clone().endOf('day')
+    return (
+      schedule.value
+        .map((i) => moment(`${i}`))
+        // .map((i) => moment(`${i}Z`))
+        .filter((i) => i.isBetween(dayStart, dayEnd))
+        .sort((a, b) => (a > b ? 1 : -1))
+    )
+  }, [selectedDate, (schedule as any).value])
+
   return (
     <Modal
       {...stateProps}
@@ -131,33 +144,23 @@ export default function SetupInterviewModal({
               <div className={styles.timePickerOptions}>
                 <RemoteData
                   data={schedule}
-                  renderSuccess={(schedule) => {
-                    const children = schedule
-                      .filter((i) =>
-                        moment(i.day).isSame(
-                          selectedDate.clone().startOf('day')
-                        )
-                      )
-                      .flatMap((day) =>
-                        day.slots.map((slot) => (
-                          <BaseButton
-                            className={classNames(styles.timePickerOption, {
-                              [styles.active]: moment(
-                                `${day.day}T${slot}Z`
-                              ).isSame(field.value),
-                            })}
-                            key={slot}
-                            onClick={() =>
-                              field.onChange(moment(`${day.day}T${slot}Z`))
-                            }
-                          >
-                            {moment(`${day.day}T${slot}Z`).format('HH:mm')}
-                          </BaseButton>
-                        ))
-                      )
-                    if (children.length) return children
-                    return <p>В выбранный день нет свободного времени</p>
-                  }}
+                  renderSuccess={(schedule) =>
+                    selectedDateSlots.length ? (
+                      selectedDateSlots.map((slot) => (
+                        <BaseButton
+                          className={classNames(styles.timePickerOption, {
+                            [styles.active]: slot.isSame(field.value),
+                          })}
+                          key={slot.toISOString()}
+                          onClick={() => field.onChange(slot)}
+                        >
+                          {slot.format('HH:mm')}
+                        </BaseButton>
+                      ))
+                    ) : (
+                      <p>В выбранный день нет свободного времени</p>
+                    )
+                  }
                 />
               </div>
             </ControlContainer>

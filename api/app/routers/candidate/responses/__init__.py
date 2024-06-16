@@ -199,25 +199,33 @@ async def get_response_schedule(
     ):
     # Возвращаем отклики рекрутера на час позже реального времени, 
     # чтобы ограничить возможность назначать интервью слишком рано
-    start = get_now() + timedelta(hours=1)
+    # TODO: deal with all timezones
+    # now it only works with utc+3 as fast decision for prototype
+
+    # start = get_now() + timedelta(hours=1)
+    moscow_tz = timezone(timedelta(hours=3))
+    start = datetime.now(tz=moscow_tz)
     response = DetailedResponses.find_one({"_id": response_id})
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "+03")
-    recruiter_tzinfo = timezone(timedelta(hours=int(recruiter_tz)))
+    # recruiter_tz = recruiter.get("preferences", {}).get("timezone", "+03")
+    # recruiter_tzinfo = timezone(timedelta(hours=int(recruiter_tz)))
     slots = set()
     for slot in recruiter["interview_slots"]:
-        start_time = slot["start_time"]
-        end_time = slot["end_time"]
+        start_time = slot["start_time"].astimezone(tz=moscow_tz) + timedelta(hours=3)
+        end_time = slot["end_time"].astimezone(tz=moscow_tz) + timedelta(hours=3)
         while start_time < end_time:
             slots.add(start_time.time())
             start_time += timedelta(minutes=30)
-    scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, recruiter_tz))
+    # scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, recruiter_tz))
+    scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, '+03:00'))
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
-    start = start.astimezone(tz=recruiter_tzinfo) - timedelta(days=1)
-    end = end.astimezone(tz=recruiter_tzinfo)
+    start = start.astimezone(tz=moscow_tz) - timedelta(days=1)
+    end = end.astimezone(tz=moscow_tz)
+    # start = start.astimezone(tz=recruiter_tzinfo) - timedelta(days=1)
+    # end = end.astimezone(tz=recruiter_tzinfo)
     result = []
     while start <= end:
         start += timedelta(days=1)
@@ -226,6 +234,9 @@ async def get_response_schedule(
         if scheduled:
             if scheduled["interviews"] >= max_interviews:
                 continue
-            day_slots.difference_update(set(scheduled["slots"]))
+            for slot in scheduled['slots']:
+                day_slots.remove((slot + timedelta(hours=3)).time())
+            # day_slots.difference_update(set(scheduled["slots"]))
         result += [datetime.combine(start, slot) for slot in day_slots]
-    return result
+    # return result
+    return map(lambda i: i.astimezone(tz=timezone.utc), result)

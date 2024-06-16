@@ -23,7 +23,7 @@ async def proccess_notification(
     ):
     user = Users.find_one({"_id": user_id, "preferences.email_notify": True}, {"email": 1})
     if user is not None:
-        send_mail(receiver=user["email"], subject=title, content=content)
+        send_mail(receiver=user["email"], subject=title, text=content)
     create_app_notification(title, content, user_id)
 
 
@@ -74,7 +74,9 @@ def proccess_rntgroup() -> None:
             f"Запрос вернул {response.status_code} "
             f"с содержанием {response.text}"
         )
-    recruiter_id = Users.find_one({"role": "recruiter"})["_id"]
+    recruiter = Users.find_one({"role": "recruiter"})
+    recruiter_id = recruiter["_id"]
+    recruiter_name = recruiter["name"]
     existing_vacancies = {vacancy["url"] for vacancy in Vacancies.find({"source.company": "RNTGroup"}, {"url": "$source.url"})}
     pages = BeautifulSoup(response.text, "html.parser").find(attrs={"data-id": "8935"})
     pages = pages.findChild(name="div", attrs={"class": "maxwidth-theme"}).findAll(recursive=False)[2:]
@@ -195,6 +197,10 @@ def proccess_rntgroup() -> None:
                 stages_dumps.append(
                     {
                         **stage,
+                        # hack it here to replace constant, should be supported by back in the future
+                        "approve_template": stage["approve_template"].replace("RECRUITER_NAME", recruiter_name),
+                        "reject_template": stage["reject_template"].replace("RECRUITER_NAME", recruiter_name),
+                        # end hack
                         "vacancy_id": cur_vacancy_id,
                         "status": "active",
                         "created_at": datetime.now(tz=timezone.utc),
@@ -220,6 +226,6 @@ def proccess_rntgroup() -> None:
         {
             "type": "rntgroup",
             "status": "pending",
-            "execute_at": datetime.now(tz=timezone.utc) + timedelta(minutes=10)
+            "execute_at": datetime.now(tz=timezone.utc) + timedelta(hours=24)
         }
     )

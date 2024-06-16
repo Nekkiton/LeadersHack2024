@@ -31,7 +31,7 @@ jobs:
             ai:
               - 'ai/**'
             scheduler:
-              - 'scheduler/**'
+              - 'notifications/**'
 
   build-frontend:
     needs: files-changed
@@ -76,8 +76,8 @@ jobs:
     if: needs.files-changed.outputs.scheduler == 'true'
     uses: ./.github/workflows/build-and-push.yaml
     with:
-      dockerfile: scheduler/Dockerfile
-      context: scheduler
+      dockerfile: notifications/Dockerfile
+      context: notifications
       image: leaders.cr.cloud.ru/leaders-hack-2024-gb/scheduler
     secrets: inherit
 

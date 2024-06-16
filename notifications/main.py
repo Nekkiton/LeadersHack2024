@@ -15,12 +15,13 @@ async def main():
         {
             "$set": {
                 "type": "rntgroup",
-                "execute_at": datetime.now(tz=timezone.utc) + timedelta(minutes=10),
+                "execute_at": datetime.now(tz=timezone.utc),
                 "status": "pending"
             }
         },
         upsert=True
     )
+
     while True:
         pending = list(Tasks.find({"execute_at": {"$lte": datetime.now(tz=timezone.utc)}, "status": "pending"}))
         for task in pending:

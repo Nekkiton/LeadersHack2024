@@ -69,10 +69,10 @@ services:
   scheduler:
     container_name: scheduler
     build:
-      context: scheduler
+      context: notifications
       dockerfile: Dockerfile
     env_file: 
-      - path: ./scheduler/.env.local
+      - path: ./notifications/.env.local
         required: true
     restart: always
     depends_on:
@@ -80,7 +80,7 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./scheduler
+          path: ./notifications
           target: /app
 
 volumes:
