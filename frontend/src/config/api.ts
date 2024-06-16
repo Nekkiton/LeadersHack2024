@@ -15,7 +15,12 @@ import {
 } from '@/types/entities/candidate'
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
-import { GetNewsParams, News, UpdateNewsData } from '@/types/entities/news'
+import {
+  GetNewsParams,
+  GetRecruiterNewsParams,
+  News,
+  UpdateNewsData,
+} from '@/types/entities/news'
 import { Paginated } from '@/types/entities/paginated'
 import { UpdateRecruiterData } from '@/types/entities/recruiter'
 import { Skill } from '@/types/entities/skill'
@@ -114,6 +119,11 @@ export const Api = {
           `/recruiter/responses/${pk}/commentary`,
           {},
           { params: data }
+        ),
+
+      news: (params?: GetRecruiterNewsParams) =>
+        Axios.get<Paginated<News[]>>('/recruiter/news', { params }).then(
+          (res) => res.data
         ),
     },
   },

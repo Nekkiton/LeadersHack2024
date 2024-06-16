@@ -2,14 +2,19 @@ import { BaseEntity } from '@/types/entities/base-entity'
 
 export interface News extends BaseEntity {
   title: string
-  image: true
+  image: string
   text: string
-  source: string
-  // is_parsed: boolean
+  publication_date: string
 }
 
 export interface GetNewsParams {
   page?: number
+  limit?: number
+}
+
+export interface GetRecruiterNewsParams {
+  page?: number
+  limit?: number
 }
 
 export interface UpdateNewsData {

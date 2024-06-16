@@ -25,17 +25,20 @@ export default function NewsCard({ className, news }: Props) {
       />
       <div className={styles.textContainer}>
         <p className={styles.newsTitle}>{news.title}</p>
-        <p className={styles.newsContent}>{news.text}</p>
+        <p className={styles.newsContent}>
+          {news.text.replaceAll('\n', ' ').slice(0, 210)}...
+        </p>
       </div>
       <div className={styles.footer}>
         <Button
+          className={styles.transparentBtw}
           type="secondary"
           onClick={() => toasts.info({ content: 'Функционал в разработке' })}
         >
           Читать дальше
         </Button>
         <p className={styles.newsDate}>
-          от {moment(`${news.created_at}Z`).format('DD.MM.YYYY')}
+          от {moment(`${news.publication_date}Z`).format('DD.MM.YYYY')}
         </p>
       </div>
     </div>
