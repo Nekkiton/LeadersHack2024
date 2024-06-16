@@ -7,6 +7,29 @@ USERS_MATCH_BY_VACANCY = lambda vacancy, page, limit: [
             "filled": True
         }
     },
+    {
+        "$lookup": {
+        "from": "responses",
+        "localField": "_id",
+        "foreignField": "candidate_id",
+        "let": {"vacancy_id": vacancy["_id"]},
+        "pipeline": [
+            {
+                "$match": {
+                    "$expr": {
+                        "$eq": ["$vacancy_id", "$$vacancy_id"]
+                    }
+                }
+            }
+        ],
+        "as": "responses"
+        }
+    },
+    {
+        "$match": {
+            "responses": {"$size": 0}
+        }
+    },
     get_match_field_stage(
         vacancy["skills"],
         vacancy["work_experience"],

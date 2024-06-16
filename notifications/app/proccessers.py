@@ -21,10 +21,12 @@ async def proccess_notification(
     content: str, 
     user_id: ObjectId, 
     ):
-    user = Users.find_one({"_id": user_id, "preferences.email_notify": True}, {"email": 1})
-    if user is not None:
+    user = Users.find_one({"_id": user_id}, {"preferences": 1, "email": 1})
+    preferences = user.get("preferences", {})
+    if preferences.get("email_notification", False):
         send_mail(receiver=user["email"], subject=title, text=content)
-    create_app_notification(title, content, user_id)
+    if preferences.get("site_notification", False):
+        create_app_notification(title, content, user_id)
 
 
 async def proccess_meeting(
