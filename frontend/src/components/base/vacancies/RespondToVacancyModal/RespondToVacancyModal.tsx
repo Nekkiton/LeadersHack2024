@@ -69,7 +69,7 @@ export default function RespondToVacancyModal({
             {...field}
             error={fieldState.error}
             label="Сопроводительное письмо"
-            placeholder="Напишите, почему вы хочешь проходить работать на этой должности"
+            placeholder="Напишите, почему вы хотите проходить работать на этой должности"
             height={207}
           />
         )}
