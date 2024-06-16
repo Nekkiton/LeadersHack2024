@@ -229,8 +229,7 @@ async def get_response_schedule(
     result = []
     while start <= end:
         start += timedelta(days=1)
-        if start.weekday() == 5:
-            start += timedelta(days=1)
+        if start.weekday() >= 5:
             continue
         scheduled = scheduled_zip.get(str(start.date()))
         day_slots = slots.copy()
