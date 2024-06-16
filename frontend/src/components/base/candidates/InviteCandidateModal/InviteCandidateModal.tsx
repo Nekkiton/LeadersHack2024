@@ -1,8 +1,11 @@
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Candidate } from '@/types/entities/candidate'
 import { Vacancy } from '@/types/entities/vacancy'
 import { useCurRecruiterInviteCandidate } from '@/api/recruiters'
 import { useCurRecruiterVacancies } from '@/api/vacancies'
+import { useCurUser } from '@/api/users'
+import { Site } from '@/config/site'
 import Modal, { ModalStateProps } from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
 import Select from '@/components/ui/Select'
@@ -23,11 +26,18 @@ export default function InviteCandidateModal({
   vacancy,
   ...stateProps
 }: Props) {
-  const { control, handleSubmit } = useForm<FormData>({
-    defaultValues: {
-      message: vacancy?.stages?.[0].approve_template,
-    },
-  })
+  const user = useCurUser()
+
+  const { control, handleSubmit, setValue } = useForm<FormData>()
+
+  useEffect(() => {
+    if (user.status === 'success' && user.value?.name) {
+      setValue(
+        'message',
+        Site.defaultInviteMessage.replaceAll('RECRUITER_NAME', user.value.name)
+      )
+    }
+  }, [(user as any).value])
 
   const { mutate, status } = useCurRecruiterInviteCandidate()
 
