@@ -101,6 +101,7 @@ export default function DatePicker({
             calendarClassName={styles.calendar}
             selected={value?.toDate()}
             onChange={(val) => setValue(val ? moment(val) : null)}
+            dropdownMode="select"
             showMonthDropdown
             showYearDropdown
             disabledKeyboardNavigation

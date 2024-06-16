@@ -22,12 +22,12 @@ async def proccess_notification(
     ):
     user = Users.find_one({"_id": user_id}, {"preferences": 1, "email": 1})
     preferences = user.get("preferences", {})
-    if preferences.get("email_notification", False):
+    if preferences.get("email_notify", False):
         attachements = {}
         if calendar_date is not None and calendar_duration is not None:
             attachements = {"interview.ics": create_ics(calendar_date, calendar_duration, title)}
         send_mail(receiver=user["email"], subject=title, text=content, attachments=attachements)
-    if preferences.get("site_notification", False):
+    if preferences.get("site_notify", False):
         create_app_notification(title, content, user_id)
 
 
