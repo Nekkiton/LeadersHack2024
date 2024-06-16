@@ -212,8 +212,8 @@ async def get_response_schedule(
     # recruiter_tzinfo = timezone(timedelta(hours=int(recruiter_tz)))
     slots = set()
     for slot in recruiter["interview_slots"]:
-        start_time = slot["start_time"].astimezone(tz=moscow_tz) + timedelta(hours=3)
-        end_time = slot["end_time"].astimezone(tz=moscow_tz) + timedelta(hours=3)
+        start_time = slot["start_time"].astimezone(tz=moscow_tz)
+        end_time = slot["end_time"].astimezone(tz=moscow_tz)
         while start_time < end_time:
             slots.add(start_time.time())
             start_time += timedelta(minutes=30)
@@ -237,9 +237,9 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
-                if (slot + timedelta(hours=3)).time() in day_slots:
-                    day_slots.remove((slot + timedelta(hours=3)).time())
+                if slot.astimezone(tz=moscow_tz).time() in day_slots:
+                    day_slots.remove(slot.astimezone(tz=moscow_tz).time())
             # day_slots.difference_update(set(scheduled["slots"]))
-        result += [datetime.combine(start, slot) for slot in day_slots]
+        result += [datetime.combine(start, slot, tzinfo=moscow_tz) for slot in day_slots]
     # return result
     return map(lambda i: i.astimezone(tz=timezone.utc), result)
