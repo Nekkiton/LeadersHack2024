@@ -28,6 +28,7 @@ async def main():
             kwargs = task.get("body", {})
             proccesser = getattr(proccessers, "proccess_" + task_type)
             if not proccesser or not asyncio.iscoroutinefunction(proccesser):
+                Tasks.update_one({"_id": task["_id"]}, {"$set": {"status": "fail"}})
                 continue
             try:
                 asyncio.create_task(proccesser(**kwargs))
