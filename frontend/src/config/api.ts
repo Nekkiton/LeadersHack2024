@@ -38,7 +38,6 @@ import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
-import { TempNews } from './_news-temp'
 import {
   CommentResponseData,
   CurCandidateAnswerToResponseData,
