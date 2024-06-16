@@ -6,11 +6,8 @@ from bs4 import BeautifulSoup
 import logging
 import re
 
-
-
-from app.mail import send_mail
 from app.settings import Settings
-from app.utils import create_app_notification
+from app.utils import create_app_notification, send_mail, create_ics
 from app.database import DetailedResponses, Tasks, Users, Vacancies, Stages
 
 from .consts import recruitingDefaultStages
@@ -20,11 +17,16 @@ async def proccess_notification(
     title: str, 
     content: str, 
     user_id: ObjectId, 
+    calendar: datetime | None = None,
+    duration: int | None = None
     ):
     user = Users.find_one({"_id": user_id}, {"preferences": 1, "email": 1})
     preferences = user.get("preferences", {})
     if preferences.get("email_notification", False):
-        send_mail(receiver=user["email"], subject=title, text=content)
+        attachements = {}
+        if calendar is not None and duration is not None:
+            attachements = {"interview.ics": create_ics(calendar, duration, title)}
+        send_mail(receiver=user["email"], subject=title, text=content, attachments=attachements)
     if preferences.get("site_notification", False):
         create_app_notification(title, content, user_id)
 
