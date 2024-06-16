@@ -112,6 +112,8 @@ def schedule_meeting(
         schedule_notification(
             _id,
             title="Запланирована встреча",
+            calendar_date=at,
+            calendar_duration=30,
             content=f"Встреча по вакансии «{vacancy_title}» назначена на {(at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}. Ссылка появится в уведомлении за 30 минут до интервью",
             )
 
@@ -120,6 +122,8 @@ def schedule_notification(
     user_id: ObjectId,
     title: str,
     content: str,
+    calendar_date: datetime | None = None,
+    calendar_duration: int | None = None,
     execute_at: datetime = datetime(year=MINYEAR, month=1, day=1)
     ):
     """
@@ -132,6 +136,8 @@ def schedule_notification(
                 "user_id": user_id,
                 "title": title,
                 "content": content,
+                "calendar_date": calendar_date,
+                "calendar_duration": calendar_duration
             },
             "execute_at": execute_at,
             "status": "pending"
