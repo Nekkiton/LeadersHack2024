@@ -33,6 +33,12 @@
   justify-content: space-between;
 }
 
+.footerExtra {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
 .newsDate {
   @include paragraph-3;
   color: $gray-3;

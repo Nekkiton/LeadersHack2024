@@ -32,3 +32,20 @@
   align-items: flex-start;
   gap: 16px;
 }
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.removeBtn {
+  color: $red !important;
+
+  &:after {
+    background: $red !important;
+  }
+}
+.removeIcon {
+  stroke: $red !important;
+}

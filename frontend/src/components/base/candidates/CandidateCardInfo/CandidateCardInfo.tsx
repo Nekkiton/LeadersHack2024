@@ -17,31 +17,7 @@ interface Props {
 }
 
 export default function CandidateCardInfo({ className, candidate }: Props) {
-  const workExperience = useMemo(() => {
-    if (!candidate.work_history.length) return 'не указан'
-    const duration = moment.duration(
-      candidate.work_history.reduce(
-        (prev, cur) =>
-          prev +
-          moment(cur.end_date ? `${cur.end_date}Z` : undefined).diff(
-            moment(`${cur.start_date}Z`),
-            'months'
-          ),
-        0
-      ),
-      'months'
-    )
-    if (!duration.months()) {
-      return 'меньше месяца'
-    } else {
-      return duration.humanize()
-    }
-  }, [candidate])
-
-  const lastWork = useMemo(
-    () => candidate.work_history[candidate.work_history.length - 1] ?? null,
-    [candidate]
-  )
+  const lastWork = useMemo(() => candidate.work_history[0] ?? null, [candidate])
 
   const lastWorkDuration = useMemo(() => {
     if (!lastWork) return
@@ -86,7 +62,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
       <div className={styles.block}>
         <div className={styles.blockTitleContainer}>
           <h6>Опыт работы</h6>
-          <span>{workExperience}</span>
+          <span>{candidate.work_experience}</span>
         </div>
         {lastWork && (
           <div className={styles.blockContent}>

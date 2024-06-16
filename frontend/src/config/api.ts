@@ -241,6 +241,11 @@ export const Api = {
 
     create: (data: UpdateNewsData) => Axios.post('/recruiter/news', data),
 
+    update: ({ pk, ...data }: UpdateNewsData & { pk: string }) =>
+      Axios.put(`/recruiter/news/${pk}`, data),
+
+    delete: (pk: string) => Axios.delete(`/recruiter/news/${pk}`),
+
     one: (pk: string) =>
       Axios.get<News>(`/public/news/${pk}`).then((res) => res.data),
   },
