@@ -1,4 +1,4 @@
-from datetime import datetime, MAXYEAR
+from datetime import datetime, MAXYEAR, timezone
 from typing import List, Optional, Self
 from pydantic import BaseModel, model_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -23,8 +23,8 @@ class CandidateValidators(BaseModel):
     @model_validator(mode="after")
     def sort_work_history(self: Self) -> Self:
         if self.work_history is not None and len(self.work_history):
-            max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59)
-            self.work_history.sort(key=lambda item: item.end_date if item.end_date is not None else max_datetime, reverse=True)
+            max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59, tzinfo=timezone.utc)
+            self.work_history.sort(key=lambda item: item.end_date.astimezone(tz=timezone.utc) if item.end_date is not None else max_datetime, reverse=True)
         return self
             
 
