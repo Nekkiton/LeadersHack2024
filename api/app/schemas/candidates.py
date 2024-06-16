@@ -9,7 +9,17 @@ from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, Wor
 from . import Pagination, UserGet, MatchItem
 
 
+class WorkHistoryItem(BaseModel):
+    company: str
+    position: str
+    start_date: datetime
+    end_date: Optional[datetime] = None
+    responsibilities: str
+
+
 class CandidateValidators(BaseModel):
+    work_history: List[WorkHistoryItem]
+
     @model_validator(mode="after")
     def sort_work_history(self: Self) -> Self:
         max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59)
@@ -19,15 +29,7 @@ class CandidateValidators(BaseModel):
                 key=lambda i: i.end_date if i.end_date is not None else max_datetime, 
                 reverse=True
                 ) 
-
-
-class WorkHistoryItem(BaseModel):
-    company: str
-    position: str
-    start_date: datetime
-    end_date: Optional[datetime] = None
-    responsibilities: str
-
+            
 
 class CandidatePost(CandidateValidators):
     """
