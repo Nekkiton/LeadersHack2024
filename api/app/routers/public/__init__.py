@@ -3,9 +3,11 @@ from fastapi import APIRouter
 from app import literals
 
 from .vacancies import router as Vacancies
+from .news import router as News
 
 router = APIRouter(tags=["Публичное"], prefix="/public")
 router.include_router(Vacancies)
+router.include_router(News)
 
 @router.get(
     "/educations",
