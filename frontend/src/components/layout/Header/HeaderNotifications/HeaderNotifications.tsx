@@ -3,12 +3,15 @@ import {
   useCurUserNotifications,
   useCurUserReadNotifications,
 } from '@/api/notifications'
+import { Notification } from '@/types/entities/notification'
 import moment from 'moment'
+import classNames from 'classnames'
+import getUrls from 'get-urls'
+import Link from 'next/link'
 import WithPopover from '@/components/ui/WithPopover'
 import Icon from '@/components/ui/Icon'
 import RemoteData from '@/components/special/RemoteData'
 import styles from './HeaderNotifications.module.scss'
-import classNames from 'classnames'
 
 export default function HeaderNotifications() {
   const [isActive, setIsActive] = useState(false)
@@ -31,6 +34,35 @@ export default function HeaderNotifications() {
       mutate(0)
     }
   }, [isActive])
+
+  const getNotificationContent = (notification: Notification) => {
+    let content = notification.content
+    const urls = getUrls(content)
+
+    if (!urls.size) {
+      return content
+    }
+
+    const data = Array.from(urls).map((url) => {
+      const idx = content.indexOf(url)
+      const contentBefore = content.slice(0, idx)
+      content = content.slice(idx + url.length)
+      return (
+        <>
+          {contentBefore}
+          <Link href={url} target="_blank">
+            {url}
+          </Link>
+        </>
+      )
+    })
+    return (
+      <>
+        {data}
+        {content}
+      </>
+    )
+  }
 
   return (
     <WithPopover
@@ -70,7 +102,8 @@ export default function HeaderNotifications() {
                         </span>
                       </div>
                       <p className={styles.notificationText}>
-                        {notification.title}. {notification.content}
+                        {notification.title}.{' '}
+                        {getNotificationContent(notification)}
                       </p>
                     </div>
                   ))}

@@ -82,6 +82,14 @@
 
   white-space: pre-wrap;
   text-wrap: pretty;
+
+  a {
+    color: $blue;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 @include tablet {
