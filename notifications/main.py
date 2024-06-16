@@ -1,6 +1,6 @@
 import asyncio
 from asyncio.log import logger
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 from app import proccessers
 from app.database import Tasks
@@ -21,7 +21,6 @@ async def main():
         },
         upsert=True
     )
-
     while True:
         pending = list(Tasks.find({"execute_at": {"$lte": datetime.now(tz=timezone.utc)}, "status": "pending"}))
         for task in pending:
