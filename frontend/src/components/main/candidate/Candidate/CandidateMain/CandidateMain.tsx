@@ -40,6 +40,7 @@ export default function CandidateMain({ candidate }: Props) {
               <Link
                 href={`https://t.me/${candidate.telegram.trim()}`}
                 target="_blank"
+                style={{ alignSelf: 'flex-start' }}
               >
                 <Icon icon="telegram" />
               </Link>
