@@ -24,11 +24,7 @@ class CandidateValidators(BaseModel):
     def sort_work_history(self: Self) -> Self:
         max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59)
         if self.work_history is not None and len(self.work_history):
-            self.work_history = sorted(
-                iterable=self.work_history, 
-                key=lambda i: i.end_date if i.end_date is not None else max_datetime, 
-                reverse=True
-                ) 
+            self.work_history = sorted(iterable=self.work_history, key=lambda i: i.end_date if i.end_date is not None else max_datetime, reverse=True) 
             
 
 class CandidatePost(CandidateValidators):
