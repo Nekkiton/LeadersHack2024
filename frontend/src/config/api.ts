@@ -236,19 +236,9 @@ export const Api = {
 
   news: {
     all: (params?: GetNewsParams) =>
-      Axios.get<Paginated<News[]>>('/news/all', { params })
-        .then((res) => res.data)
-        .catch(
-          (): Paginated<News[]> => ({
-            page: 1,
-            total_pages: 1,
-            items: TempNews,
-          })
-        ),
-    daily: () =>
-      Axios.get<News[]>('/news/daily')
-        .then((res) => res.data)
-        .catch((): News[] => TempNews),
+      Axios.get<Paginated<News[]>>('/public/news', { params }).then(
+        (res) => res.data
+      ),
 
     create: (data: UpdateNewsData) => Axios.post('/recruiter/news', data),
 

@@ -21,7 +21,7 @@ export default function Pagination({
   const lastPage = totalPages
   const loadPage = (val: number) => loadPage_(val - 1)
 
-  if (lastPage === 1) {
+  if (lastPage <= 1) {
     return null
   }
 

@@ -34,7 +34,9 @@ export default function NewsCard({ className, news, role }: Props) {
           className={styles.transparentBtw}
           type="secondary"
           href={
-            role === Role.Recruiter ? Routes.recruiterNewsSingle(news._id) : '#'
+            role === Role.Recruiter
+              ? Routes.recruiterNewsSingle(news._id)
+              : Routes.newsSingle(news._id)
           }
         >
           Читать дальше

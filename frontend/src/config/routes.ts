@@ -23,4 +23,5 @@ export const Routes = {
   candidateResponses: '/candidate/responses',
 
   vacancy: (pk: string) => `/vacancies/${pk}`,
+  newsSingle: (pk: string) => `/news/${pk}`,
 }
