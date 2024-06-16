@@ -9,7 +9,7 @@ from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, Wor
 
 
 class CandidateValidators(BaseModel):
-    @model_validator()
+    @model_validator(mode="after")
     def sort_work_history(self: Self) -> Self:
         max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59)
         if self.work_history is not None and len(self.work_history):
