@@ -7,9 +7,9 @@ import Pagination from '@/components/ui/Pagination'
 import styles from './HomeNews.module.scss'
 
 export default function HomeNews() {
-  const [page, setPage] = useState(0)
   const [activeKey, setActiveKey] = useState<'daily' | 'all'>('daily')
 
+  const [page, setPage] = useState(0)
   useEffect(() => {
     setPage(0)
   }, [activeKey])

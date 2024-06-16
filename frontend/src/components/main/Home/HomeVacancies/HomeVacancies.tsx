@@ -18,8 +18,8 @@ export default function HomeVacancies() {
   const scopes = useWorkScopes()
 
   const [activeScope, setActiveScope] = useState<WorkScope | null>(null)
-  const [page, setPage] = useState(0)
 
+  const [page, setPage] = useState(0)
   useEffect(() => {
     setPage(0)
   }, [activeScope])
