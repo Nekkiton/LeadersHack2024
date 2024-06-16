@@ -12,7 +12,6 @@ export const useCurRecruiterNews = createUseQuery(
 export const useCreateNews = createUseMutation(Api.news.create, {
   invalidateQueriesFn: () => [
     { queryKey: ['news.all'] },
-    { queryKey: ['news.daily'] },
     { queryKey: ['recruiters.me.news'] },
   ],
   onSuccess: (_, { toasts }) => {
@@ -32,6 +31,41 @@ export const useCreateNews = createUseMutation(Api.news.create, {
       toasts.error({ content: 'Исправьте ошибки' })
       return true
     }
+  },
+})
+
+export const useUpdateNews = createUseMutation(Api.news.update, {
+  invalidateQueriesFn: () => [
+    { queryKey: ['news.all'] },
+    { queryKey: ['recruiters.me.news'] },
+  ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Новость изменена' })
+  },
+  onError: ([error], { toasts, setError }) => {
+    if (setError) {
+      const detail = (error.response?.data as any).detail
+      if (Array.isArray(detail)) {
+        detail.forEach((i) => {
+          const name = i.loc.slice(1).join('.')
+          setError(name, { message: i.msg, type: '' })
+        })
+      }
+    }
+    if (error.response?.status === 422) {
+      toasts.error({ content: 'Исправьте ошибки' })
+      return true
+    }
+  },
+})
+
+export const useDeleteNews = createUseMutation(Api.news.delete, {
+  invalidateQueriesFn: () => [
+    { queryKey: ['news.all'] },
+    { queryKey: ['recruiters.me.news'] },
+  ],
+  onSuccess: (_, { toasts }) => {
+    toasts.info({ content: 'Новость удалена' })
   },
 })
 

@@ -5,6 +5,7 @@ import moment from 'moment'
 import classNames from 'classnames'
 import Image from '@/components/ui/Image'
 import Button from '@/components/ui/Button'
+import Icon from '@/components/ui/Icon'
 import styles from './NewsCard.module.scss'
 
 interface Props {
@@ -41,9 +42,17 @@ export default function NewsCard({ className, news, role }: Props) {
         >
           Читать дальше
         </Button>
-        <p className={styles.newsDate}>
-          от {moment(`${news.publication_date}Z`).format('DD.MM.YYYY')}
-        </p>
+        <div className={styles.footerExtra}>
+          <p className={styles.newsDate}>
+            от {moment(`${news.publication_date}Z`).format('DD.MM.YYYY')}
+          </p>
+          {role === Role.Recruiter && (
+            <Button type="text" href={Routes.recruiterEditNews(news._id)}>
+              <Icon icon="pen" />
+              <span>Редактировать</span>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   )

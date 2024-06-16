@@ -1,8 +1,14 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
-import { useCreateNews } from '@/api/news'
+import {
+  useCreateNews,
+  useCurRecruiterNewsSingle,
+  useDeleteNews,
+  useUpdateNews,
+} from '@/api/news'
 import { Routes } from '@/config/routes'
-import { FormData, transformData } from './utils'
+import { FormData, getInitialData, transformData } from './utils'
 import moment from 'moment'
 import Input from '@/components/ui/Input'
 import Textarea from '@/components/ui/Textarea'
@@ -19,26 +25,58 @@ interface Props {
     text: string
     url: string
   }
+  editId?: string
 }
 
-export default function NewsForm({ backLink }: Props) {
+export default function NewsForm({ backLink, editId }: Props) {
   const router = useRouter()
 
-  const { control, handleSubmit, setError } = useForm<FormData>({
-    defaultValues: {
-      publication_date: null,
-    },
+  const news = useCurRecruiterNewsSingle(editId!, { enabled: !!editId })
+
+  const { control, handleSubmit, setError, reset } = useForm<FormData>({
+    defaultValues: getInitialData(
+      news.status === 'success' ? news.value : undefined
+    ),
   })
 
-  const { mutate, status } = useCreateNews({ setError })
+  useEffect(() => {
+    if (news.status === 'success') {
+      reset(getInitialData(news.value))
+    }
+  }, [(news as any).value])
+
+  const { mutate: create, status: createStatus } = useCreateNews({ setError })
+  const { mutate: update, status: updateStatus } = useUpdateNews({ setError })
+  const { mutate: remove, status: deleteStatus } = useDeleteNews()
 
   const onSubmit = handleSubmit((data) => {
-    mutate(transformData(data), {
-      onSuccess: () => {
-        router.push(Routes.recruiterNews)
-      },
-    })
+    if (editId && news.status === 'success') {
+      update(
+        { ...transformData(data), pk: news.value._id },
+        {
+          onSuccess: () => {
+            router.push(Routes.recruiterNews)
+          },
+        }
+      )
+    } else {
+      create(transformData(data), {
+        onSuccess: () => {
+          router.push(Routes.recruiterNews)
+        },
+      })
+    }
   })
+
+  const deleteNews = () => {
+    if (news.status === 'success') {
+      remove(news.value._id, {
+        onSuccess: () => {
+          router.push(Routes.recruiterNews)
+        },
+      })
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -48,7 +86,7 @@ export default function NewsForm({ backLink }: Props) {
           <span>{backLink.text}</span>
         </Button>
       )}
-      <h1>Создать новость</h1>
+      <h1>{editId ? 'Редактировать новость' : 'Создать новость'}</h1>
       <form className={styles.form} onSubmit={onSubmit}>
         <Controller
           control={control}
@@ -71,7 +109,7 @@ export default function NewsForm({ backLink }: Props) {
             <FileUpload
               {...field}
               error={fieldState.error}
-              label="Название *"
+              label="Обложка *"
               formats={['jpg', 'png']}
               maxSize={5 * 1024 * 1024}
             />
@@ -134,9 +172,26 @@ export default function NewsForm({ backLink }: Props) {
             )}
           />
         </div>
-        <Button type="primary" htmlType="submit" loading={status === 'pending'}>
-          Опубликовать
-        </Button>
+        <div className={styles.controls}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={createStatus === 'pending' || updateStatus === 'pending'}
+          >
+            {editId ? 'Сохранить' : 'Опубликовать'}
+          </Button>
+          {editId && (
+            <Button
+              type="text"
+              className={styles.removeBtn}
+              onClick={deleteNews}
+              loading={deleteStatus === 'pending'}
+            >
+              <Icon className={styles.removeIcon} icon="trash" />
+              <span>Удалить новость</span>
+            </Button>
+          )}
+        </div>
       </form>
     </div>
   )
