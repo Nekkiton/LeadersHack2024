@@ -69,6 +69,7 @@ export const createUseMutation = <Args, Data>(
           }) &&
           (extraOptions?.handleError ?? true)
         ) {
+          console.log(args_[0])
           const detail = (args_[0].response?.data as any)?.detail
           if (typeof detail === 'string') {
             toasts.error({
