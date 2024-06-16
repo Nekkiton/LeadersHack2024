@@ -1,3 +1,4 @@
+import math
 from fastapi import APIRouter, status
 
 from app.schemas import OID
@@ -21,9 +22,9 @@ async def get_articles(
     limit: int = 10
     ):
     return {
-        "total_pages": News.count_documents({"recruiter_id": recruiter_id}) // limit,
+        "total_pages": math.ceil(News.count_documents({"recruiter_id": recruiter_id}) / limit),
         "page": page,
-        "items": list(News.find({"recruiter_id": recruiter_id}, sort={"publcation_date": -1}).skip(page * limit).limit(limit))
+        "items": list(News.find({"recruiter_id": recruiter_id}, sort={"publication_date": -1}).skip(page * limit).limit(limit))
     }
 
 
