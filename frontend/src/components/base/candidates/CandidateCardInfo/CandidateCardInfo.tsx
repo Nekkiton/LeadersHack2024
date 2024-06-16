@@ -37,7 +37,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
 
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.userImgContainer}>
+      <div className={classNames(styles.userImgContainer, styles.userBlock)}>
         <Image
           className={styles.userImg}
           src={candidate.photo ?? userImg}
@@ -59,7 +59,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
           </div>
         </div>
       </div>
-      <div className={styles.block}>
+      <div className={classNames(styles.block, styles.workHistoryBlock)}>
         <div className={styles.blockTitleContainer}>
           <h6>Опыт работы</h6>
           <span>{candidate.work_experience}</span>
@@ -74,7 +74,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
           </div>
         )}
       </div>
-      <div className={styles.block}>
+      <div className={classNames(styles.block, styles.contactsBlock)}>
         <h6>Контакты</h6>
         <div className={styles.blockContent}>
           <p>{getUserPhone(candidate)}</p>
