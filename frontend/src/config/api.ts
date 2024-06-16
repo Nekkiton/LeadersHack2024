@@ -15,7 +15,12 @@ import {
 } from '@/types/entities/candidate'
 import { City } from '@/types/entities/city'
 import { Education } from '@/types/entities/education'
-import { GetNewsParams, News } from '@/types/entities/news'
+import {
+  GetNewsParams,
+  GetRecruiterNewsParams,
+  News,
+  UpdateNewsData,
+} from '@/types/entities/news'
 import { Paginated } from '@/types/entities/paginated'
 import { UpdateRecruiterData } from '@/types/entities/recruiter'
 import { Skill } from '@/types/entities/skill'
@@ -33,7 +38,6 @@ import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkScope } from '@/types/entities/work-scope'
 import { WorkType } from '@/types/entities/work-type'
-import { TempNews } from './_news-temp'
 import {
   CommentResponseData,
   CurCandidateAnswerToResponseData,
@@ -115,6 +119,14 @@ export const Api = {
           {},
           { params: data }
         ),
+
+      news: (params?: GetRecruiterNewsParams) =>
+        Axios.get<Paginated<News[]>>('/recruiter/news', { params }).then(
+          (res) => res.data
+        ),
+
+      newsSingle: (pk: string) =>
+        Axios.get<News>(`/recruiter/news/${pk}`).then((res) => res.data),
     },
   },
 
@@ -223,19 +235,14 @@ export const Api = {
 
   news: {
     all: (params?: GetNewsParams) =>
-      Axios.get<Paginated<News[]>>('/news/all', { params })
-        .then((res) => res.data)
-        .catch(
-          (): Paginated<News[]> => ({
-            page: 1,
-            total_pages: 1,
-            items: TempNews,
-          })
-        ),
-    daily: () =>
-      Axios.get<News[]>('/news/daily')
-        .then((res) => res.data)
-        .catch((): News[] => TempNews),
+      Axios.get<Paginated<News[]>>('/public/news', { params }).then(
+        (res) => res.data
+      ),
+
+    create: (data: UpdateNewsData) => Axios.post('/recruiter/news', data),
+
+    one: (pk: string) =>
+      Axios.get<News>(`/public/news/${pk}`).then((res) => res.data),
   },
 
   workScopes: {

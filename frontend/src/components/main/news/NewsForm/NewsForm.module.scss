@@ -1,0 +1,34 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 684px;
+}
+
+.checkboxField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkboxFieldLabel {
+  @include heading-8;
+}
+
+.fieldsRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}

@@ -7,6 +7,7 @@ import {
 export interface Attachment extends BaseEntity {
   name: string
   size: number
+  data: string
 }
 
 export interface UpdateAttachment

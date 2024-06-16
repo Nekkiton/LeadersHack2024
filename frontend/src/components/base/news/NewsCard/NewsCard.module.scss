@@ -37,3 +37,7 @@
   @include paragraph-3;
   color: $gray-3;
 }
+
+.transparentBtw:not(:hover) {
+  background: none !important;
+}

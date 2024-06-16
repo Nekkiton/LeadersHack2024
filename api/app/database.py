@@ -27,5 +27,6 @@ Tasks = mongo_db.get_collection("tasks")
 Notifications = mongo_db.get_collection("notifications")
 DetailedVacancies = mongo_db.get_collection("vacancies.detailed")
 DetailedResponses = mongo_db.get_collection("responses.detailed")
+News = mongo_db.get_collection("news")
 
 Users.create_index(["email"], unique=True)

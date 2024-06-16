@@ -1,0 +1,32 @@
+@import '@/assets/css/config';
+
+.container {
+  @include content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.newsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 891px;
+}
+
+.newsImg {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.newsContentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.newsContent {
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
