@@ -82,4 +82,13 @@
   :global(.react-datepicker__current-month) {
     @include heading-8;
   }
+
+  :global(.react-datepicker__month-select),
+  :global(.react-datepicker__year-select) {
+    @include paragraph-3;
+
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
 }
