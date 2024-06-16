@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Routes } from '@/config/routes'
 import { useCurRecruiterNews } from '@/api/news'
 import { Site } from '@/config/site'
+import { Role } from '@/types/entities/user'
 import classNames from 'classnames'
 import Icon from '@/components/ui/Icon'
 import RemoteData from '@/components/special/RemoteData'
@@ -35,7 +36,9 @@ export default function News() {
             })}
           >
             {news.items.length ? (
-              news.items.map((i) => <NewsCard key={i._id} news={i} />)
+              news.items.map((i) => (
+                <NewsCard key={i._id} news={i} role={Role.Recruiter} />
+              ))
             ) : (
               <div className={styles.nothing}>
                 <Icon className={styles.nothingIcon} icon="documentLoupe" />

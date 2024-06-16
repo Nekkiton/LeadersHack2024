@@ -125,6 +125,9 @@ export const Api = {
         Axios.get<Paginated<News[]>>('/recruiter/news', { params }).then(
           (res) => res.data
         ),
+
+      newsSingle: (pk: string) =>
+        Axios.get<News>(`/recruiter/news/${pk}`).then((res) => res.data),
     },
   },
 
@@ -248,6 +251,9 @@ export const Api = {
         .catch((): News[] => TempNews),
 
     create: (data: UpdateNewsData) => Axios.post('/recruiter/news', data),
+
+    one: (pk: string) =>
+      Axios.get<News>(`/public/news/${pk}`).then((res) => res.data),
   },
 
   workScopes: {

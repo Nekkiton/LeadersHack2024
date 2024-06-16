@@ -48,6 +48,18 @@ async def post_article(
     }
 
 
+@router.get(
+    "/{article_id}",
+    name="Получить новость",
+    response_model=NewsItemGet,
+)
+async def get_article(
+    recruiter_id: RecruiterId,
+    article_id: OID,
+    ):
+    return News.find_one({"_id": article_id, "recruiter_id": recruiter_id})
+
+
 @router.put(
     "/{article_id}",
     name="Отредактировать новость",

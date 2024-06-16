@@ -36,3 +36,10 @@ export const useCreateNews = createUseMutation(Api.news.create, {
     }
   },
 })
+
+export const useNewsSingle = createUseQuery('news.one', Api.news.one)
+
+export const useCurRecruiterNewsSingle = createUseQuery(
+  'recruiters.me.news-single',
+  Api.recruiters.me.newsSingle
+)

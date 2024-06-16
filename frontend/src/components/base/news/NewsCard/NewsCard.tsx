@@ -1,19 +1,19 @@
 import { News } from '@/types/entities/news'
-import { useToasts } from '@/lib/use-toasts'
+import { Role } from '@/types/entities/user'
+import { Routes } from '@/config/routes'
+import moment from 'moment'
 import classNames from 'classnames'
 import Image from '@/components/ui/Image'
 import Button from '@/components/ui/Button'
 import styles from './NewsCard.module.scss'
-import moment from 'moment'
 
 interface Props {
   className?: string
   news: News
+  role?: Role
 }
 
-export default function NewsCard({ className, news }: Props) {
-  const toasts = useToasts()
-
+export default function NewsCard({ className, news, role }: Props) {
   return (
     <div className={classNames(styles.container, className)}>
       <Image
@@ -33,7 +33,9 @@ export default function NewsCard({ className, news }: Props) {
         <Button
           className={styles.transparentBtw}
           type="secondary"
-          onClick={() => toasts.info({ content: 'Функционал в разработке' })}
+          href={
+            role === Role.Recruiter ? Routes.recruiterNewsSingle(news._id) : '#'
+          }
         >
           Читать дальше
         </Button>
