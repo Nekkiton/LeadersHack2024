@@ -1,11 +1,12 @@
 from datetime import datetime, MAXYEAR
-from pydantic import BaseModel, model_validator
 from typing import List, Optional, Self
+from pydantic import BaseModel, model_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from . import Pagination, UserGet, MatchItem
 from app.schemas import Preferences
 from app.literals import Educations, Skills, WorkExperiences, WorkSchedules, WorkTypes
+
+from . import Pagination, UserGet, MatchItem
 
 
 class CandidateValidators(BaseModel):
