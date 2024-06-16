@@ -57,6 +57,7 @@ export interface UpdateCandidateData {
   work_history: UpdateWorkHistory[]
   preferences: {
     email_notify: boolean
+    site_notify: boolean
   }
 }
 

@@ -15,7 +15,15 @@ export default function CandidateProfileNotifications() {
         </p>
       </div>
       <div className={styles.fields}>
-        {/* <Checkbox value>На сайте</Checkbox> */}
+        <Controller
+          control={control}
+          name="preferences.site_notify"
+          render={({ field, fieldState }) => (
+            <Checkbox {...field} error={fieldState.error}>
+              На сайтe
+            </Checkbox>
+          )}
+        />
         <Controller
           control={control}
           name="preferences.email_notify"
