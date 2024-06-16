@@ -3,3 +3,4 @@ __pycache__
 .vscode
 *.key
 *.key.pub
+project_info
