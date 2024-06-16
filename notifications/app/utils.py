@@ -29,5 +29,6 @@ def send_mail(receiver: str, subject: str, text: str, attachments: dict = {}):
     )
 
 
-def create_ics(at: datetime, duration: timedelta, name) -> str:
-    return Calendar(events=[Event(name=name, begin=at, duration=duration)]).serialize()
+def create_ics(at: datetime, duration: timedelta, name: str) -> bytes:
+    end = at + duration
+    return Calendar(events=[Event(name=name, begin=at, end=end)]).serialize().encode("utf-8")
