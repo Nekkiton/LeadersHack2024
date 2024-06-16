@@ -43,7 +43,10 @@ export const useCurRecruiterAnswerToRespond = createUseMutation(
 export const useCurRecruiterInviteCandidate = createUseMutation(
   Api.recruiters.me.inviteCandidate,
   {
-    invalidateQueriesFn: () => [{ queryKey: ['recruiters.me.responses'] }],
+    invalidateQueriesFn: () => [
+      { queryKey: ['recruiters.me.responses'] },
+      { queryKey: ['vacancies.candidates'] },
+    ],
     onSuccess: (_, { toasts }) => {
       toasts.info({ content: 'Приглашение отправлено' })
     },
