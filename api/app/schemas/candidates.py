@@ -15,8 +15,8 @@ class CandidateValidators(BaseModel):
         max_datetime = datetime(year=MAXYEAR, month=12, day=30, hour=23, minute=59, second=59)
         if self.work_history is not None and len(self.work_history):
             self.work_history = sorted(
-                self.work_history, 
-                lambda i: i.end_date if i.end_date is not None else max_datetime, 
+                iterable=self.work_history, 
+                key=lambda i: i.end_date if i.end_date is not None else max_datetime, 
                 reverse=True
                 ) 
 
