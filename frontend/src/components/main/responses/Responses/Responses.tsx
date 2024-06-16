@@ -9,11 +9,11 @@ import styles from './Responses.module.scss'
 import { Site } from '@/config/site'
 
 export default function Vacancies() {
-  const [page, setPage] = useState(0)
   const [activeKey, setActiveKey] = useState<'recruiter' | 'candidate'>(
     'candidate'
   )
 
+  const [page, setPage] = useState(0)
   useEffect(() => setPage(0), [activeKey])
 
   const responses = useCurCandidateResponses({

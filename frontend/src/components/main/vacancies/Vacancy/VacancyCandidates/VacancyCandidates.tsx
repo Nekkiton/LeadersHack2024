@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Vacancy } from '@/types/entities/vacancy'
 import { useVacancyCandidates } from '@/api/candidates'
 import { Site } from '@/config/site'
@@ -15,6 +15,9 @@ interface Props {
 
 export default function VacancyCandidates({ vacancy }: Props) {
   const [page, setPage] = useState(0)
+  useEffect(() => {
+    setPage(0)
+  }, [vacancy._id])
 
   const candidates = useVacancyCandidates({
     vacancy_id: vacancy._id,

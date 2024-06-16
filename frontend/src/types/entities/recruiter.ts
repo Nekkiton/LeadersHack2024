@@ -23,5 +23,6 @@ export interface UpdateRecruiterData {
   interview_slots: UpdateInterviewSlot[]
   preferences: {
     email_notify: boolean
+    site_notify: boolean
   }
 }
