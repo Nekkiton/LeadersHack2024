@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from ics import Calendar, Event
+from ics import Calendar, Event, Organizer
 from bson import ObjectId
 
 from app.database import Notifications
@@ -29,5 +29,15 @@ def send_mail(receiver: str, subject: str, text: str, attachments: dict = {}):
     )
 
 
-def create_ics(at: datetime, duration: timedelta, name) -> str:
-    return Calendar(events=[Event(name=name, begin=at, duration=duration)]).serialize()
+def create_ics(at: datetime, duration: timedelta, name: str, org_email: str, org_name: str, description: str) -> bytes:
+    event = Event(
+        name=name,
+        description=description,
+        begin=at,
+        end=at + timedelta(minutes=duration),
+        organizer=Organizer(
+            email=org_email,
+            common_name=org_name,
+        )
+    )
+    return Calendar(events=[event]).serialize().encode("utf-8")

@@ -6,7 +6,7 @@ export const useCurUserNotifications = createUseQuery(
   'notifications.all',
   Api.notifications.all,
   {
-    refetchInterval: 1000 * 60 * 5,
+    refetchInterval: 1000 * 60 * 2,
   }
 )
 

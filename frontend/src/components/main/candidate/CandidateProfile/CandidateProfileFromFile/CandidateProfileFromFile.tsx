@@ -1,8 +1,9 @@
-import { ChangeEventHandler, useRef } from 'react'
+import { ChangeEventHandler, useEffect, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useCurCandidateAnalyzeCV } from '@/api/candidates'
 import { useToasts } from '@/lib/use-toasts'
 import { getDefaultData } from '../utils'
+import { useRouter } from 'next/router'
 import Button from '@/components/ui/Button'
 import CandidateRecognitionModal from '@/components/base/candidates/CandidateRecognitionModal'
 import styles from './CandidateProfileFromFile.module.scss'
@@ -11,6 +12,21 @@ export default function CandidateProfileFromFile() {
   const FORMATS = ['docx', 'pdf']
 
   const toasts = useToasts()
+
+  const router = useRouter()
+  useEffect(() => {
+    if (router.query.action === 'upload-cv') {
+      inputRef.current?.click()
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          action: undefined,
+        },
+      })
+    }
+  }, [router.query])
+
   const { reset } = useFormContext()
 
   const inputRef = useRef<HTMLInputElement | null>(null)

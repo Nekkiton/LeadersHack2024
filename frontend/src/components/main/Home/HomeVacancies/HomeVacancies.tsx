@@ -5,6 +5,8 @@ import { useVacancies } from '@/api/vacancies'
 import { Routes } from '@/config/routes'
 import { Site } from '@/config/site'
 import { VacancyStatus } from '@/types/entities/vacancy'
+import { useCurUser } from '@/api/users'
+import { Role } from '@/types/entities/user'
 import classNames from 'classnames'
 import Link from 'next/link'
 import BaseButton from '@/components/ui/BaseButton'
@@ -15,6 +17,8 @@ import Button from '@/components/ui/Button'
 import styles from './HomeVacancies.module.scss'
 
 export default function HomeVacancies() {
+  const user = useCurUser()
+
   const scopes = useWorkScopes()
 
   const [activeScope, setActiveScope] = useState<WorkScope | null>(null)
@@ -78,18 +82,35 @@ export default function HomeVacancies() {
             )}
           />
         </div>
-        <div className={styles.sidebar}>
-          <div className={styles.sidebarText}>
-            <h3>Не нашли подходящую вакансию?</h3>
-            <p className={styles.sidebarTextHint}>
-              Создайте аккаунт на нашем сайте и загрузите резюме. Мы сами
-              предложим вам вакансию, как только появится подходящая
-            </p>
+        {(user as any).value?.role !== Role.Recruiter && (
+          <div className={styles.sidebar}>
+            <div className={styles.sidebarText}>
+              <h3>Не нашли подходящую вакансию?</h3>
+              <p className={styles.sidebarTextHint}>
+                {user.status === 'success' && user.value
+                  ? 'Загрузите резюме.'
+                  : 'Создайте аккаунт на нашем сайте и загрузите резюме.'}{' '}
+                Мы сами предложим вам вакансию, как только появится подходящая
+              </p>
+            </div>
+            {user.status === 'success' && user.value ? (
+              <Button
+                type="secondary"
+                fullWidth
+                href={{
+                  pathname: Routes.candidateProfile,
+                  query: { action: 'upload-cv' },
+                }}
+              >
+                Загрузить резюме
+              </Button>
+            ) : (
+              <Button type="secondary" href={Routes.register} fullWidth>
+                Создать аккаунт
+              </Button>
+            )}
           </div>
-          <Button type="secondary" href={Routes.register} fullWidth>
-            Создать аккаунт
-          </Button>
-        </div>
+        )}
       </div>
     </div>
   )

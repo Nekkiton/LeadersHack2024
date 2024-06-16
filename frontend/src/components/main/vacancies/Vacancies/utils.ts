@@ -1,4 +1,5 @@
 import { Site } from '@/config/site'
+import { escapeRegexp } from '@/lib/escape-regexp'
 import { Skill } from '@/types/entities/skill'
 import {
   GetCandidateVacanciesParams,
@@ -24,7 +25,7 @@ export const transformCandidateFilters = (
 ): GetCandidateVacanciesParams => {
   return {
     ...data,
-    query: data.query ?? undefined,
+    query: data.query ? escapeRegexp(data.query) : undefined,
     limit: Site.cardsPerPage,
   }
 }
@@ -34,7 +35,7 @@ export const transformRecruiterFilters = (
 ): GetRecruiterVacanciesParams => {
   return {
     ...data,
-    query: data.query ?? undefined,
+    query: data.query ? escapeRegexp(data.query) : undefined,
     limit: Site.cardsPerPage,
   }
 }
