@@ -1,4 +1,5 @@
 import { Site } from '@/config/site'
+import { escapeRegexp } from '@/lib/escape-regexp'
 import { GetCandidatesParams } from '@/types/entities/candidate'
 
 export interface FiltersFormData {
@@ -13,7 +14,7 @@ export const transformFilters = (
 ): GetCandidatesParams => {
   return {
     ...data,
-    fio: data.query ?? undefined,
+    fio: data.query ? escapeRegexp(data.query) : undefined,
     experience: data.work_experiences,
     page,
     limit: Site.cardsPerPage,
