@@ -141,7 +141,7 @@ async def answer_response(
             "_id": response_id
         },
         {
-            "$set": {"status": status, "stage_id": stage_id, "updated_at": get_now()},
+            "$set": {"status": status, "stage_id": stage_id, "updated_at": now},
             "$push": {"messages": message}
         },
         return_document=True
@@ -174,7 +174,7 @@ async def answer_response(
             "_id": response_id
         },
         {
-            "$set": {"updated_at": get_now()},
+            "$set": {"updated_at": now},
             "$push": {"messages": message}
         },
         return_document=True
