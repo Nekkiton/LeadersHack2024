@@ -25,7 +25,7 @@ async def get_vacancies(
     query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
     scopes: Optional[List[WorkScopes]] = Query(None, title="Направления", alias='scopes[]'),
     skills: Optional[List[Skills]] = Query(None, title="Навыки", alias='skills[]'),
-    match = Query(50, title="Минимальный процент совпадения")
+    match: int = Query(50, title="Минимальный процент совпадения")
 ):
     query = {
         'status': 'active',

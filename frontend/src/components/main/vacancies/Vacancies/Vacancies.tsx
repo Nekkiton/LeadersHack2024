@@ -34,6 +34,7 @@ export default function Vacancies({ role }: Props) {
       scopes: [],
       statuses: [],
       skills: [],
+      recommended: false,
     },
   })
   const { watch } = formMethods
