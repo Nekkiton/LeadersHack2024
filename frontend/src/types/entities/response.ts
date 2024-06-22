@@ -69,3 +69,7 @@ export interface CommentResponseData {
 export interface GetResponseScheduleParams {
   end: string
 }
+
+export interface SendResponseMessageData {
+  message: string
+}

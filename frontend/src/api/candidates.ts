@@ -76,3 +76,10 @@ export const useVacancyCandidates = createUseQuery(
   'vacancies.candidates',
   Api.vacancies.candidates
 )
+
+export const useCurCandidateSendResponseMessage = createUseMutation(
+  Api.candidates.me.sendResponseMessage,
+  {
+    invalidateQueriesFn: () => [{ queryKey: ['candidates.me.responses'] }],
+  }
+)

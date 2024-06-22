@@ -1,0 +1,21 @@
+@import '@/assets/css/config';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.controlsCancelBtn {
+  color: $red !important;
+
+  &:after {
+    background: $red !important;
+  }
+}

@@ -16,6 +16,7 @@ import RejectRecruitingModal from '@/components/base/candidates/RejectRecruiting
 import RejectVacancyModal from '@/components/base/vacancies/RejectVacancyModal'
 import SetupInterviewModal from '@/components/base/vacancies/SetupInterviewModal'
 import AcceptInvitationModal from '@/components/base/vacancies/AcceptInvitationModal'
+import ResponseCardFunnelMessageForm from './ResponseCardFunnelMessageForm'
 import styles from './ResponseCardFunnel.module.scss'
 
 interface Props {
@@ -35,6 +36,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
     useState(false)
   const [isAcceptInvitationModalShowed, setIsAcceptInvitationModalShowed] =
     useState(false)
+  const [isMsgFormShowed, setIsMsgFormShowed] = useState(false)
 
   const [areAllMsgsShowed, setAreAllMsgsShowed] = useState(false)
 
@@ -147,6 +149,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
           // </AppearTransition>
         )}
         {role === Role.Recruiter &&
+          !isMsgFormShowed &&
           (response.status === ResponseStatus.WaitingForCandidate ||
             response.status === ResponseStatus.WaitingForRecruiter) && (
             <div className={styles.block}>
@@ -160,6 +163,9 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                     {nextStage ? `Пригласить на ${nextStage.title}` : 'Принять'}
                   </Button>
                 )}
+                <Button type="text" onClick={() => setIsMsgFormShowed(true)}>
+                  Написать
+                </Button>
                 <Button
                   className={styles.controlsRejectBtn}
                   type="text"
@@ -171,6 +177,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
             </div>
           )}
         {role === Role.Candidate &&
+          !isMsgFormShowed &&
           (response.status === ResponseStatus.WaitingForCandidate ||
             response.status === ResponseStatus.WaitingForRecruiter) && (
             <div className={styles.block}>
@@ -192,6 +199,9 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                       Принять
                     </Button>
                   ))}
+                <Button type="text" onClick={() => setIsMsgFormShowed(true)}>
+                  Написать
+                </Button>
                 <Button
                   className={styles.controlsRejectBtn}
                   type="text"
@@ -202,6 +212,18 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
               </div>
             </div>
           )}
+        {isMsgFormShowed && (
+          <div className={styles.block}>
+            <p className={styles.blockTitle}>Напишите сообщение</p>
+            <div className={styles.blockContent}>
+              <ResponseCardFunnelMessageForm
+                setIsShowed={setIsMsgFormShowed}
+                role={role}
+                response={response}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {curStage && (

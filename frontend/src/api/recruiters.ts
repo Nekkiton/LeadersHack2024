@@ -65,3 +65,10 @@ export const useCurRecruiterCommentResponse = createUseMutation(
     },
   }
 )
+
+export const useCurRecruiterSendResponseMessage = createUseMutation(
+  Api.recruiters.me.sendResponseMessage,
+  {
+    invalidateQueriesFn: () => [{ queryKey: ['recruiters.me.responses'] }],
+  }
+)
