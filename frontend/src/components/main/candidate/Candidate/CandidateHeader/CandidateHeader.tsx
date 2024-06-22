@@ -21,7 +21,7 @@ export default function CandidateHeader({ candidate }: Props) {
         <div className={styles.main}>
           <Image
             className={styles.userImg}
-            src={candidate.photo ?? userImg}
+            src={candidate.image ?? userImg}
             width={200}
             height={200}
           />

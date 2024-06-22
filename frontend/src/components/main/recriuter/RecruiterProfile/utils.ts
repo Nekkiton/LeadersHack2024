@@ -1,10 +1,11 @@
 import { getUserPhone } from '@/lib/get-user-phone'
+import { UpdateAttachment } from '@/types/entities/attachment'
 import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import { BaseUser } from '@/types/entities/user'
 import moment, { Moment } from 'moment'
 
 export interface FormData {
-  photo: any // TODO
+  image: UpdateAttachment | null
   name: string
   surname: string
   patronymic: string | null
@@ -30,6 +31,7 @@ export const transformData = (data: FormData): UpdateRecruiterData => {
       start_time: i.start_time.toISOString(),
       end_time: i.end_time.toISOString(),
     })),
+    image: data.image?.data ?? null,
   }
 }
 
@@ -55,5 +57,15 @@ export const getDefaultData = (
       email_notify: false,
       site_notify: false,
     },
+    image:
+      (user?.name && user.image
+        ? {
+            _id: 'attachment',
+            created_at: '',
+            name: 'Обложка',
+            size: 1024 * 10,
+            data: user.image,
+          }
+        : null) ?? null,
   }
 }

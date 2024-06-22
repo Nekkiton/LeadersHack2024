@@ -36,7 +36,7 @@ export default function Header() {
             >
               <Image
                 className={styles.userAvatar}
-                src={(user.value.name ? user.value.photo : null) ?? userImg}
+                src={(user.value.name ? user.value.image : null) ?? userImg}
                 width={58}
                 height={58}
               />

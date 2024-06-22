@@ -10,7 +10,7 @@ import { WorkType } from '@/types/entities/work-type'
 import moment, { Moment } from 'moment'
 
 export interface FormData {
-  photo: UpdateAttachment | null
+  image: UpdateAttachment | null
   name: string
   surname: string
   patronymic: string | null
@@ -48,6 +48,7 @@ export const transformData = (data: FormData): UpdateCandidateData => {
       start_date: i.start_date.toISOString(),
       end_date: i.end_date ? i.end_date.toISOString() : null,
     })),
+    image: data.image?.data ?? null,
   }
 }
 
@@ -75,5 +76,15 @@ export const getDefaultData = (
       email_notify: false,
       site_notify: false,
     },
+    image:
+      (user?.name && user.image
+        ? {
+            _id: 'attachment',
+            created_at: '',
+            name: 'Обложка',
+            size: 1024 * 10,
+            data: user.image,
+          }
+        : null) ?? null,
   }
 }

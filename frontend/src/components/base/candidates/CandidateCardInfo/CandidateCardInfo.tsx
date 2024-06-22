@@ -40,7 +40,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
       <div className={classNames(styles.userImgContainer, styles.userBlock)}>
         <Image
           className={styles.userImg}
-          src={candidate.photo ?? userImg}
+          src={candidate.image ?? userImg}
           width={60}
           height={60}
         />
