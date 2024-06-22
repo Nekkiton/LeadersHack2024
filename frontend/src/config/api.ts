@@ -133,7 +133,7 @@ export const Api = {
         pk,
         ...data
       }: SendResponseMessageData & { pk: string }) =>
-        Axios.post(`/recruiter/responses/${pk}/message`, data),
+        Axios.post(`/recruiter/responses/${pk}/simple`, data),
     },
   },
 
@@ -196,7 +196,7 @@ export const Api = {
         pk,
         ...data
       }: SendResponseMessageData & { pk: string }) =>
-        Axios.post(`/recruiter/responses/${pk}/message`, data),
+        Axios.post(`/candidate/responses/${pk}/simple`, data),
     },
   },
 

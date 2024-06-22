@@ -16,7 +16,10 @@ export const useCandidateResponses = createUseQuery(
 
 export const useCurCandidateResponses = createUseQuery(
   'candidates.me.responses',
-  Api.candidates.me.responses
+  Api.candidates.me.responses,
+  {
+    refetchInterval: 1000 * 60,
+  }
 )
 
 export const useCurCandidateVacancyResponse = createUseQuery(

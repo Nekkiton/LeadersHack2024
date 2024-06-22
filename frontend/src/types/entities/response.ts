@@ -16,6 +16,7 @@ export enum ResponseMessageType {
   NextStageRequest = 'next_stage_request',
   CandidateAnswer = 'candidate_answer',
   Result = 'result',
+  Custom = 'message',
 }
 
 export interface Response extends BaseEntity {

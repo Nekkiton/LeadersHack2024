@@ -117,6 +117,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                         response.status === ResponseStatus.Rejected
                           ? 'Отказ'
                           : 'Итог',
+                      [ResponseMessageType.Custom]: 'Сообщение',
                     }[message.type]
                   }
                 </p>
