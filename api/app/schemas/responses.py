@@ -66,3 +66,7 @@ class CandidateResponseAnswer(BaseModel):
 class RecruiterResponseAnswer(BaseModel):
     status: Literal["approve", "reject"]
     message: str
+
+
+class RecruiterSimpleResponseAnswer(BaseModel):
+    message: str
