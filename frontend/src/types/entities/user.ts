@@ -1,5 +1,4 @@
 import { BaseEntity } from '@/types/entities/base-entity'
-import { Attachment } from '@/types/entities/attachment'
 
 export enum Role {
   Recruiter = 'recruiter',
@@ -20,7 +19,7 @@ export interface User extends BaseEntity {
   phone: string
   email: string
   telegram: string
-  photo?: Attachment | null
+  image: string | null
   role: Role
   password_changed_at: string | null
   preferences: {

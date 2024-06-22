@@ -12,7 +12,7 @@ export interface Recruiter extends User {
 }
 
 export interface UpdateRecruiterData {
-  photo: UpdateAttachment | null
+  image: string | null
   name: string
   surname: string
   patronymic: string | null

@@ -57,6 +57,7 @@ export interface GetCandidateVacanciesParams {
   query?: string
   work_scopes?: WorkScope[]
   skills?: Skill[]
+  match?: number
 }
 
 export interface GetRecruiterVacanciesParams {

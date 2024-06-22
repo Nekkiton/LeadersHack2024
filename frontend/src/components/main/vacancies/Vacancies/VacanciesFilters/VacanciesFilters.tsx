@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Select from '@/components/ui/Select'
 import Input from '@/components/ui/Input'
+import Checkbox from '@/components/ui/Checkbox'
 import VacancyStatus from '@/components/base/vacancies/VacancyStatus'
 import styles from './VacanciesFilters.module.scss'
 
@@ -25,90 +26,104 @@ export default function VacanciesFilters({ role }: Props) {
   const workScopes = useWorkScopes()
 
   return (
-    <div className={styles.container}>
-      <Controller
-        control={control}
-        name="query"
-        render={({ field }) => (
-          <Input
-            {...field}
-            className={styles.input}
-            placeholder="Поиск по вакансиям"
-            prefix={<Icon icon="loupe" />}
-          />
-        )}
-      />
-      {role === Role.Recruiter && (
+    <>
+      <div className={styles.container}>
         <Controller
           control={control}
-          name="statuses"
+          name="query"
           render={({ field }) => (
-            <Select
+            <Input
               {...field}
-              placeholder="Все статусы"
-              items={Object.keys(VacancyStatuses).map((key) => ({
-                key,
-                value:
-                  VacancyStatuses[key as keyof typeof VacancyStatuses].title,
-              }))}
-              renderItem={({ key }) => (
-                <VacancyStatus status={key as keyof typeof VacancyStatuses} />
-              )}
-              multiple
-              longPopover
+              className={styles.input}
+              placeholder="Поиск по вакансиям"
+              prefix={<Icon icon="loupe" />}
             />
           )}
         />
-      )}
-      <Controller
-        control={control}
-        name="scopes"
-        render={({ field }) => (
-          <Select
-            {...field}
-            placeholder="Все направления"
-            items={
-              workScopes.status === 'success'
-                ? workScopes.value.map((i) => ({ key: i, value: i }))
-                : []
-            }
-            withConfirmation
-            multiple
-            longPopover
+        {role === Role.Recruiter && (
+          <Controller
+            control={control}
+            name="statuses"
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder="Все статусы"
+                items={Object.keys(VacancyStatuses).map((key) => ({
+                  key,
+                  value:
+                    VacancyStatuses[key as keyof typeof VacancyStatuses].title,
+                }))}
+                renderItem={({ key }) => (
+                  <VacancyStatus status={key as keyof typeof VacancyStatuses} />
+                )}
+                multiple
+                longPopover
+              />
+            )}
           />
         )}
-      />
-      {role === Role.Candidate && (
         <Controller
           control={control}
-          name="skills"
+          name="scopes"
           render={({ field }) => (
             <Select
               {...field}
-              placeholder="Все ключевые навыки"
+              placeholder="Все направления"
               items={
-                skills.status === 'success'
-                  ? skills.value.map((i) => ({ key: i, value: i }))
+                workScopes.status === 'success'
+                  ? workScopes.value.map((i) => ({ key: i, value: i }))
                   : []
               }
               withConfirmation
               multiple
               longPopover
-              inputtable
             />
           )}
         />
+        {role === Role.Candidate && (
+          <Controller
+            control={control}
+            name="skills"
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder="Все ключевые навыки"
+                items={
+                  skills.status === 'success'
+                    ? skills.value.map((i) => ({ key: i, value: i }))
+                    : []
+                }
+                withConfirmation
+                multiple
+                longPopover
+                inputtable
+              />
+            )}
+          />
+        )}
+        <Button
+          className={classNames(styles.clearBtn, {
+            [styles.active]: formState.isDirty,
+          })}
+          type="text"
+          onClick={() => reset()}
+        >
+          <Icon icon="times" />
+          <span>Сбросить</span>
+        </Button>
+      </div>
+
+      {role === Role.Candidate && (
+        <Controller
+          control={control}
+          name="recommended"
+          render={({ field, fieldState }) => (
+            <Checkbox {...field} error={fieldState.error}>
+              Подходят под ваше резюме
+            </Checkbox>
+          )}
+        />
       )}
-      <Button
-        className={classNames(styles.clearBtn, {
-          [styles.active]: formState.isDirty,
-        })}
-        type="text"
-        onClick={() => reset()}
-      >
-        <Icon icon="times" />
-        <span>Сбросить</span>
-      </Button>
-    </div>
+    </>
   )
 }

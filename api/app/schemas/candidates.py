@@ -35,7 +35,7 @@ class CandidatePost(CandidateValidators):
     email: str
     name: str
     surname: str
-    image: str
+    image: Optional[str] = None
     patronymic: Optional[str] = None
     phone: PhoneNumber
     telegram: str

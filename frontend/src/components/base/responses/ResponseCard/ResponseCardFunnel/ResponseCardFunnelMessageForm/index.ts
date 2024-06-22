@@ -1,0 +1,3 @@
+import ResponseCardFunnelMessageForm from './ResponseCardFunnelMessageForm'
+
+export default ResponseCardFunnelMessageForm

@@ -11,7 +11,7 @@ export default function RecruiterProfileBaseInfo() {
     <div className={styles.container}>
       <Controller
         control={control}
-        name="photo"
+        name="image"
         render={({ field, fieldState }) => (
           <AvatarUpload {...field} error={fieldState.error} />
         )}
