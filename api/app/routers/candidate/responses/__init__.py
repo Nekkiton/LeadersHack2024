@@ -9,7 +9,7 @@ from app.literals import Role
 from app.oauth import FilledCandidateId
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, TIMESLOT_ALREADY_OCCUPIED
 from app.database import DetailedResponses, Responses, Stages, Tasks, Users, Vacancies
-from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
+from app.schemas.responses import CandidateResponseAnswer, CandidateSimpleResponseAnswer, Response, ResponsesGet, ResponseGet
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
 
 from .aggregations import DAYS_WITH_INTERVIEWS
@@ -118,7 +118,6 @@ async def answer_response(
     response_id: OID,
     payload: CandidateResponseAnswer
 ):
-    # TODO Проверка, находится ли возвращаемое время во временных слотах рекрутера
     now = get_now()
     response = DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": {"$nin": ["approved", "rejected"]}})
     if response is None:
@@ -181,6 +180,39 @@ async def answer_response(
         },
         {
             "$set": {"status": status, "updated_at": get_now()},
+            "$push": {"messages": message}
+        },
+        return_document=True
+    )
+
+
+@router.post(
+    "/{response_id}/simple",
+    name="Ответить на отклик без смены стадии",
+    response_model=Response
+)
+async def answer_response(
+    candidate_id: FilledCandidateId,
+    response_id: OID,
+    payload: CandidateSimpleResponseAnswer
+):
+    now = get_now()
+    response = DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": {"$nin": ["approved", "rejected"]}})
+    if response is None:
+        raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
+    message = {
+        "type": "message",
+        "sender_role": "candidate",
+        "text": payload.message,
+        "created_at": now,
+        "stage_id": response["stage_id"]
+    }
+    return Responses.find_one_and_update(
+        {
+            "_id": response_id
+        },
+        {
+            "$set": {"updated_at": get_now()},
             "$push": {"messages": message}
         },
         return_document=True

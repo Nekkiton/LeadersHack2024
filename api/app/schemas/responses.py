@@ -63,6 +63,10 @@ class CandidateResponseAnswer(BaseModel):
         return self
 
 
+class CandidateSimpleResponseAnswer(BaseModel):
+    message: str
+
+
 class RecruiterResponseAnswer(BaseModel):
     status: Literal["approve", "reject"]
     message: str
