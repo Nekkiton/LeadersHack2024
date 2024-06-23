@@ -57,7 +57,7 @@ export const getDefaultData = (
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
       site_notify: false,
-      timezone: '+03',
+      timezone: 'Europe/Moscow',
     },
     image:
       (user?.name && user.image

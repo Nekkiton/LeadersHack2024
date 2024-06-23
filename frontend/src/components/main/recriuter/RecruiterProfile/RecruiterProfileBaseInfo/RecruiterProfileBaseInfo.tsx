@@ -1,5 +1,5 @@
 import { useFormContext, Controller } from 'react-hook-form'
-import { Timezones } from '@/config/timezones'
+import { getTimezones } from '@/lib/get-timezones'
 import { FormData } from '../utils'
 import AvatarUpload from '@/components/ui/AvatarUpload'
 import Input from '@/components/ui/Input'
@@ -89,7 +89,7 @@ export default function RecruiterProfileBaseInfo() {
                   error={fieldState.error}
                   label="Часовой пояс"
                   placeholder="Выберите из списка"
-                  items={Timezones}
+                  items={getTimezones()}
                 />
               )}
             />
