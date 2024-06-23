@@ -235,7 +235,7 @@ async def get_response_schedule(
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
     recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
-    recruiter_pytz = pytz.timezone(recruiter_tz)
+    recruiter_pytz = pytz.timezone(recruiter_tz).utcoffset()
 
     start = datetime.now().astimezone(recruiter_pytz)
     slots = set()
@@ -268,5 +268,5 @@ async def get_response_schedule(
                 if slot.time() in day_slots:
                     day_slots.remove(slot.time())
 
-        result += [datetime.combine(start, slot) for slot in day_slots]
-    return [slot.astimezone(pytz.utc) for slot in result]
+        result += [datetime.combine(start, slot).astimezone(pytz.utc) for slot in day_slots]
+    return result
