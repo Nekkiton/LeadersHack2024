@@ -237,7 +237,7 @@ async def get_response_schedule(
     recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
     recruiter_pytz = pytz.timezone(recruiter_tz)
 
-    start = datetime.now(recruiter_pytz)
+    start = datetime.now().astimezone(recruiter_pytz)
     slots = set()
     for slot in recruiter["interview_slots"]:
         start_time = slot["start_time"].astimezone(recruiter_pytz)
