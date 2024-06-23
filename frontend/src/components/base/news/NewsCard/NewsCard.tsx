@@ -3,6 +3,7 @@ import { Role } from '@/types/entities/user'
 import { Routes } from '@/config/routes'
 import moment from 'moment'
 import classNames from 'classnames'
+import ReactMarkdown from 'react-markdown'
 import Image from '@/components/ui/Image'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
@@ -26,9 +27,9 @@ export default function NewsCard({ className, news, role }: Props) {
       />
       <div className={styles.textContainer}>
         <p className={styles.newsTitle}>{news.title}</p>
-        <p className={styles.newsContent}>
-          {news.text.replaceAll('\n', ' ').slice(0, 210)}...
-        </p>
+        <ReactMarkdown className={styles.newsContent}>
+          {news.text.slice(0, 210) + '...'}
+        </ReactMarkdown>
       </div>
       <div className={styles.footer}>
         <Button

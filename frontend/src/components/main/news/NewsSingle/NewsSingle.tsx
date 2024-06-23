@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useCurRecruiterNewsSingle, useNewsSingle } from '@/api/news'
 import { Role } from '@/types/entities/user'
+import ReactMarkdown from 'react-markdown'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import RemoteData from '@/components/special/RemoteData'
@@ -50,7 +51,9 @@ export default function NewsSingle({ id, backLink, role }: Props) {
                 width={1000}
                 height={600}
               />
-              <p className={styles.newsContent}>{news.text}</p>
+              <ReactMarkdown className={styles.newsContent}>
+                {news.text}
+              </ReactMarkdown>
             </div>
           </div>
         )}

@@ -123,7 +123,7 @@ export default function NewsForm({ backLink, editId }: Props) {
             <Textarea
               {...field}
               error={fieldState.error}
-              label="Контент новости *"
+              label="Контент новости (поддерживает Markdown) *"
               placeholder="Напишите текст новости"
             />
           )}

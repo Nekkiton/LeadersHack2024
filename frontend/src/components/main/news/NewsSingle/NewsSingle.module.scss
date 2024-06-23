@@ -27,6 +27,9 @@
 }
 
 .newsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4lh;
   white-space: pre-wrap;
   text-wrap: pretty;
 }
