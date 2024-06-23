@@ -2,6 +2,7 @@ import math
 from typing import List, Optional
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter
+import pytz
 
 from app.utils import get_now, schedule_meeting
 from app.schemas import OID
@@ -233,14 +234,14 @@ async def get_response_schedule(
 
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "+03")
-    recruiter_tzinfo = timezone(timedelta(hours=int(recruiter_tz)))
+    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
+    recruiter_pytz = pytz.timezone(recruiter_tz)
 
-    start = datetime.now(tz=recruiter_tzinfo)
+    start = datetime.now(recruiter_pytz)
     slots = set()
     for slot in recruiter["interview_slots"]:
-        start_time = slot["start_time"].astimezone(tz=recruiter_tzinfo)
-        end_time = slot["end_time"].astimezone(tz=recruiter_tzinfo)
+        start_time = slot["start_time"].astimezone(recruiter_pytz)
+        end_time = slot["end_time"].astimezone(recruiter_pytz)
         while start_time < end_time:
             slots.add(start_time.time())
             start_time += timedelta(minutes=30)
@@ -250,8 +251,8 @@ async def get_response_schedule(
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
 
-    start = start.astimezone(tz=recruiter_tzinfo) - timedelta(days=1)
-    end = end.astimezone(tz=recruiter_tzinfo)
+    start = start.astimezone(recruiter_pytz) - timedelta(days=1)
+    end = end.astimezone(recruiter_pytz)
     result = []
 
     while start <= end:
@@ -264,8 +265,8 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
-                if slot.astimezone(tz=recruiter_tzinfo).time() in day_slots:
-                    day_slots.remove(slot.astimezone(tz=recruiter_tzinfo).time())
+                if slot.astimezone(recruiter_pytz).time() in day_slots:
+                    day_slots.remove(slot.astimezone(recruiter_pytz).time())
 
-        result += [datetime.combine(start, slot, tzinfo=recruiter_tzinfo).astimezone(tz=timezone.utc) for slot in day_slots]
+        result += [datetime.combine(start, slot, tzinfo=recruiter_pytz).astimezone(tz=timezone.utc) for slot in day_slots]
     return result
