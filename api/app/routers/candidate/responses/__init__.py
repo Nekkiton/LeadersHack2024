@@ -269,4 +269,4 @@ async def get_response_schedule(
                     day_slots.remove(slot.time())
 
         result += [datetime.combine(start, slot) for slot in day_slots]
-    return result
+    return [slot.astimezone(pytz.utc) for slot in result]
