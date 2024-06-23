@@ -29,6 +29,7 @@ async def main():
             kwargs = task.get("body", {})
             proccesser = getattr(proccessers, "proccess_" + task_type)
             if not proccesser or not asyncio.iscoroutinefunction(proccesser):
+                logger.error(f"Task of type {task_type} doesn't have proccesser")
                 Tasks.update_one({"_id": task["_id"]}, {"$set": {"status": "fail"}})
                 continue
             try:
