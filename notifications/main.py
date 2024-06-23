@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 
 from app import proccessers
 from app.database import Tasks
+import app.meet.meet_providers
 
 
 async def main():

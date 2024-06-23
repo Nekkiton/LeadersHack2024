@@ -12,3 +12,7 @@ class Settings(EnvClass):
 
     TELEMOST_API: str
     AI_URL: str
+    ZOOM_CLIENT_ID: str
+    ZOOM_ACCOUNT_ID: str
+    ZOOM_CLIENT_SECRET: str
+    MEET_CREDENTIALS_PATH: str = "/creds/"

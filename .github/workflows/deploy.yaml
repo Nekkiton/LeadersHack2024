@@ -42,10 +42,13 @@ jobs:
             export JWT_ALGORITHM='RS256'
             export ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
             export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            export TELEMOST_API=${{ secrets.TELEMOST_API }}
             export AI_URL=${{ secrets.AI_URL }}
             export EMAIL_USER=${{ secrets.EMAIL_USER }}
             export EMAIL_PASS=${{ secrets.EMAIL_PASS }}
+            export TELEMOST_API=${{ secrets.TELEMOST_API }}
+            export ZOOM_CLIENT_ID=${{ secrets.ZOOM_CLIENT_ID }}
+            export ZOOM_ACCOUNT_ID=${{ secrets.ZOOM_ACCOUNT_ID }}
+            export ZOOM_CLIENT_SECRET=${{ secrets.ZOOM_CLIENT_SECRET }}
 
             docker compose pull
             docker compose up -d
