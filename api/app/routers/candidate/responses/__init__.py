@@ -235,7 +235,8 @@ async def get_response_schedule(
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
     recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
-    recruiter_tzinfo = timezone(offset=pytz.timezone(recruiter_tz).utcoffset(datetime.now()))
+    recruiter_timedelta = pytz.timezone(recruiter_tz).utcoffset(datetime.now())
+    recruiter_tzinfo = timezone(offset=recruiter_timedelta)
     print(recruiter_tzinfo)
 
     start = datetime.now(tz=recruiter_tzinfo)
@@ -266,11 +267,8 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
-                timezoned_slot = slot.astimezone(tz=recruiter_tzinfo)
-                print(slot, timezoned_slot)
-                if timezoned_slot in day_slots:
-                    day_slots.remove(timezoned_slot)
-        result += [datetime.combine(start, slot).astimezone(tz=timezone.utc) for slot in day_slots]
-        if start.day == 26:
-            print([datetime.combine(start, slot).astimezone(tz=timezone.utc) for slot in day_slots])
+                slot += recruiter_timedelta
+                if slot in day_slots:
+                    day_slots.remove(slot)
+        result += [datetime.combine(start, slot, tz=recruiter_tzinfo).astimezone(tz=timezone.utc) for slot in day_slots]
     return result
