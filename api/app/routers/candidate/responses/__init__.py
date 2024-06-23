@@ -253,6 +253,8 @@ async def get_response_schedule(
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
 
+    print(slots)
+
     start = start.astimezone(tz=recruiter_tzinfo) - timedelta(days=1)
     end = end.astimezone(tz=recruiter_tzinfo)
     result = []
@@ -267,7 +269,8 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
-                slot += recruiter_timedelta
+                slot = (slot + recruiter_timedelta).replace(tzinfo=recruiter_tzinfo)
+                print(slot, slot.astimezone(tz=recruiter_tzinfo))
                 if slot in day_slots:
                     day_slots.remove(slot)
         result += [datetime.combine(start, slot, tzinfo=recruiter_tzinfo).astimezone(tz=timezone.utc) for slot in day_slots]
