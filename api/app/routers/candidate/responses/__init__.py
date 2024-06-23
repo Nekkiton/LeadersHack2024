@@ -163,7 +163,8 @@ async def answer_response(
                 "type": "candidate_answer",
                 "sender_role": "candidate",
                 # TODO: deal with timezone not only Moscow
-                "text": f"Интервью назначено на {(payload.meet_at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}.",
+                "text": f"Интервью назначено на %date%",
+                "interview_timestamp": payload.meet_at,
                 "created_at": now,
                 "stage_id": response["stage_id"],
             }
