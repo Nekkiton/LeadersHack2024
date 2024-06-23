@@ -234,8 +234,9 @@ async def get_response_schedule(
 
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "+03")
-    recruiter_tzinfo = timezone(offset=pytz.timezone("Europe/Moscow").utcoffset(datetime.now()))
+    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
+    recruiter_tzinfo = timezone(offset=pytz.timezone(recruiter_tz).utcoffset(datetime.now()))
+    print(recruiter_tzinfo)
 
     start = datetime.now(tz=recruiter_tzinfo)
     slots = set()
