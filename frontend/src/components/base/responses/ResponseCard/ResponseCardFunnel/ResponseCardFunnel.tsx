@@ -61,19 +61,27 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
   }, [vacancy, response])
 
   const renderMessageText = (message: Response['messages'][0]) => {
-    if (!message.meet_url) {
+    if (message.interview_timestamp) {
+      return message.text.replaceAll(
+        '%date%',
+        moment(`${message.interview_timestamp}Z`).format('DD.MM.YYYY HH:mm')
+      )
+    } else {
       return message.text
     }
-    const textParts = message.text.split(message.meet_url)
-    return (
-      <>
-        {textParts[0]}
-        <Link href={message.meet_url} target="_blank">
-          {message.meet_url}
-        </Link>
-        {textParts[1]}
-      </>
-    )
+    // if (!message.meet_url) {
+    //   return message.text
+    // }
+    // const textParts = message.text.split(message.meet_url)
+    // return (
+    //   <>
+    //     {textParts[0]}
+    //     <Link href={message.meet_url} target="_blank">
+    //       {message.meet_url}
+    //     </Link>
+    //     {textParts[1]}
+    //   </>
+    // )
   }
 
   return (
