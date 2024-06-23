@@ -266,6 +266,7 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
+                print(slot)
                 if slot.astimezone(tz=recruiter_tzinfo).time() in day_slots:
                     day_slots.remove(slot.astimezone(tz=recruiter_tzinfo).time())
 
