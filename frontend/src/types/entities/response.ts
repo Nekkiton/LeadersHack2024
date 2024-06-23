@@ -36,6 +36,7 @@ export interface Response extends BaseEntity {
     meet_on?: string | null
     sender_role: Role
     stage_id: BaseEntityPkType
+    interview_timestamp?: string
   }[]
 }
 
