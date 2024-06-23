@@ -237,7 +237,6 @@ async def get_response_schedule(
     recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
     recruiter_timedelta = pytz.timezone(recruiter_tz).utcoffset(datetime.now())
     recruiter_tzinfo = timezone(offset=recruiter_timedelta)
-    print(recruiter_tzinfo)
 
     start = datetime.now(tz=recruiter_tzinfo)
     slots = set()
@@ -252,8 +251,6 @@ async def get_response_schedule(
     scheduled_zip = {}
     if scheduled:
         scheduled_zip = {schedule["_id"]: schedule for schedule in list(scheduled)}
-
-    print(slots)
 
     start = start.astimezone(tz=recruiter_tzinfo) - timedelta(days=1)
     end = end.astimezone(tz=recruiter_tzinfo)
@@ -270,7 +267,6 @@ async def get_response_schedule(
                 continue
             for slot in scheduled['slots']:
                 slot = (slot + recruiter_timedelta).replace(tzinfo=recruiter_tzinfo)
-                print(slot, slot.astimezone(tz=recruiter_tzinfo))
                 if slot.time() in day_slots:
                     day_slots.remove(slot.time())
         result += [datetime.combine(start, slot, tzinfo=recruiter_tzinfo).astimezone(tz=timezone.utc) for slot in day_slots]
