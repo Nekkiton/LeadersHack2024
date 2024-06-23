@@ -42,8 +42,8 @@ services:
     restart: unless-stopped
     volumes:
       - data-vol:/data/db
-    ports:
-      - 27017:27017 # TODO: remove later to avoid access to db
+    #ports:
+    #  - 27017:27017 # TODO: remove later to avoid access to db
 
   # DOESN"T WORK FROM RUSSIAN IP's, SO DISABLE IT HERE
   # ai:
