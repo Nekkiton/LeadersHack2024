@@ -97,13 +97,13 @@ export default function AvatarUpload({
           width={200}
           height={200}
         />
-        {/* <BaseButton
+        <BaseButton
           className={styles.control}
           onClick={() => inputRef.current?.click()}
           hoverable
         >
           <Icon icon="pen" />
-        </BaseButton> */}
+        </BaseButton>
       </div>
       {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
     </div>

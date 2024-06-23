@@ -41,8 +41,8 @@ export default function ResponseCard({
     } else if (response.status === ResponseStatus.Rejected) {
       return 'Отказ'
     } else if (
-      response.messages[response.messages.length - 1].type ===
-      ResponseMessageType.CandidateRequest
+      response.messages.findLast((i) => i.type !== ResponseMessageType.Custom)
+        ?.type === ResponseMessageType.CandidateRequest
     ) {
       return 'Неразобранный'
     }

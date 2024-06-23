@@ -46,6 +46,7 @@ import {
   GetRecruiterResponsesParams,
   GetResponseScheduleParams,
   Response,
+  SendResponseMessageData,
 } from '@/types/entities/response'
 import { Notification } from '@/types/entities/notification'
 
@@ -127,6 +128,12 @@ export const Api = {
 
       newsSingle: (pk: string) =>
         Axios.get<News>(`/recruiter/news/${pk}`).then((res) => res.data),
+
+      sendResponseMessage: ({
+        pk,
+        ...data
+      }: SendResponseMessageData & { pk: string }) =>
+        Axios.post(`/recruiter/responses/${pk}/simple`, data),
     },
   },
 
@@ -184,6 +191,12 @@ export const Api = {
         ...data
       }: CurCandidateAnswerToResponseData & { pk: string }) =>
         Axios.post(`/candidate/responses/${pk}`, data),
+
+      sendResponseMessage: ({
+        pk,
+        ...data
+      }: SendResponseMessageData & { pk: string }) =>
+        Axios.post(`/candidate/responses/${pk}/simple`, data),
     },
   },
 

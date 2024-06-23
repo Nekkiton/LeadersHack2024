@@ -9,6 +9,7 @@ import re
 from app.settings import Settings
 from app.utils import create_app_notification, send_mail, create_ics
 from app.database import DetailedResponses, Tasks, Users, Vacancies, Stages
+from app.meet.providers import get_provider
 
 from .consts import recruitingDefaultStages
 
@@ -50,20 +51,17 @@ async def proccess_meeting(
     response = DetailedResponses.find_one({"_id": response_id, "status": {"$nin": ["approved", "rejected"]}})
     if not response:
         return
+
     vacancy_title = response["vacancy"]["title"]
     url = "Не удалось создать"
-    match platform:
-        case "telemost":
-            response = post(
-                url="https://cloud-api.yandex.net/v1/telemost-api/conferences",
-                headers={"Authorization": "OAuth " + Settings.TELEMOST_API},
-                json={"access_level": "PUBLIC",}
-            )
-            if response.status_code != 200:
-                logger.error(response.status_code, response.content.decode("utf-8"))
-            url = response.json().get("join_url", "Не удалось создать")
-        case _:
-            pass
+    provider = get_provider(platform)
+
+    if not provider:
+        # fallback to telemost
+        provider = get_provider("telemost")
+            
+    url = provider.create_meet_link()
+
     await proccess_notification(
         title="Встреча создана",
         content=f"Интервью по вакансии {vacancy_title} начнётся через полчаса. Ссылка: {url}",

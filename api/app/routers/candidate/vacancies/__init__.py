@@ -24,7 +24,8 @@ async def get_vacancies(
     limit: int = Query(25, title="Элементов на странице"),
     query: Optional[str] = Query("", title="Поиск по названиям, описаниям"),
     scopes: Optional[List[WorkScopes]] = Query(None, title="Направления", alias='scopes[]'),
-    skills: Optional[List[Skills]] = Query(None, title="Навыки", alias='skills[]')
+    skills: Optional[List[Skills]] = Query(None, title="Навыки", alias='skills[]'),
+    match: int = Query(50, title="Минимальный процент совпадения")
 ):
     query = {
         'status': 'active',
@@ -38,7 +39,7 @@ async def get_vacancies(
     if skills is not None:
         query["skills"] = {"$in": skills}
     candidate = Users.find_one({"_id": candidate_id})
-    vacancies = list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE(query, candidate, page, limit)))
+    vacancies = list(DetailedVacancies.aggregate(SEARCH_BY_CANDIDATE(query, candidate, page, limit, match)))
     if not len(vacancies):
         return {
             "total_pages": 0,

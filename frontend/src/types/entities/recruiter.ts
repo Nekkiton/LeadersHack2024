@@ -12,7 +12,7 @@ export interface Recruiter extends User {
 }
 
 export interface UpdateRecruiterData {
-  photo: UpdateAttachment | null
+  image: string | null
   name: string
   surname: string
   patronymic: string | null
@@ -24,5 +24,6 @@ export interface UpdateRecruiterData {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string
   }
 }

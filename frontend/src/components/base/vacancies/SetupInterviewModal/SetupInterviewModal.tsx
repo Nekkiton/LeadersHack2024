@@ -6,7 +6,7 @@ import { useCurCandidateAnswerToResponse } from '@/api/candidates'
 import { useResponseSchedule } from '@/api/responses'
 import { useToasts } from '@/lib/use-toasts'
 import classNames from 'classnames'
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 import ReactDatePicker from 'react-datepicker'
 import Modal, { ModalStateProps } from '@/components/ui/Modal'
 import ControlContainer from '@/components/ui/ControlContainer'
@@ -172,10 +172,6 @@ export default function SetupInterviewModal({
         name="meet_on"
         rules={{
           required: true,
-          validate: (val) =>
-            val && val !== 'telemost'
-              ? 'На данные момент поддерживается только Telemost'
-              : true,
         }}
         render={({ field, fieldState }) => (
           <Select

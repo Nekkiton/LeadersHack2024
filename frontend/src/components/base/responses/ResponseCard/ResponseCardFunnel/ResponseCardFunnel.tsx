@@ -6,7 +6,7 @@ import {
   ResponseMessageType,
   ResponseStatus,
 } from '@/types/entities/response'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import classNames from 'classnames'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
@@ -16,6 +16,7 @@ import RejectRecruitingModal from '@/components/base/candidates/RejectRecruiting
 import RejectVacancyModal from '@/components/base/vacancies/RejectVacancyModal'
 import SetupInterviewModal from '@/components/base/vacancies/SetupInterviewModal'
 import AcceptInvitationModal from '@/components/base/vacancies/AcceptInvitationModal'
+import ResponseCardFunnelMessageForm from './ResponseCardFunnelMessageForm'
 import styles from './ResponseCardFunnel.module.scss'
 
 interface Props {
@@ -35,6 +36,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
     useState(false)
   const [isAcceptInvitationModalShowed, setIsAcceptInvitationModalShowed] =
     useState(false)
+  const [isMsgFormShowed, setIsMsgFormShowed] = useState(false)
 
   const [areAllMsgsShowed, setAreAllMsgsShowed] = useState(false)
 
@@ -59,19 +61,27 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
   }, [vacancy, response])
 
   const renderMessageText = (message: Response['messages'][0]) => {
-    if (!message.meet_url) {
+    if (message.interview_timestamp) {
+      return message.text.replaceAll(
+        '%date%',
+        moment(`${message.interview_timestamp}Z`).format('DD.MM.YYYY HH:mm')
+      )
+    } else {
       return message.text
     }
-    const textParts = message.text.split(message.meet_url)
-    return (
-      <>
-        {textParts[0]}
-        <Link href={message.meet_url} target="_blank">
-          {message.meet_url}
-        </Link>
-        {textParts[1]}
-      </>
-    )
+    // if (!message.meet_url) {
+    //   return message.text
+    // }
+    // const textParts = message.text.split(message.meet_url)
+    // return (
+    //   <>
+    //     {textParts[0]}
+    //     <Link href={message.meet_url} target="_blank">
+    //       {message.meet_url}
+    //     </Link>
+    //     {textParts[1]}
+    //   </>
+    // )
   }
 
   return (
@@ -115,6 +125,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                         response.status === ResponseStatus.Rejected
                           ? 'Отказ'
                           : 'Итог',
+                      [ResponseMessageType.Custom]: 'Сообщение',
                     }[message.type]
                   }
                 </p>
@@ -147,6 +158,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
           // </AppearTransition>
         )}
         {role === Role.Recruiter &&
+          !isMsgFormShowed &&
           (response.status === ResponseStatus.WaitingForCandidate ||
             response.status === ResponseStatus.WaitingForRecruiter) && (
             <div className={styles.block}>
@@ -160,6 +172,9 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                     {nextStage ? `Пригласить на ${nextStage.title}` : 'Принять'}
                   </Button>
                 )}
+                <Button type="text" onClick={() => setIsMsgFormShowed(true)}>
+                  Написать
+                </Button>
                 <Button
                   className={styles.controlsRejectBtn}
                   type="text"
@@ -171,6 +186,7 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
             </div>
           )}
         {role === Role.Candidate &&
+          !isMsgFormShowed &&
           (response.status === ResponseStatus.WaitingForCandidate ||
             response.status === ResponseStatus.WaitingForRecruiter) && (
             <div className={styles.block}>
@@ -192,6 +208,9 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
                       Принять
                     </Button>
                   ))}
+                <Button type="text" onClick={() => setIsMsgFormShowed(true)}>
+                  Написать
+                </Button>
                 <Button
                   className={styles.controlsRejectBtn}
                   type="text"
@@ -202,6 +221,18 @@ export default function ResponseCardFunnel({ response, vacancy, role }: Props) {
               </div>
             </div>
           )}
+        {isMsgFormShowed && (
+          <div className={styles.block}>
+            <p className={styles.blockTitle}>Напишите сообщение</p>
+            <div className={styles.blockContent}>
+              <ResponseCardFunnelMessageForm
+                setIsShowed={setIsMsgFormShowed}
+                role={role}
+                response={response}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {curStage && (

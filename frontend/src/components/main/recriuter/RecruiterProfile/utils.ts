@@ -1,10 +1,11 @@
 import { getUserPhone } from '@/lib/get-user-phone'
+import { UpdateAttachment } from '@/types/entities/attachment'
 import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import { BaseUser } from '@/types/entities/user'
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 
 export interface FormData {
-  photo: any // TODO
+  image: UpdateAttachment | null
   name: string
   surname: string
   patronymic: string | null
@@ -19,6 +20,7 @@ export interface FormData {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string
   }
 }
 
@@ -30,6 +32,7 @@ export const transformData = (data: FormData): UpdateRecruiterData => {
       start_time: i.start_time.toISOString(),
       end_time: i.end_time.toISOString(),
     })),
+    image: data.image?.data ?? null,
   }
 }
 
@@ -54,6 +57,17 @@ export const getDefaultData = (
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
       site_notify: false,
+      timezone: moment.tz.guess(),
     },
+    image:
+      (user?.name && user.image
+        ? {
+            _id: 'attachment',
+            created_at: '',
+            name: 'Обложка',
+            size: 1024 * 10,
+            data: user.image,
+          }
+        : null) ?? null,
   }
 }

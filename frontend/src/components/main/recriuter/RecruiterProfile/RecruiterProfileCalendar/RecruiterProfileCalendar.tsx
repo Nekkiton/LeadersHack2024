@@ -6,7 +6,7 @@ import BaseButton from '@/components/ui/BaseButton'
 import Icon from '@/components/ui/Icon'
 import TimePicker from '@/components/ui/TimePicker'
 import styles from './RecruiterProfileCalendar.module.scss'
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 
 export default function RecruiterProfileCalendar() {
   const { control } = useFormContext<FormData>()

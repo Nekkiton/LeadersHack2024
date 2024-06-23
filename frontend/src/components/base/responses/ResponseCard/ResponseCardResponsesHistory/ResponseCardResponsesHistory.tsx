@@ -1,7 +1,7 @@
 import { Response, ResponseStatus } from '@/types/entities/response'
 import { useCandidateResponses } from '@/api/candidates'
 import { Role } from '@/types/entities/user'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import RemoteData from '@/components/special/RemoteData'
 import styles from './ResponseCardResponsesHistory.module.scss'
 

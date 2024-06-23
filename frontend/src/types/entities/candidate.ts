@@ -38,7 +38,7 @@ export interface GetVacancyCadidatesParams {
 }
 
 export interface UpdateCandidateData {
-  photo: UpdateAttachment | null
+  image: string | null
   name: string
   surname: string
   patronymic: string | null
@@ -58,6 +58,7 @@ export interface UpdateCandidateData {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string
   }
 }
 

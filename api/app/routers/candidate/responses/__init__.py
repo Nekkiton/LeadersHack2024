@@ -2,6 +2,7 @@ import math
 from typing import List, Optional
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter
+import pytz
 
 from app.utils import get_now, schedule_meeting
 from app.schemas import OID
@@ -9,7 +10,7 @@ from app.literals import Role
 from app.oauth import FilledCandidateId
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, TIMESLOT_ALREADY_OCCUPIED
 from app.database import DetailedResponses, Responses, Stages, Tasks, Users, Vacancies
-from app.schemas.responses import CandidateResponseAnswer, Response, ResponsesGet, ResponseGet
+from app.schemas.responses import CandidateResponseAnswer, CandidateSimpleResponseAnswer, Response, ResponsesGet, ResponseGet
 from app.exceptions import NOT_FOUND, REQUIRED_PARAMS_MISSING, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_NOT_ACTIVE
 
 from .aggregations import DAYS_WITH_INTERVIEWS
@@ -118,7 +119,6 @@ async def answer_response(
     response_id: OID,
     payload: CandidateResponseAnswer
 ):
-    # TODO Проверка, находится ли возвращаемое время во временных слотах рекрутера
     now = get_now()
     response = DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": {"$nin": ["approved", "rejected"]}})
     if response is None:
@@ -162,8 +162,8 @@ async def answer_response(
             message = {
                 "type": "candidate_answer",
                 "sender_role": "candidate",
-                # TODO: deal with timezone not only Moscow
-                "text": f"Интервью назначено на {(payload.meet_at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}.",
+                "text": f"Интервью назначено на %date%",
+                "interview_timestamp": payload.meet_at,
                 "created_at": now,
                 "stage_id": response["stage_id"],
             }
@@ -180,7 +180,40 @@ async def answer_response(
             "_id": response_id
         },
         {
-            "$set": {"status": status, "updated_at": get_now()},
+            "$set": {"status": status, "updated_at": now},
+            "$push": {"messages": message}
+        },
+        return_document=True
+    )
+
+
+@router.post(
+    "/{response_id}/simple",
+    name="Ответить на отклик без смены стадии",
+    response_model=Response
+)
+async def answer_response(
+    candidate_id: FilledCandidateId,
+    response_id: OID,
+    payload: CandidateSimpleResponseAnswer
+):
+    now = get_now()
+    response = DetailedResponses.find_one({"_id": response_id, "candidate_id": candidate_id, "status": {"$nin": ["approved", "rejected"]}})
+    if response is None:
+        raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
+    message = {
+        "type": "message",
+        "sender_role": "candidate",
+        "text": payload.message,
+        "created_at": now,
+        "stage_id": response["stage_id"]
+    }
+    return Responses.find_one_and_update(
+        {
+            "_id": response_id
+        },
+        {
+            "$set": {"updated_at": now},
             "$push": {"messages": message}
         },
         return_document=True
@@ -201,8 +234,9 @@ async def get_response_schedule(
 
     recruiter = Users.find_one({"_id": response["vacancy"]["recruiter_id"]})
     max_interviews = recruiter["interview_per_day"]
-    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "+03")
-    recruiter_tzinfo = timezone(timedelta(hours=int(recruiter_tz)))
+    recruiter_tz = recruiter.get("preferences", {}).get("timezone", "Europe/Moscow")
+    recruiter_timedelta = pytz.timezone(recruiter_tz).utcoffset(datetime.now())
+    recruiter_tzinfo = timezone(offset=recruiter_timedelta)
 
     start = datetime.now(tz=recruiter_tzinfo)
     slots = set()
@@ -232,8 +266,8 @@ async def get_response_schedule(
             if scheduled["interviews"] >= max_interviews:
                 continue
             for slot in scheduled['slots']:
-                if slot.astimezone(tz=recruiter_tzinfo).time() in day_slots:
-                    day_slots.remove(slot.astimezone(tz=recruiter_tzinfo).time())
-
+                slot = (slot + recruiter_timedelta).replace(tzinfo=recruiter_tzinfo)
+                if slot.time() in day_slots:
+                    day_slots.remove(slot.time())
         result += [datetime.combine(start, slot, tzinfo=recruiter_tzinfo).astimezone(tz=timezone.utc) for slot in day_slots]
     return result

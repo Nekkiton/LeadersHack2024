@@ -1,6 +1,6 @@
 from app.aggregations import get_match_field_stage
 
-SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
+SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit, match: [
     {
         "$match": query,
     },
@@ -15,7 +15,7 @@ SEARCH_BY_CANDIDATE = lambda query, candidate, page, limit: [
         candidate.get("work_schedule", ""),
     ),
     {
-        "$match": {"match": {"$gte": 50}}
+        "$match": {"match": {"$gte": match}}
     },
     {
         "$sort": {"match": -1}

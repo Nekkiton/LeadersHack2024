@@ -19,6 +19,7 @@ class ResponseMessageItem(BaseModel):
     meet_at: Optional[datetime] = None
     meet_on: Optional[str] = None
     meet_url: Optional[str] = None
+    interview_timestamp: Optional[datetime] = None
 
 
 class Response(BaseGet):
@@ -63,6 +64,14 @@ class CandidateResponseAnswer(BaseModel):
         return self
 
 
+class CandidateSimpleResponseAnswer(BaseModel):
+    message: str
+
+
 class RecruiterResponseAnswer(BaseModel):
     status: Literal["approve", "reject"]
+    message: str
+
+
+class RecruiterSimpleResponseAnswer(BaseModel):
     message: str

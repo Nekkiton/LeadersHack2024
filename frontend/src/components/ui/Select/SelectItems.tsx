@@ -158,6 +158,7 @@ const SelectItems = (
       className={styles.itemsContainer}
       ref={containerRef}
       onKeyDown={onKeyDown}
+      tabIndex={-1}
     >
       <div className={styles.items}>
         {!filteredItems.length ? (

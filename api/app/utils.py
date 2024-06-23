@@ -2,6 +2,7 @@ from datetime import date, datetime, timedelta, timezone, MINYEAR
 from typing import List, get_args
 from fastapi import UploadFile
 from bson import ObjectId
+import pytz
 from requests import post
 import bcrypt
 
@@ -109,13 +110,15 @@ def schedule_meeting(
         }
     )
     for _id in [recruiter_id, candidate_id]:
+        user = Users.find_one({"_id": _id})
+        recruiter_timedelta = pytz.timezone(user.get("preferences", {}).get("timezone", "Europe/Moscow")).utcoffset(datetime.now())
         schedule_notification(
             _id,
             title="Запланирована встреча",
             calendar_date=at,
             calendar_duration=30,
             calendar_organizer=recruiter_id,
-            content=f"Встреча по вакансии «{vacancy_title}» назначена на {(at + timedelta(hours=3)).strftime("%d.%m.%y %H:%M")}. Ссылка появится в уведомлении за 30 минут до интервью",
+            content=f"Встреча по вакансии «{vacancy_title}» назначена на {(at + recruiter_timedelta).strftime("%d.%m.%y %H:%M")}. Ссылка появится в уведомлении за 30 минут до интервью",
             )
 
 

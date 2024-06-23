@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BaseUser, User } from '@/types/entities/user'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import ChangePasswordModal from '@/components/base/ChangePasswordModal'

@@ -16,7 +16,10 @@ export const useCandidateResponses = createUseQuery(
 
 export const useCurCandidateResponses = createUseQuery(
   'candidates.me.responses',
-  Api.candidates.me.responses
+  Api.candidates.me.responses,
+  {
+    refetchInterval: 1000 * 60,
+  }
 )
 
 export const useCurCandidateVacancyResponse = createUseQuery(
@@ -75,4 +78,11 @@ export const useCurCandidateAnswerToResponse = createUseMutation(
 export const useVacancyCandidates = createUseQuery(
   'vacancies.candidates',
   Api.vacancies.candidates
+)
+
+export const useCurCandidateSendResponseMessage = createUseMutation(
+  Api.candidates.me.sendResponseMessage,
+  {
+    invalidateQueriesFn: () => [{ queryKey: ['candidates.me.responses'] }],
+  }
 )

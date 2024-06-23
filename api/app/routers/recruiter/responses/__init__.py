@@ -5,7 +5,7 @@ from app.schemas import OID
 from app.utils import get_now
 from app.oauth import RecruiterId
 from app.database import DetailedResponses, Responses, Stages, Vacancies
-from app.schemas.responses import RecruiterResponseAnswer, Response, ResponsesGet
+from app.schemas.responses import RecruiterResponseAnswer, RecruiterSimpleResponseAnswer, Response, ResponsesGet
 from app.exceptions import ONE_RESPONSE_FOR_ONE_VACACNY, RESPONSE_NOT_ACTIVE_OR_NOT_FOUND, VACANCY_DOESNT_BELONG_TO_RECRUIT, NOT_ENOUGH_STAGES
 
 from .aggregations import PAGINATED_MATCH_RESPONSES
@@ -141,7 +141,40 @@ async def answer_response(
             "_id": response_id
         },
         {
-            "$set": {"status": status, "stage_id": stage_id, "updated_at": get_now()},
+            "$set": {"status": status, "stage_id": stage_id, "updated_at": now},
+            "$push": {"messages": message}
+        },
+        return_document=True
+    )
+
+
+@router.post(
+    "/{response_id}/simple",
+    name="Ответить на отклик без смены стадии",
+    response_model=Response
+)
+async def answer_response(
+    recruiter_id: RecruiterId,
+    response_id: OID,
+    payload: RecruiterSimpleResponseAnswer,
+):
+    now = get_now()
+    response = DetailedResponses.find_one({"_id": response_id, "vacancy.recruiter_id": recruiter_id, "status": {"$nin": ["approved", "rejected"]}})
+    if response is None:
+        raise RESPONSE_NOT_ACTIVE_OR_NOT_FOUND
+    message = {
+        "type": "message",
+        "sender_role": "recruiter",
+        "text": payload.message,
+        "created_at": now,
+        "stage_id": response["stage_id"]
+    }
+    return Responses.find_one_and_update(
+        {
+            "_id": response_id
+        },
+        {
+            "$set": {"updated_at": now},
             "$push": {"messages": message}
         },
         return_document=True

@@ -42,8 +42,8 @@ services:
     restart: unless-stopped
     volumes:
       - data-vol:/data/db
-    #ports:
-    #  - 27017:27017 # TODO: remove later to avoid access to db
+    ports:
+      - 27017:27017 # TODO: remove later to avoid access to db
 
   # DOESN"T WORK FROM RUSSIAN IP's, SO DISABLE IT HERE
   # ai:
@@ -60,15 +60,20 @@ services:
     container_name: scheduler
     image: leaders.cr.cloud.ru/leaders-hack-2024-gb/scheduler:latest
     restart: unless-stopped
+    volumes:
+      - ./creds:/creds
     depends_on:
       - mongo
     environment:
     - MONGO_DATABASE=${MONGO_DATABASE}
     - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
     - AI_URL=${AI_URL}
-    - TELEMOST_API=${TELEMOST_API}
     - EMAIL_USER=${EMAIL_USER}
     - EMAIL_PASS=${EMAIL_PASS}
+    - TELEMOST_API=${TELEMOST_API}
+    - ZOOM_CLIENT_ID=${ZOOM_CLIENT_ID}
+    - ZOOM_ACCOUNT_ID=${ZOOM_ACCOUNT_ID}
+    - ZOOM_CLIENT_SECRET=${ZOOM_CLIENT_SECRET}
 
   leaders_backend:
     container_name: leaders_backend

@@ -16,6 +16,7 @@ export enum ResponseMessageType {
   NextStageRequest = 'next_stage_request',
   CandidateAnswer = 'candidate_answer',
   Result = 'result',
+  Custom = 'message',
 }
 
 export interface Response extends BaseEntity {
@@ -35,6 +36,7 @@ export interface Response extends BaseEntity {
     meet_on?: string | null
     sender_role: Role
     stage_id: BaseEntityPkType
+    interview_timestamp?: string
   }[]
 }
 
@@ -68,4 +70,8 @@ export interface CommentResponseData {
 
 export interface GetResponseScheduleParams {
   end: string
+}
+
+export interface SendResponseMessageData {
+  message: string
 }

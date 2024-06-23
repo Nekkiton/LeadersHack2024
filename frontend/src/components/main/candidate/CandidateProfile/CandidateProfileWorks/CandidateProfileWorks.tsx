@@ -1,6 +1,6 @@
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form'
 import { FormData } from '../utils'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import BaseButton from '@/components/ui/BaseButton'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 export const getUserAge = (birthday: string) => {
   return moment

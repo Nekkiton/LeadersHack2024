@@ -392,5 +392,6 @@ ResponseMessageType = Literal[
     "recruiter_request",
     "next_stage_request",
     "candidate_answer",
-    "result"
+    "result",
+    "message"
 ]

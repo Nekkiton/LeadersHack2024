@@ -7,10 +7,10 @@ import { BaseUser } from '@/types/entities/user'
 import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkType } from '@/types/entities/work-type'
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 
 export interface FormData {
-  photo: UpdateAttachment | null
+  image: UpdateAttachment | null
   name: string
   surname: string
   patronymic: string | null
@@ -36,6 +36,7 @@ export interface FormData {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string
   }
 }
 
@@ -48,6 +49,7 @@ export const transformData = (data: FormData): UpdateCandidateData => {
       start_date: i.start_date.toISOString(),
       end_date: i.end_date ? i.end_date.toISOString() : null,
     })),
+    image: data.image?.data ?? null,
   }
 }
 
@@ -74,6 +76,17 @@ export const getDefaultData = (
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
       site_notify: false,
+      timezone: moment.tz.guess(),
     },
+    image:
+      (user?.name && user.image
+        ? {
+            _id: 'attachment',
+            created_at: '',
+            name: 'Обложка',
+            size: 1024 * 10,
+            data: user.image,
+          }
+        : null) ?? null,
   }
 }

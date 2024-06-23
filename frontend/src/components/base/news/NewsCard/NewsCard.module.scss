@@ -23,8 +23,10 @@
 }
 
 .newsContent {
-  white-space: pre-wrap;
-  text-wrap: pretty;
+  * {
+    @include paragraph-2;
+    display: inline;
+  }
 }
 
 .footer {

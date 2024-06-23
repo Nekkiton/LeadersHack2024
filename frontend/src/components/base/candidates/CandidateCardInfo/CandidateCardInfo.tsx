@@ -4,7 +4,7 @@ import { getUserName } from '@/lib/get-user-name'
 import { getUserAge } from '@/lib/get-user-age'
 import { getUserPhone } from '@/lib/get-user-phone'
 import classNames from 'classnames'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import Link from 'next/link'
 import Image from '@/components/ui/Image'
 import Icon from '@/components/ui/Icon'
@@ -40,7 +40,7 @@ export default function CandidateCardInfo({ className, candidate }: Props) {
       <div className={classNames(styles.userImgContainer, styles.userBlock)}>
         <Image
           className={styles.userImg}
-          src={candidate.photo ?? userImg}
+          src={candidate.image ?? userImg}
           width={60}
           height={60}
         />

@@ -8,5 +8,8 @@ export const useResponseSchedule = createUseQuery(
 
 export const useCurRecruiterResponses = createUseQuery(
   'recruiters.me.responses',
-  Api.recruiters.me.responses
+  Api.recruiters.me.responses,
+  {
+    refetchInterval: 1000 * 60,
+  }
 )
