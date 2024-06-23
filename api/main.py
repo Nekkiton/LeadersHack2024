@@ -17,7 +17,7 @@ ENCODERS_BY_TYPE[datetime] = lambda x: x.isoformat()
 
 app = FastAPI(
     title="LeadersHack2024 API",
-    version="0.0.7",
+    version="1.0.0",
     root_path="/api",
 )
 

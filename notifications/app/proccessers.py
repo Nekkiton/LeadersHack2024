@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
 from bson import ObjectId, json_util
-from asyncio.log import logger
 from requests import get, post
 from bs4 import BeautifulSoup
 import logging
