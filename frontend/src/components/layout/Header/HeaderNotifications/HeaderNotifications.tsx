@@ -37,7 +37,9 @@ export default function HeaderNotifications() {
 
   const getNotificationContent = (notification: Notification) => {
     let content = notification.content
-    const urls = getUrls(content)
+    const urls = getUrls(content, {
+      requireSchemeOrWww: true,
+    })
 
     if (!urls.size) {
       return content

@@ -74,7 +74,7 @@ async def proccess_meeting(
         )
 
 
-def proccess_rntgroup() -> None:
+async def proccess_rntgroup() -> None:
     """
     Собирает вакансии с https://rntgroup.com/career/vacancies/ в Mongo.
     Не самый красивый код, но работает
