@@ -165,6 +165,7 @@ export default function RecruiterProfileBaseInfo() {
                   label="Часовой пояс"
                   placeholder="Выберите из списка"
                   items={getTimezones()}
+                  inputtable
                 />
               )}
             />
