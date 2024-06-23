@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+print(load_dotenv('.env.local'))
+
 from bson import ObjectId
 from fastapi import FastAPI
 from datetime import datetime

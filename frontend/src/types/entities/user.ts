@@ -25,5 +25,6 @@ export interface User extends BaseEntity {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string // +03
   } | null
 }

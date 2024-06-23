@@ -36,6 +36,7 @@ export interface FormData {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string
   }
 }
 
@@ -75,6 +76,7 @@ export const getDefaultData = (
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
       site_notify: false,
+      timezone: '+03',
     },
     image:
       (user?.name && user.image

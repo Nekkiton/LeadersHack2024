@@ -58,6 +58,7 @@ export interface UpdateCandidateData {
   preferences: {
     email_notify: boolean
     site_notify: boolean
+    timezone: string
   }
 }
 

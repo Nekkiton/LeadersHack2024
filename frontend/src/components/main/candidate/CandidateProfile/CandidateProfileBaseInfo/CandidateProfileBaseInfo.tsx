@@ -5,6 +5,7 @@ import { useWorkSchedules } from '@/api/work-schedules'
 import { useWorkTypes } from '@/api/work-types'
 import { useWorkExperiences } from '@/api/work-experiences'
 import { useCitites } from '@/api/cities'
+import { Timezones } from '@/config/timezones'
 import { FormData } from '../utils'
 import AvatarUpload from '@/components/ui/AvatarUpload'
 import Input from '@/components/ui/Input'
@@ -139,20 +140,35 @@ export default function RecruiterProfileBaseInfo() {
         </div>
         <div className={styles.mainBlock}>
           <h3>Контактная информация</h3>
-          <Controller
-            control={control}
-            name="phone"
-            rules={{ required: true }}
-            render={({ field, fieldState }) => (
-              <Input
-                {...field}
-                className={styles.mainBlockHalfField}
-                error={fieldState.error}
-                label="Телефон"
-                placeholder="+7 ___ ___ __ __"
-              />
-            )}
-          />
+          <div className={styles.mainBlockFieldsRow}>
+            <Controller
+              control={control}
+              name="phone"
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  error={fieldState.error}
+                  label="Телефон"
+                  placeholder="+7 ___ ___ __ __"
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="preferences.timezone"
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <Select
+                  {...field}
+                  error={fieldState.error}
+                  label="Часовой пояс"
+                  placeholder="Выберите из списка"
+                  items={Timezones}
+                />
+              )}
+            />
+          </div>
           <div className={styles.mainBlockFieldsRow}>
             <Controller
               control={control}
