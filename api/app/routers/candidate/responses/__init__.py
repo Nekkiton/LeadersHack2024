@@ -162,7 +162,6 @@ async def answer_response(
             message = {
                 "type": "candidate_answer",
                 "sender_role": "candidate",
-                # TODO: deal with timezone not only Moscow
                 "text": f"Интервью назначено на %date%",
                 "interview_timestamp": payload.meet_at,
                 "created_at": now,
