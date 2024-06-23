@@ -6,7 +6,7 @@ import {
   ResponseMessageType,
   ResponseStatus,
 } from '@/types/entities/response'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import classNames from 'classnames'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'

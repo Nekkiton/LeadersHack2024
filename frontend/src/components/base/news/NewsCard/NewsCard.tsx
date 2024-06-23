@@ -1,7 +1,7 @@
 import { News } from '@/types/entities/news'
 import { Role } from '@/types/entities/user'
 import { Routes } from '@/config/routes'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import classNames from 'classnames'
 import ReactMarkdown from 'react-markdown'
 import Image from '@/components/ui/Image'

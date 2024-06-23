@@ -1,6 +1,6 @@
 import { Vacancy } from '@/types/entities/vacancy'
 import { Role } from '@/types/entities/user'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import classNames from 'classnames'
 import Button from '@/components/ui/Button'
 import VacancyStatus from '@/components/base/vacancies/VacancyStatus'

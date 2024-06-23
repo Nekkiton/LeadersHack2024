@@ -4,7 +4,7 @@ import {
   useCurUserReadNotifications,
 } from '@/api/notifications'
 import { Notification } from '@/types/entities/notification'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import classNames from 'classnames'
 import getUrls from 'get-urls'
 import Link from 'next/link'

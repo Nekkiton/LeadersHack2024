@@ -2,7 +2,7 @@ import { getUserPhone } from '@/lib/get-user-phone'
 import { UpdateAttachment } from '@/types/entities/attachment'
 import { Recruiter, UpdateRecruiterData } from '@/types/entities/recruiter'
 import { BaseUser } from '@/types/entities/user'
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 
 export interface FormData {
   image: UpdateAttachment | null
@@ -57,7 +57,7 @@ export const getDefaultData = (
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
       site_notify: false,
-      timezone: 'Europe/Moscow',
+      timezone: moment.tz.guess(),
     },
     image:
       (user?.name && user.image

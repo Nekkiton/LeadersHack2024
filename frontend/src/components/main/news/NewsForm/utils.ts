@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 import { Attachment } from '@/types/entities/attachment'
 import { News, UpdateNewsData } from '@/types/entities/news'
 

@@ -7,7 +7,7 @@ import { BaseUser } from '@/types/entities/user'
 import { WorkExperience } from '@/types/entities/work-experience'
 import { WorkSchedule } from '@/types/entities/work-schedule'
 import { WorkType } from '@/types/entities/work-type'
-import moment, { Moment } from 'moment'
+import moment, { Moment } from 'moment-timezone'
 
 export interface FormData {
   image: UpdateAttachment | null
@@ -76,7 +76,7 @@ export const getDefaultData = (
     preferences: (user?.name ? user.preferences : null) ?? {
       email_notify: false,
       site_notify: false,
-      timezone: 'Europe/Moscow',
+      timezone: moment.tz.guess(),
     },
     image:
       (user?.name && user.image

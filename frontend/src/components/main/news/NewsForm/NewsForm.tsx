@@ -9,7 +9,7 @@ import {
 } from '@/api/news'
 import { Routes } from '@/config/routes'
 import { FormData, getInitialData, transformData } from './utils'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import Input from '@/components/ui/Input'
 import Textarea from '@/components/ui/Textarea'
 import FileUpload from '@/components/ui/FileUpload'
