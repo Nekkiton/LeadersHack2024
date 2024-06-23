@@ -270,5 +270,5 @@ async def get_response_schedule(
                 if slot.astimezone(tz=recruiter_tzinfo).time() in day_slots:
                     day_slots.remove(slot.astimezone(tz=recruiter_tzinfo).time())
 
-        result += [datetime.combine(start, slot, tzinfo=recruiter_tzinfo).astimezone(tz=timezone.utc) for slot in day_slots]
+        result += [datetime.combine(start, slot).astimezone(tz=timezone.utc) for slot in day_slots]
     return result
