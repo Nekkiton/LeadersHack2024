@@ -172,10 +172,6 @@ export default function SetupInterviewModal({
         name="meet_on"
         rules={{
           required: true,
-          validate: (val) =>
-            val && val !== 'telemost'
-              ? 'На данные момент поддерживается только Telemost'
-              : true,
         }}
         render={({ field, fieldState }) => (
           <Select
