@@ -243,7 +243,7 @@ async def get_response_schedule(
         start_time = slot["start_time"].astimezone(recruiter_pytz)
         end_time = slot["end_time"].astimezone(recruiter_pytz)
         while start_time < end_time:
-            slots.add(start_time.time())
+            slots.add(start_time.astimezone(tz=timezone.utc).time())
             start_time += timedelta(minutes=30)
 
     scheduled = Tasks.aggregate(DAYS_WITH_INTERVIEWS(recruiter["_id"], start, end, recruiter_tz))
